@@ -8,18 +8,14 @@ class CharListViewModel extends foundation.ChangeNotifier {
 
   List<Character> findAll() {
     if (_characters == null) {
-      print('ViewModel return empty');
       return [];
     }
 
-    print('ViewModel return char. size=${_characters.length}');
     return _characters;
   }
 
   void load() async {
-    // TODO これProviderでなんとかならんか
     final repository = RomasagaRepository();
-    print('ViewModel load Start!');
     _characters = await repository.findAll();
     print('ViewModel load End! size=${_characters.length}');
     notifyListeners();

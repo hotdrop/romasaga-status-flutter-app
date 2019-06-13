@@ -3,19 +3,6 @@ import 'package:flutter/cupertino.dart';
 
 import 'char_list_tab.dart';
 
-class RomasagaApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Romansing SaGa App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: TopPage(),
-    );
-  }
-}
-
 class TopPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
