@@ -1,11 +1,19 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 
-import '../model/character.dart';
+import '../../model/character.dart';
 
-class LocalDataSource {
+class RemoteDataSource {
+  RemoteDataSource._();
+  static final RemoteDataSource _instance = RemoteDataSource._();
+
+  factory RemoteDataSource() {
+    return _instance;
+  }
+
   Future<List<Character>> findAll() async {
     try {
+      // TODO ここ本当はAPIでデータ取得する
       return await rootBundle.loadStructuredData('res/romasaga.txt', (String allLine) async {
         return _convert(allLine);
       });
@@ -46,7 +54,7 @@ class LocalDataSource {
         styleMap.update(name, (dynamic val) => c);
       } else {
         // TODO これあとでデータに入れる
-        var c = Character(name, WeaponType("剣"));
+        var c = Character(name, "剣");
         c.addStyle(rank, str, vit, dex, agi, intelligence, spi, love, attr);
         styleMap[name] = c;
       }

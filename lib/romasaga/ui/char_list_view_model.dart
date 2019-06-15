@@ -5,6 +5,11 @@ import '../model/character.dart';
 
 class CharListViewModel extends foundation.ChangeNotifier {
   List<Character> _characters;
+  RomasagaRepository repository;
+
+  CharListViewModel({RomasagaRepository repo}) {
+    repository = (repo == null) ? RomasagaRepository() : repo;
+  }
 
   List<Character> findAll() {
     if (_characters == null) {
@@ -15,7 +20,6 @@ class CharListViewModel extends foundation.ChangeNotifier {
   }
 
   void load() async {
-    final repository = RomasagaRepository();
     _characters = await repository.findAll();
     print('ViewModel load End! size=${_characters.length}');
     notifyListeners();

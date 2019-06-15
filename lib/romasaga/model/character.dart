@@ -1,16 +1,20 @@
 class Character {
   final String name;
-  final WeaponType weaponType;
+  WeaponType _weaponType;
 
-  final _styleMap = Map<String, Style>();
+  final styleMap = Map<String, Style>();
 
-  Character(this.name, this.weaponType);
+  Character(this.name, weaponType) {
+    _weaponType = WeaponType(weaponType);
+  }
 
-  String get toStringRanks => _styleMap.keys.join(", ");
-  String get category => weaponType.category;
+  String get toStringRanks => styleMap.keys.join(", ");
 
-  addStyle(String rank, int str, int vit, int dex, int agi, int intelligence, int spi, int love, int attr) {
-    _styleMap.putIfAbsent(rank, () => _createStyle(str, vit, dex, agi, intelligence, spi, love, attr));
+  String get mainWeaponType => _weaponType.name;
+  String get weaponCategory => _weaponType.category;
+
+  void addStyle(String rank, int str, int vit, int dex, int agi, int intelligence, int spi, int love, int attr) {
+    styleMap.putIfAbsent(rank, () => _createStyle(str, vit, dex, agi, intelligence, spi, love, attr));
   }
 
   Style _createStyle(int str, int vit, int dex, int agi, int intelligence, int spi, int love, int attr) {
@@ -19,22 +23,22 @@ class Character {
 }
 
 class Style {
-  final int _str;
-  final int _vit;
-  final int _dex;
-  final int _agi;
-  final int _int;
-  final int _spirit;
-  final int _love;
-  final int _attr;
+  final int str;
+  final int vit;
+  final int dex;
+  final int agi;
+  final int intelligence;
+  final int spirit;
+  final int love;
+  final int attr;
 
-  const Style(this._str, this._vit, this._dex, this._agi, this._int, this._spirit, this._love, this._attr);
+  const Style(this.str, this.vit, this.dex, this.agi, this.intelligence, this.spirit, this.love, this.attr);
 }
 
 class WeaponType {
-  final String _type;
+  final String name;
   String get category {
-    switch (_type) {
+    switch (name) {
       case "剣":
       case "大剣":
       case "斧":
@@ -54,5 +58,5 @@ class WeaponType {
     }
   }
 
-  WeaponType(this._type);
+  WeaponType(this.name);
 }
