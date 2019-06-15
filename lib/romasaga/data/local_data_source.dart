@@ -45,7 +45,8 @@ class LocalDataSource {
         c.addStyle(rank, str, vit, dex, agi, intelligence, spi, love, attr);
         styleMap.update(name, (dynamic val) => c);
       } else {
-        var c = Character(name);
+        // TODO これあとでデータに入れる
+        var c = Character(name, WeaponType("剣"));
         c.addStyle(rank, str, vit, dex, agi, intelligence, spi, love, attr);
         styleMap[name] = c;
       }

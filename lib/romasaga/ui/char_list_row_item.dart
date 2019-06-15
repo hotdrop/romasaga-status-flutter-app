@@ -22,12 +22,15 @@ class CharListRowItem extends StatelessWidget {
               ),
             ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   character.name,
                   style: Theme.of(context).textTheme.subhead,
                 ),
+                const Padding(padding: EdgeInsets.only(top: 8)),
+                Text('${character.toStringRanks}')
               ],
             )
           ],
