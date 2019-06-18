@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../model/character.dart';
+import 'detail/char_detail_page.dart';
 
 class CharListRowItem extends StatelessWidget {
   final Character character;
@@ -11,30 +12,44 @@ class CharListRowItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Row(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(right: 16.0),
-              child: CircleAvatar(
-                child: Text(character.name[0]),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  character.name,
-                  style: Theme.of(context).textTheme.subhead,
+      child: InkWell(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Row(
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.only(right: 16.0),
+                child: CircleAvatar(
+                  // TODO 画像どうやって持ってくるか・・
+                  child: Text(character.name[0]),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 8)),
-                Text('${character.toStringRanks}')
-              ],
-            )
-          ],
+              ),
+              // TODO キャラの武器種別、カテゴリー、持っているかどうかのアイコンも表示する。
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    character.name,
+                    style: Theme.of(context).textTheme.subhead,
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 8)),
+                  Text('${character.toStringRanks}')
+                ],
+              )
+            ],
+          ),
         ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CharDetailPage(
+                    character: character,
+                  ),
+            ),
+          );
+        },
       ),
     );
   }
