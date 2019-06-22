@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'database.dart';
 import '../../model/character.dart';
 import 'mapper.dart';

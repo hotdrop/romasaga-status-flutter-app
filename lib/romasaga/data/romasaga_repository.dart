@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'local/local_data_source.dart';
 import 'remote/remote_data_source.dart';
 import '../model/character.dart';
