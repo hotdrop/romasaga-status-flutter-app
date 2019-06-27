@@ -35,6 +35,8 @@ class DBProvider {
       CREATE TABLE ${CharacterEntity.tableName} (
         ${CharacterEntity.columnId} INTEGER PRIMARY KEY autoincrement,
         ${CharacterEntity.columnName} TEXT,
+        ${CharacterEntity.columnTitle} TEXT,
+        ${CharacterEntity.columnProduction} TEXT,
         ${CharacterEntity.columnWeaponType} TEXT,
         ${CharacterEntity.columnRank} TEXT,
         ${CharacterEntity.columnStr} INTEGER,

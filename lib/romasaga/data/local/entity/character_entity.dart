@@ -7,6 +7,12 @@ class CharacterEntity {
   static const String columnName = "name";
   String name;
 
+  static const String columnTitle = "title";
+  String title;
+
+  static const String columnProduction = "production";
+  String production;
+
   static const String columnWeaponType = "weapon_type";
   String weaponType;
 
@@ -43,6 +49,8 @@ class CharacterEntity {
     var map;
     map = <String, dynamic>{
       columnName: name,
+      columnTitle: title,
+      columnProduction: production,
       columnWeaponType: weaponType,
       columnRank: rank,
       columnStr: str,
@@ -65,6 +73,8 @@ class CharacterEntity {
   CharacterEntity.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
     name = map[columnName];
+    title = map[columnTitle];
+    production = map[columnProduction];
     weaponType = map[columnWeaponType];
 
     rank = map[columnRank];

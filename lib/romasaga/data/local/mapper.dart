@@ -4,11 +4,13 @@ import 'entity/character_entity.dart';
 class Mapper {
   static List<CharacterEntity> toEntities(Character c) {
     final entities = <CharacterEntity>[];
-    c.styleMap.forEach((rank, style) {
+    c.styles.forEach((style) {
       final entity = CharacterEntity()
         ..name = c.name
-        ..weaponType = c.mainWeaponType
-        ..rank = rank
+        ..title = c.title
+        ..production = c.production
+        ..weaponType = c.weaponType.name
+        ..rank = style.rank
         ..str = style.str
         ..vit = style.vit
         ..dex = style.dex
@@ -34,7 +36,7 @@ class Mapper {
         c.addStyle(entity.rank, entity.str, entity.vit, entity.dex, entity.agi, entity.intelligence, entity.spirit, entity.love, entity.attr);
         characterMap.update(entity.name, (dynamic val) => c);
       } else {
-        final c = Character(entity.name, entity.weaponType);
+        final c = Character(entity.name, entity.title, entity.production, entity.weaponType);
         c.addStyle(entity.rank, entity.str, entity.vit, entity.dex, entity.agi, entity.intelligence, entity.spirit, entity.love, entity.attr);
         characterMap[entity.name] = c;
       }

@@ -29,10 +29,10 @@ class RemoteDataSource {
     final styleMap = Map<String, Character>();
 
     for (var line in lines) {
-      final items = line.split('	');
+      final items = line.split(',');
 
-      if (items.length < 9) {
-        print('[debug] error not split size less than 9. items sie = ${items.length} line = $line');
+      if (items.length < 12) {
+        print('[debug] error not split size less than 12. items sie = ${items.length} line = $line');
         continue;
       }
 
@@ -48,14 +48,16 @@ class RemoteDataSource {
       final spi = int.parse(items[6]);
       final love = int.parse(items[7]);
       final attr = int.parse(items[8]);
+      final weaponType = items[9];
+      final title = items[10];
+      final production = items[11];
 
       if (styleMap.containsKey(name)) {
         var c = styleMap[name];
         c.addStyle(rank, str, vit, dex, agi, intelligence, spi, love, attr);
         styleMap.update(name, (dynamic val) => c);
       } else {
-        // TODO これあとでデータに入れる
-        var c = Character(name, "剣");
+        var c = Character(name, title, production, weaponType);
         c.addStyle(rank, str, vit, dex, agi, intelligence, spi, love, attr);
         styleMap[name] = c;
       }
