@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'common/romasagaIcon.dart';
 import '../model/character.dart';
 import 'detail/char_detail_page.dart';
 
@@ -22,12 +23,16 @@ class CharListRowItem extends StatelessWidget {
                   flex: 1,
                 ),
                 Expanded(
-                  child: _widgetCharNameAndStyles(character, context),
+                  child: _widgetName(character, context),
                   flex: 3,
                 ),
                 Expanded(
                   child: _widgetWeaponType(character),
                   flex: 1,
+                ),
+                Expanded(
+                  child: _widgetStyles(character, context),
+                  flex: 2,
                 ),
                 Expanded(
                   child: _widgetFavoriteIcon(character),
@@ -59,17 +64,17 @@ class CharListRowItem extends StatelessWidget {
     );
   }
 
-  Column _widgetCharNameAndStyles(Character character, BuildContext context) {
+  Column _widgetName(Character character, BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           character.name,
           style: Theme.of(context).textTheme.subhead,
         ),
-        Row(
-          children: _widgetStyleIcons(character),
+        Text(
+          character.title,
+          style: Theme.of(context).textTheme.caption,
         )
       ],
     );
@@ -88,6 +93,26 @@ class CharListRowItem extends StatelessWidget {
     );
   }
 
+  Widget _convertWeaponIcon(WeaponType type) {
+    return RomasagaIcon.convertWeaponIcon(type);
+  }
+
+  Column _widgetStyles(Character character, BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Row(
+          children: _widgetStyleIcons(character),
+        )
+      ],
+    );
+  }
+
+  List<Widget> _widgetStyleIcons(Character character) {
+    final ranks = character.getStyleRanks();
+    return ranks.map((rank) => RomasagaIcon.convertRankIcon(rank)).toList();
+  }
+
   Column _widgetFavoriteIcon(Character character) {
     return Column(
       children: <Widget>[
@@ -96,60 +121,6 @@ class CharListRowItem extends StatelessWidget {
           children: <Widget>[Icon(Icons.favorite_border)],
         )
       ],
-    );
-  }
-
-  List<Widget> _widgetStyleIcons(Character character) {
-    return character.styleRanks.map((rank) => _convertRankToIcon(rank)).toList();
-  }
-
-  // TODO ここら辺は画像リソース扱うクラス作ってそこでやる
-  Widget _convertRankToIcon(String rank) {
-    if (rank == Style.rankSS) {
-      return _imageIcon('res/icons/icon_rank_SS.png');
-    } else if (rank == Style.rankS) {
-      return _imageIcon('res/icons/icon_rank_S.png');
-    } else {
-      return _imageIcon('res/icons/icon_rank_A.png');
-    }
-  }
-
-  Widget _convertWeaponIcon(WeaponType type) {
-    switch (type.name) {
-      case WeaponType.sword:
-        return _imageIcon('res/icons/icon_weap_sword.png');
-      case WeaponType.largeSword:
-        return _imageIcon('res/icons/icon_weap_large_sword.png');
-      case WeaponType.axe:
-        return _imageIcon('res/icons/icon_weap_axe.png');
-      case WeaponType.hummer:
-        return _imageIcon('res/icons/icon_weap_hummer.png');
-      case WeaponType.knuckle:
-        return _imageIcon('res/icons/icon_weap_knuckle.png');
-      case WeaponType.gun:
-        return _imageIcon('res/icons/icon_weap_gun.png');
-      case WeaponType.rapier:
-        return _imageIcon('res/icons/icon_weap_rapier.png');
-      case WeaponType.bow:
-        return _imageIcon('res/icons/icon_weap_bow.png');
-      case WeaponType.spear:
-        return _imageIcon('res/icons/icon_weap_spear.png');
-      case WeaponType.rod:
-        return _imageIcon('res/icons/icon_weap_rod.png');
-      default:
-        // 本当はここにきたらエラーにすべきだが・・
-        return CircleAvatar(
-          child: Text("？"),
-          backgroundColor: Colors.white,
-        );
-    }
-  }
-
-  Widget _imageIcon(String res) {
-    return Image.asset(
-      res,
-      width: 30,
-      height: 30,
     );
   }
 }

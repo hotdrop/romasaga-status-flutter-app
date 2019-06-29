@@ -13,11 +13,33 @@ class Character {
 
   String get weaponCategory => weaponType.category;
 
-  List<String> get styleRanks => styles.map((style) => style.rank).toList();
+  List<String> getStyleRanks() {
+    final ranks = _getNormalRanks();
+    return _distinct(ranks).toList()..sort((s, t) => s.compareTo(t));
+  }
 
   void addStyle(String rank, int str, int vit, int dex, int agi, int intelligence, int spi, int love, int attr) {
     final style = Style(rank, str, vit, dex, agi, intelligence, spi, love, attr);
     styles.add(style);
+  }
+
+  List<String> _getNormalRanks() {
+    final ranks = <String>[];
+    styles.forEach((style) {
+      if (style.rank.contains(Style.rankSS)) {
+        ranks.add(Style.rankSS);
+      } else if (style.rank.contains(Style.rankS)) {
+        ranks.add(Style.rankS);
+      } else {
+        ranks.add(Style.rankA);
+      }
+    });
+    return ranks;
+  }
+
+  Iterable<String> _distinct(List<String> lst) {
+    Set<String> s = Set();
+    return lst.where((e) => s.add(e));
   }
 }
 
@@ -37,6 +59,18 @@ class Style {
   static const String rankSS = "SS";
   static const String rankS = "S";
   static const String rankA = "A";
+
+  static int rankSort(String first, String second) {
+    final firstPriority = (first == rankA) ? 1 : (first == rankS) ? 2 : 3;
+    final secondPriority = (second == rankA) ? 1 : (second == rankS) ? 2 : 3;
+    if (firstPriority < secondPriority) {
+      return -1;
+    } else if (firstPriority == secondPriority) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
 }
 
 class WeaponType {
