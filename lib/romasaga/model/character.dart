@@ -7,20 +7,41 @@ class Character {
 
   final styles = List<Style>();
 
+  MyStatus _currentStatus;
+
   Character(this.name, this.title, this.production, argWeaponType) {
     weaponType = WeaponType(argWeaponType);
+    // TODO これテスト
+    _currentStatus = MyStatus(720, 45, 47, 56, 55, 57, 45, 51, 45);
   }
 
   String get weaponCategory => weaponType.category;
+  int get nowHP => (_currentStatus != null) ? _currentStatus.hp : 0;
+  int get nowStr => (_currentStatus != null) ? _currentStatus.str : 0;
+  int get nowVit => (_currentStatus != null) ? _currentStatus.vit : 0;
+  int get nowDex => (_currentStatus != null) ? _currentStatus.dex : 0;
+  int get nowAgi => (_currentStatus != null) ? _currentStatus.agi : 0;
+  int get nowInt => (_currentStatus != null) ? _currentStatus.intelligence : 0;
+  int get nowSpi => (_currentStatus != null) ? _currentStatus.spirit : 0;
+  int get nowLove => (_currentStatus != null) ? _currentStatus.love : 0;
+  int get nowAttr => (_currentStatus != null) ? _currentStatus.attr : 0;
 
-  List<String> getStyleRanks() {
-    final ranks = _getNormalRanks();
-    return _distinct(ranks).toList()..sort((s, t) => s.compareTo(t));
+  List<String> getStyleRanks({bool distinct = false}) {
+    if (distinct) {
+      final ranks = _getNormalRanks();
+      return _distinct(ranks).toList()..sort((s, t) => s.compareTo(t));
+    } else {
+      return styles.map((style) => style.rank).toList()..sort((s, t) => s.compareTo(t));
+    }
   }
 
   void addStyle(String rank, int str, int vit, int dex, int agi, int intelligence, int spi, int love, int attr) {
     final style = Style(rank, str, vit, dex, agi, intelligence, spi, love, attr);
     styles.add(style);
+  }
+
+  void saveMyStatus(MyStatus status) {
+    _currentStatus = status;
   }
 
   List<String> _getNormalRanks() {
@@ -111,4 +132,18 @@ class WeaponType {
   static const String rod = "杖";
 
   WeaponType(this.name);
+}
+
+class MyStatus {
+  final int hp;
+  final int str;
+  final int vit;
+  final int dex;
+  final int agi;
+  final int intelligence;
+  final int spirit;
+  final int love;
+  final int attr;
+
+  const MyStatus(this.hp, this.str, this.vit, this.dex, this.agi, this.intelligence, this.spirit, this.love, this.attr);
 }

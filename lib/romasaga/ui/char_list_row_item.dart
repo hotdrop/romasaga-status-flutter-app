@@ -109,7 +109,7 @@ class CharListRowItem extends StatelessWidget {
   }
 
   List<Widget> _widgetStyleIcons(Character character) {
-    final ranks = character.getStyleRanks();
+    final ranks = character.getStyleRanks(distinct: true);
     return ranks.map((rank) => RomasagaIcon.convertRankIcon(rank)).toList();
   }
 
