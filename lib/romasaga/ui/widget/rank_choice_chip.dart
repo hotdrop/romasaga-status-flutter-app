@@ -35,7 +35,8 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
         padding: EdgeInsets.only(right: 8.0),
         child: ChoiceChip(
           key: ValueKey(rank),
-          backgroundColor: _rankToColor(rank),
+          selectedColor: _rankToColor(rank),
+          backgroundColor: Colors.grey.shade600,
           label: Text(rank),
           avatar: _rankToAvatar(rank),
           selected: _selectedRankChipName == rank,
