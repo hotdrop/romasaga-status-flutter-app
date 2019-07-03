@@ -1,14 +1,13 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:flutter/services.dart';
 
 import '../../model/character.dart';
 
-class RemoteDataSource {
-  RemoteDataSource._();
-  static final RemoteDataSource _instance = RemoteDataSource._();
+class StyleApi {
+  StyleApi._();
+  static final StyleApi _instance = StyleApi._();
 
-  factory RemoteDataSource() {
+  factory StyleApi() {
     return _instance;
   }
 
@@ -32,7 +31,7 @@ class RemoteDataSource {
       final items = line.split(',');
 
       if (items.length < 12) {
-        print('[debug] error not split size less than 12. items sie = ${items.length} line = $line');
+        print('[debug] error not split size less than 12. items size = ${items.length} line = $line');
         continue;
       }
 

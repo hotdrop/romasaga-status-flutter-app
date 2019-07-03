@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 
 import '../../model/character.dart';
+
+import 'char_detail_view_model.dart';
+
 import '../common/romasagaIcon.dart';
 import '../widget/rank_choice_chip.dart';
 
@@ -12,14 +16,17 @@ class CharDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("キャラクター詳細"),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: contentLayout(context),
+    return ChangeNotifierProvider<CharDetailViewModel>(
+      builder: (context) => CharDetailViewModel(character)..load(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("キャラクター詳細"),
+        ),
+        body: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: contentLayout(context),
+          ),
         ),
       ),
     );
@@ -32,6 +39,7 @@ class CharDetailPage extends StatelessWidget {
     List<Widget> layouts = [];
     layouts.add(_widgetOverview(context));
     layouts.add(_widgetCompareStyle());
+    layouts.add(_widgetBaseLine());
     layouts.addAll(_widgetStatusCards());
     return layouts;
   }
@@ -70,7 +78,7 @@ class CharDetailPage extends StatelessWidget {
                   style: TextStyle(color: Colors.black, fontSize: 24.0),
                 )
               ],
-            )
+            ),
           ],
         )
       ],
@@ -97,7 +105,25 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// 基準のレイアウトを担当
   ///
-  Widget _widgetBaseLine() {}
+  Widget _widgetBaseLine() {
+    return Consumer<CharDetailViewModel>(
+      builder: (_, model, child) {
+        final baseStatusList = model.findBaseStatus();
+        return DropdownButton<String>(
+          items: baseStatusList.map((baseStatus) {
+            return DropdownMenuItem<String>(
+              value: baseStatus.stageName,
+              child: Text("${baseStatus.stageName} (${baseStatus.addLimit})"),
+            );
+          }).toList(),
+          onChanged: (value) {
+            model.saveSelectedBaseStatus(value);
+          },
+          value: model.getSelectedBaseStatusName(),
+        );
+      },
+    );
+  }
 
   ///
   /// ステータスカード群のレイアウトを担当

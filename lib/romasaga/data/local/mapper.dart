@@ -1,27 +1,34 @@
 import '../../model/character.dart';
+import '../../model/base_status.dart';
+
 import 'entity/character_entity.dart';
+import 'entity/base_status_entity.dart';
 
 class Mapper {
-  static List<CharacterEntity> toEntities(Character c) {
+  static BaseStatusEntity toBaseStatusEntity(BaseStatus model) {
+    return BaseStatusEntity(model.stageName, model.addLimit, model.order);
+  }
+
+  static BaseStatusEntity mapToBaseStatusEntity(Map<String, dynamic> map) {
+    return BaseStatusEntity.fromMap(map);
+  }
+
+  static BaseStatus toBaseStatus(BaseStatusEntity entity) {
+    return BaseStatus(entity.stageName, entity.addLimit, entity.itemOrder);
+  }
+
+  static List<CharacterEntity> toCharacterEntities(Character c) {
     final entities = <CharacterEntity>[];
     c.styles.forEach((style) {
-      final entity = CharacterEntity()
-        ..name = c.name
-        ..title = c.title
-        ..production = c.production
-        ..weaponType = c.weaponType.name
-        ..rank = style.rank
-        ..str = style.str
-        ..vit = style.vit
-        ..dex = style.dex
-        ..agi = style.agi
-        ..intelligence = style.intelligence
-        ..spirit = style.spirit
-        ..love = style.love
-        ..attr = style.attr;
+      final entity = CharacterEntity(c.name, c.title, c.production, c.weaponType.name, style.rank, style.str, style.vit, style.dex, style.agi,
+          style.intelligence, style.spirit, style.love, style.attr);
       entities.add(entity);
     });
     return entities;
+  }
+
+  static CharacterEntity mapToCharacterEntity(Map<String, dynamic> map) {
+    return CharacterEntity.fromMap(map);
   }
 
   static List<Character> toCharacters(List<CharacterEntity> entities) {

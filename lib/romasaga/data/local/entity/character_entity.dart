@@ -1,49 +1,68 @@
 class CharacterEntity {
   static const String tableName = "Character";
+  static const String createTableSql = """
+      CREATE TABLE $tableName (
+        $columnId INTEGER PRIMARY KEY autoincrement,
+        $columnName TEXT,
+        $columnTitle TEXT,
+        $columnProduction TEXT,
+        $columnWeaponType TEXT,
+        $columnRank TEXT,
+        $columnStr INTEGER,
+        $columnVit INTEGER,
+        $columnDex INTEGER,
+        $columnAgi INTEGER,
+        $columnInt INTEGER,
+        $columnSpirit INTEGER,
+        $columnLove INTEGER,
+        $columnAttr INTEGER
+      )
+      """;
 
   static const String columnId = "id";
   int id;
 
   static const String columnName = "name";
-  String name;
+  final String name;
 
   static const String columnTitle = "title";
-  String title;
+  final String title;
 
   static const String columnProduction = "production";
-  String production;
+  final String production;
 
   static const String columnWeaponType = "weapon_type";
-  String weaponType;
+  final String weaponType;
 
   static const String columnRank = "rank";
-  String rank;
+  final String rank;
 
   static const String columnStr = "str";
-  int str;
+  final int str;
 
   static const String columnVit = "vit";
-  int vit;
+  final int vit;
 
   static const String columnDex = "dex";
-  int dex;
+  final int dex;
 
   static const String columnAgi = "agi";
-  int agi;
+  final int agi;
 
   static const String columnInt = "intelligence";
-  int intelligence;
+  final int intelligence;
 
   static const String columnSpirit = "spirit";
-  int spirit;
+  final int spirit;
 
   static const String columnLove = "love";
-  int love;
+  final int love;
 
   static const String columnAttr = "attr";
-  int attr;
+  final int attr;
 
-  CharacterEntity();
+  CharacterEntity(this.name, this.title, this.production, this.weaponType, this.rank, this.str, this.vit, this.dex, this.agi, this.intelligence,
+      this.spirit, this.love, this.attr);
 
   Map<String, dynamic> toMap() {
     var map;
@@ -70,21 +89,19 @@ class CharacterEntity {
     return map;
   }
 
-  CharacterEntity.fromMap(Map<String, dynamic> map) {
-    id = map[columnId];
-    name = map[columnName];
-    title = map[columnTitle];
-    production = map[columnProduction];
-    weaponType = map[columnWeaponType];
-
-    rank = map[columnRank];
-    str = map[columnStr];
-    vit = map[columnVit];
-    dex = map[columnDex];
-    agi = map[columnAgi];
-    intelligence = map[columnInt];
-    spirit = map[columnSpirit];
-    love = map[columnLove];
-    attr = map[columnAttr];
-  }
+  static CharacterEntity fromMap(Map<String, dynamic> map) => CharacterEntity(
+        map[columnName],
+        map[columnTitle],
+        map[columnProduction],
+        map[columnWeaponType],
+        map[columnRank],
+        map[columnStr],
+        map[columnVit],
+        map[columnDex],
+        map[columnAgi],
+        map[columnInt],
+        map[columnSpirit],
+        map[columnLove],
+        map[columnAttr],
+      )..id = map[columnId];
 }

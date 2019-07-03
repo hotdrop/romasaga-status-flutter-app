@@ -5,8 +5,11 @@ import '../common/romasagaIcon.dart';
 
 class RankChoiceChip extends StatefulWidget {
   final List<String> _ranks;
+  // TODO 関数を引数にする
 
-  RankChoiceChip(this._ranks);
+  RankChoiceChip(
+    this._ranks,
+  );
 
   @override
   _RankChoiceChipState createState() => _RankChoiceChipState(_ranks);

@@ -1,28 +1,26 @@
-import 'local/local_data_source.dart';
-import 'remote/remote_data_source.dart';
+import 'local/character_source.dart';
+import 'remote/style_api.dart';
 import '../model/character.dart';
 
 class RomasagaRepository {
-  LocalDataSource localDataSource;
-  RemoteDataSource remoteDataSource;
+  CharacterSource _localDataSource;
+  StyleApi _styleApi;
 
-  RomasagaRepository({LocalDataSource local, RemoteDataSource remote}) {
-    localDataSource = (local == null) ? LocalDataSource() : local;
-    remoteDataSource = (remote == null) ? RemoteDataSource() : remote;
+  RomasagaRepository({CharacterSource local, StyleApi remote}) {
+    _localDataSource = (local == null) ? CharacterSource() : local;
+    _styleApi = (remote == null) ? StyleApi() : remote;
   }
 
   Future<List<Character>> findAll() async {
     // TODO デバッグログはちゃんとLogger使う。どれがいいかな。。
-    print("Repository DBから取得");
-    var characters = await localDataSource.findAll();
+    var characters = await _localDataSource.findAll();
     if (characters.isEmpty) {
-      print("Repository DBが0件なのでリモートから取得");
-      characters = await remoteDataSource.findAll();
-      print("Repository DBに保存");
-      localDataSource.save(characters);
+      print("RomasagaRepository DBが0件なのでリモートから取得");
+      characters = await _styleApi.findAll();
+      _localDataSource.save(characters);
     }
 
-    print("Repository データ取得完了 件数=${characters.length}");
+    print("RomasagaRepository データ取得完了 件数=${characters.length}");
     return characters;
   }
 }

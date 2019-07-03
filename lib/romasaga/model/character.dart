@@ -44,6 +44,10 @@ class Character {
     _currentStatus = status;
   }
 
+  Style getStyle(String rank) {
+    return styles.where((style) => style.rank == rank).first;
+  }
+
   List<String> _getNormalRanks() {
     final ranks = <String>[];
     styles.forEach((style) {

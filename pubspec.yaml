@@ -26,5 +26,6 @@ flutter:
   uses-material-design: true
   assets:
     - res/romasaga.txt
+    - res/base_status.txt
     - res/icons/
 
