@@ -3,24 +3,24 @@ import 'package:flutter/material.dart';
 import '../../model/character.dart' show Style;
 import '../common/romasagaIcon.dart';
 
+@immutable
 class RankChoiceChip extends StatefulWidget {
-  final List<String> _ranks;
-  // TODO 関数を引数にする
+  const RankChoiceChip({this.ranks, this.onSelectedListener});
 
-  RankChoiceChip(
-    this._ranks,
-  );
+  final List<String> ranks;
+  final Function(String) onSelectedListener;
 
   @override
-  _RankChoiceChipState createState() => _RankChoiceChipState(_ranks);
+  _RankChoiceChipState createState() => _RankChoiceChipState(ranks, onSelectedListener);
 }
 
 class _RankChoiceChipState extends State<RankChoiceChip> {
-  List<String> _ranks;
+  final List<String> _ranks;
+  final Function(String) _listener;
+
   String _selectedRankChipName;
 
-  _RankChoiceChipState(ranks) {
-    _ranks = ranks;
+  _RankChoiceChipState(this._ranks, this._listener) {
     _selectedRankChipName = '';
   }
 
@@ -47,7 +47,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
             setState(() {
               _selectedRankChipName = value ? rank : '';
             });
-            // TODO ここにタップ時の動作が必要・・
+            _listener(rank);
           },
         ),
       );

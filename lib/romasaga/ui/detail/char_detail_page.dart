@@ -17,7 +17,7 @@ class CharDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<CharDetailViewModel>(
-      builder: (context) => CharDetailViewModel(character)..load(),
+      builder: (_) => CharDetailViewModel(character)..load(),
       child: Scaffold(
         appBar: AppBar(
           title: Text("キャラクター詳細"),
@@ -89,16 +89,24 @@ class CharDetailPage extends StatelessWidget {
   /// スタイル比較のレイアウトを担当
   ///
   Widget _widgetCompareStyle() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          "比較スタイル",
-          style: TextStyle(color: Colors.grey, fontSize: 16.0),
-        ),
-        Padding(padding: EdgeInsets.only(right: 16.0)),
-        RankChoiceChip(character.getStyleRanks()),
-      ],
+    return Consumer<CharDetailViewModel>(
+      builder: (_, viewModel, child) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "比較スタイル",
+              style: TextStyle(color: Colors.grey, fontSize: 16.0),
+            ),
+            Padding(padding: EdgeInsets.only(right: 16.0)),
+            RankChoiceChip(
+                ranks: character.getStyleRanks(),
+                onSelectedListener: (String rank) {
+                  viewModel.saveSelectedRank(rank);
+                }),
+          ],
+        );
+      },
     );
   }
 
@@ -107,19 +115,29 @@ class CharDetailPage extends StatelessWidget {
   ///
   Widget _widgetBaseLine() {
     return Consumer<CharDetailViewModel>(
-      builder: (_, model, child) {
-        final baseStatusList = model.findBaseStatus();
-        return DropdownButton<String>(
-          items: baseStatusList.map((baseStatus) {
-            return DropdownMenuItem<String>(
-              value: baseStatus.stageName,
-              child: Text("${baseStatus.stageName} (${baseStatus.addLimit})"),
-            );
-          }).toList(),
-          onChanged: (value) {
-            model.saveSelectedBaseStatus(value);
-          },
-          value: model.getSelectedBaseStatusName(),
+      builder: (_, viewModel, child) {
+        final baseStatusList = viewModel.findBaseStatus();
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "基準ステージ",
+              style: TextStyle(color: Colors.grey, fontSize: 16.0),
+            ),
+            Padding(padding: EdgeInsets.only(right: 16.0)),
+            DropdownButton<String>(
+              items: baseStatusList.map((baseStatus) {
+                return DropdownMenuItem<String>(
+                  value: baseStatus.stageName,
+                  child: Text("${baseStatus.stageName} (${baseStatus.addLimit})"),
+                );
+              }).toList(),
+              onChanged: (value) {
+                viewModel.saveSelectedBaseStatus(value);
+              },
+              value: viewModel.getSelectedBaseStatusName(),
+            ),
+          ],
         );
       },
     );
@@ -129,31 +147,29 @@ class CharDetailPage extends StatelessWidget {
   /// ステータスカード群のレイアウトを担当
   ///
   List<Widget> _widgetStatusCards() {
-    // TODO 今選択しているランクのステータスを取得
-
     return [
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _widgetStatusCard("ＨＰ", character.nowHP, 0),
-          _widgetStatusCard("腕力", character.nowStr, 0),
-          _widgetStatusCard("体力", character.nowVit, 0),
+          _widgetStatusCard(CharDetailViewModel.hpName, character.nowHP),
+          _widgetStatusCard(CharDetailViewModel.strName, character.nowStr),
+          _widgetStatusCard(CharDetailViewModel.vitName, character.nowVit),
         ],
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _widgetStatusCard("器用", character.nowDex, 0),
-          _widgetStatusCard("素早", character.nowAgi, 0),
-          _widgetStatusCard("知能", character.nowInt, 0),
+          _widgetStatusCard(CharDetailViewModel.dexName, character.nowDex),
+          _widgetStatusCard(CharDetailViewModel.agiName, character.nowAgi),
+          _widgetStatusCard(CharDetailViewModel.intName, character.nowInt),
         ],
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _widgetStatusCard("精神", character.nowSpi, 0),
-          _widgetStatusCard("愛　", character.nowLove, 0),
-          _widgetStatusCard("魅力", character.nowAttr, 0),
+          _widgetStatusCard(CharDetailViewModel.spiName, character.nowSpi),
+          _widgetStatusCard(CharDetailViewModel.loveName, character.nowLove),
+          _widgetStatusCard(CharDetailViewModel.attrName, character.nowAttr),
         ],
       ),
     ];
@@ -162,29 +178,33 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステータスカード自体のレイアウトを担当
   ///
-  Card _widgetStatusCard(String statusName, int currentStatus, int baseStatus) {
-    return Card(
-      elevation: 8.0,
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: StatusCardContent(statusName, currentStatus, baseStatus),
-        ),
-        onTap: () {
-          // TODO ここでステータス更新したい
-        },
-      ),
+  Widget _widgetStatusCard(String statusName, int currentStatus) {
+    return Consumer<CharDetailViewModel>(
+      builder: (_, viewModel, child) {
+        return Card(
+          elevation: 2.0,
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: _StatusCardContent(statusName, currentStatus, viewModel.getLimitStatus(statusName)),
+            ),
+            onTap: () {
+              // TODO ここでステータス更新したい
+            },
+          ),
+        );
+      },
     );
   }
 }
 
-class StatusCardContent extends StatelessWidget {
+class _StatusCardContent extends StatelessWidget {
   final String _statusName;
   final int _currentStatus;
   final int _baseStatus;
 
-  StatusCardContent(this._statusName, this._currentStatus, this._baseStatus);
+  _StatusCardContent(this._statusName, this._currentStatus, this._baseStatus);
 
   @override
   Widget build(BuildContext context) {
