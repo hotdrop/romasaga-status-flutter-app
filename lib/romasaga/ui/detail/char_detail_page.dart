@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../model/character.dart';
 
@@ -24,7 +25,7 @@ class CharDetailPage extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Column(
+          child: ListView(
             children: contentLayout(context),
           ),
         ),
@@ -38,9 +39,9 @@ class CharDetailPage extends StatelessWidget {
   List<Widget> contentLayout(BuildContext context) {
     List<Widget> layouts = [];
     layouts.add(_widgetOverview(context));
-    layouts.add(_widgetCompareStyle());
-    layouts.add(_widgetBaseLine());
-    layouts.addAll(_widgetStatusCards());
+    layouts.add(_widgetStyles());
+    layouts.add(_widgetStages());
+    layouts.addAll(_widgetStatusCircles());
     return layouts;
   }
 
@@ -78,6 +79,9 @@ class CharDetailPage extends StatelessWidget {
                 )
               ],
             ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 16.0),
+            ),
           ],
         )
       ],
@@ -87,17 +91,19 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// スタイル比較のレイアウトを作成
   ///
-  Widget _widgetCompareStyle() {
+  Widget _widgetStyles() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "比較スタイル",
+              "基準スタイル",
               style: TextStyle(color: Colors.grey, fontSize: 16.0),
             ),
-            Padding(padding: EdgeInsets.only(right: 16.0)),
+            Padding(
+              padding: EdgeInsets.only(right: 16.0),
+            ),
             RankChoiceChip(
                 ranks: character.getStyleRanks(),
                 onSelectedListener: (String rank) {
@@ -112,7 +118,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステージリストのレイアウトを作成
   ///
-  Widget _widgetBaseLine() {
+  Widget _widgetStages() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final baseStatusList = viewModel.findStages();
@@ -143,104 +149,141 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// ステータスカード群のレイアウトを作成
-  /// TODO これやめる
+  /// ステータス群のレイアウトを作成
   ///
-  List<Widget> _widgetStatusCards() {
+  List<Widget> _widgetStatusCircles() {
     return [
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _widgetStatusCard(CharDetailViewModel.hpName, character.nowHP),
-          _widgetStatusCard(CharDetailViewModel.strName, character.nowStr),
-          _widgetStatusCard(CharDetailViewModel.vitName, character.nowVit),
+          _widgetStatusCircleForHp(),
         ],
       ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          _widgetStatusCard(CharDetailViewModel.dexName, character.nowDex),
-          _widgetStatusCard(CharDetailViewModel.agiName, character.nowAgi),
-          _widgetStatusCard(CharDetailViewModel.intName, character.nowInt),
+          _widgetStatusCircle(CharDetailViewModel.strName, character.nowStr),
+          _widgetStatusCircle(CharDetailViewModel.vitName, character.nowVit),
+          _widgetStatusCircle(CharDetailViewModel.dexName, character.nowDex),
         ],
       ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          _widgetStatusCard(CharDetailViewModel.spiName, character.nowSpi),
-          _widgetStatusCard(CharDetailViewModel.loveName, character.nowLove),
-          _widgetStatusCard(CharDetailViewModel.attrName, character.nowAttr),
+          _widgetStatusCircle(CharDetailViewModel.agiName, character.nowAgi),
+          _widgetStatusCircle(CharDetailViewModel.intName, character.nowInt),
+          _widgetStatusCircle(CharDetailViewModel.spiName, character.nowSpi),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          _widgetStatusCircle(CharDetailViewModel.loveName, character.nowLove),
+          _widgetStatusCircle(CharDetailViewModel.attrName, character.nowAttr),
         ],
       ),
     ];
   }
 
-  ///
-  /// ステータスカード自体のレイアウトを作成
-  ///
-  Widget _widgetStatusCard(String statusName, int currentStatus) {
+  Widget _widgetStatusCircleForHp() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        return Card(
-          elevation: 2.0,
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: _StatusCardContent(statusName, currentStatus, viewModel.getStatusUpperLimit(statusName)),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 16.0),
             ),
-            onTap: () {
-              // TODO ここでステータス更新したい
-            },
-          ),
+            CircularPercentIndicator(
+              radius: 100.0,
+              animation: true,
+              animationDuration: 500,
+              lineWidth: 5.0,
+              percent: 1.0,
+              circularStrokeCap: CircularStrokeCap.round,
+              center: _textCenterInCircle(CharDetailViewModel.hpName, character.nowHP.toString()),
+              progressColor: Colors.lightBlueAccent,
+            ),
+          ],
         );
       },
     );
   }
-}
 
-class _StatusCardContent extends StatelessWidget {
-  final String _statusName;
-  final int _currentStatus;
-  final int _baseStatus;
+  Widget _widgetStatusCircle(String statusName, int currentStatus) {
+    return Consumer<CharDetailViewModel>(
+      builder: (_, viewModel, child) {
+        final statusUpperLimit = viewModel.getStatusUpperLimit(statusName);
+        double percent;
+        if (currentStatus > statusUpperLimit) {
+          percent = 1.0;
+        } else {
+          percent = (currentStatus / statusUpperLimit);
+        }
 
-  _StatusCardContent(this._statusName, this._currentStatus, this._baseStatus);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Row(
+        return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              _statusName,
-              style: Theme.of(context).textTheme.title,
+            Padding(
+              padding: EdgeInsets.only(top: 16.0),
             ),
-            Padding(padding: EdgeInsets.only(right: 8.0)),
-            Text(
-              _currentStatus.toString(),
-              style: Theme.of(context).textTheme.title,
+            CircularPercentIndicator(
+              radius: 80.0,
+              animation: true,
+              animationDuration: 500,
+              lineWidth: 5.0,
+              percent: percent,
+              circularStrokeCap: CircularStrokeCap.round,
+              center: _textCenterInCircle(statusName, currentStatus.toString()),
+              progressColor: _circleStatusColor(statusUpperLimit, currentStatus),
             ),
+            _textGrowthParam(statusUpperLimit, currentStatus),
           ],
+        );
+      },
+    );
+  }
+
+  Widget _textCenterInCircle(String statusName, String status) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          statusName,
+          style: TextStyle(fontSize: 14.0),
         ),
-        _textGrowthParam()
+        Text(
+          status,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+        )
       ],
     );
   }
 
-  Widget _textGrowthParam() {
+  Color _circleStatusColor(int statusUpperLimit, int currentStatus) {
+    int diffWithLimit = currentStatus - statusUpperLimit;
+    if (diffWithLimit <= -10) {
+      return Colors.redAccent;
+    } else if (diffWithLimit > -10 && diffWithLimit < -6) {
+      return Colors.amber;
+    } else if (diffWithLimit >= -6 && diffWithLimit < -3) {
+      return Colors.greenAccent;
+    } else {
+      return Colors.lightBlueAccent;
+    }
+  }
+
+  Widget _textGrowthParam(int statusUpperLimit, int currentStatus) {
     final double fontSize = 18.0;
 
-    if (_baseStatus == 0) {
+    if (statusUpperLimit == 0) {
       return Text(
         "ー",
         style: TextStyle(color: Colors.black, fontSize: fontSize),
       );
     }
 
-    final int growth = _currentStatus - _baseStatus;
+    final int growth = currentStatus - statusUpperLimit;
     final String growthStr = growth.toString();
 
     TextStyle growthStyle;

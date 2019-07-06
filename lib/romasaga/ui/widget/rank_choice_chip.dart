@@ -21,13 +21,13 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   String _selectedRankChipName;
 
   _RankChoiceChipState(this._ranks, this._listener) {
-    _selectedRankChipName = '';
+    _selectedRankChipName = _ranks.first;
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: _rankChips(),
     );
   }

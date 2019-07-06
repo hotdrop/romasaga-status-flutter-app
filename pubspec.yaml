@@ -16,6 +16,7 @@ dependencies:
   provider: ^2.0.0+1
   sqflite: ^1.1.0
   path_provider: ^1.1.0
+  percent_indicator: ^2.1.1
 
 dev_dependencies:
   flutter_test:

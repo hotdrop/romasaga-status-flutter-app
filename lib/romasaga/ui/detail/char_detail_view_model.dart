@@ -14,7 +14,9 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   String _selectedRank;
   Stage _selectedStage;
 
-  CharDetailViewModel(this._character, {BaseStatusRepository repo}) : _repository = (repo == null) ? BaseStatusRepository() : repo;
+  CharDetailViewModel(this._character, {BaseStatusRepository repo})
+      : _repository = (repo == null) ? BaseStatusRepository() : repo,
+        _selectedRank = _character.getStyleRanks().first;
 
   List<Stage> findStages() {
     if (_stages == null) {
@@ -27,7 +29,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   void load() async {
     _stages = await _repository.findAll();
     _selectedStage = _stages.first;
-    notifyListeners();
+    _calcStatusUpperLimits();
   }
 
   Stage getSelectedBaseStatus() {
@@ -54,14 +56,14 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
   // これstreamにしてsinkとstreamで流したほうがいいか・・？
   Style _statusUpperLimit;
-  static const String hpName = "ＨＰ";
+  static const String hpName = "HP";
   static const String strName = "腕力";
   static const String vitName = "体力";
   static const String dexName = "器用";
   static const String agiName = "素早";
   static const String intName = "知能";
   static const String spiName = "精神";
-  static const String loveName = "愛";
+  static const String loveName = " 愛 ";
   static const String attrName = "魅力";
 
   void _calcStatusUpperLimits() {
