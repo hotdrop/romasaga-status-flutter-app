@@ -4,12 +4,11 @@ import '../data/romasaga_repository.dart';
 import '../model/character.dart';
 
 class CharListViewModel extends foundation.ChangeNotifier {
-  List<Character> _characters;
-  RomasagaRepository _repository;
+  final RomasagaRepository _repository;
 
-  CharListViewModel({RomasagaRepository repo}) {
-    _repository = (repo == null) ? RomasagaRepository() : repo;
-  }
+  List<Character> _characters;
+
+  CharListViewModel({RomasagaRepository repo}) : _repository = (repo == null) ? RomasagaRepository() : repo;
 
   List<Character> findAll() {
     if (_characters == null) {

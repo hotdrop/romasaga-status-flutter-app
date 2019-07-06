@@ -5,12 +5,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 import 'entity/character_entity.dart';
-import 'entity/base_status_entity.dart';
+import 'entity/stage_entity.dart';
 
 class DBProvider {
-  DBProvider._();
   static final DBProvider instance = DBProvider._();
 
+  const DBProvider._();
   static Database _database;
 
   Future<Database> get database async {
@@ -29,7 +29,7 @@ class DBProvider {
 
     return await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
       db.execute(CharacterEntity.createTableSql);
-      db.execute(BaseStatusEntity.createTableSql);
+      db.execute(StageEntity.createTableSql);
     });
   }
 }

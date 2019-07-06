@@ -5,9 +5,9 @@ import '../../model/character.dart';
 import 'entity/character_entity.dart';
 
 class CharacterSource {
-  CharacterSource._();
   static final CharacterSource _instance = CharacterSource._();
 
+  const CharacterSource._();
   factory CharacterSource() {
     return _instance;
   }
@@ -27,7 +27,6 @@ class CharacterSource {
     final results = await db.query(CharacterEntity.tableName);
 
     List<CharacterEntity> entities = results.isNotEmpty ? results.map((it) => Mapper.mapToCharacterEntity(it)).toList() : [];
-    print("LocalDB 取得したキャラクターデータ数=${entities.length}");
 
     return Mapper.toCharacters(entities);
   }

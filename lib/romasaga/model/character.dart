@@ -1,30 +1,28 @@
+import 'my_status.dart';
+
 class Character {
   final String name;
   final String title;
+  final String production; // 登場作品
+  final WeaponType weaponType;
+  final List<Style> styles;
 
-  final String production;
-  WeaponType weaponType;
+  MyStatus _myStatus;
 
-  final styles = List<Style>();
-
-  MyStatus _currentStatus;
-
-  Character(this.name, this.title, this.production, argWeaponType) {
-    weaponType = WeaponType(argWeaponType);
-    // TODO これテスト
-    _currentStatus = MyStatus(720, 45, 47, 56, 55, 57, 45, 51, 45);
-  }
+  Character(this.name, this.title, this.production, String weaponType, this._myStatus)
+      : this.weaponType = WeaponType(weaponType),
+        this.styles = [];
 
   String get weaponCategory => weaponType.category;
-  int get nowHP => (_currentStatus != null) ? _currentStatus.hp : 0;
-  int get nowStr => (_currentStatus != null) ? _currentStatus.str : 0;
-  int get nowVit => (_currentStatus != null) ? _currentStatus.vit : 0;
-  int get nowDex => (_currentStatus != null) ? _currentStatus.dex : 0;
-  int get nowAgi => (_currentStatus != null) ? _currentStatus.agi : 0;
-  int get nowInt => (_currentStatus != null) ? _currentStatus.intelligence : 0;
-  int get nowSpi => (_currentStatus != null) ? _currentStatus.spirit : 0;
-  int get nowLove => (_currentStatus != null) ? _currentStatus.love : 0;
-  int get nowAttr => (_currentStatus != null) ? _currentStatus.attr : 0;
+  int get nowHP => _myStatus.hp;
+  int get nowStr => _myStatus.str;
+  int get nowVit => _myStatus.vit;
+  int get nowDex => _myStatus.dex;
+  int get nowAgi => _myStatus.agi;
+  int get nowInt => _myStatus.intelligence;
+  int get nowSpi => _myStatus.spirit;
+  int get nowLove => _myStatus.love;
+  int get nowAttr => _myStatus.attr;
 
   List<String> getStyleRanks({bool distinct = false}) {
     if (distinct) {
@@ -41,7 +39,8 @@ class Character {
   }
 
   void saveMyStatus(MyStatus status) {
-    _currentStatus = status;
+    _myStatus = status;
+    // TODO DBに保存しに行く
   }
 
   Style getStyle(String rank) {
@@ -100,6 +99,7 @@ class Style {
 
 class WeaponType {
   final String name;
+
   String get category {
     switch (name) {
       case sword:
@@ -136,18 +136,4 @@ class WeaponType {
   static const String rod = "杖";
 
   WeaponType(this.name);
-}
-
-class MyStatus {
-  final int hp;
-  final int str;
-  final int vit;
-  final int dex;
-  final int agi;
-  final int intelligence;
-  final int spirit;
-  final int love;
-  final int attr;
-
-  const MyStatus(this.hp, this.str, this.vit, this.dex, this.agi, this.intelligence, this.spirit, this.love, this.attr);
 }

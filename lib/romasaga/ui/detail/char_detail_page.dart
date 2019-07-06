@@ -45,8 +45,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// キャラクターの名前や肩書き、武器種別などのレイアウト領域を担当
-  /// 上の方にいるやつ
+  /// キャラクターの名前や肩書き、武器種別などのレイアウトを作成
   ///
   Widget _widgetOverview(BuildContext context) {
     return Row(
@@ -86,7 +85,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// スタイル比較のレイアウトを担当
+  /// スタイル比較のレイアウトを作成
   ///
   Widget _widgetCompareStyle() {
     return Consumer<CharDetailViewModel>(
@@ -111,12 +110,12 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// 基準のレイアウトを担当
+  /// ステージリストのレイアウトを作成
   ///
   Widget _widgetBaseLine() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        final baseStatusList = viewModel.findBaseStatus();
+        final baseStatusList = viewModel.findStages();
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -128,12 +127,12 @@ class CharDetailPage extends StatelessWidget {
             DropdownButton<String>(
               items: baseStatusList.map((baseStatus) {
                 return DropdownMenuItem<String>(
-                  value: baseStatus.stageName,
-                  child: Text("${baseStatus.stageName} (${baseStatus.addLimit})"),
+                  value: baseStatus.name,
+                  child: Text("${baseStatus.name} (${baseStatus.statusUpperLimit})"),
                 );
               }).toList(),
               onChanged: (value) {
-                viewModel.saveSelectedBaseStatus(value);
+                viewModel.saveSelectedStage(value);
               },
               value: viewModel.getSelectedBaseStatusName(),
             ),
@@ -144,7 +143,8 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// ステータスカード群のレイアウトを担当
+  /// ステータスカード群のレイアウトを作成
+  /// TODO これやめる
   ///
   List<Widget> _widgetStatusCards() {
     return [
@@ -176,7 +176,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// ステータスカード自体のレイアウトを担当
+  /// ステータスカード自体のレイアウトを作成
   ///
   Widget _widgetStatusCard(String statusName, int currentStatus) {
     return Consumer<CharDetailViewModel>(
@@ -187,7 +187,7 @@ class CharDetailPage extends StatelessWidget {
           child: InkWell(
             child: Padding(
               padding: EdgeInsets.all(16.0),
-              child: _StatusCardContent(statusName, currentStatus, viewModel.getLimitStatus(statusName)),
+              child: _StatusCardContent(statusName, currentStatus, viewModel.getStatusUpperLimit(statusName)),
             ),
             onTap: () {
               // TODO ここでステータス更新したい

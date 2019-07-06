@@ -1,61 +1,59 @@
 import 'package:flutter/foundation.dart' as foundation;
 
 import '../../model/character.dart';
-import '../../model/base_status.dart';
+import '../../model/stage.dart';
 
-import '../../data/base_status_repository.dart';
+import '../../data/stage_repository.dart';
 
 class CharDetailViewModel extends foundation.ChangeNotifier {
-  List<BaseStatus> _baseStatusList;
-  BaseStatusRepository _repository;
-
+  final BaseStatusRepository _repository;
   final Character _character;
 
+  List<Stage> _stages;
+
   String _selectedRank;
-  BaseStatus _selectedBaseStatus;
+  Stage _selectedStage;
 
-  CharDetailViewModel(this._character, {BaseStatusRepository repo}) {
-    _repository = (repo == null) ? BaseStatusRepository() : repo;
-  }
+  CharDetailViewModel(this._character, {BaseStatusRepository repo}) : _repository = (repo == null) ? BaseStatusRepository() : repo;
 
-  List<BaseStatus> findBaseStatus() {
-    if (_baseStatusList == null) {
+  List<Stage> findStages() {
+    if (_stages == null) {
       return [];
     }
 
-    return _baseStatusList;
+    return _stages;
   }
 
   void load() async {
-    _baseStatusList = await _repository.findAll();
-    _selectedBaseStatus = _baseStatusList.first;
+    _stages = await _repository.findAll();
+    _selectedStage = _stages.first;
     notifyListeners();
   }
 
-  BaseStatus getSelectedBaseStatus() {
-    return _selectedBaseStatus;
+  Stage getSelectedBaseStatus() {
+    return _selectedStage;
   }
 
   String getSelectedBaseStatusName() {
-    return _selectedBaseStatus.stageName;
+    return _selectedStage?.name ?? null;
   }
 
   void saveSelectedRank(String rank) {
     _selectedRank = rank;
-    _calcStyleStatus();
+    _calcStatusUpperLimits();
   }
 
   String getSelectedRank() {
     return _selectedRank;
   }
 
-  void saveSelectedBaseStatus(String stageName) {
-    _selectedBaseStatus = _baseStatusList.firstWhere((s) => s.stageName == stageName);
-    _calcStyleStatus();
+  void saveSelectedStage(String stageName) {
+    _selectedStage = _stages.firstWhere((s) => s.name == stageName);
+    _calcStatusUpperLimits();
   }
 
   // これstreamにしてsinkとstreamで流したほうがいいか・・？
-  Style _currentStyleStatusLimit;
+  Style _statusUpperLimit;
   static const String hpName = "ＨＰ";
   static const String strName = "腕力";
   static const String vitName = "体力";
@@ -66,42 +64,41 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   static const String loveName = "愛";
   static const String attrName = "魅力";
 
-  void _calcStyleStatus() {
+  void _calcStatusUpperLimits() {
     final style = _character.getStyle(_selectedRank);
-    final addBaseStatus = _selectedBaseStatus.addLimit;
 
-    _currentStyleStatusLimit = Style(
+    _statusUpperLimit = Style(
       _selectedRank,
-      style.str + addBaseStatus,
-      style.vit + addBaseStatus,
-      style.dex + addBaseStatus,
-      style.agi + addBaseStatus,
-      style.intelligence + addBaseStatus,
-      style.spirit + addBaseStatus,
-      style.love + addBaseStatus,
-      style.attr + addBaseStatus,
+      style.str + _selectedStage.statusUpperLimit,
+      style.vit + _selectedStage.statusUpperLimit,
+      style.dex + _selectedStage.statusUpperLimit,
+      style.agi + _selectedStage.statusUpperLimit,
+      style.intelligence + _selectedStage.statusUpperLimit,
+      style.spirit + _selectedStage.statusUpperLimit,
+      style.love + _selectedStage.statusUpperLimit,
+      style.attr + _selectedStage.statusUpperLimit,
     );
     notifyListeners();
   }
 
-  int getLimitStatus(String statusName) {
+  int getStatusUpperLimit(String statusName) {
     switch (statusName) {
       case strName:
-        return _currentStyleStatusLimit?.str ?? 0;
+        return _statusUpperLimit?.str ?? 0;
       case vitName:
-        return _currentStyleStatusLimit?.vit ?? 0;
+        return _statusUpperLimit?.vit ?? 0;
       case dexName:
-        return _currentStyleStatusLimit?.dex ?? 0;
+        return _statusUpperLimit?.dex ?? 0;
       case agiName:
-        return _currentStyleStatusLimit?.agi ?? 0;
+        return _statusUpperLimit?.agi ?? 0;
       case intName:
-        return _currentStyleStatusLimit?.intelligence ?? 0;
+        return _statusUpperLimit?.intelligence ?? 0;
       case spiName:
-        return _currentStyleStatusLimit?.spirit ?? 0;
+        return _statusUpperLimit?.spirit ?? 0;
       case loveName:
-        return _currentStyleStatusLimit?.love ?? 0;
+        return _statusUpperLimit?.love ?? 0;
       case attrName:
-        return _currentStyleStatusLimit?.attr ?? 0;
+        return _statusUpperLimit?.attr ?? 0;
       default:
         return 0;
     }

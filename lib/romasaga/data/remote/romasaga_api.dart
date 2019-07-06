@@ -2,18 +2,19 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 
 import '../../model/character.dart';
+import '../../model/my_status.dart';
 
-class StyleApi {
-  StyleApi._();
-  static final StyleApi _instance = StyleApi._();
+class RomasagaApi {
+  static final RomasagaApi _instance = RomasagaApi._();
 
-  factory StyleApi() {
+  const RomasagaApi._();
+  factory RomasagaApi() {
     return _instance;
   }
 
   Future<List<Character>> findAll() async {
     try {
-      // TODO ここ本当はAPIでデータ取得する
+      // TODO ここ本当はAPIとかFirestoreからデータ取得したい
       return await rootBundle.loadStructuredData('res/romasaga.txt', (String allLine) async {
         return _convert(allLine);
       });
@@ -31,6 +32,7 @@ class StyleApi {
       final items = line.split(',');
 
       if (items.length < 12) {
+        // TODO ロガーライブラリ使うべき。Timberみたいなのが欲しい
         print('[debug] error not split size less than 12. items size = ${items.length} line = $line');
         continue;
       }
@@ -56,7 +58,9 @@ class StyleApi {
         c.addStyle(rank, str, vit, dex, agi, intelligence, spi, love, attr);
         styleMap.update(name, (dynamic val) => c);
       } else {
-        var c = Character(name, title, production, weaponType);
+        // TODO これダミー
+        final status = MyStatus.empty();
+        var c = Character(name, title, production, weaponType, status);
         c.addStyle(rank, str, vit, dex, agi, intelligence, spi, love, attr);
         styleMap[name] = c;
       }
@@ -66,12 +70,12 @@ class StyleApi {
   }
 
   String _takeRank(String nameWithRank) {
-    final secondKakko = nameWithRank.indexOf(')');
-    return nameWithRank.substring(1, secondKakko);
+    final secondBrackets = nameWithRank.indexOf(')');
+    return nameWithRank.substring(1, secondBrackets);
   }
 
   String _takeName(String nameWithRank) {
-    final secondKakko = nameWithRank.indexOf(')');
-    return nameWithRank.substring(secondKakko + 1, nameWithRank.length);
+    final secondBrackets = nameWithRank.indexOf(')');
+    return nameWithRank.substring(secondBrackets + 1, nameWithRank.length);
   }
 }

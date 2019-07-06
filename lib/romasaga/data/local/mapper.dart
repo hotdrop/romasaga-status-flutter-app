@@ -1,20 +1,21 @@
 import '../../model/character.dart';
-import '../../model/base_status.dart';
+import '../../model/my_status.dart';
+import '../../model/stage.dart';
 
 import 'entity/character_entity.dart';
-import 'entity/base_status_entity.dart';
+import 'entity/stage_entity.dart';
 
 class Mapper {
-  static BaseStatusEntity toBaseStatusEntity(BaseStatus model) {
-    return BaseStatusEntity(model.stageName, model.addLimit, model.order);
+  static StageEntity toStageEntity(Stage model) {
+    return StageEntity(model.name, model.statusUpperLimit, model.itemOrder);
   }
 
-  static BaseStatusEntity mapToBaseStatusEntity(Map<String, dynamic> map) {
-    return BaseStatusEntity.fromMap(map);
+  static StageEntity mapToStageEntity(Map<String, dynamic> map) {
+    return StageEntity.fromMap(map);
   }
 
-  static BaseStatus toBaseStatus(BaseStatusEntity entity) {
-    return BaseStatus(entity.stageName, entity.addLimit, entity.itemOrder);
+  static Stage toStage(StageEntity entity) {
+    return Stage(entity.name, entity.statusUpperLimit, entity.itemOrder);
   }
 
   static List<CharacterEntity> toCharacterEntities(Character c) {
@@ -43,7 +44,9 @@ class Mapper {
         c.addStyle(entity.rank, entity.str, entity.vit, entity.dex, entity.agi, entity.intelligence, entity.spirit, entity.love, entity.attr);
         characterMap.update(entity.name, (dynamic val) => c);
       } else {
-        final c = Character(entity.name, entity.title, entity.production, entity.weaponType);
+        // TODO これも今はダミー
+        final status = MyStatus(720, 45, 47, 56, 55, 57, 45, 51, 45);
+        final c = Character(entity.name, entity.title, entity.production, entity.weaponType, status);
         c.addStyle(entity.rank, entity.str, entity.vit, entity.dex, entity.agi, entity.intelligence, entity.spirit, entity.love, entity.attr);
         characterMap[entity.name] = c;
       }
