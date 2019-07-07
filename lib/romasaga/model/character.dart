@@ -5,11 +5,12 @@ class Character {
   final String title;
   final String production; // 登場作品
   final WeaponType weaponType;
+  final String iconFileName;
   final List<Style> styles;
 
   MyStatus _myStatus;
 
-  Character(this.name, this.title, this.production, String weaponType, this._myStatus)
+  Character(this.name, this.title, this.production, String weaponType, this._myStatus, this.iconFileName)
       : this.weaponType = WeaponType(weaponType),
         this.styles = [];
 

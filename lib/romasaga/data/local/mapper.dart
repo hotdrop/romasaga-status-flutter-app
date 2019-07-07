@@ -22,7 +22,7 @@ class Mapper {
     final entities = <CharacterEntity>[];
     c.styles.forEach((style) {
       final entity = CharacterEntity(c.name, c.title, c.production, c.weaponType.name, style.rank, style.str, style.vit, style.dex, style.agi,
-          style.intelligence, style.spirit, style.love, style.attr);
+          style.intelligence, style.spirit, style.love, style.attr, c.iconFileName);
       entities.add(entity);
     });
     return entities;
@@ -46,7 +46,7 @@ class Mapper {
       } else {
         // TODO これも今はダミー
         final status = MyStatus(720, 45, 47, 56, 55, 57, 45, 51, 45);
-        final c = Character(entity.name, entity.title, entity.production, entity.weaponType, status);
+        final c = Character(entity.name, entity.title, entity.production, entity.weaponType, status, entity.iconFileName);
         c.addStyle(entity.rank, entity.str, entity.vit, entity.dex, entity.agi, entity.intelligence, entity.spirit, entity.love, entity.attr);
         characterMap[entity.name] = c;
       }

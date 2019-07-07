@@ -31,9 +31,9 @@ class RomasagaApi {
     for (var line in lines) {
       final items = line.split(',');
 
-      if (items.length < 12) {
+      if (items.length < 13) {
         // TODO ロガーライブラリ使うべき。Timberみたいなのが欲しい
-        print('[debug] error not split size less than 12. items size = ${items.length} line = $line');
+        print('[debug] error not split size less than 13. items size = ${items.length} line = $line');
         continue;
       }
 
@@ -52,6 +52,7 @@ class RomasagaApi {
       final weaponType = items[9];
       final title = items[10];
       final production = items[11];
+      final iconFileName = items[12];
 
       if (styleMap.containsKey(name)) {
         var c = styleMap[name];
@@ -60,7 +61,7 @@ class RomasagaApi {
       } else {
         // TODO これダミー
         final status = MyStatus.empty();
-        var c = Character(name, title, production, weaponType, status);
+        var c = Character(name, title, production, weaponType, status, iconFileName);
         c.addStyle(rank, str, vit, dex, agi, intelligence, spi, love, attr);
         styleMap[name] = c;
       }

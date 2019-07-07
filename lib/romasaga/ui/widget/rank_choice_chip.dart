@@ -67,7 +67,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   CircleAvatar _rankToAvatar(String rank) {
     return CircleAvatar(
       backgroundColor: Colors.grey.shade300,
-      child: RomasagaIcon.convertRankIconWithSmallSize(rank),
+      child: RomasagaIcon.rankSmallSize(rank),
     );
   }
 }

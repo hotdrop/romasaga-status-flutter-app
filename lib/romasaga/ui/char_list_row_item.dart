@@ -57,10 +57,7 @@ class CharListRowItem extends StatelessWidget {
   Container _widgetThumbnail(Character character) {
     return Container(
       margin: const EdgeInsets.only(right: 16.0),
-      child: CircleAvatar(
-        // TODO 画像どうやって持ってくるか・・
-        child: Text(character.name[0]),
-      ),
+      child: RomasagaIcon.character(character.iconFileName),
     );
   }
 
@@ -94,7 +91,7 @@ class CharListRowItem extends StatelessWidget {
   }
 
   Widget _convertWeaponIcon(WeaponType type) {
-    return RomasagaIcon.convertWeaponIcon(type);
+    return RomasagaIcon.weapon(type);
   }
 
   Column _widgetStyles(Character character, BuildContext context) {
@@ -110,7 +107,7 @@ class CharListRowItem extends StatelessWidget {
 
   List<Widget> _widgetStyleIcons(Character character) {
     final ranks = character.getStyleRanks(distinct: true);
-    return ranks.map((rank) => RomasagaIcon.convertRankIcon(rank)).toList();
+    return ranks.map((rank) => RomasagaIcon.rank(rank)).toList();
   }
 
   Column _widgetFavoriteIcon(Character character) {

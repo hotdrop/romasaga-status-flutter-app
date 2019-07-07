@@ -4,13 +4,23 @@ import '../../model/character.dart';
 
 class RomasagaIcon {
   ///
-  /// スタイルのランクアイコン
+  /// キャラクターアイコン
   ///
-  static Widget convertRankIcon(String rank) {
+  static Widget character(String fileName) {
+    final String path = 'res/charIcons/$fileName';
+    return Image.asset(
+      path,
+    );
+  }
+
+  ///
+  /// スタイルランクアイコン
+  ///
+  static Widget rank(String rank) {
     return _convertRankIcon(styleRank: rank, iconSize: IconSize.normal);
   }
 
-  static Widget convertRankIconWithSmallSize(String rank) {
+  static Widget rankSmallSize(String rank) {
     return _convertRankIcon(styleRank: rank, iconSize: IconSize.small);
   }
 
@@ -27,11 +37,11 @@ class RomasagaIcon {
   ///
   /// 武器アイコン
   ///
-  static Widget convertWeaponIcon(WeaponType type) {
+  static Widget weapon(WeaponType type) {
     return _convertWeaponIcon(weaponType: type, iconSize: IconSize.normal);
   }
 
-  static Widget convertWeaponIconWithLargeSize(WeaponType type) {
+  static Widget weaponLargeSize(WeaponType type) {
     return _convertWeaponIcon(weaponType: type, iconSize: IconSize.large);
   }
 
@@ -73,7 +83,7 @@ class RomasagaIcon {
   ///
   /// 属性アイコン
   ///
-  static Widget convertWeaponCategoryIcon({@required WeaponCategory category}) {
+  static Widget weaponCategory({@required WeaponCategory category}) {
     switch (category) {
       case WeaponCategory.slash:
         return _imageIcon(res: 'res/icons/icon_type_slash.png');

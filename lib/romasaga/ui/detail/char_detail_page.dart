@@ -54,7 +54,7 @@ class CharDetailPage extends StatelessWidget {
       children: <Widget>[
         Image.asset(
           // TODO gifはromasaga.txtから取得する
-          'res/chars/aisha.gif',
+          'res/charGifs/aisha.gif',
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -72,11 +72,11 @@ class CharDetailPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RomasagaIcon.convertWeaponIcon(character.weaponType),
+            RomasagaIcon.weapon(character.weaponType),
             Padding(
               padding: EdgeInsets.only(right: 8.0),
             ),
-            RomasagaIcon.convertWeaponCategoryIcon(category: character.weaponCategory),
+            RomasagaIcon.weaponCategory(category: character.weaponCategory),
           ],
         ),
         Padding(

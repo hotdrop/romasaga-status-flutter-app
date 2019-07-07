@@ -15,7 +15,8 @@ class CharacterEntity {
         $columnInt INTEGER,
         $columnSpirit INTEGER,
         $columnLove INTEGER,
-        $columnAttr INTEGER
+        $columnAttr INTEGER,
+        $columnIconFileName TEXT
       )
       """;
 
@@ -61,8 +62,11 @@ class CharacterEntity {
   static const String columnAttr = "attr";
   final int attr;
 
+  static const String columnIconFileName = "file_name";
+  final String iconFileName;
+
   CharacterEntity(this.name, this.title, this.production, this.weaponType, this.rank, this.str, this.vit, this.dex, this.agi, this.intelligence,
-      this.spirit, this.love, this.attr);
+      this.spirit, this.love, this.attr, this.iconFileName);
 
   Map<String, dynamic> toMap() {
     var map;
@@ -103,5 +107,6 @@ class CharacterEntity {
         map[columnSpirit],
         map[columnLove],
         map[columnAttr],
+        map[columnIconFileName],
       )..id = map[columnId];
 }
