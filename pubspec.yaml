@@ -29,4 +29,6 @@ flutter:
     - res/romasaga.txt
     - res/status_upper_limit.txt
     - res/icons/
+    - res/chars/
+    - res/logos/
 

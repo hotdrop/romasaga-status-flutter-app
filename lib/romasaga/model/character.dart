@@ -13,7 +13,7 @@ class Character {
       : this.weaponType = WeaponType(weaponType),
         this.styles = [];
 
-  String get weaponCategory => weaponType.category;
+  WeaponCategory get weaponCategory => weaponType.category;
   int get nowHP => _myStatus.hp;
   int get nowStr => _myStatus.str;
   int get nowVit => _myStatus.vit;
@@ -98,29 +98,40 @@ class Style {
 }
 
 class WeaponType {
+  WeaponType(this.name);
+
   final String name;
 
-  String get category {
+  WeaponCategory get category {
     switch (name) {
       case sword:
       case largeSword:
       case axe:
-        return "斬";
+        return WeaponCategory.slash;
       case hummer:
       case knuckle:
       case gun:
-        return "打";
+        return WeaponCategory.strike;
       case rapier:
       case spear:
       case bow:
-        return "突";
-      case rod:
-        return "術";
+        return WeaponCategory.poke;
+      case magicFire:
+        return WeaponCategory.heat;
+      case magicWater:
+        return WeaponCategory.cold;
+      case magicWind:
+        return WeaponCategory.thunder;
+      case magicYin:
+        return WeaponCategory.dark;
+      case magicShine:
+        return WeaponCategory.dark;
       default:
-        return "不明";
+        return null;
     }
   }
 
+  // type detail
   static const String sword = "剣";
   static const String largeSword = "大剣";
   static const String axe = "斧";
@@ -133,7 +144,20 @@ class WeaponType {
   static const String spear = "槍";
   static const String bow = "弓";
 
-  static const String rod = "杖";
+  static const String magicFire = "火術";
+  static const String magicWater = "水術";
+  static const String magicWind = "風術";
+  static const String magicYin = "陰術";
+  static const String magicShine = "光術";
+}
 
-  WeaponType(this.name);
+enum WeaponCategory {
+  slash, // 斬
+  strike, // 打
+  poke, // 突
+  heat, // 熱
+  cold, // 冷
+  thunder, // 雷
+  dark, // 陰
+  light, // 陽
 }

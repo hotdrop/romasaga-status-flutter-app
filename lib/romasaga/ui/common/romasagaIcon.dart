@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../model/character.dart' show Style, WeaponType;
+import '../../model/character.dart';
 
 class RomasagaIcon {
+  ///
+  /// スタイルのランクアイコン
+  ///
   static Widget convertRankIcon(String rank) {
     return _convertRankIcon(styleRank: rank, iconSize: IconSize.normal);
   }
@@ -21,6 +24,9 @@ class RomasagaIcon {
     }
   }
 
+  ///
+  /// 武器アイコン
+  ///
   static Widget convertWeaponIcon(WeaponType type) {
     return _convertWeaponIcon(weaponType: type, iconSize: IconSize.normal);
   }
@@ -49,7 +55,11 @@ class RomasagaIcon {
         return _imageIcon(res: 'res/icons/icon_weap_bow.png', iconSize: iconSize);
       case WeaponType.spear:
         return _imageIcon(res: 'res/icons/icon_weap_spear.png', iconSize: iconSize);
-      case WeaponType.rod:
+      case WeaponType.magicFire:
+      case WeaponType.magicWater:
+      case WeaponType.magicWind:
+      case WeaponType.magicYin:
+      case WeaponType.magicShine:
         return _imageIcon(res: 'res/icons/icon_weap_rod.png', iconSize: iconSize);
       default:
         // 本当はここにきたらエラーにすべきだが・・
@@ -57,6 +67,32 @@ class RomasagaIcon {
           child: Text("？"),
           backgroundColor: Colors.white,
         );
+    }
+  }
+
+  ///
+  /// 属性アイコン
+  ///
+  static Widget convertWeaponCategoryIcon({@required WeaponCategory category}) {
+    switch (category) {
+      case WeaponCategory.slash:
+        return _imageIcon(res: 'res/icons/icon_type_slash.png');
+      case WeaponCategory.strike:
+        return _imageIcon(res: 'res/icons/icon_type_strike.png');
+      case WeaponCategory.poke:
+        return _imageIcon(res: 'res/icons/icon_type_poke.png');
+      case WeaponCategory.heat:
+        return _imageIcon(res: 'res/icons/icon_type_heat.png');
+      case WeaponCategory.cold:
+        return _imageIcon(res: 'res/icons/icon_type_cold.png');
+      case WeaponCategory.thunder:
+        return _imageIcon(res: 'res/icons/icon_type_thunder.png');
+      case WeaponCategory.dark:
+        return _imageIcon(res: 'res/icons/icon_type_dark.png');
+      case WeaponCategory.light:
+        return _imageIcon(res: 'res/icons/icon_type_light.png');
+      default:
+        return Text("");
     }
   }
 

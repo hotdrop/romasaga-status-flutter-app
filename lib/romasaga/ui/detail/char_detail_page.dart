@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../model/character.dart';
 
@@ -9,6 +8,7 @@ import 'char_detail_view_model.dart';
 
 import '../common/romasagaIcon.dart';
 import '../widget/rank_choice_chip.dart';
+import '../widget/status_circle_indicator.dart';
 
 class CharDetailPage extends StatelessWidget {
   final Character character;
@@ -49,41 +49,39 @@ class CharDetailPage extends StatelessWidget {
   /// キャラクターの名前や肩書き、武器種別などのレイアウトを作成
   ///
   Widget _widgetOverview(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Container(
-          margin: const EdgeInsets.only(right: 16.0),
-          child: CircleAvatar(
-            child: Text(character.name[0]),
-          ),
+        Image.asset(
+          // TODO gifはromasaga.txtから取得する
+          'res/chars/aisha.gif',
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
               character.name,
-              style: Theme.of(context).textTheme.title,
-            ),
-            Text(
-              character.title,
-              style: TextStyle(color: Colors.grey, fontSize: 16.0),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                RomasagaIcon.convertWeaponIconWithLargeSize(character.weaponType),
-                Padding(padding: EdgeInsets.only(right: 8.0)),
-                Text(
-                  character.weaponCategory,
-                  style: TextStyle(color: Colors.black, fontSize: 24.0),
-                )
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 16.0),
+              style: Theme.of(context).textTheme.headline,
             ),
           ],
-        )
+        ),
+        Text(
+          character.title,
+          style: TextStyle(color: Colors.grey, fontSize: 16.0),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RomasagaIcon.convertWeaponIcon(character.weaponType),
+            Padding(
+              padding: EdgeInsets.only(right: 8.0),
+            ),
+            RomasagaIcon.convertWeaponCategoryIcon(category: character.weaponCategory),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.only(bottom: 32.0),
+        ),
       ],
     );
   }
@@ -95,15 +93,8 @@ class CharDetailPage extends StatelessWidget {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(
-              "基準スタイル",
-              style: TextStyle(color: Colors.grey, fontSize: 16.0),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 16.0),
-            ),
             RankChoiceChip(
                 ranks: character.getStyleRanks(),
                 onSelectedListener: (String rank) {
@@ -123,18 +114,15 @@ class CharDetailPage extends StatelessWidget {
       builder: (_, viewModel, child) {
         final baseStatusList = viewModel.findStages();
         return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(
-              "基準ステージ",
-              style: TextStyle(color: Colors.grey, fontSize: 16.0),
-            ),
-            Padding(padding: EdgeInsets.only(right: 16.0)),
             DropdownButton<String>(
               items: baseStatusList.map((baseStatus) {
+                final String showLimit =
+                    (baseStatus.statusUpperLimit > 0) ? "+${baseStatus.statusUpperLimit}" : baseStatus.statusUpperLimit.toString();
                 return DropdownMenuItem<String>(
                   value: baseStatus.name,
-                  child: Text("${baseStatus.name} (${baseStatus.statusUpperLimit})"),
+                  child: Text("${baseStatus.name} ($showLimit)"),
                 );
               }).toList(),
               onChanged: (value) {
@@ -194,16 +182,7 @@ class CharDetailPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 16.0),
             ),
-            CircularPercentIndicator(
-              radius: 100.0,
-              animation: true,
-              animationDuration: 500,
-              lineWidth: 5.0,
-              percent: 1.0,
-              circularStrokeCap: CircularStrokeCap.round,
-              center: _textCenterInCircle(CharDetailViewModel.hpName, character.nowHP.toString()),
-              progressColor: Colors.lightBlueAccent,
-            ),
+            StatusCircleIndicator.large(CharDetailViewModel.hpName, character.nowHP, 0),
           ],
         );
       },
@@ -214,12 +193,6 @@ class CharDetailPage extends StatelessWidget {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final statusUpperLimit = viewModel.getStatusUpperLimit(statusName);
-        double percent;
-        if (currentStatus > statusUpperLimit) {
-          percent = 1.0;
-        } else {
-          percent = (currentStatus / statusUpperLimit);
-        }
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -227,16 +200,7 @@ class CharDetailPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 16.0),
             ),
-            CircularPercentIndicator(
-              radius: 80.0,
-              animation: true,
-              animationDuration: 500,
-              lineWidth: 5.0,
-              percent: percent,
-              circularStrokeCap: CircularStrokeCap.round,
-              center: _textCenterInCircle(statusName, currentStatus.toString()),
-              progressColor: _circleStatusColor(statusUpperLimit, currentStatus),
-            ),
+            StatusCircleIndicator.normal(statusName, currentStatus, statusUpperLimit),
             _textGrowthParam(statusUpperLimit, currentStatus),
           ],
         );
@@ -244,56 +208,17 @@ class CharDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _textCenterInCircle(String statusName, String status) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          statusName,
-          style: TextStyle(fontSize: 14.0),
-        ),
-        Text(
-          status,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-        )
-      ],
-    );
-  }
-
-  Color _circleStatusColor(int statusUpperLimit, int currentStatus) {
-    int diffWithLimit = currentStatus - statusUpperLimit;
-    if (diffWithLimit <= -10) {
-      return Colors.redAccent;
-    } else if (diffWithLimit > -10 && diffWithLimit < -6) {
-      return Colors.amber;
-    } else if (diffWithLimit >= -6 && diffWithLimit < -3) {
-      return Colors.greenAccent;
-    } else {
-      return Colors.lightBlueAccent;
-    }
-  }
-
   Widget _textGrowthParam(int statusUpperLimit, int currentStatus) {
-    final double fontSize = 18.0;
-
-    if (statusUpperLimit == 0) {
-      return Text(
-        "ー",
-        style: TextStyle(color: Colors.black, fontSize: fontSize),
-      );
-    }
-
     final int growth = currentStatus - statusUpperLimit;
-    final String growthStr = growth.toString();
 
     TextStyle growthStyle;
-    if (growth >= 0) {
-      growthStyle = TextStyle(color: Colors.blue, fontSize: fontSize);
+    if (growth >= -2) {
+      growthStyle = TextStyle(color: Colors.blue, fontSize: 18.0);
     } else {
-      growthStyle = TextStyle(color: Colors.red, fontSize: fontSize);
+      growthStyle = TextStyle(color: Colors.red, fontSize: 18.0);
     }
     return Text(
-      growthStr,
+      growth.toString(),
       style: growthStyle,
     );
   }
