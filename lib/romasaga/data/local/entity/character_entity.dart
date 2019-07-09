@@ -83,7 +83,8 @@ class CharacterEntity {
       columnInt: intelligence,
       columnSpirit: spirit,
       columnLove: love,
-      columnAttr: attr
+      columnAttr: attr,
+      columnIconFileName: iconFileName,
     };
 
     if (id != null) {
