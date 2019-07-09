@@ -20,11 +20,11 @@ class CharListRowItem extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: _widgetThumbnail(character),
-                  flex: 1,
+                  flex: 2,
                 ),
                 Expanded(
                   child: _widgetName(character, context),
-                  flex: 3,
+                  flex: 5,
                 ),
                 Expanded(
                   child: _widgetWeaponType(character),
@@ -32,10 +32,10 @@ class CharListRowItem extends StatelessWidget {
                 ),
                 Expanded(
                   child: _widgetStyles(character, context),
-                  flex: 2,
+                  flex: 3,
                 ),
                 Expanded(
-                  child: _widgetFavoriteIcon(character),
+                  child: _widgetHaveIcon(character),
                   flex: 1,
                 )
               ],
@@ -44,9 +44,7 @@ class CharListRowItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CharDetailPage(
-                    character: character,
-                  ),
+              builder: (context) => CharDetailPage(character: character),
             ),
           );
         },
@@ -96,7 +94,7 @@ class CharListRowItem extends StatelessWidget {
 
   Column _widgetStyles(Character character, BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
           children: _widgetStyleIcons(character),
@@ -110,12 +108,12 @@ class CharListRowItem extends StatelessWidget {
     return ranks.map((rank) => RomasagaIcon.rank(rank)).toList();
   }
 
-  Column _widgetFavoriteIcon(Character character) {
+  Column _widgetHaveIcon(Character character) {
     return Column(
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[Icon(Icons.favorite_border)],
+          children: <Widget>[Icon(Icons.check)],
         )
       ],
     );

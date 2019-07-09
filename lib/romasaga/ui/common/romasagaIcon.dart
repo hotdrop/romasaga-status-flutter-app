@@ -8,9 +8,7 @@ class RomasagaIcon {
   ///
   static Widget character(String fileName) {
     final String path = 'res/charIcons/$fileName';
-    return Image.asset(
-      path,
-    );
+    return _imageIcon(res: path, iconSize: IconSize.large);
   }
 
   ///
