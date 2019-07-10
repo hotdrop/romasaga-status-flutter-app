@@ -1,40 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 
 import 'char_list_tab.dart';
 
-class TopPage extends StatelessWidget {
+class TopPage extends StatefulWidget {
+  @override
+  _TopPageState createState() => _TopPageState();
+}
+
+class _TopPageState extends State<TopPage> {
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('Search'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            title: Text('Setting'),
-          )
-        ],
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(color: Colors.white),
+        child: Center(child: _showBottomMenu(_currentIndex)),
       ),
-      tabBuilder: (context, index) {
-        switch (index) {
-          case 0:
-            return CupertinoTabView(
-              builder: (context) {
-                return CupertinoPageScaffold(
-                  child: CharListTab(),
-                );
-              },
-            );
-        }
-      },
+      bottomNavigationBar: FancyBottomNavigation(
+          tabs: [
+            TabData(iconData: Icons.person, title: "Char"),
+            TabData(iconData: Icons.search, title: "Search"),
+            TabData(iconData: Icons.settings, title: "Setting"),
+            TabData(iconData: Icons.mail, title: "Letter")
+          ],
+          initialSelection: 0,
+          onTabChangedListener: (position) {
+            setState(() {
+              _currentIndex = position;
+            });
+          }),
     );
+  }
+
+  Widget _showBottomMenu(int index) {
+    switch (index) {
+      case 0:
+        return CharListTab();
+      default:
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[Text("未実装")],
+        );
+    }
   }
 }
