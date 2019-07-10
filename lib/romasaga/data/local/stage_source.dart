@@ -24,7 +24,7 @@ class StageSource {
     final db = await DBProvider.instance.database;
     final results = await db.query(StageEntity.tableName);
 
-    List<StageEntity> entities = results.isNotEmpty ? results.map((it) => Mapper.mapToStageEntity(it)).toList() : [];
+    List<StageEntity> entities = results.isNotEmpty ? results.map((it) => StageEntity.fromMap(it)).toList() : [];
 
     if (entities.isNotEmpty) {
       entities.sort((e1, e2) => (e1.itemOrder > e2.itemOrder) ? -1 : 1);

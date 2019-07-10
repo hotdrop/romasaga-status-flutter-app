@@ -10,10 +10,6 @@ class Mapper {
     return StageEntity(model.name, model.statusUpperLimit, model.itemOrder);
   }
 
-  static StageEntity mapToStageEntity(Map<String, dynamic> map) {
-    return StageEntity.fromMap(map);
-  }
-
   static Stage toStage(StageEntity entity) {
     return Stage(entity.name, entity.statusUpperLimit, entity.itemOrder);
   }
@@ -26,10 +22,6 @@ class Mapper {
       entities.add(entity);
     });
     return entities;
-  }
-
-  static CharacterEntity mapToCharacterEntity(Map<String, dynamic> map) {
-    return CharacterEntity.fromMap(map);
   }
 
   static List<Character> toCharacters(List<CharacterEntity> entities) {

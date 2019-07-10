@@ -1,4 +1,24 @@
 class CharacterEntity {
+  CharacterEntity(this.name, this.title, this.production, this.weaponType, this.rank, this.str, this.vit, this.dex, this.agi, this.intelligence,
+      this.spirit, this.love, this.attr, this.iconFileName);
+
+  CharacterEntity.fromMap(Map<String, dynamic> map)
+      : id = map[columnId],
+        name = map[columnName],
+        title = map[columnTitle],
+        production = map[columnProduction],
+        weaponType = map[columnWeaponType],
+        rank = map[columnRank],
+        str = map[columnStr],
+        vit = map[columnVit],
+        dex = map[columnDex],
+        agi = map[columnAgi],
+        intelligence = map[columnInt],
+        spirit = map[columnSpirit],
+        love = map[columnLove],
+        attr = map[columnAttr],
+        iconFileName = map[columnIconFileName];
+
   static const String tableName = "Character";
   static const String createTableSql = """
       CREATE TABLE $tableName (
@@ -65,9 +85,6 @@ class CharacterEntity {
   static const String columnIconFileName = "file_name";
   final String iconFileName;
 
-  CharacterEntity(this.name, this.title, this.production, this.weaponType, this.rank, this.str, this.vit, this.dex, this.agi, this.intelligence,
-      this.spirit, this.love, this.attr, this.iconFileName);
-
   Map<String, dynamic> toMap() {
     var map;
     map = <String, dynamic>{
@@ -93,21 +110,4 @@ class CharacterEntity {
 
     return map;
   }
-
-  static CharacterEntity fromMap(Map<String, dynamic> map) => CharacterEntity(
-        map[columnName],
-        map[columnTitle],
-        map[columnProduction],
-        map[columnWeaponType],
-        map[columnRank],
-        map[columnStr],
-        map[columnVit],
-        map[columnDex],
-        map[columnAgi],
-        map[columnInt],
-        map[columnSpirit],
-        map[columnLove],
-        map[columnAttr],
-        map[columnIconFileName],
-      )..id = map[columnId];
 }

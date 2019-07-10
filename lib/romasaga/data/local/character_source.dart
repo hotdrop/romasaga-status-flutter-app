@@ -26,7 +26,7 @@ class CharacterSource {
     final db = await DBProvider.instance.database;
     final results = await db.query(CharacterEntity.tableName);
 
-    List<CharacterEntity> entities = results.isNotEmpty ? results.map((it) => Mapper.mapToCharacterEntity(it)).toList() : [];
+    List<CharacterEntity> entities = results.isNotEmpty ? results.map((it) => CharacterEntity.fromMap(it)).toList() : [];
 
     return Mapper.toCharacters(entities);
   }
