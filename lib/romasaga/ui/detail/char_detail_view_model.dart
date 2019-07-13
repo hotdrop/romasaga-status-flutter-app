@@ -9,11 +9,9 @@ import '../../data/stage_repository.dart';
 
 class CharDetailViewModel extends foundation.ChangeNotifier {
   CharDetailViewModel(this.character, {StageRepository stageRepo, StatusRepository statusRepo})
-    : _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
-      _statusRepository = (statusRepo == null) ? StatusRepository() : statusRepo,
-      _selectedRank = character
-        .getStyleRanks()
-        .first;
+      : _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
+        _statusRepository = (statusRepo == null) ? StatusRepository() : statusRepo,
+        _selectedRank = character.getStyleRanks().first;
 
   final StageRepository _stageRepository;
   final StatusRepository _statusRepository;
