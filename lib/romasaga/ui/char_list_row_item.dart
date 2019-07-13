@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'detail/char_detail_page.dart';
+
+import '../model/character.dart';
+import '../model/weapon.dart';
 
 import 'common/romasagaIcon.dart';
-import '../model/character.dart';
-import 'detail/char_detail_page.dart';
 
 class CharListRowItem extends StatelessWidget {
   final Character character;

@@ -2,11 +2,11 @@ import 'local/stage_source.dart';
 import 'remote/stage_api.dart';
 import '../model/stage.dart';
 
-class BaseStatusRepository {
+class StageRepository {
   final StageSource _localDataSource;
   final StageApi _baseStatusApi;
 
-  BaseStatusRepository({StageSource local, StageApi remote})
+  StageRepository({StageSource local, StageApi remote})
       : _localDataSource = (local == null) ? StageSource() : local,
         _baseStatusApi = (remote == null) ? StageApi() : remote;
 

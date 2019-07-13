@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 
 import '../../model/character.dart';
-import '../../model/my_status.dart';
 
 class RomasagaApi {
   static final RomasagaApi _instance = RomasagaApi._();
@@ -59,9 +58,7 @@ class RomasagaApi {
         c.addStyle(rank, str, vit, dex, agi, intelligence, spi, love, attr);
         styleMap.update(name, (dynamic val) => c);
       } else {
-        // TODO これダミー
-        final status = MyStatus.empty();
-        var c = Character(name, title, production, weaponType, status, iconFileName);
+        var c = Character(name, title, production, weaponType, iconFileName);
         c.addStyle(rank, str, vit, dex, agi, intelligence, spi, love, attr);
         styleMap[name] = c;
       }

@@ -3,17 +3,19 @@ import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/character.dart';
+import '../../model/status.dart';
 
 import 'char_detail_view_model.dart';
+import 'char_status_edit_page.dart';
 
 import '../common/romasagaIcon.dart';
 import '../widget/rank_choice_chip.dart';
 import '../widget/status_circle_indicator.dart';
 
 class CharDetailPage extends StatelessWidget {
-  final Character character;
-
   CharDetailPage({Key key, @required this.character}) : super(key: key);
+
+  final Character character;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,50 @@ class CharDetailPage extends StatelessWidget {
             children: contentLayout(context),
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButton: _floatingActionButtonForEditStatus(context),
+        bottomNavigationBar: _bottomAppBarContent(),
+      ),
+    );
+  }
+
+  Widget _floatingActionButtonForEditStatus(BuildContext context) {
+    return Consumer<CharDetailViewModel>(
+      builder: (_, viewModel, child) {
+        final myStatus = viewModel.findMyStatus();
+        return FloatingActionButton(
+          child: const Icon(Icons.edit),
+          onPressed: () async {
+            final isSaved = await Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => CharStatusEditPage(myStatus)),
+            );
+            // TODO isSavedがtrueならviewModel経由でstatusをnotifyさせる
+            print("詳細画面 editPageから返ってきた値=$isSaved");
+          },
+        );
+      },
+    );
+  }
+
+  Widget _bottomAppBarContent() {
+    return BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      notchMargin: 4.0,
+      color: Colors.lightBlueAccent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Padding(padding: EdgeInsets.only(left: 16.0)),
+          IconButton(
+            icon: Icon(Icons.check),
+            onPressed: () {},
+          ),
+          Padding(padding: EdgeInsets.only(left: 16.0)),
+          IconButton(
+            icon: Icon(Icons.favorite_border),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
@@ -41,7 +87,10 @@ class CharDetailPage extends StatelessWidget {
     layouts.add(_widgetOverview(context));
     layouts.add(_widgetStyles());
     layouts.add(_widgetStages());
-    layouts.addAll(_widgetStatusCircles());
+    layouts.add(_widgetStatusForHp());
+    layouts.add(_widgetStatusForFirstRow());
+    layouts.add(_widgetStatusForSecondRow());
+    layouts.add(_widgetStatusForThirdRow());
     return layouts;
   }
 
@@ -137,59 +186,90 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// ステータス群のレイアウトを作成
+  /// ステータス群のHP行のレイアウトを作成
   ///
-  List<Widget> _widgetStatusCircles() {
-    return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _widgetStatusCircleForHp(),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _widgetStatusCircle(CharDetailViewModel.strName, character.nowStr),
-          _widgetStatusCircle(CharDetailViewModel.vitName, character.nowVit),
-          _widgetStatusCircle(CharDetailViewModel.dexName, character.nowDex),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _widgetStatusCircle(CharDetailViewModel.agiName, character.nowAgi),
-          _widgetStatusCircle(CharDetailViewModel.intName, character.nowInt),
-          _widgetStatusCircle(CharDetailViewModel.spiName, character.nowSpi),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _widgetStatusCircle(CharDetailViewModel.loveName, character.nowLove),
-          _widgetStatusCircle(CharDetailViewModel.attrName, character.nowAttr),
-        ],
-      ),
-    ];
-  }
-
-  Widget _widgetStatusCircleForHp() {
+  Widget _widgetStatusForHp() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        return Column(
+        final myStatus = viewModel.findMyStatus();
+        return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 16.0),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 16.0),
+                ),
+                StatusCircleIndicator.large(Status.hpName, myStatus.hp, 0),
+              ],
             ),
-            StatusCircleIndicator.large(CharDetailViewModel.hpName, character.nowHP, 0),
           ],
         );
       },
     );
   }
 
-  Widget _widgetStatusCircle(String statusName, int currentStatus) {
+  ///
+  /// ステータス群の上段行のレイアウトを作成
+  ///
+  Widget _widgetStatusForFirstRow() {
+    return Consumer<CharDetailViewModel>(
+      builder: (_, viewModel, child) {
+        final myStatus = viewModel.findMyStatus();
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            _widgetStatusGraph(Status.strName, myStatus.str),
+            _widgetStatusGraph(Status.vitName, myStatus.vit),
+            _widgetStatusGraph(Status.dexName, myStatus.dex),
+          ],
+        );
+      },
+    );
+  }
+
+  ///
+  /// ステータス群の中断行のレイアウトを作成
+  ///
+  Widget _widgetStatusForSecondRow() {
+    return Consumer<CharDetailViewModel>(
+      builder: (_, viewModel, child) {
+        final myStatus = viewModel.findMyStatus();
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            _widgetStatusGraph(Status.agiName, myStatus.agi),
+            _widgetStatusGraph(Status.intName, myStatus.intelligence),
+            _widgetStatusGraph(Status.spiName, myStatus.spirit),
+          ],
+        );
+      },
+    );
+  }
+
+  ///
+  /// ステータス群の下段行のレイアウトを作成
+  ///
+  Widget _widgetStatusForThirdRow() {
+    return Consumer<CharDetailViewModel>(
+      builder: (_, viewModel, child) {
+        final myStatus = viewModel.findMyStatus();
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            _widgetStatusGraph(Status.loveName, myStatus.love),
+            _widgetStatusGraph(Status.attrName, myStatus.attr),
+          ],
+        );
+      },
+    );
+  }
+
+  ///
+  /// ステータスのグラフ表示処理
+  ///
+  Widget _widgetStatusGraph(String statusName, int currentStatus) {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final statusUpperLimit = viewModel.getStatusUpperLimit(statusName);

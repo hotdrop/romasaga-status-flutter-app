@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../model/character.dart';
+import '../../model/weapon.dart';
 
 class RomasagaIcon {
   ///

@@ -1,22 +1,29 @@
 import 'package:flutter/foundation.dart' as foundation;
 
 import '../../model/character.dart';
+import '../../model/status.dart';
 import '../../model/stage.dart';
 
+import '../../data/status_repository.dart';
 import '../../data/stage_repository.dart';
 
 class CharDetailViewModel extends foundation.ChangeNotifier {
-  final BaseStatusRepository _repository;
-  final Character _character;
+  CharDetailViewModel(this.character, {StageRepository stageRepo, StatusRepository statusRepo})
+    : _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
+      _statusRepository = (statusRepo == null) ? StatusRepository() : statusRepo,
+      _selectedRank = character
+        .getStyleRanks()
+        .first;
 
+  final StageRepository _stageRepository;
+  final StatusRepository _statusRepository;
+  final Character character;
+
+  MyStatus _myStatus;
   List<Stage> _stages;
 
   String _selectedRank;
   Stage _selectedStage;
-
-  CharDetailViewModel(this._character, {BaseStatusRepository repo})
-      : _repository = (repo == null) ? BaseStatusRepository() : repo,
-        _selectedRank = _character.getStyleRanks().first;
 
   List<Stage> findStages() {
     if (_stages == null) {
@@ -26,8 +33,18 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     return _stages;
   }
 
+  MyStatus findMyStatus() {
+    if (_myStatus == null) {
+      return MyStatus.empty(character.name);
+    }
+
+    return _myStatus;
+  }
+
   void load() async {
-    _stages = await _repository.findAll();
+    _stages = await _stageRepository.findAll();
+    _myStatus = await _statusRepository.find(character.name);
+
     _selectedStage = _stages.first;
     _calcStatusUpperLimits();
   }
@@ -56,18 +73,9 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
   // これstreamにしてsinkとstreamで流したほうがいいか・・？
   Style _statusUpperLimit;
-  static const String hpName = "HP";
-  static const String strName = "腕力";
-  static const String vitName = "体力";
-  static const String dexName = "器用";
-  static const String agiName = "素早";
-  static const String intName = "知能";
-  static const String spiName = "精神";
-  static const String loveName = " 愛 ";
-  static const String attrName = "魅力";
 
   void _calcStatusUpperLimits() {
-    final style = _character.getStyle(_selectedRank);
+    final style = character.getStyle(_selectedRank);
 
     _statusUpperLimit = Style(
       _selectedRank,
@@ -85,21 +93,21 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
   int getStatusUpperLimit(String statusName) {
     switch (statusName) {
-      case strName:
+      case Status.strName:
         return _statusUpperLimit?.str ?? 0;
-      case vitName:
+      case Status.vitName:
         return _statusUpperLimit?.vit ?? 0;
-      case dexName:
+      case Status.dexName:
         return _statusUpperLimit?.dex ?? 0;
-      case agiName:
+      case Status.agiName:
         return _statusUpperLimit?.agi ?? 0;
-      case intName:
+      case Status.intName:
         return _statusUpperLimit?.intelligence ?? 0;
-      case spiName:
+      case Status.spiName:
         return _statusUpperLimit?.spirit ?? 0;
-      case loveName:
+      case Status.loveName:
         return _statusUpperLimit?.love ?? 0;
-      case attrName:
+      case Status.attrName:
         return _statusUpperLimit?.attr ?? 0;
       default:
         return 0;
