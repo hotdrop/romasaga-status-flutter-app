@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 
 import 'char_list_tab.dart';
+import 'otayori/otayori_tab.dart';
 
 class TopPage extends StatefulWidget {
   @override
@@ -34,10 +35,13 @@ class _TopPageState extends State<TopPage> {
     );
   }
 
+  // TODO お便りページ追加する
   Widget _showBottomMenu(int index) {
     switch (index) {
       case 0:
         return CharListTab();
+      case 3:
+        return OtayoriTab();
       default:
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,

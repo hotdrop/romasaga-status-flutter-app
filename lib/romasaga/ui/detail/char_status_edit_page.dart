@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../model/status.dart';
 import 'char_status_edit_view_model.dart';
 
-import '../widget/custom_button.dart';
 import '../widget/custom_text_field.dart';
 
 class CharStatusEditPage extends StatelessWidget {
@@ -114,15 +113,19 @@ class CharStatusEditPage extends StatelessWidget {
   Widget _widgetSaveButton(BuildContext context) {
     return Consumer<CharStatusEditViewModel>(
       builder: (_, viewModel, child) {
-        return Container(
-          width: 100,
-          child: CustomWidget.outlineButtonWithIcon(
-              icon: Icon(Icons.save),
-              text: "保存",
-              onPressedListener: () async {
-                await viewModel.saveNewStatus();
-                Navigator.pop(context, true);
-              }),
+        return OutlineButton.icon(
+          textColor: Colors.blue,
+          borderSide: BorderSide(color: Colors.blue),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.0)),
+          onPressed: () async {
+            await viewModel.saveNewStatus();
+            Navigator.pop(context, true);
+          },
+          icon: Icon(Icons.save),
+          label: Text(
+            "保存",
+            style: TextStyle(fontSize: 16.0),
+          ),
         );
       },
     );
