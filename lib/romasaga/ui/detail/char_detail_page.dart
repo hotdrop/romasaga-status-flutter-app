@@ -46,9 +46,9 @@ class CharDetailPage extends StatelessWidget {
           child: const Icon(Icons.edit),
           onPressed: () async {
             final isSaved = await Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => CharStatusEditPage(myStatus)),
-            );
-            // これ非同期でくるのでだめ
+                  MaterialPageRoute(builder: (context) => CharStatusEditPage(myStatus)),
+                ) ??
+                false;
             if (isSaved) {
               print("詳細画面で値が保存されたのでステータスを更新します");
               viewModel.refreshStatus();

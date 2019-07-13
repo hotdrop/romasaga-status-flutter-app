@@ -5,6 +5,7 @@ import '../../model/status.dart';
 import 'char_status_edit_view_model.dart';
 
 import '../widget/custom_button.dart';
+import '../widget/custom_text_field.dart';
 
 class CharStatusEditPage extends StatelessWidget {
   CharStatusEditPage(this._myStatus);
@@ -79,7 +80,6 @@ class CharStatusEditPage extends StatelessWidget {
     );
   }
 
-  // TODO これEnterしないと数値が反映されないので入力値をリアルタイムで反映させたい。
   Widget _widgetEditFields(String statusName, int currentStatus) {
     return Consumer<CharStatusEditViewModel>(
       builder: (_, viewModel, child) {
@@ -87,7 +87,7 @@ class CharStatusEditPage extends StatelessWidget {
           children: <Widget>[
             Container(
               width: 80.0,
-              child: TextFormField(
+              child: TextFormFieldWithChanged(
                 textCapitalization: TextCapitalization.words,
                 keyboardType: TextInputType.number,
                 style: TextStyle(fontSize: 20.0),
@@ -99,9 +99,9 @@ class CharStatusEditPage extends StatelessWidget {
                   counterText: "",
                 ),
                 initialValue: currentStatus != 0 ? currentStatus.toString() : "",
-                onFieldSubmitted: (String value) {
-                  print("onFieldSubmitted");
-                  viewModel.updateStatus(statusName, int.parse(value));
+                onChanged: (String value) {
+                  final toIntValue = int.tryParse(value, radix: 10) ?? 0;
+                  viewModel.updateStatus(statusName, toIntValue);
                 },
               ),
             ),
