@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../../model/status.dart';
 import 'char_status_edit_view_model.dart';
 
+import '../widget/custom_button.dart';
+
 class CharStatusEditPage extends StatelessWidget {
   CharStatusEditPage(this._myStatus);
 
@@ -77,6 +79,7 @@ class CharStatusEditPage extends StatelessWidget {
     );
   }
 
+  // TODO これEnterしないと数値が反映されないので入力値をリアルタイムで反映させたい。
   Widget _widgetEditFields(String statusName, int currentStatus) {
     return Consumer<CharStatusEditViewModel>(
       builder: (_, viewModel, child) {
@@ -87,7 +90,7 @@ class CharStatusEditPage extends StatelessWidget {
               child: TextFormField(
                 textCapitalization: TextCapitalization.words,
                 keyboardType: TextInputType.number,
-                style: TextStyle(fontSize: 28.0),
+                style: TextStyle(fontSize: 20.0),
                 maxLength: 3,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -97,6 +100,7 @@ class CharStatusEditPage extends StatelessWidget {
                 ),
                 initialValue: currentStatus != 0 ? currentStatus.toString() : "",
                 onFieldSubmitted: (String value) {
+                  print("onFieldSubmitted");
                   viewModel.updateStatus(statusName, int.parse(value));
                 },
               ),
@@ -110,14 +114,15 @@ class CharStatusEditPage extends StatelessWidget {
   Widget _widgetSaveButton(BuildContext context) {
     return Consumer<CharStatusEditViewModel>(
       builder: (_, viewModel, child) {
-        return RaisedButton(
-          color: Colors.blueAccent,
-          textColor: Colors.white,
-          child: Text('保存'),
-          onPressed: () {
-            viewModel.saveNewStatus();
-            Navigator.pop(context, true);
-          },
+        return Container(
+          width: 100,
+          child: CustomWidget.outlineButtonWithIcon(
+              icon: Icon(Icons.save),
+              text: "保存",
+              onPressedListener: () async {
+                await viewModel.saveNewStatus();
+                Navigator.pop(context, true);
+              }),
         );
       },
     );

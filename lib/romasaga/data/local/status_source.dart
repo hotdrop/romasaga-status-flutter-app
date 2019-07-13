@@ -19,11 +19,11 @@ class StatusSource {
     final db = await DBProvider.instance.database;
 
     final result = await db.query(StatusEntity.tableName, where: "${StatusEntity.columnCharName} = ?", whereArgs: [status.charName]);
-    if (result == null) {
-      print("   ステータスが未登録なのでinsertします。");
+    if (result.isEmpty) {
+      print("  ステータスが未登録なのでinsertします。");
       await db.insert(StatusEntity.tableName, entity.toMap());
     } else {
-      print("   ステータスが登録されているのでupdateします。");
+      print("  ステータスが登録されているのでupdateします。");
       await db.update(StatusEntity.tableName, entity.toMap(), where: "${StatusEntity.columnCharName} = ?", whereArgs: [status.charName]);
     }
   }
@@ -33,9 +33,11 @@ class StatusSource {
     final result = await db.query(StatusEntity.tableName, where: "${StatusEntity.columnCharName} = ?", whereArgs: [charName]);
 
     if (result.isEmpty) {
+      print("  statusは空でした。");
       return null;
     }
 
+    print("  statusを取得しました。");
     StatusEntity entity = StatusEntity.fromMap(result.first);
     return Mapper.toMyStatus(entity);
   }

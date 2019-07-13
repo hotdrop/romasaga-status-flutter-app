@@ -7,11 +7,12 @@ class StatusRepository {
   StatusRepository({StatusSource local}) : _localDataSource = (local == null) ? StatusSource() : local;
 
   Future<MyStatus> find(String charName) async {
+    print("$charName のmystatusをfindします");
     var status = await _localDataSource.find(charName);
     return status;
   }
 
   Future<void> save(MyStatus status) async {
-    _localDataSource.save(status);
+    return _localDataSource.save(status);
   }
 }

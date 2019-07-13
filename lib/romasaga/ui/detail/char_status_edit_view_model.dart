@@ -5,7 +5,8 @@ import '../../data/status_repository.dart';
 
 class CharStatusEditViewModel extends foundation.ChangeNotifier {
   CharStatusEditViewModel(this.currentStatus, {StatusRepository statusRepo})
-      : _newStr = currentStatus.str,
+      : _newHp = currentStatus.hp,
+        _newStr = currentStatus.str,
         _newVit = currentStatus.vit,
         _newDex = currentStatus.dex,
         _newAgi = currentStatus.agi,
@@ -29,7 +30,6 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
   int _newAttr;
 
   void updateStatus(String statusName, int newStatus) {
-    print("$statusName を保存します。 $newStatus");
     switch (statusName) {
       case Status.hpName:
         _newHp = newStatus;
@@ -61,7 +61,7 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
     }
   }
 
-  void saveNewStatus() {
+  Future<void> saveNewStatus() async {
     final newStatus = MyStatus(
       currentStatus.charName,
       _newHp,
@@ -74,6 +74,6 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
       _newLove,
       _newAttr,
     );
-    _statusRepository.save(newStatus);
+    await _statusRepository.save(newStatus);
   }
 }

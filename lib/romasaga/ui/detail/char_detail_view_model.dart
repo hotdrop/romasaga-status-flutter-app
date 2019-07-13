@@ -47,6 +47,11 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     _calcStatusUpperLimits();
   }
 
+  void refreshStatus() async {
+    _myStatus = await _statusRepository.find(character.name);
+    _calcStatusUpperLimits();
+  }
+
   Stage getSelectedBaseStatus() {
     return _selectedStage;
   }

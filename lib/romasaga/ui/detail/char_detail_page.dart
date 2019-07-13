@@ -48,8 +48,11 @@ class CharDetailPage extends StatelessWidget {
             final isSaved = await Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => CharStatusEditPage(myStatus)),
             );
-            // TODO isSavedがtrueならviewModel経由でstatusをnotifyさせる
-            print("詳細画面 editPageから返ってきた値=$isSaved");
+            // これ非同期でくるのでだめ
+            if (isSaved) {
+              print("詳細画面で値が保存されたのでステータスを更新します");
+              viewModel.refreshStatus();
+            }
           },
         );
       },
