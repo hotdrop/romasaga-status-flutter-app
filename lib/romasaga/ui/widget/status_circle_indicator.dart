@@ -54,8 +54,6 @@ class StatusCircleIndicator {
       return Colors.black;
     } else if (diffWithLimit <= -10) {
       return Colors.redAccent;
-    } else if (diffWithLimit > -10 && diffWithLimit < -6) {
-      return Colors.amber;
     } else if (diffWithLimit >= -6 && diffWithLimit < -3) {
       return Colors.greenAccent;
     } else {
