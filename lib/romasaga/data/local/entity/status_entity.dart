@@ -44,7 +44,7 @@ class StatusEntity {
         $columnLove INTEGER,
         $columnAttr INTEGER,
         $columnHave INTEGER,
-        $columnFavorite INTEGER,
+        $columnFavorite INTEGER
       )
       ''';
 
