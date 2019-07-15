@@ -82,10 +82,14 @@ class StatusEntity {
   final int attr;
 
   static const String columnHave = 'have';
-  final bool have;
+  static const int haveChar = 1;
+  static const int notHaveChar = 0;
+  final int have;
 
   static const String columnFavorite = 'favorite';
-  final bool favorite;
+  static const int isFavorite = 1;
+  static const int notFavorite = 0;
+  final int favorite;
 
   Map<String, dynamic> toMap() {
     var map;

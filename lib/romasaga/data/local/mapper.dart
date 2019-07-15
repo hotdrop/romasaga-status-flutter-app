@@ -57,8 +57,8 @@ class Mapper {
       status.spirit,
       status.love,
       status.attr,
-      status.have,
-      status.favorite,
+      status.have ? StatusEntity.haveChar : StatusEntity.notHaveChar,
+      status.favorite ? StatusEntity.isFavorite : StatusEntity.notFavorite,
     );
   }
 
@@ -74,8 +74,8 @@ class Mapper {
       entity.spirit,
       entity.love,
       entity.attr,
-      entity.have,
-      entity.favorite,
+      entity.have == StatusEntity.haveChar ? true : false,
+      entity.favorite == StatusEntity.isFavorite ? true : false,
     );
   }
 }
