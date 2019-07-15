@@ -34,59 +34,8 @@ class CharDetailPage extends StatelessWidget {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: _floatingActionButtonForEditStatus(context),
-        bottomNavigationBar: _bottomAppBarContent(),
-      ),
-    );
-  }
-
-  Widget _floatingActionButtonForEditStatus(BuildContext context) {
-    return Consumer<CharDetailViewModel>(
-      builder: (_, viewModel, child) {
-        final myStatus = viewModel.findMyStatus();
-        return FloatingActionButton(
-          child: const Icon(Icons.edit),
-          onPressed: () async {
-            final isSaved = await Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => CharStatusEditPage(myStatus)),
-                ) ??
-                false;
-            if (isSaved) {
-              SagaLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
-              viewModel.refreshStatus();
-            }
-          },
-        );
-      },
-    );
-  }
-
-  Widget _bottomAppBarContent() {
-    return BottomAppBar(
-      shape: CircularNotchedRectangle(),
-      notchMargin: 4.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Padding(padding: EdgeInsets.only(left: 16.0)),
-          IconButton(
-            icon: Icon(
-              Icons.check,
-              color: Colors.greenAccent,
-            ),
-            iconSize: 28.0,
-            onPressed: () {},
-          ),
-          Padding(padding: EdgeInsets.only(left: 16.0)),
-          IconButton(
-            icon: Icon(
-              Icons.favorite_border,
-              color: Colors.redAccent,
-            ),
-            iconSize: 28.0,
-            onPressed: () {},
-          ),
-        ],
+        floatingActionButton: _editStatusFab(context),
+        bottomNavigationBar: _appBarContent(),
       ),
     );
   }
@@ -96,20 +45,20 @@ class CharDetailPage extends StatelessWidget {
   ///
   List<Widget> contentLayout(BuildContext context) {
     List<Widget> layouts = [];
-    layouts.add(_widgetOverview(context));
-    layouts.add(_widgetStyles());
-    layouts.add(_widgetStages());
-    layouts.add(_widgetStatusForHp());
-    layouts.add(_widgetStatusForFirstRow());
-    layouts.add(_widgetStatusForSecondRow());
-    layouts.add(_widgetStatusForThirdRow());
+    layouts.add(_overviewContents(context));
+    layouts.add(_styleChips());
+    layouts.add(_stageDropDownList());
+    layouts.add(_rowStatusHp());
+    layouts.add(_rowStatusFirst());
+    layouts.add(_rowStatusSecond());
+    layouts.add(_rowStatusThird());
     return layouts;
   }
 
   ///
   /// キャラクターの名前や肩書き、武器種別などのレイアウトを作成
   ///
-  Widget _widgetOverview(BuildContext context) {
+  Widget _overviewContents(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -150,7 +99,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// スタイル比較のレイアウトを作成
   ///
-  Widget _widgetStyles() {
+  Widget _styleChips() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         return Row(
@@ -170,7 +119,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステージリストのレイアウトを作成
   ///
-  Widget _widgetStages() {
+  Widget _stageDropDownList() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final baseStatusList = viewModel.findStages();
@@ -200,7 +149,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステータス群のHP行のレイアウトを作成
   ///
-  Widget _widgetStatusForHp() {
+  Widget _rowStatusHp() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final myStatus = viewModel.findMyStatus();
@@ -225,16 +174,16 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステータス群の上段行のレイアウトを作成
   ///
-  Widget _widgetStatusForFirstRow() {
+  Widget _rowStatusFirst() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final myStatus = viewModel.findMyStatus();
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _widgetStatusGraph(Status.strName, myStatus.str),
-            _widgetStatusGraph(Status.vitName, myStatus.vit),
-            _widgetStatusGraph(Status.dexName, myStatus.dex),
+            _graphStatus(Status.strName, myStatus.str),
+            _graphStatus(Status.vitName, myStatus.vit),
+            _graphStatus(Status.dexName, myStatus.dex),
           ],
         );
       },
@@ -244,16 +193,16 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステータス群の中断行のレイアウトを作成
   ///
-  Widget _widgetStatusForSecondRow() {
+  Widget _rowStatusSecond() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final myStatus = viewModel.findMyStatus();
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _widgetStatusGraph(Status.agiName, myStatus.agi),
-            _widgetStatusGraph(Status.intName, myStatus.intelligence),
-            _widgetStatusGraph(Status.spiName, myStatus.spirit),
+            _graphStatus(Status.agiName, myStatus.agi),
+            _graphStatus(Status.intName, myStatus.intelligence),
+            _graphStatus(Status.spiName, myStatus.spirit),
           ],
         );
       },
@@ -263,15 +212,15 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステータス群の下段行のレイアウトを作成
   ///
-  Widget _widgetStatusForThirdRow() {
+  Widget _rowStatusThird() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final myStatus = viewModel.findMyStatus();
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _widgetStatusGraph(Status.loveName, myStatus.love),
-            _widgetStatusGraph(Status.attrName, myStatus.attr),
+            _graphStatus(Status.loveName, myStatus.love),
+            _graphStatus(Status.attrName, myStatus.attr),
           ],
         );
       },
@@ -281,7 +230,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステータスのグラフ表示処理
   ///
-  Widget _widgetStatusGraph(String statusName, int currentStatus) {
+  Widget _graphStatus(String statusName, int currentStatus) {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final statusUpperLimit = viewModel.getStatusUpperLimit(statusName);
@@ -317,6 +266,76 @@ class CharDetailPage extends StatelessWidget {
     return Text(
       diffWithLimit.toString(),
       style: TextStyle(color: diffColor, fontSize: 18.0),
+    );
+  }
+
+  ///
+  /// ステータス編集のfab
+  ///
+  Widget _editStatusFab(BuildContext context) {
+    return Consumer<CharDetailViewModel>(
+      builder: (_, viewModel, child) {
+        final myStatus = viewModel.findMyStatus();
+        return FloatingActionButton(
+          child: const Icon(Icons.edit),
+          onPressed: () async {
+            final isSaved = await Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => CharStatusEditPage(myStatus)),
+                ) ??
+                false;
+            if (isSaved) {
+              SagaLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
+              viewModel.refreshStatus();
+            }
+          },
+        );
+      },
+    );
+  }
+
+  ///
+  /// 下のメニュー
+  ///
+  Widget _appBarContent() {
+    return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
+      return BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 4.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(padding: EdgeInsets.only(left: 16.0)),
+            _haveCharacterIcon(context, viewModel),
+            Padding(padding: EdgeInsets.only(left: 16.0)),
+            _favoriteIcon(context, viewModel),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _haveCharacterIcon(BuildContext context, CharDetailViewModel viewModel) {
+    final myStatus = viewModel.findMyStatus();
+    final color = myStatus.have ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+    return IconButton(
+      icon: Icon(Icons.check, color: color),
+      iconSize: 28.0,
+      onPressed: () {
+        viewModel.saveHaveCharacter(!myStatus.have);
+      },
+    );
+  }
+
+  Widget _favoriteIcon(BuildContext context, CharDetailViewModel viewModel) {
+    final myStatus = viewModel.findMyStatus();
+    final color = myStatus.favorite ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+    final icon = myStatus.favorite ? Icons.favorite : Icons.favorite_border;
+    return IconButton(
+      icon: Icon(icon, color: color),
+      iconSize: 28.0,
+      onPressed: () {
+        viewModel.saveFavorite(!myStatus.favorite);
+      },
     );
   }
 }

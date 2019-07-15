@@ -7,6 +7,8 @@ import '../../model/stage.dart';
 import '../../data/status_repository.dart';
 import '../../data/stage_repository.dart';
 
+import '../../common/saga_logger.dart';
+
 class CharDetailViewModel extends foundation.ChangeNotifier {
   CharDetailViewModel(this.character, {StageRepository stageRepo, StatusRepository statusRepo})
       : _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
@@ -115,5 +117,19 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
       default:
         return 0;
     }
+  }
+
+  void saveHaveCharacter(bool haveChar) async {
+    SagaLogger.d("このキャラの保持を $haveChar にします。");
+    _myStatus.have = haveChar;
+    await _statusRepository.save(_myStatus);
+    notifyListeners();
+  }
+
+  void saveFavorite(bool favorite) async {
+    SagaLogger.d("お気に入りを $favorite にします。");
+    _myStatus.favorite = favorite;
+    await _statusRepository.save(_myStatus);
+    notifyListeners();
   }
 }
