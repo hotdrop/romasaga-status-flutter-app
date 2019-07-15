@@ -19,22 +19,27 @@ class CharStatusEditPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text("ステータス編集"),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 24.0),
-            _rowFirst(),
-            const SizedBox(height: 24.0),
-            _rowSecond(),
-            const SizedBox(height: 24.0),
-            _rowThird(),
-            const SizedBox(height: 24.0),
-            _rowFourth(),
-            const SizedBox(height: 24.0),
-            _widgetSaveButton(context),
-          ],
-        ),
+        resizeToAvoidBottomPadding: false,
+        body: _widgetContents(context),
       ),
+    );
+  }
+
+  Widget _widgetContents(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        const SizedBox(height: 24.0),
+        _rowFirst(),
+        const SizedBox(height: 24.0),
+        _rowSecond(),
+        const SizedBox(height: 24.0),
+        _rowThird(),
+        const SizedBox(height: 24.0),
+        _rowFourth(),
+        const SizedBox(height: 24.0),
+        _widgetSaveButton(context),
+      ],
     );
   }
 
