@@ -29,6 +29,15 @@ class StatusSource {
     }
   }
 
+  Future<List<MyStatus>> findAll() async {
+    final db = await DBProvider.instance.database;
+    final results = await db.query(StatusEntity.tableName);
+
+    List<StatusEntity> entities = results.isNotEmpty ? results.map((it) => StatusEntity.fromMap(it)).toList() : [];
+
+    return entities.map((entity) => Mapper.toMyStatus(entity)).toList();
+  }
+
   Future<MyStatus> find(String charName) async {
     final db = await DBProvider.instance.database;
     final result = await db.query(StatusEntity.tableName, where: '${StatusEntity.columnCharName} = ?', whereArgs: [charName]);

@@ -1,4 +1,5 @@
 import 'weapon.dart';
+import 'status.dart';
 
 class Character {
   final String name;
@@ -7,10 +8,12 @@ class Character {
   final WeaponType weaponType;
   final String iconFileName;
   final List<Style> styles;
+  MyStatus myStatus;
 
   Character(this.name, this.title, this.production, String weaponType, this.iconFileName)
       : this.weaponType = WeaponType(weaponType),
-        this.styles = [];
+        this.styles = [],
+        this.myStatus = MyStatus.empty(name);
 
   WeaponCategory get weaponCategory => weaponType.category;
 

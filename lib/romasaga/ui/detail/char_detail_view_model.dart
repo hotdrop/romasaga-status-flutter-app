@@ -43,6 +43,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
   void load() async {
     _stages = await _stageRepository.findAll();
+    // TODO mystatusはcharacterに入ったのでこれいらないかも・・
     _myStatus = await _statusRepository.find(character.name);
 
     _selectedStage = _stages.first;
