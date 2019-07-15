@@ -119,8 +119,8 @@ class CharStatusEditPage extends StatelessWidget {
     return Consumer<CharStatusEditViewModel>(
       builder: (_, viewModel, child) {
         return OutlineButton.icon(
-          textColor: Colors.blue,
-          borderSide: BorderSide(color: Colors.blue),
+          textColor: Theme.of(context).accentColor,
+          borderSide: BorderSide(color: Theme.of(context).accentColor),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.0)),
           onPressed: () async {
             await viewModel.saveNewStatus();

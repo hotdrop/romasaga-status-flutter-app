@@ -1,5 +1,18 @@
 class StatusEntity {
-  StatusEntity(this.charName, this.hp, this.str, this.vit, this.dex, this.agi, this.intelligence, this.spirit, this.love, this.attr);
+  StatusEntity(
+    this.charName,
+    this.hp,
+    this.str,
+    this.vit,
+    this.dex,
+    this.agi,
+    this.intelligence,
+    this.spirit,
+    this.love,
+    this.attr,
+    this.have,
+    this.favorite,
+  );
 
   StatusEntity.fromMap(Map<String, dynamic> map)
       : id = map[columnId],
@@ -12,7 +25,9 @@ class StatusEntity {
         intelligence = map[columnInt],
         spirit = map[columnSpirit],
         love = map[columnLove],
-        attr = map[columnAttr];
+        attr = map[columnAttr],
+        have = map[columnHave],
+        favorite = map[columnFavorite];
 
   static const String tableName = 'Status';
   static const String createTableSql = '''
@@ -27,7 +42,9 @@ class StatusEntity {
         $columnInt INTEGER,
         $columnSpirit INTEGER,
         $columnLove INTEGER,
-        $columnAttr INTEGER
+        $columnAttr INTEGER,
+        $columnHave INTEGER,
+        $columnFavorite INTEGER,
       )
       ''';
 
@@ -64,6 +81,12 @@ class StatusEntity {
   static const String columnAttr = 'attr';
   final int attr;
 
+  static const String columnHave = 'have';
+  final bool have;
+
+  static const String columnFavorite = 'favorite';
+  final bool favorite;
+
   Map<String, dynamic> toMap() {
     var map;
     map = <String, dynamic>{
@@ -77,6 +100,8 @@ class StatusEntity {
       columnSpirit: spirit,
       columnLove: love,
       columnAttr: attr,
+      columnHave: have,
+      columnFavorite: favorite,
     };
 
     if (id != null) {

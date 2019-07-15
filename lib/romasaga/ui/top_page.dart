@@ -16,7 +16,6 @@ class _TopPageState extends State<TopPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(color: Colors.white),
         child: Center(child: _showBottomMenu(_currentIndex)),
       ),
       bottomNavigationBar: FancyBottomNavigation(

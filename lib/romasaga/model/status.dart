@@ -1,5 +1,16 @@
 abstract class Status {
-  const Status(this.charName, this.hp, this.str, this.vit, this.dex, this.agi, this.intelligence, this.spirit, this.love, this.attr);
+  const Status(
+    this.charName,
+    this.hp,
+    this.str,
+    this.vit,
+    this.dex,
+    this.agi,
+    this.intelligence,
+    this.spirit,
+    this.love,
+    this.attr,
+  );
 
   final String charName;
   final int hp;
@@ -35,9 +46,17 @@ class MyStatus extends Status {
     int spirit,
     int love,
     int attr,
+    this.have,
+    this.favorite,
   ) : super(charName, hp, str, vit, dex, agi, intelligence, spirit, love, attr);
 
-  MyStatus.empty(charName) : super(charName, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  MyStatus.empty(charName)
+      : this.have = false,
+        this.favorite = false,
+        super(charName, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+  bool have;
+  bool favorite;
 }
 
 class StyleStatus extends Status {

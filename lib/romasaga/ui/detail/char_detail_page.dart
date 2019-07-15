@@ -65,18 +65,23 @@ class CharDetailPage extends StatelessWidget {
     return BottomAppBar(
       shape: CircularNotchedRectangle(),
       notchMargin: 4.0,
-      color: Colors.lightBlueAccent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Padding(padding: EdgeInsets.only(left: 16.0)),
           IconButton(
-            icon: Icon(Icons.check),
+            icon: Icon(
+              Icons.check,
+              color: Colors.greenAccent,
+            ),
             onPressed: () {},
           ),
           Padding(padding: EdgeInsets.only(left: 16.0)),
           IconButton(
-            icon: Icon(Icons.favorite_border),
+            icon: Icon(
+              Icons.favorite_border,
+              color: Colors.redAccent,
+            ),
             onPressed: () {},
           ),
         ],
@@ -294,17 +299,22 @@ class CharDetailPage extends StatelessWidget {
   }
 
   Widget _textGrowthParam(int statusUpperLimit, int currentStatus) {
-    final int growth = currentStatus - statusUpperLimit;
+    final int diffWithLimit = currentStatus - statusUpperLimit;
 
-    TextStyle growthStyle;
-    if (growth >= -2) {
-      growthStyle = TextStyle(color: Colors.blue, fontSize: 18.0);
+    Color diffColor;
+    if (currentStatus == 0) {
+      diffColor = Colors.white;
+    } else if (diffWithLimit <= -10) {
+      diffColor = Colors.red;
+    } else if (diffWithLimit >= -6 && diffWithLimit < -3) {
+      diffColor = Colors.greenAccent;
     } else {
-      growthStyle = TextStyle(color: Colors.red, fontSize: 18.0);
+      diffColor = Colors.lightBlueAccent;
     }
+
     return Text(
-      growth.toString(),
-      style: growthStyle,
+      diffWithLimit.toString(),
+      style: TextStyle(color: diffColor, fontSize: 18.0),
     );
   }
 }

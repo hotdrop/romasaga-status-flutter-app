@@ -57,6 +57,8 @@ class Mapper {
       status.spirit,
       status.love,
       status.attr,
+      status.have,
+      status.favorite,
     );
   }
 
@@ -72,6 +74,8 @@ class Mapper {
       entity.spirit,
       entity.love,
       entity.attr,
+      entity.have,
+      entity.favorite,
     );
   }
 }

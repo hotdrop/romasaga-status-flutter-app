@@ -14,6 +14,8 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
         _newSpi = currentStatus.spirit,
         _newLove = currentStatus.love,
         _newAttr = currentStatus.attr,
+        _have = currentStatus.have,
+        _favorite = currentStatus.favorite,
         _statusRepository = (statusRepo == null) ? StatusRepository() : statusRepo;
 
   final StatusRepository _statusRepository;
@@ -28,6 +30,9 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
   int _newSpi;
   int _newLove;
   int _newAttr;
+
+  bool _have;
+  bool _favorite;
 
   void updateStatus(String statusName, int newStatus) {
     switch (statusName) {
@@ -73,6 +78,8 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
       _newSpi,
       _newLove,
       _newAttr,
+      _have,
+      _favorite,
     );
     await _statusRepository.save(newStatus);
   }
