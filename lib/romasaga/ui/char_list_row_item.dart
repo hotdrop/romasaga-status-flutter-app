@@ -21,25 +21,21 @@ class CharListRowItem extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: _widgetThumbnail(character),
+                  child: _imageIcon(character),
                   flex: 2,
                 ),
                 Expanded(
-                  child: _widgetName(character, context),
+                  child: _nameOverview(character, context),
                   flex: 5,
                 ),
                 Expanded(
-                  child: _widgetWeaponType(character),
-                  flex: 1,
+                  child: _weaponTypeIcon(character),
+                  flex: 2,
                 ),
                 Expanded(
-                  child: _widgetStyles(character, context),
+                  child: _styleIcons(character, context),
                   flex: 3,
                 ),
-                Expanded(
-                  child: _widgetHaveIcon(character),
-                  flex: 1,
-                )
               ],
             )),
         onTap: () {
@@ -54,14 +50,14 @@ class CharListRowItem extends StatelessWidget {
     );
   }
 
-  Container _widgetThumbnail(Character character) {
+  Container _imageIcon(Character character) {
     return Container(
       margin: const EdgeInsets.only(right: 16.0),
       child: RomasagaIcon.character(character.iconFileName),
     );
   }
 
-  Column _widgetName(Character character, BuildContext context) {
+  Column _nameOverview(Character character, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -77,7 +73,7 @@ class CharListRowItem extends StatelessWidget {
     );
   }
 
-  Column _widgetWeaponType(Character character) {
+  Column _weaponTypeIcon(Character character) {
     return Column(
       children: <Widget>[
         Row(
@@ -94,31 +90,19 @@ class CharListRowItem extends StatelessWidget {
     return RomasagaIcon.weapon(type);
   }
 
-  Column _widgetStyles(Character character, BuildContext context) {
+  Column _styleIcons(Character character, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
-          children: _widgetStyleIcons(character),
+          children: _createStyleIcons(character),
         )
       ],
     );
   }
 
-  List<Widget> _widgetStyleIcons(Character character) {
+  List<Widget> _createStyleIcons(Character character) {
     final ranks = character.getStyleRanks(distinct: true);
     return ranks.map((rank) => RomasagaIcon.rank(rank)).toList();
-  }
-
-  Column _widgetHaveIcon(Character character) {
-    return Column(
-      children: <Widget>[
-        Row(
-          // TODO これ微妙
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[Icon(Icons.check)],
-        )
-      ],
-    );
   }
 }
