@@ -152,7 +152,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _rowStatusHp() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        final myStatus = viewModel.findMyStatus();
+        final myStatus = viewModel.getMyStatus();
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -177,7 +177,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _rowStatusFirst() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        final myStatus = viewModel.findMyStatus();
+        final myStatus = viewModel.getMyStatus();
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -196,7 +196,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _rowStatusSecond() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        final myStatus = viewModel.findMyStatus();
+        final myStatus = viewModel.getMyStatus();
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -215,7 +215,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _rowStatusThird() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        final myStatus = viewModel.findMyStatus();
+        final myStatus = viewModel.getMyStatus();
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -275,7 +275,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _editStatusFab(BuildContext context) {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        final myStatus = viewModel.findMyStatus();
+        final myStatus = viewModel.getMyStatus();
         return FloatingActionButton(
           child: const Icon(Icons.edit),
           onPressed: () async {
@@ -315,7 +315,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   Widget _haveCharacterIcon(BuildContext context, CharDetailViewModel viewModel) {
-    final myStatus = viewModel.findMyStatus();
+    final myStatus = viewModel.getMyStatus();
     final color = myStatus.have ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
     return IconButton(
       icon: Icon(Icons.check, color: color),
@@ -327,7 +327,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   Widget _favoriteIcon(BuildContext context, CharDetailViewModel viewModel) {
-    final myStatus = viewModel.findMyStatus();
+    final myStatus = viewModel.getMyStatus();
     final color = myStatus.favorite ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
     final icon = myStatus.favorite ? Icons.favorite : Icons.favorite_border;
     return IconButton(

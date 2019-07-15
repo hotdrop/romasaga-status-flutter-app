@@ -19,7 +19,6 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   final StatusRepository _statusRepository;
   final Character character;
 
-  MyStatus _myStatus;
   List<Stage> _stages;
 
   String _selectedRank;
@@ -33,25 +32,18 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     return _stages;
   }
 
-  MyStatus findMyStatus() {
-    if (_myStatus == null) {
-      return MyStatus.empty(character.name);
-    }
-
-    return _myStatus;
+  MyStatus getMyStatus() {
+    return character.myStatus;
   }
 
   void load() async {
     _stages = await _stageRepository.findAll();
-    // TODO mystatusはcharacterに入ったのでこれいらないかも・・
-    _myStatus = await _statusRepository.find(character.name);
-
     _selectedStage = _stages.first;
     _calcStatusUpperLimits();
   }
 
   void refreshStatus() async {
-    _myStatus = await _statusRepository.find(character.name);
+    character.myStatus = await _statusRepository.find(character.name);
     _calcStatusUpperLimits();
   }
 
@@ -122,15 +114,15 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
   void saveHaveCharacter(bool haveChar) async {
     SagaLogger.d("このキャラの保持を $haveChar にします。");
-    _myStatus.have = haveChar;
-    await _statusRepository.save(_myStatus);
+    character.myStatus.have = haveChar;
+    await _statusRepository.save(character.myStatus);
     notifyListeners();
   }
 
   void saveFavorite(bool favorite) async {
     SagaLogger.d("お気に入りを $favorite にします。");
-    _myStatus.favorite = favorite;
-    await _statusRepository.save(_myStatus);
+    character.myStatus.favorite = favorite;
+    await _statusRepository.save(character.myStatus);
     notifyListeners();
   }
 }
