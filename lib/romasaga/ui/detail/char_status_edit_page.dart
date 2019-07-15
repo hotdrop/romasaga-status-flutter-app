@@ -17,7 +17,7 @@ class CharStatusEditPage extends StatelessWidget {
       builder: (_) => CharStatusEditViewModel(_myStatus),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ステータス編集"),
+          title: const Text('ステータス編集'),
         ),
         resizeToAvoidBottomPadding: false,
         body: _widgetContents(context),
@@ -100,9 +100,9 @@ class CharStatusEditPage extends StatelessWidget {
                   border: OutlineInputBorder(),
                   labelText: statusName,
                   filled: true,
-                  counterText: "",
+                  counterText: '',
                 ),
-                initialValue: currentStatus != 0 ? currentStatus.toString() : "",
+                initialValue: currentStatus != 0 ? currentStatus.toString() : '',
                 onChanged: (String value) {
                   final toIntValue = int.tryParse(value, radix: 10) ?? 0;
                   viewModel.updateStatus(statusName, toIntValue);
@@ -128,7 +128,7 @@ class CharStatusEditPage extends StatelessWidget {
           },
           icon: Icon(Icons.save),
           label: Text(
-            "保存",
+            '保存',
             style: TextStyle(fontSize: 16.0),
           ),
         );

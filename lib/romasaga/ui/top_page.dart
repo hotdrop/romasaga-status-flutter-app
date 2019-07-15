@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 
 import 'char_list_tab.dart';
-import 'otayori/letter_tab.dart';
+import 'letter/letter_tab.dart';
 
 class TopPage extends StatefulWidget {
   @override
@@ -21,10 +21,10 @@ class _TopPageState extends State<TopPage> {
       ),
       bottomNavigationBar: FancyBottomNavigation(
           tabs: [
-            TabData(iconData: Icons.person, title: "Char"),
-            TabData(iconData: Icons.search, title: "Search"),
-            TabData(iconData: Icons.settings, title: "Setting"),
-            TabData(iconData: Icons.mail, title: "Letter")
+            TabData(iconData: Icons.person, title: 'Char'),
+            TabData(iconData: Icons.search, title: 'Search'),
+            TabData(iconData: Icons.settings, title: 'Setting'),
+            TabData(iconData: Icons.mail, title: 'Letter')
           ],
           initialSelection: 0,
           onTabChangedListener: (position) {
@@ -35,7 +35,6 @@ class _TopPageState extends State<TopPage> {
     );
   }
 
-  // TODO お便りページ追加する
   Widget _showBottomMenu(int index) {
     switch (index) {
       case 0:
@@ -45,7 +44,7 @@ class _TopPageState extends State<TopPage> {
       default:
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[Text("未実装")],
+          children: <Widget>[Text('未実装')],
         );
     }
   }

@@ -18,6 +18,7 @@ dependencies:
   path_provider: ^1.1.0
   percent_indicator: ^2.1.1
   fancy_bottom_navigation: ^0.3.2
+  logger: ^0.7.0
 
 dev_dependencies:
   flutter_test:

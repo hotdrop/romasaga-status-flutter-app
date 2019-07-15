@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 
 import '../../model/stage.dart';
+import '../../common/saga_logger.dart';
 
 class StageApi {
   static final StageApi _instance = StageApi._();
@@ -18,7 +19,7 @@ class StageApi {
         return _convert(allLine);
       });
     } on IOException catch (e) {
-      print('Error! $e');
+      SagaLogger.e('ステージデータの取得時にエラーが発生しました。', e);
       throw e;
     }
   }
@@ -31,8 +32,7 @@ class StageApi {
       final items = line.split(',');
 
       if (items.length < 2) {
-        // TODO ロガーライブラリ使うべき。Timberみたいなのが欲しい
-        print('[debug] error not split size less than 2. items size = ${items.length} line = $line');
+        SagaLogger.d('ステージデータの項目数が13未満です。カンマ区切りの項目数 = ${items.length} line = $line');
         continue;
       }
 

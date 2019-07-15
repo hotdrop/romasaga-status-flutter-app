@@ -7,26 +7,26 @@ class StageEntity {
         statusUpperLimit = map[columnAddLimit],
         itemOrder = map[columnOrder];
 
-  static const String tableName = "Stage";
-  static const String createTableSql = """
+  static const String tableName = 'Stage';
+  static const String createTableSql = '''
       CREATE TABLE $tableName (
         $columnId INTEGER PRIMARY KEY autoincrement,
         $columnName TEXT,
         $columnAddLimit INTEGER,
         $columnOrder INTEGER
       )
-      """;
+      ''';
 
-  static const String columnId = "id";
+  static const String columnId = 'id';
   int id;
 
-  static const String columnName = "name";
+  static const String columnName = 'name';
   final String name;
 
-  static const String columnAddLimit = "status_upper_limit";
+  static const String columnAddLimit = 'status_upper_limit';
   final int statusUpperLimit;
 
-  static const String columnOrder = "item_order";
+  static const String columnOrder = 'item_order';
   final int itemOrder;
 
   Map<String, dynamic> toMap() {

@@ -14,8 +14,8 @@ class StatusEntity {
         love = map[columnLove],
         attr = map[columnAttr];
 
-  static const String tableName = "Status";
-  static const String createTableSql = """
+  static const String tableName = 'Status';
+  static const String createTableSql = '''
       CREATE TABLE $tableName (
         $columnId INTEGER PRIMARY KEY autoincrement,
         $columnCharName TEXT,
@@ -29,39 +29,39 @@ class StatusEntity {
         $columnLove INTEGER,
         $columnAttr INTEGER
       )
-      """;
+      ''';
 
-  static const String columnId = "id";
+  static const String columnId = 'id';
   int id;
 
-  static const String columnCharName = "char_name";
+  static const String columnCharName = 'char_name';
   final String charName;
 
-  static const String columnHp = "hp";
+  static const String columnHp = 'hp';
   final int hp;
 
-  static const String columnStr = "str";
+  static const String columnStr = 'str';
   final int str;
 
-  static const String columnVit = "vit";
+  static const String columnVit = 'vit';
   final int vit;
 
-  static const String columnDex = "dex";
+  static const String columnDex = 'dex';
   final int dex;
 
-  static const String columnAgi = "agi";
+  static const String columnAgi = 'agi';
   final int agi;
 
-  static const String columnInt = "intelligence";
+  static const String columnInt = 'intelligence';
   final int intelligence;
 
-  static const String columnSpirit = "spirit";
+  static const String columnSpirit = 'spirit';
   final int spirit;
 
-  static const String columnLove = "love";
+  static const String columnLove = 'love';
   final int love;
 
-  static const String columnAttr = "attr";
+  static const String columnAttr = 'attr';
   final int attr;
 
   Map<String, dynamic> toMap() {

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 
 import '../../model/character.dart';
+import '../../common/saga_logger.dart';
 
 class RomasagaApi {
   static final RomasagaApi _instance = RomasagaApi._();
@@ -18,7 +19,7 @@ class RomasagaApi {
         return _convert(allLine);
       });
     } on IOException catch (e) {
-      print('Error! $e');
+      SagaLogger.e('キャラデータ取得時にエラーが発生しました。', e);
       throw e;
     }
   }
@@ -31,8 +32,7 @@ class RomasagaApi {
       final items = line.split(',');
 
       if (items.length < 13) {
-        // TODO ロガーライブラリ使うべき。Timberみたいなのが欲しい
-        print('[debug] error not split size less than 13. items size = ${items.length} line = $line');
+        SagaLogger.w('キャラデータの項目数が13未満です。カンマ区切りの項目数 = ${items.length} line = $line');
         continue;
       }
 

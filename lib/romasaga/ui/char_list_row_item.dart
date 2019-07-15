@@ -4,7 +4,7 @@ import 'detail/char_detail_page.dart';
 import '../model/character.dart';
 import '../model/weapon.dart';
 
-import 'common/romasagaIcon.dart';
+import 'widget/romasaga_icon.dart';
 
 class CharListRowItem extends StatelessWidget {
   final Character character;
@@ -114,6 +114,7 @@ class CharListRowItem extends StatelessWidget {
     return Column(
       children: <Widget>[
         Row(
+          // TODO これ微妙
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[Icon(Icons.check)],
         )

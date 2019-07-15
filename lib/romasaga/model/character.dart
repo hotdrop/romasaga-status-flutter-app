@@ -65,9 +65,9 @@ class Style {
 
   const Style(this.rank, this.str, this.vit, this.dex, this.agi, this.intelligence, this.spirit, this.love, this.attr);
 
-  static const String rankSS = "SS";
-  static const String rankS = "S";
-  static const String rankA = "A";
+  static const String rankSS = 'SS';
+  static const String rankS = 'S';
+  static const String rankA = 'A';
 
   static int rankSort(String first, String second) {
     final firstPriority = (first == rankA) ? 1 : (first == rankS) ? 2 : 3;

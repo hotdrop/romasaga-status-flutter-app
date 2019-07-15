@@ -20,7 +20,6 @@ class CharListViewModel extends foundation.ChangeNotifier {
 
   void load() async {
     _characters = await _repository.findAll();
-    // TODO mystatusもここで取得して合体させる
     notifyListeners();
   }
 }

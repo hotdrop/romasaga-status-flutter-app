@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../model/character.dart' show Style;
-import '../common/romasagaIcon.dart';
+import 'romasaga_icon.dart';
 
 @immutable
 class RankChoiceChip extends StatefulWidget {

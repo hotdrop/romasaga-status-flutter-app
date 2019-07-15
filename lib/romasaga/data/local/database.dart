@@ -26,7 +26,7 @@ class DBProvider {
 
   Future<Database> _initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, "romasaga.db");
+    final path = join(documentsDirectory.path, 'romasaga.db');
 
     return await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
       db.execute(CharacterEntity.createTableSql);

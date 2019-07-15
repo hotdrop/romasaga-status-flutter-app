@@ -33,23 +33,23 @@ class WeaponType {
   }
 
   // type detail
-  static const String sword = "剣";
-  static const String largeSword = "大剣";
-  static const String axe = "斧";
+  static const String sword = '剣';
+  static const String largeSword = '大剣';
+  static const String axe = '斧';
 
-  static const String hummer = "棍棒";
-  static const String knuckle = "体術";
-  static const String gun = "銃";
+  static const String hummer = '棍棒';
+  static const String knuckle = '体術';
+  static const String gun = '銃';
 
-  static const String rapier = "小剣";
-  static const String spear = "槍";
-  static const String bow = "弓";
+  static const String rapier = '小剣';
+  static const String spear = '槍';
+  static const String bow = '弓';
 
-  static const String magicFire = "火術";
-  static const String magicWater = "水術";
-  static const String magicWind = "風術";
-  static const String magicYin = "陰術";
-  static const String magicShine = "光術";
+  static const String magicFire = '火術';
+  static const String magicWater = '水術';
+  static const String magicWind = '風術';
+  static const String magicYin = '陰術';
+  static const String magicShine = '光術';
 }
 
 enum WeaponCategory {

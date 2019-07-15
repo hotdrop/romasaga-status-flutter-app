@@ -41,7 +41,7 @@ class StatusCircleIndicator {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
         ),
         Text(
-          (status != 0) ? status.toString() : "ー",
+          (status != 0) ? status.toString() : 'ー',
           style: TextStyle(fontWeight: FontWeight.bold, color: statusColor, fontSize: 20.0),
         )
       ],

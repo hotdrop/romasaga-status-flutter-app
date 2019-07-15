@@ -8,9 +8,11 @@ import '../../model/status.dart';
 import 'char_detail_view_model.dart';
 import 'char_status_edit_page.dart';
 
-import '../common/romasagaIcon.dart';
+import '../widget/romasaga_icon.dart';
 import '../widget/rank_choice_chip.dart';
 import '../widget/status_circle_indicator.dart';
+
+import '../../common/saga_logger.dart';
 
 class CharDetailPage extends StatelessWidget {
   CharDetailPage({Key key, @required this.character}) : super(key: key);
@@ -23,7 +25,7 @@ class CharDetailPage extends StatelessWidget {
       builder: (_) => CharDetailViewModel(character)..load(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("キャラクター詳細"),
+          title: Text('キャラクター詳細'),
         ),
         body: Padding(
           padding: EdgeInsets.all(16.0),
@@ -50,7 +52,7 @@ class CharDetailPage extends StatelessWidget {
                 ) ??
                 false;
             if (isSaved) {
-              print("詳細画面で値が保存されたのでステータスを更新します");
+              SagaLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
               viewModel.refreshStatus();
             }
           },
@@ -171,10 +173,10 @@ class CharDetailPage extends StatelessWidget {
             DropdownButton<String>(
               items: baseStatusList.map((baseStatus) {
                 final String showLimit =
-                    (baseStatus.statusUpperLimit > 0) ? "+${baseStatus.statusUpperLimit}" : baseStatus.statusUpperLimit.toString();
+                    (baseStatus.statusUpperLimit > 0) ? '+${baseStatus.statusUpperLimit}' : baseStatus.statusUpperLimit.toString();
                 return DropdownMenuItem<String>(
                   value: baseStatus.name,
-                  child: Text("${baseStatus.name} ($showLimit)"),
+                  child: Text('${baseStatus.name} ($showLimit)'),
                 );
               }).toList(),
               onChanged: (value) {

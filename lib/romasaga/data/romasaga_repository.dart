@@ -1,6 +1,7 @@
 import 'local/character_source.dart';
 import 'remote/romasaga_api.dart';
 import '../model/character.dart';
+import '../common/saga_logger.dart';
 
 class RomasagaRepository {
   final CharacterSource _localDataSource;
@@ -14,13 +15,12 @@ class RomasagaRepository {
     var characters = await _localDataSource.findAll();
 
     if (characters.isEmpty) {
-      // TODO ロガーライブラリ使うべき。Timberみたいなのが欲しい
-      print("[debung] DBが0件なのでリモートから取得");
+      SagaLogger.d('DBが0件なのでリモートから取得');
       characters = await _styleApi.findAll();
       _localDataSource.save(characters);
     }
 
-    print("[debung] データ取得完了 件数=${characters.length}");
+    SagaLogger.d('データ取得完了 件数=${characters.length}');
     return characters;
   }
 }
