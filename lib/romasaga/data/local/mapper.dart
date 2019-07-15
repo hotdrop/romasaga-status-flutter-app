@@ -74,7 +74,7 @@ class Mapper {
       entity.spirit,
       entity.love,
       entity.attr,
-      entity.have == StatusEntity.haveChar ? true : false,
+      entity.charHave == StatusEntity.haveChar ? true : false,
       entity.favorite == StatusEntity.isFavorite ? true : false,
     );
   }

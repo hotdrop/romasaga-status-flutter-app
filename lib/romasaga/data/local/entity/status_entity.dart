@@ -10,7 +10,7 @@ class StatusEntity {
     this.spirit,
     this.love,
     this.attr,
-    this.have,
+    this.charHave,
     this.favorite,
   );
 
@@ -26,7 +26,7 @@ class StatusEntity {
         spirit = map[columnSpirit],
         love = map[columnLove],
         attr = map[columnAttr],
-        have = map[columnHave],
+        charHave = map[columnHaveChar],
         favorite = map[columnFavorite];
 
   static const String tableName = 'Status';
@@ -43,7 +43,7 @@ class StatusEntity {
         $columnSpirit INTEGER,
         $columnLove INTEGER,
         $columnAttr INTEGER,
-        $columnHave INTEGER,
+        $columnHaveChar INTEGER,
         $columnFavorite INTEGER
       )
       ''';
@@ -81,10 +81,10 @@ class StatusEntity {
   static const String columnAttr = 'attr';
   final int attr;
 
-  static const String columnHave = 'have';
+  static const String columnHaveChar = 'have_char';
   static const int haveChar = 1;
   static const int notHaveChar = 0;
-  final int have;
+  final int charHave;
 
   static const String columnFavorite = 'favorite';
   static const int isFavorite = 1;
@@ -104,7 +104,7 @@ class StatusEntity {
       columnSpirit: spirit,
       columnLove: love,
       columnAttr: attr,
-      columnHave: have,
+      columnHaveChar: charHave,
       columnFavorite: favorite,
     };
 
