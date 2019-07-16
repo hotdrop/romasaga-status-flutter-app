@@ -16,7 +16,7 @@ class RomasagaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Romansing SaGa App',
-      theme: ThemeData.dark(),
+      theme: ThemeData.dark().copyWith(accentColor: Colors.blue),
       home: TopPage(),
     );
   }

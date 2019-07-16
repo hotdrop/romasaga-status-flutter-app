@@ -26,6 +26,7 @@ class _TopPageState extends State<TopPage> {
             TabData(iconData: Icons.mail, title: 'Letter')
           ],
           initialSelection: 0,
+          circleColor: Colors.white30,
           onTabChangedListener: (position) {
             setState(() {
               _currentIndex = position;
