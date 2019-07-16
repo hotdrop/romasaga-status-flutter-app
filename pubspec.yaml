@@ -1,4 +1,4 @@
-name: romansing_saga_app
+name: rsapp
 description: A new Flutter application.
 
 version: 1.0.0+1
@@ -26,9 +26,19 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons: ^0.7.2+1
+
+flutter_icons:
+  image_path_android: "res/launcher/icon.png"
+  image_path_ios: "res/launcher/icon.png"
+  android: true
+  ios: true
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "res/launcher/adaptive_icon_foreground.png"
 
 flutter:
   uses-material-design: true
+
   assets:
     - res/romasaga.txt
     - res/status_upper_limit.txt
