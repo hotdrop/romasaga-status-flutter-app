@@ -90,7 +90,7 @@ class CharDetailPage extends StatelessWidget {
           ],
         ),
         Padding(
-          padding: EdgeInsets.only(bottom: 32.0),
+          padding: EdgeInsets.only(bottom: 16.0),
         ),
       ],
     );
@@ -162,7 +162,7 @@ class CharDetailPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 16.0),
                 ),
-                StatusCircleIndicator.large(Status.hpName, myStatus.hp, 0),
+                StatusCircleIndicator.normal(Status.hpName, myStatus.hp, 0),
               ],
             ),
           ],
