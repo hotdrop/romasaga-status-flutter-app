@@ -26,7 +26,7 @@ class WeaponType {
       case magicYin:
         return WeaponCategory.dark;
       case magicShine:
-        return WeaponCategory.dark;
+        return WeaponCategory.light;
       default:
         return null;
     }
