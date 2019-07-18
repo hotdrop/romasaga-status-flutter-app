@@ -63,7 +63,6 @@ class CharDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Image.asset(
-          // TODO gifにしたい。。
           'res/charIcons/${character.iconFileName}',
         ),
         Row(

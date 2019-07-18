@@ -16,15 +16,15 @@ class CharListTab extends StatelessWidget {
               title: Text('キャラクター一覧'),
               bottom: TabBar(tabs: <Tab>[
                 Tab(text: 'お気に入り'),
-                Tab(text: '手持ち'),
-                Tab(text: '全て'),
+                Tab(text: '所持'),
+                Tab(text: '未所持'),
               ]),
             ),
             body: TabBarView(
               children: <Widget>[
                 _favoriteTab(viewModel),
                 _haveCharTab(viewModel),
-                _allCharTab(viewModel),
+                _notHaveCharTab(viewModel),
               ],
             ),
           ),
@@ -72,9 +72,9 @@ class CharListTab extends StatelessWidget {
     });
   }
 
-  Widget _allCharTab(CharListViewModel viewModel) {
+  Widget _notHaveCharTab(CharListViewModel viewModel) {
     return ListView.builder(itemBuilder: (BuildContext context, int index) {
-      final characters = viewModel.findAll();
+      final characters = viewModel.findNotHaveCharacter();
       if (index < characters.length) {
         return CharListRowItem(
           character: characters[index],

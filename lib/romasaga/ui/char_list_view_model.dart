@@ -48,6 +48,19 @@ class CharListViewModel extends foundation.ChangeNotifier {
     return haveCharacters;
   }
 
+  List<Character> findNotHaveCharacter() {
+    if (_characters == null) {
+      return [];
+    }
+
+    final haveCharacters = _characters.where((character) => !character.myStatus.have).toList();
+    if (haveCharacters.isEmpty) {
+      return [];
+    }
+
+    return haveCharacters;
+  }
+
   void load() async {
     _characters = await _romasagaRepository.findAll();
     final statusList = await _statusRepository.findAll();
