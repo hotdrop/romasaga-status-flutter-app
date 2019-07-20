@@ -19,7 +19,9 @@ class SearchListTab extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: _appBarTitleArea(),
-          leading: _searchIcon(),
+          actions: <Widget>[
+            _searchIcon(),
+          ],
         ),
         body: _searchResultList(),
       ),
