@@ -18,7 +18,7 @@ class StageRepository {
       SagaLogger.d('DBが0件なのでリモートから取得');
       stages = await _baseStatusApi.findAll();
       _localDataSource.save(stages);
-      stages.sort((e1, e2) => (e1.itemOrder > e2.itemOrder) ? -1 : 1);
+      stages.sort((e1, e2) => (e1.order > e2.order) ? -1 : 1);
     }
 
     SagaLogger.d('データ取得完了 件数=${stages.length}');

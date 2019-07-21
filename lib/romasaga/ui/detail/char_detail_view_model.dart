@@ -77,14 +77,14 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
     _statusUpperLimit = Style(
       _selectedRank,
-      style.str + _selectedStage.statusUpperLimit,
-      style.vit + _selectedStage.statusUpperLimit,
-      style.dex + _selectedStage.statusUpperLimit,
-      style.agi + _selectedStage.statusUpperLimit,
-      style.intelligence + _selectedStage.statusUpperLimit,
-      style.spirit + _selectedStage.statusUpperLimit,
-      style.love + _selectedStage.statusUpperLimit,
-      style.attr + _selectedStage.statusUpperLimit,
+      style.str + _selectedStage.limit,
+      style.vit + _selectedStage.limit,
+      style.dex + _selectedStage.limit,
+      style.agi + _selectedStage.limit,
+      style.intelligence + _selectedStage.limit,
+      style.spirit + _selectedStage.limit,
+      style.love + _selectedStage.limit,
+      style.attr + _selectedStage.limit,
     );
     notifyListeners();
   }

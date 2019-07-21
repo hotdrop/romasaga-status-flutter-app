@@ -1,7 +1,7 @@
 class Stage {
   final String name;
-  final int statusUpperLimit;
-  final int itemOrder;
+  final int limit;
+  final int order;
 
-  Stage(this.name, this.statusUpperLimit, this.itemOrder);
+  const Stage(this.name, this.limit, this.order);
 }

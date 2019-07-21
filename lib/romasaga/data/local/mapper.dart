@@ -8,7 +8,7 @@ import 'entity/stage_entity.dart';
 
 class Mapper {
   static StageEntity toStageEntity(Stage model) {
-    return StageEntity(model.name, model.statusUpperLimit, model.itemOrder);
+    return StageEntity(model.name, model.limit, model.order);
   }
 
   static Stage toStage(StageEntity entity) {

@@ -127,8 +127,7 @@ class CharDetailPage extends StatelessWidget {
           children: <Widget>[
             DropdownButton<String>(
               items: baseStatusList.map((baseStatus) {
-                final String showLimit =
-                    (baseStatus.statusUpperLimit > 0) ? '+${baseStatus.statusUpperLimit}' : baseStatus.statusUpperLimit.toString();
+                final String showLimit = (baseStatus.limit > 0) ? '+${baseStatus.limit}' : baseStatus.limit.toString();
                 return DropdownMenuItem<String>(
                   value: baseStatus.name,
                   child: Text('${baseStatus.name} ($showLimit)'),
