@@ -12,7 +12,6 @@ dependencies:
 
   # UI
   percent_indicator: ^2.1.1
-  fancy_bottom_navigation: ^0.3.2
 
   # Design
   provider: ^3.0.0
