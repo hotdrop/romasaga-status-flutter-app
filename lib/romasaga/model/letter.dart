@@ -33,7 +33,7 @@ class Letter {
   static final String februaryTitle = '2月 バレンタイン';
   static final String marchTitle = '3月 皆で楽しいひな祭り段';
   static final String aprilTitle = '4月 サガフロ勢で花見';
-  static final String mayTitle = '5月 詩人と最終皇帝女の日常';
+  static final String mayTitle = '5月 初春の詩人と最終皇帝女';
   static final String juneTitle = '6月 ハーフアニバーサリー';
   static final String julyTitle = '7月 アザミサービス';
 }

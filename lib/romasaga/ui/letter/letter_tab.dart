@@ -25,10 +25,10 @@ class LetterTab extends StatelessWidget {
 
   List<Widget> _widgetLetterButtons(BuildContext context) {
     var letterButtons = <Widget>[];
-    LetterType.values.forEach((type) {
+    for (var type in LetterType.values) {
       letterButtons.add(_letterButton(context, type));
       letterButtons.add(const SizedBox(height: 16.0));
-    });
+    }
     return letterButtons;
   }
 

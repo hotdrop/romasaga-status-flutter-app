@@ -27,7 +27,7 @@ class StageApi {
   }
 
   StagesJsonObject _parseJson(String json) {
-    Map jsonMap = jsonDecode(json);
+    final jsonMap = jsonDecode(json);
     final results = StagesJsonObject.fromJson(jsonMap);
     SagaLogger.d("Stageをパースしました。 size=${results.stages.length}");
     return results;

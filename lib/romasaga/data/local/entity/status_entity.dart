@@ -92,8 +92,7 @@ class StatusEntity {
   final int favorite;
 
   Map<String, dynamic> toMap() {
-    var map;
-    map = <String, dynamic>{
+    final map = <String, dynamic>{
       columnCharName: charName,
       columnHp: hp,
       columnStr: str,

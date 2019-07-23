@@ -17,11 +17,11 @@ class Mapper {
 
   static List<CharacterEntity> toCharacterEntities(Character c) {
     final entities = <CharacterEntity>[];
-    c.styles.forEach((style) {
+    for (var style in c.styles) {
       final entity = CharacterEntity(c.name, c.title, c.production, c.weaponType.name, style.rank, style.str, style.vit, style.dex, style.agi,
           style.intelligence, style.spirit, style.love, style.attr, c.iconFileName);
       entities.add(entity);
-    });
+    }
     return entities;
   }
 
@@ -30,8 +30,8 @@ class Mapper {
       return [];
     }
 
-    final characterMap = Map<String, Character>();
-    entities.forEach((entity) {
+    final characterMap = <String, Character>{};
+    for (var entity in entities) {
       if (characterMap.containsKey(entity.name)) {
         final c = characterMap[entity.name];
         c.addStyle(entity.rank, entity.str, entity.vit, entity.dex, entity.agi, entity.intelligence, entity.spirit, entity.love, entity.attr);
@@ -41,7 +41,7 @@ class Mapper {
         c.addStyle(entity.rank, entity.str, entity.vit, entity.dex, entity.agi, entity.intelligence, entity.spirit, entity.love, entity.attr);
         characterMap[entity.name] = c;
       }
-    });
+    }
     return characterMap.values.toList();
   }
 

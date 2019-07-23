@@ -9,6 +9,7 @@ class CharListTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<CharListViewModel>(
       builder: (context, viewModel, child) {
+
         return DefaultTabController(
           length: 3,
           child: Scaffold(
@@ -35,6 +36,7 @@ class CharListTab extends StatelessWidget {
 
   Widget _favoriteTab(CharListViewModel viewModel) {
     final characters = viewModel.findFavorite();
+
     if (characters.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -54,6 +56,7 @@ class CharListTab extends StatelessWidget {
 
   Widget _haveCharTab(CharListViewModel viewModel) {
     final characters = viewModel.findHaveCharacter();
+
     if (characters.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -63,6 +66,7 @@ class CharListTab extends StatelessWidget {
 
     return ListView.builder(itemBuilder: (BuildContext context, int index) {
       final characters = viewModel.findHaveCharacter();
+
       if (index < characters.length) {
         return CharListRowItem(
           character: characters[index],
@@ -75,6 +79,7 @@ class CharListTab extends StatelessWidget {
   Widget _notHaveCharTab(CharListViewModel viewModel) {
     return ListView.builder(itemBuilder: (BuildContext context, int index) {
       final characters = viewModel.findNotHaveCharacter();
+      
       if (index < characters.length) {
         return CharListRowItem(
           character: characters[index],

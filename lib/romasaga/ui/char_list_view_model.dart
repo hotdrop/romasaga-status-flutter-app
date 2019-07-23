@@ -66,9 +66,10 @@ class CharListViewModel extends foundation.ChangeNotifier {
     final statusList = await _statusRepository.findAll();
 
     if (statusList.isNotEmpty) {
-      statusList.forEach((status) {
-        _characters.firstWhere((character) => character.name == status.charName).myStatus = status;
-      });
+      for (var status in statusList) {
+        var targetStatus = _characters.firstWhere((character) => character.name == status.charName);
+        targetStatus.myStatus = status;
+      }
     }
 
     notifyListeners();

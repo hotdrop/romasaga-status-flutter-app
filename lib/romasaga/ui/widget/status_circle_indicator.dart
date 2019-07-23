@@ -52,7 +52,7 @@ class StatusCircleIndicator {
     int diffWithLimit = currentStatus - statusUpperLimit;
     if (currentStatus == 0) {
       return Colors.black;
-    } else if (diffWithLimit <= -10) {
+    } else if (diffWithLimit < -6) {
       return Colors.redAccent;
     } else if (diffWithLimit >= -6 && diffWithLimit < -3) {
       return Colors.greenAccent;

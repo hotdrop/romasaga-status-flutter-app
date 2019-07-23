@@ -14,8 +14,7 @@ class StatusRepository {
 
   Future<MyStatus> find(String charName) async {
     SagaLogger.d('$charName のmystatusをfindします');
-    var status = await _localDataSource.find(charName) ?? MyStatus.empty(charName);
-    return status;
+    return await _localDataSource.find(charName) ?? MyStatus.empty(charName);
   }
 
   Future<void> save(MyStatus status) async {

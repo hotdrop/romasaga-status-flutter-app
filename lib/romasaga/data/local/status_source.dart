@@ -32,8 +32,7 @@ class StatusSource {
   Future<List<MyStatus>> findAll() async {
     final db = await DBProvider.instance.database;
     final results = await db.query(StatusEntity.tableName);
-
-    List<StatusEntity> entities = results.isNotEmpty ? results.map((it) => StatusEntity.fromMap(it)).toList() : [];
+    final entities = results.isNotEmpty ? results.map((it) => StatusEntity.fromMap(it)).toList() : [];
 
     return entities.map((entity) => Mapper.toMyStatus(entity)).toList();
   }
@@ -48,7 +47,8 @@ class StatusSource {
     }
 
     SagaLogger.d('  statusを取得しました。');
-    StatusEntity entity = StatusEntity.fromMap(result.first);
+
+    final entity = StatusEntity.fromMap(result.first);
     return Mapper.toMyStatus(entity);
   }
 }

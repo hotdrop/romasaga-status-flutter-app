@@ -1,14 +1,14 @@
 import 'weapon.dart';
 
 class SearchCondition {
-  String keyword = "";
+  
+  String keyword;
   WeaponType weaponType;
-
   bool favorite;
   bool haveChar;
 
   bool filterWord(String name) {
-    return (keyword == "" || name.contains(keyword));
+    return (keyword == null || name.contains(keyword));
   }
 
   bool filterFavorite(bool fav) {

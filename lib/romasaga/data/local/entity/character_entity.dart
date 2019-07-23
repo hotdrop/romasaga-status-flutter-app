@@ -86,8 +86,7 @@ class CharacterEntity {
   final String iconFileName;
 
   Map<String, dynamic> toMap() {
-    var map;
-    map = <String, dynamic>{
+    final map = <String, dynamic>{
       columnName: name,
       columnTitle: title,
       columnProduction: production,

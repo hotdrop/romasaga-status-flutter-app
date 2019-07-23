@@ -1,5 +1,5 @@
 class WeaponType {
-  WeaponType(this.name);
+  const WeaponType(this.name);
 
   final String name;
 

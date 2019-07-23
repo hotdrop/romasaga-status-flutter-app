@@ -15,7 +15,7 @@ import '../widget/status_circle_indicator.dart';
 import '../../common/saga_logger.dart';
 
 class CharDetailPage extends StatelessWidget {
-  CharDetailPage({Key key, @required this.character}) : super(key: key);
+  CharDetailPage({@required this.character});
 
   final Character character;
 
@@ -44,7 +44,7 @@ class CharDetailPage extends StatelessWidget {
   /// 詳細画面に表示する各レイアウトを束ねる役割を担当
   ///
   List<Widget> contentLayout(BuildContext context) {
-    List<Widget> layouts = [];
+    final layouts = <Widget>[];
     layouts.add(_overviewContents(context));
     layouts.add(_styleChips());
     layouts.add(_stageDropDownList());
@@ -105,10 +105,11 @@ class CharDetailPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             RankChoiceChip(
-                ranks: character.getStyleRanks(),
-                onSelectedListener: (String rank) {
-                  viewModel.saveSelectedRank(rank);
-                }),
+              ranks: character.getStyleRanks(),
+              onSelectedListener: (String rank) {
+                viewModel.saveSelectedRank(rank);
+              }
+            ),
           ],
         );
       },
@@ -122,12 +123,14 @@ class CharDetailPage extends StatelessWidget {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final baseStatusList = viewModel.findStages();
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             DropdownButton<String>(
               items: baseStatusList.map((baseStatus) {
-                final String showLimit = (baseStatus.limit > 0) ? '+${baseStatus.limit}' : baseStatus.limit.toString();
+                final showLimit = (baseStatus.limit > 0) ? '+${baseStatus.limit}' : baseStatus.limit.toString();
+                
                 return DropdownMenuItem<String>(
                   value: baseStatus.name,
                   child: Text('${baseStatus.name} ($showLimit)'),
@@ -151,6 +154,7 @@ class CharDetailPage extends StatelessWidget {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final myStatus = viewModel.getMyStatus();
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -176,6 +180,7 @@ class CharDetailPage extends StatelessWidget {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final myStatus = viewModel.getMyStatus();
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -195,6 +200,7 @@ class CharDetailPage extends StatelessWidget {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final myStatus = viewModel.getMyStatus();
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -214,6 +220,7 @@ class CharDetailPage extends StatelessWidget {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final myStatus = viewModel.getMyStatus();
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -274,6 +281,7 @@ class CharDetailPage extends StatelessWidget {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         final myStatus = viewModel.getMyStatus();
+
         return FloatingActionButton(
           child: Icon(Icons.edit, color: Theme.of(context).accentColor),
           backgroundColor: Colors.white30,
@@ -316,6 +324,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _haveCharacterIcon(BuildContext context, CharDetailViewModel viewModel) {
     final myStatus = viewModel.getMyStatus();
     final color = myStatus.have ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+
     return IconButton(
       icon: Icon(Icons.check, color: color),
       iconSize: 28.0,
@@ -329,6 +338,7 @@ class CharDetailPage extends StatelessWidget {
     final myStatus = viewModel.getMyStatus();
     final color = myStatus.favorite ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
     final icon = myStatus.favorite ? Icons.favorite : Icons.favorite_border;
+    
     return IconButton(
       icon: Icon(icon, color: color),
       iconSize: 28.0,

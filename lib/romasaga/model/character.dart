@@ -7,12 +7,11 @@ class Character {
   final String production; // 登場作品
   final WeaponType weaponType;
   final String iconFileName;
-  final List<Style> styles;
+  final List<Style> styles = [];
   MyStatus myStatus;
 
   Character(this.name, this.title, this.production, String weaponType, this.iconFileName)
       : this.weaponType = WeaponType(weaponType),
-        this.styles = [],
         this.myStatus = MyStatus.empty(name);
 
   WeaponCategory get weaponCategory => weaponType.category;
@@ -37,7 +36,7 @@ class Character {
 
   List<String> _getNormalRanks() {
     final ranks = <String>[];
-    styles.forEach((style) {
+    for (var style in styles) {
       if (style.rank.contains(Style.rankSS)) {
         ranks.add(Style.rankSS);
       } else if (style.rank.contains(Style.rankS)) {
@@ -45,12 +44,12 @@ class Character {
       } else {
         ranks.add(Style.rankA);
       }
-    });
+    }
     return ranks;
   }
 
   Iterable<String> _distinct(List<String> lst) {
-    Set<String> s = Set();
+    final s = Set<String>();
     return lst.where((e) => s.add(e));
   }
 }

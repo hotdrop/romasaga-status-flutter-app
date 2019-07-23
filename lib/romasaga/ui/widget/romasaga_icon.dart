@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../model/character.dart';
 import '../../model/weapon.dart';
 
+import '../../common/saga_logger.dart';
+
 class RomasagaIcon {
   ///
   /// キャラクターアイコン
@@ -71,11 +73,8 @@ class RomasagaIcon {
       case WeaponType.magicShine:
         return _imageIcon(res: 'res/icons/icon_weap_rod.png', iconSize: iconSize);
       default:
-        // 本当はここにきたらエラーにすべきだが・・
-        return CircleAvatar(
-          child: Text("？"),
-          backgroundColor: Colors.white,
-        );
+        SagaLogger.d("不正なWeaponTypeです。weaponType=${weaponType.name}");
+        throw FormatException("不正なWeaponTypeです。weaponType=${weaponType.name}");
     }
   }
 
@@ -101,7 +100,8 @@ class RomasagaIcon {
       case WeaponCategory.light:
         return _imageIcon(res: 'res/icons/icon_type_light.png');
       default:
-        return Text("");
+        SagaLogger.d("不正なWeaponCategoryです。category=${category}");
+        throw FormatException("不正なWeaponCategoryです。category=${category}");
     }
   }
 

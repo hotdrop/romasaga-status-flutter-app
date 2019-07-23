@@ -30,8 +30,7 @@ class StageEntity {
   final int itemOrder;
 
   Map<String, dynamic> toMap() {
-    var map;
-    map = <String, dynamic>{columnName: name, columnAddLimit: statusUpperLimit, columnOrder: itemOrder};
+    final map = <String, dynamic>{columnName: name, columnAddLimit: statusUpperLimit, columnOrder: itemOrder};
 
     if (id != null) {
       map[columnId] = id;

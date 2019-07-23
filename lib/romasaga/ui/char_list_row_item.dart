@@ -10,7 +10,7 @@ class CharListRowItem extends StatelessWidget {
   final Character character;
   final int index;
 
-  const CharListRowItem({this.character, this.index});
+  const CharListRowItem({@required this.character, this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +20,10 @@ class CharListRowItem extends StatelessWidget {
             padding: EdgeInsets.all(8.0),
             child: Row(
               children: <Widget>[
-                Expanded(
-                  child: _imageIcon(character),
-                  flex: 2,
-                ),
-                Expanded(
-                  child: _nameOverview(character, context),
-                  flex: 5,
-                ),
-                Expanded(
-                  child: _weaponTypeIcon(character),
-                  flex: 2,
-                ),
-                Expanded(
-                  child: _styleIcons(character, context),
-                  flex: 3,
-                ),
+                Expanded(child: _imageIcon(character), flex: 2),
+                Expanded(child: _nameOverview(character, context), flex: 5),
+                Expanded(child: _weaponTypeIcon(character), flex: 2),
+                Expanded(child: _styleIcons(character, context), flex: 3),
               ],
             )),
         onTap: () {

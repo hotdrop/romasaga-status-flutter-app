@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -25,7 +23,7 @@ class DBProvider {
   }
 
   Future<Database> _initDB() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, 'romasaga.db');
 
     return await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
