@@ -57,6 +57,10 @@ class MyStatus extends Status {
 
   bool have;
   bool favorite;
+
+  int sumWithoutHp() {
+    return str + vit + dex + agi + intelligence + spirit + love + attr;
+  }
 }
 
 class StyleStatus extends Status {

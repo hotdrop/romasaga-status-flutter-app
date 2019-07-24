@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../widget/custom_text_field.dart';
 
+// ignore: must_be_immutable
 class StatusTextField extends StatelessWidget {
   StatusTextField(this._statusName, this._currentStatus, this._onChanged, {FocusNode nextFocusNode}) : _nextFocusNode = nextFocusNode;
 

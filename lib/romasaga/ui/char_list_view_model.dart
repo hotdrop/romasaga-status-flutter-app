@@ -14,6 +14,20 @@ class CharListViewModel extends foundation.ChangeNotifier {
       : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
         _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
+  void load() async {
+    _characters = await _characterRepository.findAll();
+    final myStatuses = await _myStatusRepository.findAll();
+
+    if (myStatuses.isNotEmpty) {
+      for (var status in myStatuses) {
+        var targetStatus = _characters.firstWhere((character) => character.id == status.id);
+        targetStatus.myStatus = status;
+      }
+    }
+
+    notifyListeners();
+  }
+
   List<Character> findAll() {
     if (_characters == null) {
       return [];
@@ -59,19 +73,5 @@ class CharListViewModel extends foundation.ChangeNotifier {
     }
 
     return haveCharacters;
-  }
-
-  void load() async {
-    _characters = await _characterRepository.findAll();
-    final myStatuses = await _myStatusRepository.findAll();
-
-    if (myStatuses.isNotEmpty) {
-      for (var status in myStatuses) {
-        var targetStatus = _characters.firstWhere((character) => character.id == status.id);
-        targetStatus.myStatus = status;
-      }
-    }
-
-    notifyListeners();
   }
 }

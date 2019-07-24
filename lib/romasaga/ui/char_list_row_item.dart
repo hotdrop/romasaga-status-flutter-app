@@ -22,8 +22,8 @@ class CharListRowItem extends StatelessWidget {
               children: <Widget>[
                 Expanded(child: _imageIcon(character), flex: 2),
                 Expanded(child: _nameOverview(character, context), flex: 5),
-                Expanded(child: _weaponTypeIcon(character), flex: 2), // TODO これちょっとみる
-//                Expanded(child: _styleIcons(character, context), flex: 3),
+                Expanded(child: _weaponTypeIcon(character), flex: 2),
+                Expanded(child: _labelStatus(character, context), flex: 4),
               ],
             )),
         onTap: () {
@@ -65,7 +65,7 @@ class CharListRowItem extends StatelessWidget {
     return Column(
       children: <Widget>[
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _convertWeaponIcon(character.weaponType),
           ],
@@ -78,19 +78,7 @@ class CharListRowItem extends StatelessWidget {
     return RomasagaIcon.weapon(type);
   }
 
-//  Column _styleIcons(Character character, BuildContext context) {
-//    return Column(
-//      crossAxisAlignment: CrossAxisAlignment.start,
-//      children: <Widget>[
-//        Row(
-//          children: _createStyleIcons(character),
-//        )
-//      ],
-//    );
-//  }
-
-//  List<Widget> _createStyleIcons(Character character) {
-//    final ranks = character.getStyleRanks(distinct: true);
-//    return ranks.map((rank) => RomasagaIcon.rank(rank)).toList();
-//  }
+  Widget _labelStatus(Character character, BuildContext context) {
+    return Text("合計ステ: ${character.getTotalStatus()}");
+  }
 }

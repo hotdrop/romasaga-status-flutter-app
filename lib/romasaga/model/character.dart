@@ -44,4 +44,8 @@ class Character {
   Style getStyle(String rank) {
     return styles.firstWhere((style) => style.rank == rank);
   }
+
+  int getTotalStatus() {
+    return myStatus.sumWithoutHp();
+  }
 }
