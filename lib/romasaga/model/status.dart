@@ -1,6 +1,6 @@
 abstract class Status {
   const Status(
-    this.charName,
+    this.id,
     this.hp,
     this.str,
     this.vit,
@@ -12,7 +12,7 @@ abstract class Status {
     this.attr,
   );
 
-  final String charName;
+  final int id;
   final int hp;
   final int str;
   final int vit;
@@ -36,7 +36,7 @@ abstract class Status {
 
 class MyStatus extends Status {
   MyStatus(
-    String charName,
+    int id,
     int hp,
     int str,
     int vit,
@@ -48,12 +48,12 @@ class MyStatus extends Status {
     int attr,
     this.have,
     this.favorite,
-  ) : super(charName, hp, str, vit, dex, agi, intelligence, spirit, love, attr);
+  ) : super(id, hp, str, vit, dex, agi, intelligence, spirit, love, attr);
 
-  MyStatus.empty(charName)
+  MyStatus.empty(id)
       : this.have = false,
         this.favorite = false,
-        super(charName, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        super(id, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
   bool have;
   bool favorite;
@@ -61,6 +61,7 @@ class MyStatus extends Status {
 
 class StyleStatus extends Status {
   StyleStatus(
+    int id,
     int str,
     int vit,
     int dex,
@@ -69,7 +70,7 @@ class StyleStatus extends Status {
     int spirit,
     int love,
     int attr,
-  ) : super('', 0, str, vit, dex, agi, intelligence, spirit, love, attr);
+  ) : super(id, 0, str, vit, dex, agi, intelligence, spirit, love, attr);
 
-  StyleStatus.empty() : super('', 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  StyleStatus.empty(int id) : super(id, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }

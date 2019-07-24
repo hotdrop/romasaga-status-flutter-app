@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../model/character.dart';
+import '../../model/style.dart';
 import '../../model/weapon.dart';
 
 import '../../common/saga_logger.dart';
@@ -100,8 +100,8 @@ class RomasagaIcon {
       case WeaponCategory.light:
         return _imageIcon(res: 'res/icons/icon_type_light.png');
       default:
-        SagaLogger.d("不正なWeaponCategoryです。category=${category}");
-        throw FormatException("不正なWeaponCategoryです。category=${category}");
+        SagaLogger.d("不正なWeaponCategoryです。category=$category");
+        throw FormatException("不正なWeaponCategoryです。category=$category");
     }
   }
 

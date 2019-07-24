@@ -3,8 +3,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 import 'entity/character_entity.dart';
+import 'entity/style_entity.dart';
 import 'entity/stage_entity.dart';
-import 'entity/status_entity.dart';
+import 'entity/my_status_entity.dart';
 
 class DBProvider {
   static final DBProvider instance = DBProvider._();
@@ -28,8 +29,9 @@ class DBProvider {
 
     return await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
       db.execute(CharacterEntity.createTableSql);
+      db.execute(StyleEntity.createTableSql);
       db.execute(StageEntity.createTableSql);
-      db.execute(StatusEntity.createTableSql);
+      db.execute(MyStatusEntity.createTableSql);
     });
   }
 }

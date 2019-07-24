@@ -22,8 +22,8 @@ class CharListRowItem extends StatelessWidget {
               children: <Widget>[
                 Expanded(child: _imageIcon(character), flex: 2),
                 Expanded(child: _nameOverview(character, context), flex: 5),
-                Expanded(child: _weaponTypeIcon(character), flex: 2),
-                Expanded(child: _styleIcons(character, context), flex: 3),
+                Expanded(child: _weaponTypeIcon(character), flex: 2), // TODO これちょっとみる
+//                Expanded(child: _styleIcons(character, context), flex: 3),
               ],
             )),
         onTap: () {
@@ -41,7 +41,7 @@ class CharListRowItem extends StatelessWidget {
   Container _imageIcon(Character character) {
     return Container(
       margin: const EdgeInsets.only(right: 16.0),
-      child: RomasagaIcon.character(character.iconFileName),
+      child: RomasagaIcon.character(character.selectedIconFileName),
     );
   }
 
@@ -54,7 +54,7 @@ class CharListRowItem extends StatelessWidget {
           style: Theme.of(context).textTheme.subhead,
         ),
         Text(
-          character.title,
+          character.production,
           style: Theme.of(context).textTheme.caption,
         )
       ],
@@ -78,19 +78,19 @@ class CharListRowItem extends StatelessWidget {
     return RomasagaIcon.weapon(type);
   }
 
-  Column _styleIcons(Character character, BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: _createStyleIcons(character),
-        )
-      ],
-    );
-  }
+//  Column _styleIcons(Character character, BuildContext context) {
+//    return Column(
+//      crossAxisAlignment: CrossAxisAlignment.start,
+//      children: <Widget>[
+//        Row(
+//          children: _createStyleIcons(character),
+//        )
+//      ],
+//    );
+//  }
 
-  List<Widget> _createStyleIcons(Character character) {
-    final ranks = character.getStyleRanks(distinct: true);
-    return ranks.map((rank) => RomasagaIcon.rank(rank)).toList();
-  }
+//  List<Widget> _createStyleIcons(Character character) {
+//    final ranks = character.getStyleRanks(distinct: true);
+//    return ranks.map((rank) => RomasagaIcon.rank(rank)).toList();
+//  }
 }

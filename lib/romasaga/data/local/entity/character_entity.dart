@@ -1,53 +1,21 @@
 class CharacterEntity {
-  CharacterEntity(this.name, this.title, this.production, this.weaponType, this.rank, this.str, this.vit, this.dex, this.agi, this.intelligence,
-      this.spirit, this.love, this.attr, this.iconFileName);
-
-  CharacterEntity.fromMap(Map<String, dynamic> map)
-      : id = map[columnId],
-        name = map[columnName],
-        title = map[columnTitle],
-        production = map[columnProduction],
-        weaponType = map[columnWeaponType],
-        rank = map[columnRank],
-        str = map[columnStr],
-        vit = map[columnVit],
-        dex = map[columnDex],
-        agi = map[columnAgi],
-        intelligence = map[columnInt],
-        spirit = map[columnSpirit],
-        love = map[columnLove],
-        attr = map[columnAttr],
-        iconFileName = map[columnIconFileName];
-
   static const String tableName = 'Character';
   static const String createTableSql = '''
       CREATE TABLE $tableName (
-        $columnId INTEGER PRIMARY KEY autoincrement,
+        $columnId INTEGER,
         $columnName TEXT,
-        $columnTitle TEXT,
         $columnProduction TEXT,
         $columnWeaponType TEXT,
-        $columnRank TEXT,
-        $columnStr INTEGER,
-        $columnVit INTEGER,
-        $columnDex INTEGER,
-        $columnAgi INTEGER,
-        $columnInt INTEGER,
-        $columnSpirit INTEGER,
-        $columnLove INTEGER,
-        $columnAttr INTEGER,
-        $columnIconFileName TEXT
+        $columnSelectedStyleRank TEXT,
+        $columnSelectedIconFileName TEXT
       )
       ''';
 
   static const String columnId = 'id';
-  int id;
+  final int id;
 
   static const String columnName = 'name';
   final String name;
-
-  static const String columnTitle = 'title';
-  final String title;
 
   static const String columnProduction = 'production';
   final String production;
@@ -55,58 +23,37 @@ class CharacterEntity {
   static const String columnWeaponType = 'weapon_type';
   final String weaponType;
 
-  static const String columnRank = 'rank';
-  final String rank;
+  static const String columnSelectedStyleRank = 'selected_style_rank';
+  final String selectedStyleRank;
 
-  static const String columnStr = 'str';
-  final int str;
+  static const String columnSelectedIconFileName = 'selected_icon_file_name';
+  final String selectedIconFileName;
 
-  static const String columnVit = 'vit';
-  final int vit;
+  CharacterEntity(
+    this.id,
+    this.name,
+    this.production,
+    this.weaponType,
+    this.selectedStyleRank,
+    this.selectedIconFileName,
+  );
 
-  static const String columnDex = 'dex';
-  final int dex;
-
-  static const String columnAgi = 'agi';
-  final int agi;
-
-  static const String columnInt = 'intelligence';
-  final int intelligence;
-
-  static const String columnSpirit = 'spirit';
-  final int spirit;
-
-  static const String columnLove = 'love';
-  final int love;
-
-  static const String columnAttr = 'attr';
-  final int attr;
-
-  static const String columnIconFileName = 'file_name';
-  final String iconFileName;
+  CharacterEntity.fromMap(Map<String, dynamic> map)
+      : id = map[columnId],
+        name = map[columnName],
+        production = map[columnProduction],
+        weaponType = map[columnWeaponType],
+        selectedStyleRank = map[columnSelectedStyleRank],
+        selectedIconFileName = map[columnSelectedIconFileName];
 
   Map<String, dynamic> toMap() {
-    final map = <String, dynamic>{
+    return <String, dynamic>{
+      columnId: id,
       columnName: name,
-      columnTitle: title,
       columnProduction: production,
       columnWeaponType: weaponType,
-      columnRank: rank,
-      columnStr: str,
-      columnVit: vit,
-      columnDex: dex,
-      columnAgi: agi,
-      columnInt: intelligence,
-      columnSpirit: spirit,
-      columnLove: love,
-      columnAttr: attr,
-      columnIconFileName: iconFileName,
+      columnSelectedStyleRank: selectedStyleRank,
+      columnSelectedIconFileName: selectedIconFileName,
     };
-
-    if (id != null) {
-      map[columnId] = id;
-    }
-
-    return map;
   }
 }

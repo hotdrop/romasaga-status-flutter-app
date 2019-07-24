@@ -1,39 +1,8 @@
-class StatusEntity {
-  StatusEntity(
-    this.charName,
-    this.hp,
-    this.str,
-    this.vit,
-    this.dex,
-    this.agi,
-    this.intelligence,
-    this.spirit,
-    this.love,
-    this.attr,
-    this.charHave,
-    this.favorite,
-  );
-
-  StatusEntity.fromMap(Map<String, dynamic> map)
-      : id = map[columnId],
-        charName = map[columnCharName],
-        hp = map[columnHp],
-        str = map[columnStr],
-        vit = map[columnVit],
-        dex = map[columnDex],
-        agi = map[columnAgi],
-        intelligence = map[columnInt],
-        spirit = map[columnSpirit],
-        love = map[columnLove],
-        attr = map[columnAttr],
-        charHave = map[columnHaveChar],
-        favorite = map[columnFavorite];
-
-  static const String tableName = 'Status';
+class MyStatusEntity {
+  static const String tableName = 'MyStatus';
   static const String createTableSql = '''
       CREATE TABLE $tableName (
-        $columnId INTEGER PRIMARY KEY autoincrement,
-        $columnCharName TEXT,
+        $columnId INTEGER,
         $columnHp INTEGER,
         $columnStr INTEGER,
         $columnVit INTEGER,
@@ -49,10 +18,7 @@ class StatusEntity {
       ''';
 
   static const String columnId = 'id';
-  int id;
-
-  static const String columnCharName = 'char_name';
-  final String charName;
+  final int id;
 
   static const String columnHp = 'hp';
   final int hp;
@@ -91,9 +57,38 @@ class StatusEntity {
   static const int notFavorite = 0;
   final int favorite;
 
+  MyStatusEntity(
+    this.id,
+    this.hp,
+    this.str,
+    this.vit,
+    this.dex,
+    this.agi,
+    this.intelligence,
+    this.spirit,
+    this.love,
+    this.attr,
+    this.charHave,
+    this.favorite,
+  );
+
+  MyStatusEntity.fromMap(Map<String, dynamic> map)
+      : id = map[columnId],
+        hp = map[columnHp],
+        str = map[columnStr],
+        vit = map[columnVit],
+        dex = map[columnDex],
+        agi = map[columnAgi],
+        intelligence = map[columnInt],
+        spirit = map[columnSpirit],
+        love = map[columnLove],
+        attr = map[columnAttr],
+        charHave = map[columnHaveChar],
+        favorite = map[columnFavorite];
+
   Map<String, dynamic> toMap() {
-    final map = <String, dynamic>{
-      columnCharName: charName,
+    return <String, dynamic>{
+      columnId: id,
       columnHp: hp,
       columnStr: str,
       columnVit: vit,
@@ -106,11 +101,5 @@ class StatusEntity {
       columnHaveChar: charHave,
       columnFavorite: favorite,
     };
-
-    if (id != null) {
-      map[columnId] = id;
-    }
-
-    return map;
   }
 }

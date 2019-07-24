@@ -42,7 +42,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - res/romasaga.txt
     - res/json/
     - res/icons/
     - res/charIcons/

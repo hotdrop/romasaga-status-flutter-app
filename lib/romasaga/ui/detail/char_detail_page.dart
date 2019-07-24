@@ -17,27 +17,41 @@ import '../../common/saga_logger.dart';
 class CharDetailPage extends StatelessWidget {
   CharDetailPage({@required this.character});
 
+  // これただのIDにして再取得したほうがよさそう。
   final Character character;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<CharDetailViewModel>(
       builder: (_) => CharDetailViewModel(character)..load(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('キャラクター詳細'),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: ListView(
-            children: contentLayout(context),
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: _editStatusFab(context),
-        bottomNavigationBar: _appBarContent(),
-      ),
+      child: _body(),
     );
+  }
+
+  Widget _body() {
+    return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
+      if (viewModel.isLoading) {
+        SagaLogger.d("ロード中です。");
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      } else {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('キャラクター詳細'),
+          ),
+          body: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: ListView(
+              children: contentLayout(context),
+            ),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          floatingActionButton: _editStatusFab(context),
+          bottomNavigationBar: _appBarContent(),
+        );
+      }
+    });
   }
 
   ///
@@ -46,6 +60,7 @@ class CharDetailPage extends StatelessWidget {
   List<Widget> contentLayout(BuildContext context) {
     final layouts = <Widget>[];
     layouts.add(_overviewContents(context));
+    layouts.add(_styleIcons());
     layouts.add(_styleChips());
     layouts.add(_stageDropDownList());
     layouts.add(_rowStatusHp());
@@ -56,15 +71,12 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// キャラクターの名前や肩書き、武器種別などのレイアウトを作成
+  /// キャラクターの名前と武器種別などのレイアウトを作成
   ///
   Widget _overviewContents(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Image.asset(
-          'res/charIcons/${character.iconFileName}',
-        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -73,10 +85,6 @@ class CharDetailPage extends StatelessWidget {
               style: Theme.of(context).textTheme.headline,
             ),
           ],
-        ),
-        Text(
-          character.title,
-          style: TextStyle(color: Colors.grey, fontSize: 16.0),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -96,6 +104,27 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
+  /// スタイルのアイコンを表示
+  ///
+  Widget _styleIcons() {
+    return Consumer<CharDetailViewModel>(
+      builder: (_, viewModel, child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // TODO ここも変える
+            RomasagaIcon.character(viewModel.getSelectedIconFileName()),
+            Text(
+              viewModel.getSelectedStyleTitle(),
+              style: TextStyle(color: Colors.grey, fontSize: 16.0),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  ///
   /// スタイル比較のレイアウトを作成
   ///
   Widget _styleChips() {
@@ -105,11 +134,11 @@ class CharDetailPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             RankChoiceChip(
-              ranks: character.getStyleRanks(),
-              onSelectedListener: (String rank) {
-                viewModel.saveSelectedRank(rank);
-              }
-            ),
+                ranks: viewModel.getAllRanks(),
+                initSelectedRank: viewModel.getSelectedRank(),
+                onSelectedListener: (String rank) {
+                  viewModel.saveSelectedRank(rank);
+                }),
           ],
         );
       },
@@ -122,24 +151,24 @@ class CharDetailPage extends StatelessWidget {
   Widget _stageDropDownList() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        final baseStatusList = viewModel.findStages();
+        final stages = viewModel.findStages();
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             DropdownButton<String>(
-              items: baseStatusList.map((baseStatus) {
-                final showLimit = (baseStatus.limit > 0) ? '+${baseStatus.limit}' : baseStatus.limit.toString();
-                
+              items: stages.map((stage) {
+                final showLimit = (stage.limit > 0) ? '+${stage.limit}' : stage.limit.toString();
+
                 return DropdownMenuItem<String>(
-                  value: baseStatus.name,
-                  child: Text('${baseStatus.name} ($showLimit)'),
+                  value: stage.name,
+                  child: Text('${stage.name} ($showLimit)'),
                 );
               }).toList(),
               onChanged: (value) {
                 viewModel.saveSelectedStage(value);
               },
-              value: viewModel.getSelectedBaseStatusName(),
+              value: viewModel.getSelectedStageName(),
             ),
           ],
         );
@@ -260,7 +289,7 @@ class CharDetailPage extends StatelessWidget {
     Color diffColor;
     if (currentStatus == 0) {
       diffColor = Colors.white;
-    } else if (diffWithLimit <= -10) {
+    } else if (diffWithLimit < -6) {
       diffColor = Colors.red;
     } else if (diffWithLimit >= -6 && diffWithLimit < -3) {
       diffColor = Colors.greenAccent;
@@ -338,7 +367,7 @@ class CharDetailPage extends StatelessWidget {
     final myStatus = viewModel.getMyStatus();
     final color = myStatus.favorite ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
     final icon = myStatus.favorite ? Icons.favorite : Icons.favorite_border;
-    
+
     return IconButton(
       icon: Icon(icon, color: color),
       iconSize: 28.0,

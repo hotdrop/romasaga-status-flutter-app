@@ -1,128 +1,145 @@
 import 'package:flutter/foundation.dart' as foundation;
 
 import '../../model/character.dart';
+import '../../model/style.dart';
 import '../../model/status.dart';
 import '../../model/stage.dart';
 
-import '../../data/status_repository.dart';
+import '../../data/character_repository.dart';
+import '../../data/my_status_repository.dart';
 import '../../data/stage_repository.dart';
 
 import '../../common/saga_logger.dart';
 
 class CharDetailViewModel extends foundation.ChangeNotifier {
-  CharDetailViewModel(this.character, {StageRepository stageRepo, StatusRepository statusRepo})
-      : _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
-        _statusRepository = (statusRepo == null) ? StatusRepository() : statusRepo,
-        _selectedRank = character.getStyleRanks().first;
-
+  final CharacterRepository _characterRepository;
   final StageRepository _stageRepository;
-  final StatusRepository _statusRepository;
+  final MyStatusRepository _myStatusRepository;
+
   final Character character;
+
+  CharDetailViewModel(this.character, {CharacterRepository characterRepo, StageRepository stageRepo, MyStatusRepository statusRepo})
+      : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
+        _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
+        _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
   List<Stage> _stages;
 
-  String _selectedRank;
+  Style _selectedStyle;
   Stage _selectedStage;
 
-  List<Stage> findStages() {
-    if (_stages == null) {
-      return [];
+  bool isLoading = true;
+
+  void load() async {
+    SagaLogger.d("ロードします。");
+    _stages = await _stageRepository.findAll();
+    _selectedStage = _stages.first;
+
+    if (character.styles.isEmpty) {
+      SagaLogger.d("キャラクターのスタイルが未取得なので取得します。");
+      final styles = await _characterRepository.findStyles(character.id);
+      character.addStyles(styles);
     }
 
-    return _stages;
+    _selectedStyle = character.getSelectedStyle();
+
+    isLoading = false;
+    notifyListeners();
+  }
+
+  String getSelectedIconFileName() {
+    return _selectedStyle.iconFileName;
   }
 
   MyStatus getMyStatus() {
     return character.myStatus;
   }
 
-  void load() async {
-    _stages = await _stageRepository.findAll();
-    _selectedStage = _stages.first;
-    _calcStatusUpperLimits();
-  }
-
-  void refreshStatus() async {
-    character.myStatus = await _statusRepository.find(character.name);
-    _calcStatusUpperLimits();
-  }
-
-  Stage getSelectedBaseStatus() {
-    return _selectedStage;
-  }
-
-  String getSelectedBaseStatusName() {
-    return _selectedStage?.name ?? null;
+  String getSelectedRank() {
+    return character.selectedStyleRank;
   }
 
   void saveSelectedRank(String rank) {
-    _selectedRank = rank;
-    _calcStatusUpperLimits();
+    _selectedStyle = character.getStyle(rank);
+    notifyListeners();
   }
 
-  String getSelectedRank() {
-    return _selectedRank;
+  String getSelectedStyleTitle() {
+    return _selectedStyle.title;
+  }
+
+  List<String> getAllRanks() {
+    final ranks = character.styles.map((style) => style.rank).toList();
+    return ranks..sort((s, t) => s.compareTo(t));
+  }
+
+  List<Stage> findStages() {
+    return _stages;
+  }
+
+  String getSelectedStageName() {
+    return _selectedStage?.name ?? null;
   }
 
   void saveSelectedStage(String stageName) {
     _selectedStage = _stages.firstWhere((s) => s.name == stageName);
-    _calcStatusUpperLimits();
+    notifyListeners();
   }
 
-  // これstreamにしてsinkとstreamで流したほうがいいか・・？
-  Style _statusUpperLimit;
-
-  void _calcStatusUpperLimits() {
-    final style = character.getStyle(_selectedRank);
-
-    _statusUpperLimit = Style(
-      _selectedRank,
-      style.str + _selectedStage.limit,
-      style.vit + _selectedStage.limit,
-      style.dex + _selectedStage.limit,
-      style.agi + _selectedStage.limit,
-      style.intelligence + _selectedStage.limit,
-      style.spirit + _selectedStage.limit,
-      style.love + _selectedStage.limit,
-      style.attr + _selectedStage.limit,
-    );
+  void refreshStatus() async {
+    character.myStatus = await _myStatusRepository.find(character.id);
     notifyListeners();
   }
 
   int getStatusUpperLimit(String statusName) {
+    var targetStatus;
     switch (statusName) {
       case Status.strName:
-        return _statusUpperLimit?.str ?? 0;
+        targetStatus = _selectedStyle?.str;
+        break;
       case Status.vitName:
-        return _statusUpperLimit?.vit ?? 0;
+        targetStatus = _selectedStyle?.vit;
+        break;
       case Status.dexName:
-        return _statusUpperLimit?.dex ?? 0;
+        targetStatus = _selectedStyle?.dex;
+        break;
       case Status.agiName:
-        return _statusUpperLimit?.agi ?? 0;
+        targetStatus = _selectedStyle?.agi;
+        break;
       case Status.intName:
-        return _statusUpperLimit?.intelligence ?? 0;
+        targetStatus = _selectedStyle?.intelligence;
+        break;
       case Status.spiName:
-        return _statusUpperLimit?.spirit ?? 0;
+        targetStatus = _selectedStyle?.spirit;
+        break;
       case Status.loveName:
-        return _statusUpperLimit?.love ?? 0;
+        targetStatus = _selectedStyle?.love;
+        break;
       case Status.attrName:
-        return _statusUpperLimit?.attr ?? 0;
+        targetStatus = _selectedStyle?.attr;
+        break;
       default:
-        return 0;
+        targetStatus = 0;
+        break;
     }
+
+    if (targetStatus == null) {
+      return 0;
+    }
+    return targetStatus + _selectedStage.limit;
   }
 
   void saveHaveCharacter(bool haveChar) async {
     SagaLogger.d("このキャラの保持を $haveChar にします。");
     character.myStatus.have = haveChar;
-    await _statusRepository.save(character.myStatus);
+    await _myStatusRepository.save(character.myStatus);
     notifyListeners();
   }
 
   void saveFavorite(bool favorite) async {
     SagaLogger.d("お気に入りを $favorite にします。");
     character.myStatus.favorite = favorite;
-    await _statusRepository.save(character.myStatus);
+    await _myStatusRepository.save(character.myStatus);
     notifyListeners();
   }
 }

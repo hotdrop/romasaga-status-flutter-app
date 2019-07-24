@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart' as foundation;
 
-import '../data/romasaga_repository.dart';
-import '../data/status_repository.dart';
+import '../data/character_repository.dart';
+import '../data/my_status_repository.dart';
 import '../model/character.dart';
 
 class CharListViewModel extends foundation.ChangeNotifier {
-  final RomasagaRepository _romasagaRepository;
-  final StatusRepository _statusRepository;
+  final CharacterRepository _characterRepository;
+  final MyStatusRepository _myStatusRepository;
 
   List<Character> _characters;
 
-  CharListViewModel({RomasagaRepository romasagaRepo, StatusRepository statusRepo})
-      : _romasagaRepository = (romasagaRepo == null) ? RomasagaRepository() : romasagaRepo,
-        _statusRepository = (statusRepo == null) ? StatusRepository() : statusRepo;
+  CharListViewModel({CharacterRepository characterRepo, MyStatusRepository statusRepo})
+      : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
+        _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
   List<Character> findAll() {
     if (_characters == null) {
@@ -62,12 +62,12 @@ class CharListViewModel extends foundation.ChangeNotifier {
   }
 
   void load() async {
-    _characters = await _romasagaRepository.findAll();
-    final statusList = await _statusRepository.findAll();
+    _characters = await _characterRepository.findAll();
+    final myStatuses = await _myStatusRepository.findAll();
 
-    if (statusList.isNotEmpty) {
-      for (var status in statusList) {
-        var targetStatus = _characters.firstWhere((character) => character.name == status.charName);
+    if (myStatuses.isNotEmpty) {
+      for (var status in myStatuses) {
+        var targetStatus = _characters.firstWhere((character) => character.id == status.id);
         targetStatus.myStatus = status;
       }
     }

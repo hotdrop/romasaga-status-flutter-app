@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart' as foundation;
 
 import '../../model/status.dart';
-import '../../data/status_repository.dart';
+import '../../data/my_status_repository.dart';
 
 class CharStatusEditViewModel extends foundation.ChangeNotifier {
-  CharStatusEditViewModel(this.currentStatus, {StatusRepository statusRepo})
+  CharStatusEditViewModel(this.currentStatus, {MyStatusRepository statusRepo})
       : _newHp = currentStatus.hp,
         _newStr = currentStatus.str,
         _newVit = currentStatus.vit,
@@ -16,9 +16,9 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
         _newAttr = currentStatus.attr,
         _have = currentStatus.have,
         _favorite = currentStatus.favorite,
-        _statusRepository = (statusRepo == null) ? StatusRepository() : statusRepo;
+        _statusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
-  final StatusRepository _statusRepository;
+  final MyStatusRepository _statusRepository;
   final MyStatus currentStatus;
 
   int _newHp;
@@ -68,7 +68,7 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
 
   Future<void> saveNewStatus() async {
     final newStatus = MyStatus(
-      currentStatus.charName,
+      currentStatus.id,
       _newHp,
       _newStr,
       _newVit,

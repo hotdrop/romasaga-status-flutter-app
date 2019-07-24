@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 
-import '../../model/character.dart' show Style;
+import '../../model/style.dart';
 import 'romasaga_icon.dart';
 
-@immutable
 class RankChoiceChip extends StatefulWidget {
-  const RankChoiceChip({this.ranks, this.onSelectedListener});
+  const RankChoiceChip({this.ranks, this.initSelectedRank, this.onSelectedListener});
 
   final List<String> ranks;
+  final String initSelectedRank;
   final Function(String) onSelectedListener;
 
   @override
-  _RankChoiceChipState createState() => _RankChoiceChipState(ranks, onSelectedListener);
+  _RankChoiceChipState createState() => _RankChoiceChipState(ranks, initSelectedRank, onSelectedListener);
 }
 
 class _RankChoiceChipState extends State<RankChoiceChip> {
   final List<String> _ranks;
+  final String _initSelectedRank;
   final Function(String) _listener;
 
   String _selectedRankChipName;
 
-  _RankChoiceChipState(this._ranks, this._listener) {
-    _selectedRankChipName = _ranks.first;
+  _RankChoiceChipState(this._ranks, this._initSelectedRank, this._listener) {
+    _selectedRankChipName = _initSelectedRank;
   }
 
   @override

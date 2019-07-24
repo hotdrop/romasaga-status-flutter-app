@@ -1,9 +1,11 @@
 import '../../model/character.dart';
+import '../../model/style.dart';
 import '../../model/status.dart';
 import '../../model/stage.dart';
 
 import 'entity/character_entity.dart';
-import 'entity/status_entity.dart';
+import 'entity/style_entity.dart';
+import 'entity/my_status_entity.dart';
 import 'entity/stage_entity.dart';
 
 class Mapper {
@@ -15,39 +17,65 @@ class Mapper {
     return Stage(entity.name, entity.statusUpperLimit, entity.itemOrder);
   }
 
-  static List<CharacterEntity> toCharacterEntities(Character c) {
-    final entities = <CharacterEntity>[];
-    for (var style in c.styles) {
-      final entity = CharacterEntity(c.name, c.title, c.production, c.weaponType.name, style.rank, style.str, style.vit, style.dex, style.agi,
-          style.intelligence, style.spirit, style.love, style.attr, c.iconFileName);
-      entities.add(entity);
-    }
-    return entities;
+  static CharacterEntity toCharacterEntity(Character c) {
+    return CharacterEntity(
+      c.id,
+      c.name,
+      c.production,
+      c.weaponType.name,
+      c.selectedStyleRank,
+      c.selectedIconFileName,
+    );
   }
 
-  static List<Character> toCharacters(List<CharacterEntity> entities) {
-    if (entities.isEmpty) {
-      return [];
-    }
-
-    final characterMap = <String, Character>{};
-    for (var entity in entities) {
-      if (characterMap.containsKey(entity.name)) {
-        final c = characterMap[entity.name];
-        c.addStyle(entity.rank, entity.str, entity.vit, entity.dex, entity.agi, entity.intelligence, entity.spirit, entity.love, entity.attr);
-        characterMap.update(entity.name, (dynamic val) => c);
-      } else {
-        final c = Character(entity.name, entity.title, entity.production, entity.weaponType, entity.iconFileName);
-        c.addStyle(entity.rank, entity.str, entity.vit, entity.dex, entity.agi, entity.intelligence, entity.spirit, entity.love, entity.attr);
-        characterMap[entity.name] = c;
-      }
-    }
-    return characterMap.values.toList();
+  static Character toCharacter(CharacterEntity entity) {
+    return Character(
+      entity.id,
+      entity.name,
+      entity.production,
+      entity.weaponType,
+      selectedStyleRank: entity.selectedStyleRank,
+      selectedIconFileName: entity.selectedIconFileName,
+    );
   }
 
-  static StatusEntity toEntity(MyStatus status) {
-    return StatusEntity(
-      status.charName,
+  static StyleEntity toStyleEntity(Style style) {
+    return StyleEntity(
+      style.characterId,
+      style.rank,
+      style.title,
+      style.iconFileName,
+      style.str,
+      style.vit,
+      style.dex,
+      style.agi,
+      style.intelligence,
+      style.spirit,
+      style.love,
+      style.attr,
+    );
+  }
+
+  static Style toStyle(StyleEntity entity) {
+    return Style(
+      entity.characterId,
+      entity.rank,
+      entity.title,
+      entity.iconFileName,
+      entity.str,
+      entity.vit,
+      entity.dex,
+      entity.agi,
+      entity.intelligence,
+      entity.spirit,
+      entity.love,
+      entity.attr,
+    );
+  }
+
+  static MyStatusEntity toMyStatusEntity(MyStatus status) {
+    return MyStatusEntity(
+      status.id,
       status.hp,
       status.str,
       status.vit,
@@ -57,14 +85,14 @@ class Mapper {
       status.spirit,
       status.love,
       status.attr,
-      status.have ? StatusEntity.haveChar : StatusEntity.notHaveChar,
-      status.favorite ? StatusEntity.isFavorite : StatusEntity.notFavorite,
+      status.have ? MyStatusEntity.haveChar : MyStatusEntity.notHaveChar,
+      status.favorite ? MyStatusEntity.isFavorite : MyStatusEntity.notFavorite,
     );
   }
 
-  static MyStatus toMyStatus(StatusEntity entity) {
+  static MyStatus toMyStatus(MyStatusEntity entity) {
     return MyStatus(
-      entity.charName,
+      entity.id,
       entity.hp,
       entity.str,
       entity.vit,
@@ -74,8 +102,8 @@ class Mapper {
       entity.spirit,
       entity.love,
       entity.attr,
-      entity.charHave == StatusEntity.haveChar ? true : false,
-      entity.favorite == StatusEntity.isFavorite ? true : false,
+      entity.charHave == MyStatusEntity.haveChar ? true : false,
+      entity.favorite == MyStatusEntity.isFavorite ? true : false,
     );
   }
 }
