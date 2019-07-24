@@ -14,6 +14,11 @@ class RomasagaIcon {
     return _imageIcon(res: path, iconSize: IconSize.large);
   }
 
+  static Widget characterLarge(String fileName) {
+    final String path = 'res/charIcons/$fileName';
+    return _imageIcon(res: path, iconSize: IconSize.moreLarge);
+  }
+
   ///
   /// スタイルランクアイコン
   ///
@@ -114,6 +119,9 @@ class RomasagaIcon {
       case IconSize.large:
         size = 50.0;
         break;
+      case IconSize.moreLarge:
+        size = 80.0;
+        break;
       default:
         size = 30.0;
     }
@@ -126,4 +134,4 @@ class RomasagaIcon {
   }
 }
 
-enum IconSize { small, normal, large }
+enum IconSize { small, normal, large, moreLarge }

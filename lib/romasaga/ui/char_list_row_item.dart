@@ -23,7 +23,7 @@ class CharListRowItem extends StatelessWidget {
                 Expanded(child: _imageIcon(character), flex: 2),
                 Expanded(child: _nameOverview(character, context), flex: 5),
                 Expanded(child: _weaponTypeIcon(character), flex: 2),
-                Expanded(child: _labelStatus(character, context), flex: 4),
+                Expanded(child: _labelStatus(character, context), flex: 3),
               ],
             )),
         onTap: () {

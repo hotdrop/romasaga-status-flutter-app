@@ -112,8 +112,7 @@ class CharDetailPage extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // TODO ここも変える
-            RomasagaIcon.character(viewModel.getSelectedIconFileName()),
+            RomasagaIcon.characterLarge(viewModel.getSelectedIconFileName()),
             Text(
               viewModel.getSelectedStyleTitle(),
               style: TextStyle(color: Colors.grey, fontSize: 16.0),
