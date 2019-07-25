@@ -11,6 +11,7 @@ class LetterMainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('運営からのお便り詳細'),
       ),
       body: Center(

@@ -42,7 +42,9 @@ class SearchListTab extends StatelessWidget {
           },
         );
       } else {
-        return Text('検索結果');
+        return Center(
+          child: Text('検索'),
+        );
       }
     });
   }

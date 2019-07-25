@@ -9,11 +9,11 @@ class CharListTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<CharListViewModel>(
       builder: (context, viewModel, child) {
-
         return DefaultTabController(
           length: 3,
           child: Scaffold(
             appBar: AppBar(
+              centerTitle: true,
               title: Text('キャラクター一覧'),
               bottom: TabBar(tabs: <Tab>[
                 Tab(text: 'お気に入り'),
@@ -79,7 +79,7 @@ class CharListTab extends StatelessWidget {
   Widget _notHaveCharTab(CharListViewModel viewModel) {
     return ListView.builder(itemBuilder: (BuildContext context, int index) {
       final characters = viewModel.findNotHaveCharacter();
-      
+
       if (index < characters.length) {
         return CharListRowItem(
           character: characters[index],
