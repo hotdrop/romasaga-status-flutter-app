@@ -113,7 +113,7 @@ class CharDetailPage extends StatelessWidget {
       final myStatus = viewModel.getMyStatus();
       return Column(
         children: <Widget>[
-          _statusIndicator(Status.hpName, myStatus.hp, 900), // TODO
+          _statusIndicator(Status.hpName, myStatus.hp, 0),
           _statusIndicator(Status.strName, myStatus.str, viewModel.getStatusUpperLimit(Status.strName)),
           _statusIndicator(Status.vitName, myStatus.vit, viewModel.getStatusUpperLimit(Status.vitName)),
           _statusIndicator(Status.dexName, myStatus.dex, viewModel.getStatusUpperLimit(Status.dexName)),
