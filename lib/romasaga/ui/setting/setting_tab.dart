@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 
 import 'setting_view_model.dart';
 
-import '../../common/saga_logger.dart';
-
 class SettingTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
