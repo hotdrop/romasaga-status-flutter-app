@@ -75,7 +75,7 @@ class CharListRowItem extends StatelessWidget {
   }
 
   Widget _convertWeaponIcon(WeaponType type) {
-    return RomasagaIcon.weapon(type);
+    return RomasagaIcon.weaponSmall(type);
   }
 
   Widget _labelStatus(Character character, BuildContext context) {
