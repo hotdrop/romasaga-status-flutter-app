@@ -59,17 +59,18 @@ class CharDetailPage extends StatelessWidget {
   ///
   List<Widget> contentLayout(BuildContext context) {
     final layouts = <Widget>[];
-    layouts.add(_characterCard());
-    layouts.add(_styleChips());
-    layouts.add(_stageContents());
-    layouts.add(_attributeContents(context));
+    layouts.add(_contentCharacterCard());
+    layouts.add(_contentsStyleChips());
+    layouts.add(_contentsStage());
+    layouts.add(_contentsAttribute(context));
+    layouts.add(_contentsEachStyleStatus());
     return layouts;
   }
 
   ///
   /// キャラクターカード
   ///
-  Widget _characterCard() {
+  Widget _contentCharacterCard() {
     return Card(
       elevation: 4.0,
       child: Padding(
@@ -112,7 +113,7 @@ class CharDetailPage extends StatelessWidget {
       final myStatus = viewModel.getMyStatus();
       return Column(
         children: <Widget>[
-          _statusIndicator(Status.hpName, myStatus.hp, 200),
+          _statusIndicator(Status.hpName, myStatus.hp, 900), // TODO
           _statusIndicator(Status.strName, myStatus.str, viewModel.getStatusUpperLimit(Status.strName)),
           _statusIndicator(Status.vitName, myStatus.vit, viewModel.getStatusUpperLimit(Status.vitName)),
           _statusIndicator(Status.dexName, myStatus.dex, viewModel.getStatusUpperLimit(Status.dexName)),
@@ -136,7 +137,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// スタイルChips
   ///
-  Widget _styleChips() {
+  Widget _contentsStyleChips() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
         return Column(
@@ -167,7 +168,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステージリストのレイアウトを作成
   ///
-  Widget _stageContents() {
+  Widget _contentsStage() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -209,7 +210,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// キャラクター属性
   ///
-  Widget _attributeContents(BuildContext context) {
+  Widget _contentsAttribute(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -236,6 +237,60 @@ class CharDetailPage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  ///
+  /// スタイル別ステータス
+  ///
+  Widget _contentsEachStyleStatus() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(height: 24.0),
+        Text("スタイル別のステータス上限", style: TextStyle(fontSize: 16.0)),
+        Text("選択ステージで切り替え可能", style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+        _styleStatusTable(),
+      ],
+    );
+  }
+
+  Widget _styleStatusTable() {
+    return Consumer<CharDetailViewModel>(builder: (_, viewModel, child) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          columns: _statusTableColumns(viewModel),
+          rows: _statusTableRows(viewModel),
+        ),
+      );
+    });
+  }
+
+  List<DataColumn> _statusTableColumns(CharDetailViewModel vm) {
+    final results = <DataColumn>[];
+    results.add(DataColumn(label: Text('')));
+    results.addAll(vm.getAllRanks().map((rank) => DataColumn(label: Text(rank), numeric: true)));
+    return results;
+  }
+
+  List<DataRow> _statusTableRows(CharDetailViewModel vm) {
+    return <DataRow>[
+      DataRow(cells: _createDataCells(vm, Status.strName)),
+      DataRow(cells: _createDataCells(vm, Status.vitName)),
+      DataRow(cells: _createDataCells(vm, Status.agiName)),
+      DataRow(cells: _createDataCells(vm, Status.dexName)),
+      DataRow(cells: _createDataCells(vm, Status.intName)),
+      DataRow(cells: _createDataCells(vm, Status.spiName)),
+      DataRow(cells: _createDataCells(vm, Status.loveName)),
+      DataRow(cells: _createDataCells(vm, Status.attrName)),
+    ];
+  }
+
+  List<DataCell> _createDataCells(CharDetailViewModel vm, String statusName) {
+    final r = <DataCell>[];
+    r.add(DataCell(Text(statusName)));
+    r.addAll(vm.findStyleStatus(statusName).map((status) => DataCell(Text(status.toString()))));
+    return r;
   }
 
   ///

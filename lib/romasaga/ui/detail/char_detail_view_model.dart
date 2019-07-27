@@ -91,6 +91,29 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
+  List<int> findStyleStatus(String statusName) {
+    switch (statusName) {
+      case Status.strName:
+        return character.styles.map((s) => s.str + _selectedStage.limit).toList();
+      case Status.vitName:
+        return character.styles.map((s) => s.vit + _selectedStage.limit).toList();
+      case Status.dexName:
+        return character.styles.map((s) => s.dex + _selectedStage.limit).toList();
+      case Status.agiName:
+        return character.styles.map((s) => s.agi + _selectedStage.limit).toList();
+      case Status.intName:
+        return character.styles.map((s) => s.intelligence + _selectedStage.limit).toList();
+      case Status.spiName:
+        return character.styles.map((s) => s.spirit + _selectedStage.limit).toList();
+      case Status.loveName:
+        return character.styles.map((s) => s.love + _selectedStage.limit).toList();
+      case Status.attrName:
+        return character.styles.map((s) => s.attr + _selectedStage.limit).toList();
+      default:
+        return null;
+    }
+  }
+
   int getStatusUpperLimit(String statusName) {
     var targetStatus;
     switch (statusName) {
