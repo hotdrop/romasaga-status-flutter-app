@@ -1,4 +1,6 @@
 import 'database.dart';
+import 'package:sqflite/sqflite.dart';
+
 import 'mapper.dart';
 
 import '../../model/character.dart';
@@ -41,19 +43,34 @@ class CharacterSource {
     return results.map((result) => StyleEntity.fromMap(result)).map((entity) => Mapper.toStyle(entity)).toList();
   }
 
-  ///
-  /// キャラクター情報とそのスタイル情報を保存
-  ///
-  Future<void> save(List<Character> characters) async {
+  Future<int> count() async {
     final db = await DBProvider.instance.database;
+    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM ${CharacterEntity.tableName}'));
 
+    return count;
+  }
+
+  Future<void> refresh(List<Character> stages) async {
+    final db = await DBProvider.instance.database;
+    db.transaction((txn) async {
+      await _delete(txn);
+      await _insert(txn, stages);
+    });
+  }
+
+  Future<void> _delete(Transaction txn) async {
+    await txn.delete(CharacterEntity.tableName);
+    await txn.delete(StyleEntity.tableName);
+  }
+
+  Future<void> _insert(Transaction txn, List<Character> characters) async {
     for (var character in characters) {
       var entity = Mapper.toCharacterEntity(character);
-      await db.insert(CharacterEntity.tableName, entity.toMap());
+      await txn.insert(CharacterEntity.tableName, entity.toMap());
 
       for (var style in character.styles) {
         var entity = Mapper.toStyleEntity(style);
-        await db.insert(StyleEntity.tableName, entity.toMap());
+        await txn.insert(StyleEntity.tableName, entity.toMap());
       }
     }
   }
