@@ -24,4 +24,8 @@ class StageRepository {
     SagaLogger.d('データ取得完了 件数=${stages.length}');
     return stages;
   }
+
+  Future<int> count() async {
+    return await _localDataSource.count();
+  }
 }

@@ -22,6 +22,7 @@ class LetterMainPage extends StatelessWidget {
 
   Widget _widgetContents(BuildContext context) {
     final controller = PageController(initialPage: firstSelectLetterType.index, keepPage: false);
+    // TODO ページ無限生成・・
     return PageView.builder(
         controller: controller,
         itemBuilder: (context, index) {

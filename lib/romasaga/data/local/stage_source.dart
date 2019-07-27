@@ -1,4 +1,5 @@
 import 'database.dart';
+import 'package:sqflite/sqflite.dart';
 import 'mapper.dart';
 
 import '../../model/stage.dart';
@@ -30,5 +31,12 @@ class StageSource {
     }
 
     return entities.map((entity) => Mapper.toStage(entity)).toList();
+  }
+
+  Future<int> count() async {
+    final db = await DBProvider.instance.database;
+    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM ${StageEntity.tableName}'));
+
+    return count;
   }
 }
