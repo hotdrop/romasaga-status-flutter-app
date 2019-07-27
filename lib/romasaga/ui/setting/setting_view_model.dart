@@ -13,12 +13,45 @@ class SettingViewModel extends foundation.ChangeNotifier {
       : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
         _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo;
 
-  int _stageCount;
+  int characterCount;
+  LoadingStatus loadingCharacter = LoadingStatus.none;
+
+  int stageCount;
+  LoadingStatus loadingStage = LoadingStatus.none;
 
   void load() async {
     SagaLogger.d("ロードします。");
-    _stageCount = await _stageRepository.count();
+    characterCount = await _characterRepository.count();
+    stageCount = await _stageRepository.count();
 
     notifyListeners();
   }
+
+  void refreshCharacters() async {
+    loadingCharacter = LoadingStatus.loading;
+    notifyListeners();
+
+    await _characterRepository.refresh();
+    characterCount = await _characterRepository.count();
+
+    loadingCharacter = LoadingStatus.complete;
+    notifyListeners();
+  }
+
+  void refreshStage() async {
+    loadingStage = LoadingStatus.loading;
+    notifyListeners();
+
+    await _stageRepository.refresh();
+    stageCount = await _stageRepository.count();
+
+    loadingStage = LoadingStatus.complete;
+    notifyListeners();
+  }
+}
+
+enum LoadingStatus {
+  none,
+  loading,
+  complete,
 }
