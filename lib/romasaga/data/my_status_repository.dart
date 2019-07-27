@@ -1,8 +1,6 @@
 import 'local/my_status_source.dart';
 import '../model/status.dart' show MyStatus;
 
-import '../common/saga_logger.dart';
-
 class MyStatusRepository {
   final MyStatusSource _localDataSource;
 

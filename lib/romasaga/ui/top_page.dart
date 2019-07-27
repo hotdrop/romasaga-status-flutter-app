@@ -52,6 +52,8 @@ class _TopPageState extends State<TopPage> {
         return LetterTab();
       case 3:
         return SettingTab();
+      default:
+        return null;
     }
   }
 }
