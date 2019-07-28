@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'setting_view_model.dart';
 
+import '../../common/strings.dart';
+
 class SettingTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -11,7 +13,7 @@ class SettingTab extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('設定'),
+          title: Text(Strings.SettingsTabTitle),
         ),
         body: _widgetContents(context),
       ),
@@ -33,7 +35,7 @@ class SettingTab extends StatelessWidget {
       builder: (context, viewModel, child) {
         return _settingCard(
             icon: Icon(Icons.person),
-            title: 'キャラクター情報を更新',
+            title: Strings.SettingsCharacterUpdateLabel,
             registerCount: viewModel.characterCount,
             loadingStatus: viewModel.loadingCharacter,
             onTapListener: () {
@@ -48,7 +50,7 @@ class SettingTab extends StatelessWidget {
       builder: (context, viewModel, child) {
         return _settingCard(
             icon: Icon(Icons.map),
-            title: 'ステージ情報を更新',
+            title: Strings.SettingsStageUpdateLabel,
             registerCount: viewModel.stageCount,
             loadingStatus: viewModel.loadingStage,
             onTapListener: () {
@@ -98,10 +100,7 @@ class SettingTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(title),
-        Text(
-          '登録数: ${registerCount ?? 0}',
-          style: TextStyle(color: Colors.grey),
-        ),
+        Text('${Strings.SettingsRegisterCountLabel} ${registerCount ?? 0}', style: TextStyle(color: Colors.grey)),
       ],
     );
   }
@@ -112,15 +111,15 @@ class SettingTab extends StatelessWidget {
     switch (loadingStatus) {
       case LoadingStatus.none:
         statusColor = Colors.grey;
-        statusTitle = 'ー';
+        statusTitle = Strings.SettingsUpdateStatusNone;
         break;
       case LoadingStatus.loading:
         statusColor = Colors.green;
-        statusTitle = '更新中';
+        statusTitle = Strings.SettingsUpdateStatusUpdate;
         break;
       case LoadingStatus.complete:
         statusColor = Colors.blueAccent;
-        statusTitle = '完了';
+        statusTitle = Strings.SettingsUpdateStatusComplete;
         break;
     }
 

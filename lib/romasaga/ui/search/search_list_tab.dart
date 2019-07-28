@@ -5,6 +5,7 @@ import '../char_list_row_item.dart';
 import '../search/search_list_view_model.dart';
 
 import '../../model/character.dart';
+import '../../common/strings.dart';
 
 class SearchListTab extends StatelessWidget {
   final List<Character> _characters;
@@ -35,7 +36,7 @@ class SearchListTab extends StatelessWidget {
           controller: _searchQuery,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.search),
-            hintText: 'キャラ名で検索',
+            hintText: Strings.SearchListQueryHint,
           ),
           onChanged: (String query) {
             viewModel.findByKeyword(query);
@@ -43,7 +44,7 @@ class SearchListTab extends StatelessWidget {
         );
       } else {
         return Center(
-          child: Text('検索'),
+          child: Text(Strings.SearchListTabTitle),
         );
       }
     });

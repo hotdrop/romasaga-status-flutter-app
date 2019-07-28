@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'letter_main_page.dart';
 import '../../model/letter.dart';
 
+import '../../common/strings.dart';
+
 class LetterTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('運営からのお便り一覧'),
+        title: Text(Strings.LetterTabTitle),
       ),
       body: Center(
         child: _widgetContents(context),

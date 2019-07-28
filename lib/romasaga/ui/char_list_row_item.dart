@@ -6,6 +6,8 @@ import '../model/weapon.dart';
 
 import 'widget/romasaga_icon.dart';
 
+import '../common/strings.dart';
+
 class CharListRowItem extends StatelessWidget {
   final Character character;
   final int index;
@@ -79,6 +81,6 @@ class CharListRowItem extends StatelessWidget {
   }
 
   Widget _labelStatus(Character character, BuildContext context) {
-    return Text("合計ステ: ${character.getTotalStatus()}");
+    return Text('${Strings.CharacterTotalStatus} ${character.getTotalStatus()}');
   }
 }

@@ -1,3 +1,5 @@
+import '../common/strings.dart';
+
 class WeaponType {
   const WeaponType(this.name);
 
@@ -5,51 +7,32 @@ class WeaponType {
 
   WeaponCategory get category {
     switch (name) {
-      case sword:
-      case largeSword:
-      case axe:
+      case Strings.Sword:
+      case Strings.LargeSword:
+      case Strings.Axe:
         return WeaponCategory.slash;
-      case hummer:
-      case knuckle:
-      case gun:
+      case Strings.Hummer:
+      case Strings.Knuckle:
+      case Strings.Gun:
         return WeaponCategory.strike;
-      case rapier:
-      case spear:
-      case bow:
+      case Strings.Rapier:
+      case Strings.Spear:
+      case Strings.Bow:
         return WeaponCategory.poke;
-      case magicFire:
+      case Strings.MagicFire:
         return WeaponCategory.heat;
-      case magicWater:
+      case Strings.MagicWater:
         return WeaponCategory.cold;
-      case magicWind:
+      case Strings.MagicWind:
         return WeaponCategory.thunder;
-      case magicYin:
+      case Strings.MagicYin:
         return WeaponCategory.dark;
-      case magicShine:
+      case Strings.MagicShine:
         return WeaponCategory.light;
       default:
         return null;
     }
   }
-
-  // type detail
-  static const String sword = '剣';
-  static const String largeSword = '大剣';
-  static const String axe = '斧';
-
-  static const String hummer = '棍棒';
-  static const String knuckle = '体術';
-  static const String gun = '銃';
-
-  static const String rapier = '小剣';
-  static const String spear = '槍';
-  static const String bow = '弓';
-
-  static const String magicFire = '火術';
-  static const String magicWater = '水術';
-  static const String magicWind = '風術';
-  static const String magicYin = '陰術';
-  static const String magicShine = '光術';
 }
 
 enum WeaponCategory {
