@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../model/status.dart';
+
 class StatusIndicator {
   static Widget create(String statusName, int currentStatus, int statusUpperLimit) {
     return _createIndicator(statusName, currentStatus ?? 0, statusUpperLimit);
@@ -14,7 +16,13 @@ class StatusIndicator {
       percent = (currentStatus / statusUpperLimit);
     }
 
-    int diffLimit = currentStatus - statusUpperLimit;
+    int diffLimit;
+    // 今はHPはステータス上限の計測外にしているので無条件で0にする。
+    if (name == Status.hpName) {
+      diffLimit = 0;
+    } else {
+      diffLimit = currentStatus - statusUpperLimit;
+    }
 
     final Color statusColor = _labelStatusColor(diffLimit, currentStatus);
     final List<Color> graphColors = _linearGradientColors(diffLimit, currentStatus);
