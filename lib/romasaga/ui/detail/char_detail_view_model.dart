@@ -74,6 +74,10 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     return ranks..sort((s, t) => s.compareTo(t));
   }
 
+  Style getStyle(String rank) {
+    return character.getStyle(rank);
+  }
+
   List<Stage> findStages() {
     return _stages;
   }
@@ -92,28 +96,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
-  List<int> findStyleStatus(String statusName) {
-    switch (statusName) {
-      case Strings.StrName:
-        return character.styles.map((s) => s.str + _selectedStage.limit).toList();
-      case Strings.VitName:
-        return character.styles.map((s) => s.vit + _selectedStage.limit).toList();
-      case Strings.DexName:
-        return character.styles.map((s) => s.dex + _selectedStage.limit).toList();
-      case Strings.AgiName:
-        return character.styles.map((s) => s.agi + _selectedStage.limit).toList();
-      case Strings.IntName:
-        return character.styles.map((s) => s.intelligence + _selectedStage.limit).toList();
-      case Strings.SpiName:
-        return character.styles.map((s) => s.spirit + _selectedStage.limit).toList();
-      case Strings.LoveName:
-        return character.styles.map((s) => s.love + _selectedStage.limit).toList();
-      case Strings.AttrName:
-        return character.styles.map((s) => s.attr + _selectedStage.limit).toList();
-      default:
-        return null;
-    }
-  }
+  int addUpperLimit(int status) => status + _selectedStage.limit;
 
   int getStatusUpperLimit(String statusName) {
     var targetStatus;

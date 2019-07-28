@@ -274,22 +274,43 @@ class CharDetailPage extends StatelessWidget {
   }
 
   List<DataRow> _statusTableRows(CharDetailViewModel vm) {
+    final strRowData = <int>[];
+    final vitRowData = <int>[];
+    final agiRowData = <int>[];
+    final dexRowData = <int>[];
+    final intRowData = <int>[];
+    final spiRowData = <int>[];
+    final loveRowData = <int>[];
+    final attrRowData = <int>[];
+
+    for (var rank in vm.getAllRanks()) {
+      var style = vm.getStyle(rank);
+      strRowData.add(vm.addUpperLimit(style.str));
+      vitRowData.add(vm.addUpperLimit(style.vit));
+      agiRowData.add(vm.addUpperLimit(style.agi));
+      dexRowData.add(vm.addUpperLimit(style.dex));
+      intRowData.add(vm.addUpperLimit(style.intelligence));
+      spiRowData.add(vm.addUpperLimit(style.spirit));
+      loveRowData.add(vm.addUpperLimit(style.love));
+      attrRowData.add(vm.addUpperLimit(style.attr));
+    }
+
     return <DataRow>[
-      DataRow(cells: _createDataCells(vm, Strings.StrName)),
-      DataRow(cells: _createDataCells(vm, Strings.VitName)),
-      DataRow(cells: _createDataCells(vm, Strings.AgiName)),
-      DataRow(cells: _createDataCells(vm, Strings.DexName)),
-      DataRow(cells: _createDataCells(vm, Strings.IntName)),
-      DataRow(cells: _createDataCells(vm, Strings.SpiName)),
-      DataRow(cells: _createDataCells(vm, Strings.LoveName)),
-      DataRow(cells: _createDataCells(vm, Strings.AttrName)),
+      DataRow(cells: _createDataCells(Strings.StrName, strRowData)),
+      DataRow(cells: _createDataCells(Strings.VitName, vitRowData)),
+      DataRow(cells: _createDataCells(Strings.AgiName, agiRowData)),
+      DataRow(cells: _createDataCells(Strings.DexName, dexRowData)),
+      DataRow(cells: _createDataCells(Strings.IntName, intRowData)),
+      DataRow(cells: _createDataCells(Strings.SpiName, spiRowData)),
+      DataRow(cells: _createDataCells(Strings.LoveName, loveRowData)),
+      DataRow(cells: _createDataCells(Strings.AttrName, attrRowData)),
     ];
   }
 
-  List<DataCell> _createDataCells(CharDetailViewModel vm, String statusName) {
+  List<DataCell> _createDataCells(String statusName, List<int> statusList) {
     final r = <DataCell>[];
     r.add(DataCell(Text(statusName)));
-    r.addAll(vm.findStyleStatus(statusName).map((status) => DataCell(Text(status.toString()))));
+    r.addAll(statusList.map((status) => DataCell(Text(status.toString()))));
     return r;
   }
 

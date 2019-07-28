@@ -36,7 +36,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   List<Widget> _rankChips() {
     return _ranks.map<Widget>((String rank) {
       return Padding(
-        padding: EdgeInsets.only(right: 16.0),
+        padding: EdgeInsets.only(right: 8.0),
         child: ChoiceChip(
           key: ValueKey(rank),
           selectedColor: _rankToColor(rank),
