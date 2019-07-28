@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'char_list_tab.dart';
 import 'search/search_list_tab.dart';
 import 'letter/letter_tab.dart';
+import 'setting/setting_tab.dart';
 
 import 'char_list_view_model.dart';
 
@@ -48,12 +49,11 @@ class _TopPageState extends State<TopPage> {
           return SearchListTab(viewModel.findAll());
         });
       case 2:
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[Text('未実装')],
-        );
-      case 3:
         return LetterTab();
+      case 3:
+        return SettingTab();
+      default:
+        return null;
     }
   }
 }
@@ -66,9 +66,8 @@ class Destination {
 }
 
 const _allDestinations = <Destination>[
-  // TODO 色もうちょっと考えたい
-  Destination('Char', Icons.person, Colors.black12),
-  Destination('Search', Icons.search, Colors.black12),
-  Destination('Setting', Icons.settings, Colors.black12),
-  Destination('Letter', Icons.mail, Colors.black12),
+  Destination('キャラ', Icons.person, Colors.black12),
+  Destination('検索', Icons.search, Colors.white10),
+  Destination('お便り', Icons.mail, Colors.blueGrey),
+  Destination('設定', Icons.settings, Colors.white30),
 ];

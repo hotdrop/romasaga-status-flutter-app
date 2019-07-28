@@ -18,10 +18,10 @@ class CharacterRepository {
     var characters = await _localDataSource.findAll();
 
     if (characters.isEmpty) {
-      SagaLogger.d('DBが0件なのでリモートから取得');
-      await _refresh();
+      SagaLogger.d('キャッシュにデータがないのでリフレッシュします。');
+      await refresh();
 
-      SagaLogger.d('再びDBからデータ取得');
+      SagaLogger.d('再度キャッシュからデータを取得します。');
       characters = await _localDataSource.findAll();
     }
 
@@ -34,10 +34,14 @@ class CharacterRepository {
     return _localDataSource.findStyles(id);
   }
 
-  Future<void> _refresh() async {
-    SagaLogger.d('リモートからキャラデータを取得');
+  Future<void> refresh() async {
     final characters = await _remoteDataSource.findAll();
-    SagaLogger.d('${characters.length}件のデータを取得しました。');
-    await _localDataSource.save(characters);
+    SagaLogger.d('${characters.length}件のデータを取得しました。保存します。');
+
+    await _localDataSource.refresh(characters);
+  }
+
+  Future<int> count() async {
+    return await _localDataSource.count();
   }
 }

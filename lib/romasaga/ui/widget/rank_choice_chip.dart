@@ -36,7 +36,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   List<Widget> _rankChips() {
     return _ranks.map<Widget>((String rank) {
       return Padding(
-        padding: EdgeInsets.only(right: 8.0),
+        padding: EdgeInsets.only(right: 16.0),
         child: ChoiceChip(
           key: ValueKey(rank),
           selectedColor: _rankToColor(rank),
@@ -68,7 +68,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   CircleAvatar _rankToAvatar(String rank) {
     return CircleAvatar(
       backgroundColor: Colors.grey.shade300,
-      child: RomasagaIcon.rankSmallSize(rank),
+      child: RomasagaIcon.rank(rank),
     );
   }
 }

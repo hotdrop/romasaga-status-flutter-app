@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -10,14 +11,13 @@ import 'char_status_edit_page.dart';
 
 import '../widget/romasaga_icon.dart';
 import '../widget/rank_choice_chip.dart';
-import '../widget/status_circle_indicator.dart';
+import '../widget/status_indicator.dart';
 
 import '../../common/saga_logger.dart';
 
 class CharDetailPage extends StatelessWidget {
   CharDetailPage({@required this.character});
 
-  // これただのIDにして再取得したほうがよさそう。
   final Character character;
 
   @override
@@ -38,7 +38,7 @@ class CharDetailPage extends StatelessWidget {
       } else {
         return Scaffold(
           appBar: AppBar(
-            title: Text('キャラクター詳細'),
+            title: Text(character.name),
           ),
           body: Padding(
             padding: EdgeInsets.all(16.0),
@@ -55,60 +55,42 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// 詳細画面に表示する各レイアウトを束ねる役割を担当
+  /// 詳細画面に表示する各レイアウトを束ねる
   ///
   List<Widget> contentLayout(BuildContext context) {
     final layouts = <Widget>[];
-    layouts.add(_overviewContents(context));
-    layouts.add(_styleIcons());
-    layouts.add(_styleChips());
-    layouts.add(_stageDropDownList());
-    layouts.add(_rowStatusHp());
-    layouts.add(_rowStatusFirst());
-    layouts.add(_rowStatusSecond());
-    layouts.add(_rowStatusThird());
+    layouts.add(_contentCharacterCard());
+    layouts.add(_contentsStyleChips());
+    layouts.add(_contentsStage());
+    layouts.add(_contentsAttribute(context));
+    layouts.add(_contentsEachStyleStatus());
     return layouts;
   }
 
   ///
-  /// キャラクターの名前と武器種別などのレイアウトを作成
+  /// キャラクターカード
   ///
-  Widget _overviewContents(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+  Widget _contentCharacterCard() {
+    return Card(
+      elevation: 4.0,
+      child: Padding(
+        padding: EdgeInsets.only(left: 24.0, right: 16.0, top: 8.0, bottom: 16.0),
+        child: Column(
           children: <Widget>[
-            Text(
-              character.name,
-              style: Theme.of(context).textTheme.headline,
-            ),
+            _characterContents(),
+            _statusContents(),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RomasagaIcon.weapon(character.weaponType),
-            Padding(
-              padding: EdgeInsets.only(right: 8.0),
-            ),
-            RomasagaIcon.weaponCategory(category: character.weaponCategory),
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.only(bottom: 16.0),
-        ),
-      ],
+      ),
     );
   }
 
   ///
-  /// スタイルのアイコンを表示
+  /// キャラクターの名前やアイコン、肩書き
   ///
-  Widget _styleIcons() {
+  Widget _characterContents() {
     return Consumer<CharDetailViewModel>(
-      builder: (_, viewModel, child) {
+      builder: (context, viewModel, child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -124,20 +106,59 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// スタイル比較のレイアウトを作成
+  /// ステータス
   ///
-  Widget _styleChips() {
+  Widget _statusContents() {
+    return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
+      final myStatus = viewModel.getMyStatus();
+      return Column(
+        children: <Widget>[
+          _statusIndicator(Status.hpName, myStatus.hp, 0),
+          _statusIndicator(Status.strName, myStatus.str, viewModel.getStatusUpperLimit(Status.strName)),
+          _statusIndicator(Status.vitName, myStatus.vit, viewModel.getStatusUpperLimit(Status.vitName)),
+          _statusIndicator(Status.dexName, myStatus.dex, viewModel.getStatusUpperLimit(Status.dexName)),
+          _statusIndicator(Status.agiName, myStatus.agi, viewModel.getStatusUpperLimit(Status.agiName)),
+          _statusIndicator(Status.intName, myStatus.intelligence, viewModel.getStatusUpperLimit(Status.intName)),
+          _statusIndicator(Status.spiName, myStatus.spirit, viewModel.getStatusUpperLimit(Status.spiName)),
+          _statusIndicator(Status.loveName, myStatus.love, viewModel.getStatusUpperLimit(Status.loveName)),
+          _statusIndicator(Status.attrName, myStatus.attr, viewModel.getStatusUpperLimit(Status.attrName)),
+        ],
+      );
+    });
+  }
+
+  Widget _statusIndicator(String name, int status, int limit) {
+    return Padding(
+      padding: EdgeInsets.only(top: 8.0),
+      child: StatusIndicator.create(name, status, limit),
+    );
+  }
+
+  ///
+  /// スタイルChips
+  ///
+  Widget _contentsStyleChips() {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            RankChoiceChip(
-                ranks: viewModel.getAllRanks(),
-                initSelectedRank: viewModel.getSelectedRank(),
-                onSelectedListener: (String rank) {
-                  viewModel.saveSelectedRank(rank);
-                }),
+            const SizedBox(height: 24.0),
+            Text("基準スタイル", style: TextStyle(fontSize: 16.0)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 8.0, left: 24.0),
+                  child: RankChoiceChip(
+                      ranks: viewModel.getAllRanks(),
+                      initSelectedRank: viewModel.getSelectedRank(),
+                      onSelectedListener: (String rank) {
+                        viewModel.saveSelectedRank(rank);
+                      }),
+                ),
+              ],
+            )
           ],
         );
       },
@@ -147,159 +168,129 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステージリストのレイアウトを作成
   ///
-  Widget _stageDropDownList() {
-    return Consumer<CharDetailViewModel>(
-      builder: (_, viewModel, child) {
-        final stages = viewModel.findStages();
-
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            DropdownButton<String>(
-              items: stages.map((stage) {
-                final showLimit = (stage.limit > 0) ? '+${stage.limit}' : stage.limit.toString();
-
-                return DropdownMenuItem<String>(
-                  value: stage.name,
-                  child: Text('${stage.name} ($showLimit)'),
-                );
-              }).toList(),
-              onChanged: (value) {
-                viewModel.saveSelectedStage(value);
-              },
-              value: viewModel.getSelectedStageName(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  ///
-  /// ステータス群のHP行のレイアウトを作成
-  ///
-  Widget _rowStatusHp() {
-    return Consumer<CharDetailViewModel>(
-      builder: (_, viewModel, child) {
-        final myStatus = viewModel.getMyStatus();
-
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 16.0),
-                ),
-                StatusCircleIndicator.normal(Status.hpName, myStatus.hp, 0),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  ///
-  /// ステータス群の上段行のレイアウトを作成
-  ///
-  Widget _rowStatusFirst() {
-    return Consumer<CharDetailViewModel>(
-      builder: (_, viewModel, child) {
-        final myStatus = viewModel.getMyStatus();
-
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _graphStatus(Status.strName, myStatus.str),
-            _graphStatus(Status.vitName, myStatus.vit),
-            _graphStatus(Status.dexName, myStatus.dex),
-          ],
-        );
-      },
-    );
-  }
-
-  ///
-  /// ステータス群の中断行のレイアウトを作成
-  ///
-  Widget _rowStatusSecond() {
-    return Consumer<CharDetailViewModel>(
-      builder: (_, viewModel, child) {
-        final myStatus = viewModel.getMyStatus();
-
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _graphStatus(Status.agiName, myStatus.agi),
-            _graphStatus(Status.intName, myStatus.intelligence),
-            _graphStatus(Status.spiName, myStatus.spirit),
-          ],
-        );
-      },
-    );
-  }
-
-  ///
-  /// ステータス群の下段行のレイアウトを作成
-  ///
-  Widget _rowStatusThird() {
-    return Consumer<CharDetailViewModel>(
-      builder: (_, viewModel, child) {
-        final myStatus = viewModel.getMyStatus();
-
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _graphStatus(Status.loveName, myStatus.love),
-            _graphStatus(Status.attrName, myStatus.attr),
-          ],
-        );
-      },
-    );
-  }
-
-  ///
-  /// ステータスのグラフ表示処理
-  ///
-  Widget _graphStatus(String statusName, int currentStatus) {
-    return Consumer<CharDetailViewModel>(
-      builder: (_, viewModel, child) {
-        final statusUpperLimit = viewModel.getStatusUpperLimit(statusName);
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+  Widget _contentsStage() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(height: 24.0),
+        Text("基準ステージ", style: TextStyle(fontSize: 16.0)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: 16.0),
+              padding: EdgeInsets.only(top: 8.0, left: 24.0),
+              child: _stageDropDownList(),
             ),
-            StatusCircleIndicator.normal(statusName, currentStatus, statusUpperLimit),
-            _textGrowthParam(statusUpperLimit, currentStatus),
           ],
-        );
-      },
+        )
+      ],
     );
   }
 
-  Widget _textGrowthParam(int statusUpperLimit, int currentStatus) {
-    final int diffWithLimit = currentStatus - statusUpperLimit;
+  Widget _stageDropDownList() {
+    return Consumer<CharDetailViewModel>(builder: (_, viewModel, child) {
+      final stages = viewModel.findStages();
 
-    Color diffColor;
-    if (currentStatus == 0) {
-      diffColor = Colors.white;
-    } else if (diffWithLimit < -6) {
-      diffColor = Colors.red;
-    } else if (diffWithLimit >= -6 && diffWithLimit < -3) {
-      diffColor = Colors.greenAccent;
-    } else {
-      diffColor = Colors.lightBlueAccent;
-    }
+      return DropdownButton<String>(
+        items: stages.map((stage) {
+          final showLimit = (stage.limit > 0) ? '+${stage.limit}' : stage.limit.toString();
+          return DropdownMenuItem<String>(
+            value: stage.name,
+            child: Text('${stage.name} ($showLimit)'),
+          );
+        }).toList(),
+        onChanged: (value) {
+          viewModel.saveSelectedStage(value);
+        },
+        value: viewModel.getSelectedStageName(),
+      );
+    });
+  }
 
-    return Text(
-      diffWithLimit.toString(),
-      style: TextStyle(color: diffColor, fontSize: 18.0),
+  ///
+  /// キャラクター属性
+  ///
+  Widget _contentsAttribute(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(height: 24.0),
+        Text("武器と属性", style: TextStyle(fontSize: 16.0)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 8.0, left: 24.0),
+              child: CircleAvatar(
+                child: RomasagaIcon.weapon(character.weaponType),
+                backgroundColor: Colors.grey,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 8.0, left: 24.0),
+              child: CircleAvatar(
+                child: RomasagaIcon.weaponCategory(category: character.weaponCategory),
+                backgroundColor: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
+  }
+
+  ///
+  /// スタイル別ステータス
+  ///
+  Widget _contentsEachStyleStatus() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(height: 24.0),
+        Text("スタイル別のステータス上限", style: TextStyle(fontSize: 16.0)),
+        Text("選択ステージで切り替え可能", style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+        _styleStatusTable(),
+      ],
+    );
+  }
+
+  Widget _styleStatusTable() {
+    return Consumer<CharDetailViewModel>(builder: (_, viewModel, child) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          columns: _statusTableColumns(viewModel),
+          rows: _statusTableRows(viewModel),
+        ),
+      );
+    });
+  }
+
+  List<DataColumn> _statusTableColumns(CharDetailViewModel vm) {
+    final results = <DataColumn>[];
+    results.add(DataColumn(label: Text('')));
+    results.addAll(vm.getAllRanks().map((rank) => DataColumn(label: Text(rank), numeric: true)));
+    return results;
+  }
+
+  List<DataRow> _statusTableRows(CharDetailViewModel vm) {
+    return <DataRow>[
+      DataRow(cells: _createDataCells(vm, Status.strName)),
+      DataRow(cells: _createDataCells(vm, Status.vitName)),
+      DataRow(cells: _createDataCells(vm, Status.agiName)),
+      DataRow(cells: _createDataCells(vm, Status.dexName)),
+      DataRow(cells: _createDataCells(vm, Status.intName)),
+      DataRow(cells: _createDataCells(vm, Status.spiName)),
+      DataRow(cells: _createDataCells(vm, Status.loveName)),
+      DataRow(cells: _createDataCells(vm, Status.attrName)),
+    ];
+  }
+
+  List<DataCell> _createDataCells(CharDetailViewModel vm, String statusName) {
+    final r = <DataCell>[];
+    r.add(DataCell(Text(statusName)));
+    r.addAll(vm.findStyleStatus(statusName).map((status) => DataCell(Text(status.toString()))));
+    return r;
   }
 
   ///
@@ -329,7 +320,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// 下のメニュー
+  /// ボトムメニュー
   ///
   Widget _appBarContent() {
     return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {

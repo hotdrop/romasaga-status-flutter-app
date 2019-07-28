@@ -11,6 +11,7 @@ class LetterMainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('運営からのお便り詳細'),
       ),
       body: Center(
@@ -23,6 +24,7 @@ class LetterMainPage extends StatelessWidget {
     final controller = PageController(initialPage: firstSelectLetterType.index, keepPage: false);
     return PageView.builder(
         controller: controller,
+        itemCount: LetterType.values.length,
         itemBuilder: (context, index) {
           final selectedType = LetterType.values[index];
           return _LetterDetailPage(Letter.fromType(selectedType));

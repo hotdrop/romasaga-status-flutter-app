@@ -11,44 +11,36 @@ class RomasagaIcon {
   ///
   static Widget character(String fileName) {
     final String path = 'res/charIcons/$fileName';
-    return _imageIcon(res: path, iconSize: IconSize.large);
+    return _imageIcon(res: path, iconSize: IconSize.normal);
   }
 
   static Widget characterLarge(String fileName) {
     final String path = 'res/charIcons/$fileName';
-    return _imageIcon(res: path, iconSize: IconSize.moreLarge);
+    return _imageIcon(res: path, iconSize: IconSize.large);
   }
 
   ///
   /// スタイルランクアイコン
   ///
   static Widget rank(String rank) {
-    return _convertRankIcon(styleRank: rank, iconSize: IconSize.normal);
-  }
-
-  static Widget rankSmallSize(String rank) {
-    return _convertRankIcon(styleRank: rank, iconSize: IconSize.small);
-  }
-
-  static Widget _convertRankIcon({@required String styleRank, IconSize iconSize}) {
-    if (styleRank.contains(Style.rankSS)) {
-      return _imageIcon(res: 'res/icons/icon_rank_SS.png', iconSize: iconSize);
-    } else if (styleRank.contains(Style.rankS)) {
-      return _imageIcon(res: 'res/icons/icon_rank_S.png', iconSize: iconSize);
+    if (rank.contains(Style.rankSS)) {
+      return _imageIcon(res: 'res/icons/icon_rank_SS.png', iconSize: IconSize.small);
+    } else if (rank.contains(Style.rankS)) {
+      return _imageIcon(res: 'res/icons/icon_rank_S.png', iconSize: IconSize.small);
     } else {
-      return _imageIcon(res: 'res/icons/icon_rank_A.png', iconSize: iconSize);
+      return _imageIcon(res: 'res/icons/icon_rank_A.png', iconSize: IconSize.small);
     }
   }
 
   ///
   /// 武器アイコン
   ///
-  static Widget weapon(WeaponType type) {
-    return _convertWeaponIcon(weaponType: type, iconSize: IconSize.normal);
+  static Widget weaponSmall(WeaponType type) {
+    return _convertWeaponIcon(weaponType: type, iconSize: IconSize.small);
   }
 
-  static Widget weaponLargeSize(WeaponType type) {
-    return _convertWeaponIcon(weaponType: type, iconSize: IconSize.large);
+  static Widget weapon(WeaponType type) {
+    return _convertWeaponIcon(weaponType: type, iconSize: IconSize.normal);
   }
 
   static Widget _convertWeaponIcon({@required WeaponType weaponType, IconSize iconSize}) {
@@ -89,21 +81,21 @@ class RomasagaIcon {
   static Widget weaponCategory({@required WeaponCategory category}) {
     switch (category) {
       case WeaponCategory.slash:
-        return _imageIcon(res: 'res/icons/icon_type_slash.png');
+        return _imageIcon(res: 'res/icons/icon_type_slash.png', iconSize: IconSize.normal);
       case WeaponCategory.strike:
-        return _imageIcon(res: 'res/icons/icon_type_strike.png');
+        return _imageIcon(res: 'res/icons/icon_type_strike.png', iconSize: IconSize.normal);
       case WeaponCategory.poke:
-        return _imageIcon(res: 'res/icons/icon_type_poke.png');
+        return _imageIcon(res: 'res/icons/icon_type_poke.png', iconSize: IconSize.normal);
       case WeaponCategory.heat:
-        return _imageIcon(res: 'res/icons/icon_type_heat.png');
+        return _imageIcon(res: 'res/icons/icon_type_heat.png', iconSize: IconSize.normal);
       case WeaponCategory.cold:
-        return _imageIcon(res: 'res/icons/icon_type_cold.png');
+        return _imageIcon(res: 'res/icons/icon_type_cold.png', iconSize: IconSize.normal);
       case WeaponCategory.thunder:
-        return _imageIcon(res: 'res/icons/icon_type_thunder.png');
+        return _imageIcon(res: 'res/icons/icon_type_thunder.png', iconSize: IconSize.normal);
       case WeaponCategory.dark:
-        return _imageIcon(res: 'res/icons/icon_type_dark.png');
+        return _imageIcon(res: 'res/icons/icon_type_dark.png', iconSize: IconSize.normal);
       case WeaponCategory.light:
-        return _imageIcon(res: 'res/icons/icon_type_light.png');
+        return _imageIcon(res: 'res/icons/icon_type_light.png', iconSize: IconSize.normal);
       default:
         SagaLogger.d("不正なWeaponCategoryです。category=$category");
         throw FormatException("不正なWeaponCategoryです。category=$category");
@@ -114,16 +106,16 @@ class RomasagaIcon {
     double size;
     switch (iconSize) {
       case IconSize.small:
-        size = 20.0;
+        size = 30.0;
         break;
-      case IconSize.large:
+      case IconSize.normal:
         size = 50.0;
         break;
-      case IconSize.moreLarge:
+      case IconSize.large:
         size = 80.0;
         break;
       default:
-        size = 30.0;
+        size = 0;
     }
 
     return Image.asset(
@@ -134,4 +126,4 @@ class RomasagaIcon {
   }
 }
 
-enum IconSize { small, normal, large, moreLarge }
+enum IconSize { small, normal, large }
