@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart' as foundation;
 import '../../model/status.dart';
 import '../../data/my_status_repository.dart';
 
+import '../../common/strings.dart';
+
 class CharStatusEditViewModel extends foundation.ChangeNotifier {
   CharStatusEditViewModel(this.currentStatus, {MyStatusRepository statusRepo})
       : _newHp = currentStatus.hp,
@@ -36,31 +38,31 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
 
   void updateStatus(String statusName, int newStatus) {
     switch (statusName) {
-      case Status.hpName:
+      case Strings.HpName:
         _newHp = newStatus;
         break;
-      case Status.strName:
+      case Strings.StrName:
         _newStr = newStatus;
         break;
-      case Status.vitName:
+      case Strings.VitName:
         _newVit = newStatus;
         break;
-      case Status.dexName:
+      case Strings.DexName:
         _newDex = newStatus;
         break;
-      case Status.agiName:
+      case Strings.AgiName:
         _newAgi = newStatus;
         break;
-      case Status.intName:
+      case Strings.IntName:
         _newInt = newStatus;
         break;
-      case Status.spiName:
+      case Strings.SpiName:
         _newSpi = newStatus;
         break;
-      case Status.loveName:
+      case Strings.LoveName:
         _newLove = newStatus;
         break;
-      case Status.attrName:
+      case Strings.AttrName:
         _newAttr = newStatus;
         break;
     }

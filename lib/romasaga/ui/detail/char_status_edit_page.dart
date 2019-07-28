@@ -5,6 +5,7 @@ import '../../model/status.dart';
 import 'char_status_edit_view_model.dart';
 
 import '../widget/status_text_field.dart';
+import '../../common/strings.dart';
 
 class CharStatusEditPage extends StatelessWidget {
   CharStatusEditPage(this._myStatus);
@@ -17,7 +18,7 @@ class CharStatusEditPage extends StatelessWidget {
       builder: (_) => CharStatusEditViewModel(_myStatus),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('ステータス編集'),
+          title: const Text(Strings.StatusEditTitle),
         ),
         resizeToAvoidBottomPadding: false,
         body: _widgetContents(context),
@@ -29,22 +30,22 @@ class CharStatusEditPage extends StatelessWidget {
     return Consumer<CharStatusEditViewModel>(
       builder: (context, viewModel, child) {
         // フォーカスが必要なので末尾のステータスから順に作成していく
-        final attrTextField = StatusTextField(Status.attrName, _myStatus.attr, (int value) => viewModel.updateStatus(Status.attrName, value));
-        final loveTextField = StatusTextField(Status.loveName, _myStatus.love, (int value) => viewModel.updateStatus(Status.loveName, value),
+        final attrTextField = StatusTextField(Strings.AttrName, _myStatus.attr, (int value) => viewModel.updateStatus(Strings.AttrName, value));
+        final loveTextField = StatusTextField(Strings.LoveName, _myStatus.love, (int value) => viewModel.updateStatus(Strings.LoveName, value),
             nextFocusNode: attrTextField.focusNode);
-        final spiTextField = StatusTextField(Status.spiName, _myStatus.spirit, (int value) => viewModel.updateStatus(Status.spiName, value),
+        final spiTextField = StatusTextField(Strings.SpiName, _myStatus.spirit, (int value) => viewModel.updateStatus(Strings.SpiName, value),
             nextFocusNode: loveTextField.focusNode);
-        final intTextField = StatusTextField(Status.intName, _myStatus.intelligence, (int value) => viewModel.updateStatus(Status.intName, value),
+        final intTextField = StatusTextField(Strings.IntName, _myStatus.intelligence, (int value) => viewModel.updateStatus(Strings.IntName, value),
             nextFocusNode: spiTextField.focusNode);
-        final agiTextField = StatusTextField(Status.agiName, _myStatus.agi, (int value) => viewModel.updateStatus(Status.agiName, value),
+        final agiTextField = StatusTextField(Strings.AgiName, _myStatus.agi, (int value) => viewModel.updateStatus(Strings.AgiName, value),
             nextFocusNode: intTextField.focusNode);
-        final dexTextField = StatusTextField(Status.dexName, _myStatus.dex, (int value) => viewModel.updateStatus(Status.dexName, value),
+        final dexTextField = StatusTextField(Strings.DexName, _myStatus.dex, (int value) => viewModel.updateStatus(Strings.DexName, value),
             nextFocusNode: agiTextField.focusNode);
-        final vitTextField = StatusTextField(Status.vitName, _myStatus.vit, (int value) => viewModel.updateStatus(Status.vitName, value),
+        final vitTextField = StatusTextField(Strings.VitName, _myStatus.vit, (int value) => viewModel.updateStatus(Strings.VitName, value),
             nextFocusNode: dexTextField.focusNode);
-        final strTextField = StatusTextField(Status.strName, _myStatus.str, (int value) => viewModel.updateStatus(Status.strName, value),
+        final strTextField = StatusTextField(Strings.StrName, _myStatus.str, (int value) => viewModel.updateStatus(Strings.StrName, value),
             nextFocusNode: vitTextField.focusNode);
-        final hpTextField = StatusTextField(Status.hpName, _myStatus.hp, (int value) => viewModel.updateStatus(Status.hpName, value),
+        final hpTextField = StatusTextField(Strings.HpName, _myStatus.hp, (int value) => viewModel.updateStatus(Strings.HpName, value),
             nextFocusNode: strTextField.focusNode);
 
         return Column(
@@ -85,10 +86,7 @@ class CharStatusEditPage extends StatelessWidget {
             Navigator.pop(context, true);
           },
           icon: Icon(Icons.save),
-          label: Text(
-            '保存',
-            style: TextStyle(fontSize: 16.0),
-          ),
+          label: Text(Strings.StatusEditSaveButtonLabel, style: TextStyle(fontSize: 16.0)),
         );
       },
     );

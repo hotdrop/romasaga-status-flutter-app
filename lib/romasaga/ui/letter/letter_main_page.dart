@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../model/letter.dart';
+import '../../common/strings.dart';
 
 class LetterMainPage extends StatelessWidget {
   LetterMainPage(this.firstSelectLetterType);
@@ -12,7 +13,7 @@ class LetterMainPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('運営からのお便り詳細'),
+        title: Text(Strings.LetterPageTitle),
       ),
       body: Center(
         child: _widgetContents(context),

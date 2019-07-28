@@ -8,6 +8,8 @@ import 'setting/setting_tab.dart';
 
 import 'char_list_view_model.dart';
 
+import '../common/strings.dart';
+
 class TopPage extends StatefulWidget {
   @override
   _TopPageState createState() => _TopPageState();
@@ -66,8 +68,8 @@ class Destination {
 }
 
 const _allDestinations = <Destination>[
-  Destination('キャラ', Icons.person, Colors.black12),
-  Destination('検索', Icons.search, Colors.white10),
-  Destination('お便り', Icons.mail, Colors.blueGrey),
-  Destination('設定', Icons.settings, Colors.white30),
+  Destination(Strings.BottomMenuCharacter, Icons.person, Colors.black12),
+  Destination(Strings.BottomMenuSearch, Icons.search, Colors.white10),
+  Destination(Strings.BottomMenuLetter, Icons.mail, Colors.blueGrey),
+  Destination(Strings.BottomMenuSettings, Icons.settings, Colors.white30),
 ];

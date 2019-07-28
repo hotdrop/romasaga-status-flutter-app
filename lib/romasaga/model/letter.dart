@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
 
+import '../common/strings.dart';
+
 class Letter {
   Letter._({@required this.letterType, @required this.gifResource, @required this.title, @required this.themeColor});
 
   factory Letter.fromType(LetterType type) {
     switch (type) {
       case LetterType.january:
-        return Letter._(letterType: type, gifResource: 'res/letters/201901_hane.gif', title: januaryTitle, themeColor: Colors.orange);
+        return Letter._(
+          letterType: type,
+          gifResource: 'res/letters/201901_hane.gif',
+          title: Strings.LetterJanuaryTitle,
+          themeColor: Colors.orange,
+        );
       case LetterType.february:
-        return Letter._(letterType: type, gifResource: 'res/letters/201902_valentine.gif', title: februaryTitle, themeColor: Colors.redAccent);
+        return Letter._(
+            letterType: type, gifResource: 'res/letters/201902_valentine.gif', title: Strings.LetterFebruaryTitle, themeColor: Colors.redAccent);
       case LetterType.march:
-        return Letter._(letterType: type, gifResource: 'res/letters/201903_hinamaturi.gif', title: marchTitle, themeColor: Colors.pinkAccent);
+        return Letter._(
+            letterType: type, gifResource: 'res/letters/201903_hinamaturi.gif', title: Strings.LetterMarchTitle, themeColor: Colors.pinkAccent);
       case LetterType.april:
-        return Letter._(letterType: type, gifResource: 'res/letters/201904_hanami.gif', title: aprilTitle, themeColor: Colors.pinkAccent);
+        return Letter._(
+            letterType: type, gifResource: 'res/letters/201904_hanami.gif', title: Strings.LetterAprilTitle, themeColor: Colors.pinkAccent);
       case LetterType.may:
-        return Letter._(letterType: type, gifResource: 'res/letters/201905_hiyori.gif', title: mayTitle, themeColor: Colors.green);
+        return Letter._(letterType: type, gifResource: 'res/letters/201905_hiyori.gif', title: Strings.LetterMayTitle, themeColor: Colors.green);
       case LetterType.june:
-        return Letter._(letterType: type, gifResource: 'res/letters/201906_halfAniver.gif', title: juneTitle, themeColor: Colors.green);
+        return Letter._(letterType: type, gifResource: 'res/letters/201906_halfAniver.gif', title: Strings.LetterJuneTitle, themeColor: Colors.green);
       case LetterType.july:
-        return Letter._(letterType: type, gifResource: 'res/letters/201907_asami.gif', title: julyTitle, themeColor: Colors.blueAccent);
+        return Letter._(letterType: type, gifResource: 'res/letters/201907_asami.gif', title: Strings.LetterJulyTitle, themeColor: Colors.blueAccent);
       default:
         return null;
     }
@@ -28,14 +38,6 @@ class Letter {
   final String title;
   final String gifResource;
   final Color themeColor;
-
-  static final String januaryTitle = '1月 ロックブーケとモニカの羽根つき';
-  static final String februaryTitle = '2月 バレンタイン';
-  static final String marchTitle = '3月 皆で楽しいひな祭り段';
-  static final String aprilTitle = '4月 サガフロ勢で花見';
-  static final String mayTitle = '5月 初春の詩人と最終皇帝女';
-  static final String juneTitle = '6月 ハーフアニバーサリー';
-  static final String julyTitle = '7月 アザミvsディープワン';
 }
 
 enum LetterType {
