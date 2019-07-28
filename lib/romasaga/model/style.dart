@@ -1,3 +1,5 @@
+import '../common/strings.dart';
+
 class Style {
   final int characterId;
   final String rank;
@@ -28,13 +30,9 @@ class Style {
     this.attr,
   );
 
-  static const String rankSS = 'SS';
-  static const String rankS = 'S';
-  static const String rankA = 'A';
-
   static int rankSort(String first, String second) {
-    final firstPriority = (first == rankA) ? 1 : (first == rankS) ? 2 : 3;
-    final secondPriority = (second == rankA) ? 1 : (second == rankS) ? 2 : 3;
+    final firstPriority = (first == Strings.RankA) ? 1 : (first == Strings.RankS) ? 2 : 3;
+    final secondPriority = (second == Strings.RankA) ? 1 : (second == Strings.RankS) ? 2 : 3;
     if (firstPriority < secondPriority) {
       return -1;
     } else if (firstPriority == secondPriority) {

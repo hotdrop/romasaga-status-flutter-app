@@ -22,16 +22,6 @@ abstract class Status {
   final int spirit;
   final int love;
   final int attr;
-
-  static const String hpName = 'ＨＰ';
-  static const String strName = '腕力';
-  static const String vitName = '体力';
-  static const String dexName = '器用';
-  static const String agiName = '素早';
-  static const String intName = '知力';
-  static const String spiName = '精神';
-  static const String loveName = '愛　';
-  static const String attrName = '魅力';
 }
 
 class MyStatus extends Status {

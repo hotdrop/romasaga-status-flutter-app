@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../model/style.dart';
+import '../../common/strings.dart';
 import 'romasaga_icon.dart';
 
 class RankChoiceChip extends StatefulWidget {
@@ -56,9 +56,9 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   }
 
   Color _rankToColor(String rank) {
-    if (rank.contains(Style.rankSS)) {
+    if (rank.contains(Strings.RankSS)) {
       return Color.fromARGB(255, 233, 217, 77);
-    } else if (rank.contains(Style.rankS)) {
+    } else if (rank.contains(Strings.RankS)) {
       return Color.fromARGB(255, 200, 204, 219);
     } else {
       return Color.fromARGB(255, 239, 201, 191);

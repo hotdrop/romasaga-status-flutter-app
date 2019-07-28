@@ -9,6 +9,7 @@ import '../../data/character_repository.dart';
 import '../../data/my_status_repository.dart';
 import '../../data/stage_repository.dart';
 
+import '../../common/strings.dart';
 import '../../common/saga_logger.dart';
 
 class CharDetailViewModel extends foundation.ChangeNotifier {
@@ -93,21 +94,21 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
   List<int> findStyleStatus(String statusName) {
     switch (statusName) {
-      case Status.strName:
+      case Strings.StrName:
         return character.styles.map((s) => s.str + _selectedStage.limit).toList();
-      case Status.vitName:
+      case Strings.VitName:
         return character.styles.map((s) => s.vit + _selectedStage.limit).toList();
-      case Status.dexName:
+      case Strings.DexName:
         return character.styles.map((s) => s.dex + _selectedStage.limit).toList();
-      case Status.agiName:
+      case Strings.AgiName:
         return character.styles.map((s) => s.agi + _selectedStage.limit).toList();
-      case Status.intName:
+      case Strings.IntName:
         return character.styles.map((s) => s.intelligence + _selectedStage.limit).toList();
-      case Status.spiName:
+      case Strings.SpiName:
         return character.styles.map((s) => s.spirit + _selectedStage.limit).toList();
-      case Status.loveName:
+      case Strings.LoveName:
         return character.styles.map((s) => s.love + _selectedStage.limit).toList();
-      case Status.attrName:
+      case Strings.AttrName:
         return character.styles.map((s) => s.attr + _selectedStage.limit).toList();
       default:
         return null;
@@ -117,28 +118,28 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   int getStatusUpperLimit(String statusName) {
     var targetStatus;
     switch (statusName) {
-      case Status.strName:
+      case Strings.StrName:
         targetStatus = _selectedStyle?.str;
         break;
-      case Status.vitName:
+      case Strings.VitName:
         targetStatus = _selectedStyle?.vit;
         break;
-      case Status.dexName:
+      case Strings.DexName:
         targetStatus = _selectedStyle?.dex;
         break;
-      case Status.agiName:
+      case Strings.AgiName:
         targetStatus = _selectedStyle?.agi;
         break;
-      case Status.intName:
+      case Strings.IntName:
         targetStatus = _selectedStyle?.intelligence;
         break;
-      case Status.spiName:
+      case Strings.SpiName:
         targetStatus = _selectedStyle?.spirit;
         break;
-      case Status.loveName:
+      case Strings.LoveName:
         targetStatus = _selectedStyle?.love;
         break;
-      case Status.attrName:
+      case Strings.AttrName:
         targetStatus = _selectedStyle?.attr;
         break;
       default:

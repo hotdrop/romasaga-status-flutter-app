@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/character.dart';
-import '../../model/status.dart';
 
 import 'char_detail_view_model.dart';
 import 'char_status_edit_page.dart';
@@ -14,6 +13,7 @@ import '../widget/rank_choice_chip.dart';
 import '../widget/status_indicator.dart';
 
 import '../../common/saga_logger.dart';
+import '../../common/strings.dart';
 
 class CharDetailPage extends StatelessWidget {
   CharDetailPage({@required this.character});
@@ -113,15 +113,15 @@ class CharDetailPage extends StatelessWidget {
       final myStatus = viewModel.getMyStatus();
       return Column(
         children: <Widget>[
-          _statusIndicator(Status.hpName, myStatus.hp, 0),
-          _statusIndicator(Status.strName, myStatus.str, viewModel.getStatusUpperLimit(Status.strName)),
-          _statusIndicator(Status.vitName, myStatus.vit, viewModel.getStatusUpperLimit(Status.vitName)),
-          _statusIndicator(Status.dexName, myStatus.dex, viewModel.getStatusUpperLimit(Status.dexName)),
-          _statusIndicator(Status.agiName, myStatus.agi, viewModel.getStatusUpperLimit(Status.agiName)),
-          _statusIndicator(Status.intName, myStatus.intelligence, viewModel.getStatusUpperLimit(Status.intName)),
-          _statusIndicator(Status.spiName, myStatus.spirit, viewModel.getStatusUpperLimit(Status.spiName)),
-          _statusIndicator(Status.loveName, myStatus.love, viewModel.getStatusUpperLimit(Status.loveName)),
-          _statusIndicator(Status.attrName, myStatus.attr, viewModel.getStatusUpperLimit(Status.attrName)),
+          _statusIndicator(Strings.HpName, myStatus.hp, 0),
+          _statusIndicator(Strings.StrName, myStatus.str, viewModel.getStatusUpperLimit(Strings.StrName)),
+          _statusIndicator(Strings.VitName, myStatus.vit, viewModel.getStatusUpperLimit(Strings.VitName)),
+          _statusIndicator(Strings.DexName, myStatus.dex, viewModel.getStatusUpperLimit(Strings.DexName)),
+          _statusIndicator(Strings.AgiName, myStatus.agi, viewModel.getStatusUpperLimit(Strings.AgiName)),
+          _statusIndicator(Strings.IntName, myStatus.intelligence, viewModel.getStatusUpperLimit(Strings.IntName)),
+          _statusIndicator(Strings.SpiName, myStatus.spirit, viewModel.getStatusUpperLimit(Strings.SpiName)),
+          _statusIndicator(Strings.LoveName, myStatus.love, viewModel.getStatusUpperLimit(Strings.LoveName)),
+          _statusIndicator(Strings.AttrName, myStatus.attr, viewModel.getStatusUpperLimit(Strings.AttrName)),
         ],
       );
     });
@@ -144,7 +144,7 @@ class CharDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 24.0),
-            Text("基準スタイル", style: TextStyle(fontSize: 16.0)),
+            Text(Strings.CharacterDetailStyleLabel, style: TextStyle(fontSize: 16.0)),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -173,7 +173,7 @@ class CharDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(height: 24.0),
-        Text("基準ステージ", style: TextStyle(fontSize: 16.0)),
+        Text(Strings.CharacterDetailStageLabel, style: TextStyle(fontSize: 16.0)),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -215,7 +215,7 @@ class CharDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(height: 24.0),
-        Text("武器と属性", style: TextStyle(fontSize: 16.0)),
+        Text(Strings.CharacterDetailAttributeLabel, style: TextStyle(fontSize: 16.0)),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -247,8 +247,8 @@ class CharDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(height: 24.0),
-        Text("スタイル別のステータス上限", style: TextStyle(fontSize: 16.0)),
-        Text("選択ステージで切り替え可能", style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+        Text(Strings.CharacterDetailStatusTableLabel, style: TextStyle(fontSize: 16.0)),
+        Text(Strings.CharacterDetailStatusTableSubLabel, style: TextStyle(fontSize: 14.0, color: Colors.grey)),
         _styleStatusTable(),
       ],
     );
@@ -275,14 +275,14 @@ class CharDetailPage extends StatelessWidget {
 
   List<DataRow> _statusTableRows(CharDetailViewModel vm) {
     return <DataRow>[
-      DataRow(cells: _createDataCells(vm, Status.strName)),
-      DataRow(cells: _createDataCells(vm, Status.vitName)),
-      DataRow(cells: _createDataCells(vm, Status.agiName)),
-      DataRow(cells: _createDataCells(vm, Status.dexName)),
-      DataRow(cells: _createDataCells(vm, Status.intName)),
-      DataRow(cells: _createDataCells(vm, Status.spiName)),
-      DataRow(cells: _createDataCells(vm, Status.loveName)),
-      DataRow(cells: _createDataCells(vm, Status.attrName)),
+      DataRow(cells: _createDataCells(vm, Strings.StrName)),
+      DataRow(cells: _createDataCells(vm, Strings.VitName)),
+      DataRow(cells: _createDataCells(vm, Strings.AgiName)),
+      DataRow(cells: _createDataCells(vm, Strings.DexName)),
+      DataRow(cells: _createDataCells(vm, Strings.IntName)),
+      DataRow(cells: _createDataCells(vm, Strings.SpiName)),
+      DataRow(cells: _createDataCells(vm, Strings.LoveName)),
+      DataRow(cells: _createDataCells(vm, Strings.AttrName)),
     ];
   }
 

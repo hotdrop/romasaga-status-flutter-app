@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../model/style.dart';
 import '../../model/weapon.dart';
 
+import '../../common/strings.dart';
 import '../../common/saga_logger.dart';
 
 class RomasagaIcon {
@@ -23,9 +23,9 @@ class RomasagaIcon {
   /// スタイルランクアイコン
   ///
   static Widget rank(String rank) {
-    if (rank.contains(Style.rankSS)) {
+    if (rank.contains(Strings.RankSS)) {
       return _imageIcon(res: 'res/icons/icon_rank_SS.png', iconSize: IconSize.small);
-    } else if (rank.contains(Style.rankS)) {
+    } else if (rank.contains(Strings.RankS)) {
       return _imageIcon(res: 'res/icons/icon_rank_S.png', iconSize: IconSize.small);
     } else {
       return _imageIcon(res: 'res/icons/icon_rank_A.png', iconSize: IconSize.small);
@@ -45,29 +45,29 @@ class RomasagaIcon {
 
   static Widget _convertWeaponIcon({@required WeaponType weaponType, IconSize iconSize}) {
     switch (weaponType.name) {
-      case WeaponType.sword:
+      case Strings.Sword:
         return _imageIcon(res: 'res/icons/icon_weap_sword.png', iconSize: iconSize);
-      case WeaponType.largeSword:
+      case Strings.LargeSword:
         return _imageIcon(res: 'res/icons/icon_weap_large_sword.png', iconSize: iconSize);
-      case WeaponType.axe:
+      case Strings.Axe:
         return _imageIcon(res: 'res/icons/icon_weap_axe.png', iconSize: iconSize);
-      case WeaponType.hummer:
+      case Strings.Hummer:
         return _imageIcon(res: 'res/icons/icon_weap_hummer.png', iconSize: iconSize);
-      case WeaponType.knuckle:
+      case Strings.Knuckle:
         return _imageIcon(res: 'res/icons/icon_weap_knuckle.png', iconSize: iconSize);
-      case WeaponType.gun:
+      case Strings.Gun:
         return _imageIcon(res: 'res/icons/icon_weap_gun.png', iconSize: iconSize);
-      case WeaponType.rapier:
+      case Strings.Rapier:
         return _imageIcon(res: 'res/icons/icon_weap_rapier.png', iconSize: iconSize);
-      case WeaponType.bow:
+      case Strings.Bow:
         return _imageIcon(res: 'res/icons/icon_weap_bow.png', iconSize: iconSize);
-      case WeaponType.spear:
+      case Strings.Spear:
         return _imageIcon(res: 'res/icons/icon_weap_spear.png', iconSize: iconSize);
-      case WeaponType.magicFire:
-      case WeaponType.magicWater:
-      case WeaponType.magicWind:
-      case WeaponType.magicYin:
-      case WeaponType.magicShine:
+      case Strings.MagicFire:
+      case Strings.MagicWater:
+      case Strings.MagicWind:
+      case Strings.MagicYin:
+      case Strings.MagicShine:
         return _imageIcon(res: 'res/icons/icon_weap_rod.png', iconSize: iconSize);
       default:
         SagaLogger.d("不正なWeaponTypeです。weaponType=${weaponType.name}");

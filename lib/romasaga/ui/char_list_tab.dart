@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'char_list_row_item.dart';
 import 'char_list_view_model.dart';
 
+import '../common/strings.dart';
+
 class CharListTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -14,11 +16,11 @@ class CharListTab extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text('キャラクター一覧'),
+              title: Text(Strings.CharacterListTabTitle),
               bottom: TabBar(tabs: <Tab>[
-                Tab(text: 'お気に入り'),
-                Tab(text: '所持'),
-                Tab(text: '未所持'),
+                Tab(text: Strings.CharacterListTabTitle),
+                Tab(text: Strings.CharacterListTabPossessionTitle),
+                Tab(text: Strings.CharacterListTabUnownedTitle),
               ]),
             ),
             body: TabBarView(
@@ -40,7 +42,7 @@ class CharListTab extends StatelessWidget {
     if (characters.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text('お気に入りキャラは設定されていません。')],
+        children: <Widget>[Text(Strings.NothingCharacterFavoriteMessage)],
       );
     }
 
@@ -60,7 +62,7 @@ class CharListTab extends StatelessWidget {
     if (characters.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text('持っているキャラはいません。')],
+        children: <Widget>[Text(Strings.NothingCharacterPossessionMessage)],
       );
     }
 
