@@ -57,7 +57,7 @@ class MyStatusEntity {
   static const int notFavorite = 0;
   final int favorite;
 
-  MyStatusEntity(
+  const MyStatusEntity(
     this.id,
     this.hp,
     this.str,

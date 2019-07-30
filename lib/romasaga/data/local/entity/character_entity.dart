@@ -29,7 +29,7 @@ class CharacterEntity {
   static const String columnSelectedIconFileName = 'selected_icon_file_name';
   final String selectedIconFileName;
 
-  CharacterEntity(
+  const CharacterEntity(
     this.id,
     this.name,
     this.production,

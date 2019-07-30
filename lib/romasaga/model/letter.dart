@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import '../common/strings.dart';
 
 class Letter {
+
+  final LetterType letterType;
+  final String title;
+  final String gifResource;
+  final Color themeColor;
+
   Letter._({@required this.letterType, @required this.gifResource, @required this.title, @required this.themeColor});
 
   factory Letter.fromType(LetterType type) {
@@ -33,11 +39,6 @@ class Letter {
         return null;
     }
   }
-
-  final LetterType letterType;
-  final String title;
-  final String gifResource;
-  final Color themeColor;
 }
 
 enum LetterType {

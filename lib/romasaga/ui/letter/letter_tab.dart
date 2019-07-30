@@ -10,7 +10,9 @@ class LetterTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Strings.LetterTabTitle),
+        title: Center(
+          child: Text(Strings.LetterTabTitle),
+        ),
       ),
       body: Center(
         child: _widgetContents(context),
@@ -26,7 +28,7 @@ class LetterTab extends StatelessWidget {
   }
 
   List<Widget> _widgetLetterButtons(BuildContext context) {
-    var letterButtons = <Widget>[];
+    final letterButtons = <Widget>[];
     for (var type in LetterType.values) {
       letterButtons.add(_letterButton(context, type));
       letterButtons.add(const SizedBox(height: 16.0));
@@ -43,7 +45,7 @@ class LetterTab extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => LetterMainPage(letterType)),
+          MaterialPageRoute(builder: (context) => LetterMainPage(firstSelectLetterType: letterType)),
         );
       },
       child: Text(letter.title),

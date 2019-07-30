@@ -8,9 +8,9 @@ import '../widget/status_text_field.dart';
 import '../../common/strings.dart';
 
 class CharStatusEditPage extends StatelessWidget {
-  CharStatusEditPage(this._myStatus);
-
   final MyStatus _myStatus;
+
+  const CharStatusEditPage(this._myStatus);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,9 @@ class CharStatusEditPage extends StatelessWidget {
       builder: (_) => CharStatusEditViewModel(_myStatus),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(Strings.StatusEditTitle),
+          title: Center(
+            child: const Text(Strings.StatusEditTitle),
+          ),
         ),
         resizeToAvoidBottomPadding: false,
         body: _widgetContents(context),
@@ -85,7 +87,7 @@ class CharStatusEditPage extends StatelessWidget {
             await viewModel.saveNewStatus();
             Navigator.pop(context, true);
           },
-          icon: Icon(Icons.save),
+          icon: const Icon(Icons.save),
           label: Text(Strings.StatusEditSaveButtonLabel, style: TextStyle(fontSize: 16.0)),
         );
       },

@@ -24,8 +24,8 @@ class StatusIndicator {
       diffLimit = currentStatus - statusUpperLimit;
     }
 
-    final Color statusColor = _labelStatusColor(diffLimit, currentStatus);
-    final List<Color> graphColors = _linearGradientColors(diffLimit, currentStatus);
+    final statusColor = _labelStatusColor(diffLimit, currentStatus);
+    final graphColors = _linearGradientColors(diffLimit, currentStatus);
 
     return LinearPercentIndicator(
       width: 250,
@@ -33,17 +33,17 @@ class StatusIndicator {
       animationDuration: 500,
       lineHeight: 20.0,
       leading: Padding(
-        padding: EdgeInsets.only(right: 8.0),
+        padding: const EdgeInsets.only(right: 8.0),
         child: Text(name),
       ),
       trailing: Padding(
-        padding: EdgeInsets.only(left: 8.0),
+        padding: const EdgeInsets.only(left: 8.0),
         child: Text("${diffLimit.toString()}", style: TextStyle(color: statusColor)),
       ),
       percent: percent,
       center: Text(
         currentStatus.toString(),
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
       ),
       linearStrokeCap: LinearStrokeCap.butt,
       linearGradient: LinearGradient(colors: graphColors),

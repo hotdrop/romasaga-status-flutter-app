@@ -10,12 +10,12 @@ class RomasagaIcon {
   /// キャラクターアイコン
   ///
   static Widget character(String fileName) {
-    final String path = 'res/charIcons/$fileName';
+    final path = 'res/charIcons/$fileName';
     return _imageIcon(res: path, iconSize: IconSize.normal);
   }
 
   static Widget characterLarge(String fileName) {
-    final String path = 'res/charIcons/$fileName';
+    final path = 'res/charIcons/$fileName';
     return _imageIcon(res: path, iconSize: IconSize.large);
   }
 

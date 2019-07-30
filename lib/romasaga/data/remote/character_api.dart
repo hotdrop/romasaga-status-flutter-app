@@ -39,9 +39,9 @@ class CharacterApi {
   List<Character> _jsonObjectToModel(CharactersJsonObject obj) {
     final characters = <Character>[];
     for (var charObj in obj.characters) {
-      var character = Character(charObj.id, charObj.name, charObj.production, charObj.weaponType);
+      final character = Character(charObj.id, charObj.name, charObj.production, charObj.weaponType);
       for (var styleObj in charObj.styles) {
-        var style = _jsonObjectToStyleModel(character.id, styleObj);
+        final style = _jsonObjectToStyleModel(character.id, styleObj);
         character.addStyle(style);
         if (character.selectedStyleRank == null) {
           character.selectedStyleRank = style.rank;

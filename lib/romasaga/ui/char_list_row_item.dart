@@ -19,7 +19,7 @@ class CharListRowItem extends StatelessWidget {
     return Card(
       child: InkWell(
         child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: <Widget>[
                 Expanded(child: _imageIcon(character), flex: 2),

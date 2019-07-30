@@ -4,16 +4,16 @@ import '../../model/letter.dart';
 import '../../common/strings.dart';
 
 class LetterMainPage extends StatelessWidget {
-  LetterMainPage(this.firstSelectLetterType);
-
   final LetterType firstSelectLetterType;
+
+  const LetterMainPage({@required this.firstSelectLetterType});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(Strings.LetterPageTitle),
+        title: const Text(Strings.LetterPageTitle),
       ),
       body: Center(
         child: _widgetContents(context),
@@ -34,9 +34,9 @@ class LetterMainPage extends StatelessWidget {
 }
 
 class _LetterDetailPage extends StatelessWidget {
-  _LetterDetailPage(this.letter);
-
   final Letter letter;
+
+  const _LetterDetailPage(this.letter);
 
   @override
   Widget build(BuildContext context) {

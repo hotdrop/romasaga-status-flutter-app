@@ -4,11 +4,11 @@ import '../../common/strings.dart';
 import 'romasaga_icon.dart';
 
 class RankChoiceChip extends StatefulWidget {
-  const RankChoiceChip({this.ranks, this.initSelectedRank, this.onSelectedListener});
-
   final List<String> ranks;
   final String initSelectedRank;
   final Function(String) onSelectedListener;
+
+  const RankChoiceChip({this.ranks, this.initSelectedRank, this.onSelectedListener});
 
   @override
   _RankChoiceChipState createState() => _RankChoiceChipState(ranks, initSelectedRank, onSelectedListener);
@@ -36,7 +36,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   List<Widget> _rankChips() {
     return _ranks.map<Widget>((String rank) {
       return Padding(
-        padding: EdgeInsets.only(right: 8.0),
+        padding: const EdgeInsets.only(right: 8.0),
         child: ChoiceChip(
           key: ValueKey(rank),
           selectedColor: _rankToColor(rank),
@@ -57,11 +57,11 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
 
   Color _rankToColor(String rank) {
     if (rank.contains(Strings.RankSS)) {
-      return Color.fromARGB(255, 233, 217, 77);
+      return const Color.fromARGB(255, 233, 217, 77);
     } else if (rank.contains(Strings.RankS)) {
-      return Color.fromARGB(255, 200, 204, 219);
+      return const Color.fromARGB(255, 200, 204, 219);
     } else {
-      return Color.fromARGB(255, 239, 201, 191);
+      return const Color.fromARGB(255, 239, 201, 191);
     }
   }
 
