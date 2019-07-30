@@ -10,7 +10,9 @@ class LetterTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Strings.LetterTabTitle),
+        title: Center(
+          child: Text(Strings.LetterTabTitle),
+        ),
       ),
       body: Center(
         child: _widgetContents(context),

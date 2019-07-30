@@ -18,7 +18,9 @@ class CharStatusEditPage extends StatelessWidget {
       builder: (_) => CharStatusEditViewModel(_myStatus),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(Strings.StatusEditTitle),
+          title: Center(
+            child: const Text(Strings.StatusEditTitle),
+          ),
         ),
         resizeToAvoidBottomPadding: false,
         body: _widgetContents(context),

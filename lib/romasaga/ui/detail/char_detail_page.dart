@@ -38,7 +38,9 @@ class CharDetailPage extends StatelessWidget {
       } else {
         return Scaffold(
           appBar: AppBar(
-            title: Text(viewModel.characterName()),
+            title: Center(
+              child: Text(viewModel.characterName()),
+            ),
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
