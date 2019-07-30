@@ -13,7 +13,7 @@ class SettingTab extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(Strings.SettingsTabTitle),
+          title: const Text(Strings.SettingsTabTitle),
         ),
         body: _widgetContents(context),
       ),
@@ -34,7 +34,7 @@ class SettingTab extends StatelessWidget {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
         return _settingCard(
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person),
             title: Strings.SettingsCharacterUpdateLabel,
             registerCount: viewModel.characterCount,
             loadingStatus: viewModel.loadingCharacter,
@@ -49,7 +49,7 @@ class SettingTab extends StatelessWidget {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
         return _settingCard(
-            icon: Icon(Icons.map),
+            icon: const Icon(Icons.map),
             title: Strings.SettingsStageUpdateLabel,
             registerCount: viewModel.stageCount,
             loadingStatus: viewModel.loadingStage,
@@ -68,11 +68,11 @@ class SettingTab extends StatelessWidget {
     @required Function onTapListener,
   }) {
     return Card(
-      margin: EdgeInsets.all(0),
+      margin: const EdgeInsets.all(0),
       shape: BeveledRectangleBorder(),
       child: InkWell(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Row(
             children: <Widget>[
               Expanded(child: _cardPartsIcon(icon), flex: 1),
@@ -90,7 +90,7 @@ class SettingTab extends StatelessWidget {
 
   Widget _cardPartsIcon(Icon icon) {
     return Padding(
-      padding: EdgeInsets.only(right: 16.0),
+      padding: const EdgeInsets.only(right: 16.0),
       child: icon,
     );
   }

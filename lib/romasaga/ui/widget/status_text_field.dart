@@ -4,8 +4,6 @@ import '../widget/custom_text_field.dart';
 
 // ignore: must_be_immutable
 class StatusTextField extends StatelessWidget {
-  StatusTextField(this._statusName, this._currentStatus, this._onChanged, {FocusNode nextFocusNode}) : _nextFocusNode = nextFocusNode;
-
   final String _statusName;
   final int _currentStatus;
   final Function(int) _onChanged;
@@ -14,12 +12,14 @@ class StatusTextField extends StatelessWidget {
   FocusNode _currentFocusNode = FocusNode();
   FocusNode get focusNode => _currentFocusNode;
 
+  StatusTextField(this._statusName, this._currentStatus, this._onChanged, {FocusNode nextFocusNode}) : _nextFocusNode = nextFocusNode;
+
   @override
   Widget build(BuildContext context) {
     return TextFormFieldWithChanged(
       textCapitalization: TextCapitalization.words,
       keyboardType: TextInputType.number,
-      style: TextStyle(fontSize: 20.0),
+      style: const TextStyle(fontSize: 20.0),
       maxLength: 3,
       decoration: InputDecoration(
         border: OutlineInputBorder(),

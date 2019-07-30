@@ -1,9 +1,9 @@
 import '../common/strings.dart';
 
 class WeaponType {
-  const WeaponType(this.name);
-
   final String name;
+
+  const WeaponType(this.name);
 
   WeaponCategory get category {
     switch (name) {

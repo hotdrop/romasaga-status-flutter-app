@@ -11,7 +11,7 @@ class Character {
   String selectedStyleRank;
   String selectedIconFileName;
 
-  final List<Style> styles = [];
+  final styles = <Style>[];
 
   MyStatus myStatus;
 
