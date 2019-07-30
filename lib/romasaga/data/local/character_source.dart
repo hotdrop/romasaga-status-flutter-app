@@ -65,11 +65,11 @@ class CharacterSource {
 
   Future<void> _insert(Transaction txn, List<Character> characters) async {
     for (var character in characters) {
-      var entity = Mapper.toCharacterEntity(character);
+      final entity = Mapper.toCharacterEntity(character);
       await txn.insert(CharacterEntity.tableName, entity.toMap());
 
       for (var style in character.styles) {
-        var entity = Mapper.toStyleEntity(style);
+        final entity = Mapper.toStyleEntity(style);
         await txn.insert(StyleEntity.tableName, entity.toMap());
       }
     }

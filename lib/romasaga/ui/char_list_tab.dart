@@ -16,9 +16,9 @@ class CharListTab extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text(Strings.CharacterListTabTitle),
-              bottom: TabBar(tabs: <Tab>[
-                Tab(text: Strings.CharacterListTabTitle),
+              title: const Text(Strings.CharacterListTabTitle),
+              bottom: const TabBar(tabs: <Tab>[
+                Tab(text: Strings.CharacterListTabFavoriteTitle),
                 Tab(text: Strings.CharacterListTabPossessionTitle),
                 Tab(text: Strings.CharacterListTabUnownedTitle),
               ]),

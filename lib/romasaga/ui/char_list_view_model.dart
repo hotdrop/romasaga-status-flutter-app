@@ -20,7 +20,7 @@ class CharListViewModel extends foundation.ChangeNotifier {
 
     if (myStatuses.isNotEmpty) {
       for (var status in myStatuses) {
-        var targetStatus = _characters.firstWhere((character) => character.id == status.id);
+        final targetStatus = _characters.firstWhere((character) => character.id == status.id);
         targetStatus.myStatus = status;
       }
     }

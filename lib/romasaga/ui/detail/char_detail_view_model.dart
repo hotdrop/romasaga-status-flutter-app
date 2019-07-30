@@ -4,6 +4,7 @@ import '../../model/character.dart';
 import '../../model/style.dart';
 import '../../model/status.dart';
 import '../../model/stage.dart';
+import '../../model/weapon.dart';
 
 import '../../data/character_repository.dart';
 import '../../data/my_status_repository.dart';
@@ -17,14 +18,15 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   final StageRepository _stageRepository;
   final MyStatusRepository _myStatusRepository;
 
-  final Character character;
+  final Character _character;
 
-  CharDetailViewModel(this.character, {CharacterRepository characterRepo, StageRepository stageRepo, MyStatusRepository statusRepo})
+  CharDetailViewModel(this._character, {CharacterRepository characterRepo, StageRepository stageRepo, MyStatusRepository statusRepo})
       : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
         _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
         _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
   List<Stage> _stages;
+  List<Stage> get stages => _stages;
 
   Style _selectedStyle;
   Stage _selectedStage;
@@ -36,32 +38,35 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     _stages = await _stageRepository.findAll();
     _selectedStage = _stages.first;
 
-    if (character.styles.isEmpty) {
+    if (_character.styles.isEmpty) {
       SagaLogger.d("キャラクターのスタイルが未取得なので取得します。");
-      final styles = await _characterRepository.findStyles(character.id);
-      character.addStyles(styles);
+      final styles = await _characterRepository.findStyles(_character.id);
+      _character.addStyles(styles);
     }
 
-    _selectedStyle = character.getSelectedStyle();
+    _selectedStyle = _character.getSelectedStyle();
 
     isLoading = false;
     notifyListeners();
   }
 
+  ///
+  /// characterオブジェクトはViewクラスからViewModelに渡されるので当然Viewクラスでも参照できる
+  /// ただ、どっちからも参照する実装は嫌だったので全てViewModelクラスを経由するようにしている。
+  ///
+  String characterName() => _character.name;
+  WeaponType weaponType() => _character.weaponType;
+  WeaponCategory weaponCategory() => _character.weaponCategory;
+  MyStatus myStatus() => _character.myStatus;
+  String selectedRank() => _character.selectedStyleRank;
+  Style style(String rank) => _character.getStyle(rank);
+
   String getSelectedIconFileName() {
     return _selectedStyle.iconFileName;
   }
-
-  MyStatus getMyStatus() {
-    return character.myStatus;
-  }
-
-  String getSelectedRank() {
-    return character.selectedStyleRank;
-  }
-
+  
   void saveSelectedRank(String rank) {
-    _selectedStyle = character.getStyle(rank);
+    _selectedStyle = _character.getStyle(rank);
     notifyListeners();
   }
 
@@ -70,16 +75,8 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   }
 
   List<String> getAllRanks() {
-    final ranks = character.styles.map((style) => style.rank).toList();
+    final ranks = _character.styles.map((style) => style.rank).toList();
     return ranks..sort((s, t) => s.compareTo(t));
-  }
-
-  Style getStyle(String rank) {
-    return character.getStyle(rank);
-  }
-
-  List<Stage> findStages() {
-    return _stages;
   }
 
   String getSelectedStageName() {
@@ -92,7 +89,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   }
 
   void refreshStatus() async {
-    character.myStatus = await _myStatusRepository.find(character.id);
+    _character.myStatus = await _myStatusRepository.find(_character.id);
     notifyListeners();
   }
 
@@ -138,15 +135,15 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
   void saveHaveCharacter(bool haveChar) async {
     SagaLogger.d("このキャラの保持を $haveChar にします。");
-    character.myStatus.have = haveChar;
-    await _myStatusRepository.save(character.myStatus);
+    _character.myStatus.have = haveChar;
+    await _myStatusRepository.save(_character.myStatus);
     notifyListeners();
   }
 
   void saveFavorite(bool favorite) async {
     SagaLogger.d("お気に入りを $favorite にします。");
-    character.myStatus.favorite = favorite;
-    await _myStatusRepository.save(character.myStatus);
+    _character.myStatus.favorite = favorite;
+    await _myStatusRepository.save(_character.myStatus);
     notifyListeners();
   }
 }

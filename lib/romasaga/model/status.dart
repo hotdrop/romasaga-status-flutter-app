@@ -1,4 +1,15 @@
 abstract class Status {
+  final int id;
+  final int hp;
+  final int str;
+  final int vit;
+  final int dex;
+  final int agi;
+  final int intelligence;
+  final int spirit;
+  final int love;
+  final int attr;
+
   const Status(
     this.id,
     this.hp,
@@ -11,20 +22,12 @@ abstract class Status {
     this.love,
     this.attr,
   );
-
-  final int id;
-  final int hp;
-  final int str;
-  final int vit;
-  final int dex;
-  final int agi;
-  final int intelligence;
-  final int spirit;
-  final int love;
-  final int attr;
 }
 
 class MyStatus extends Status {
+  bool have;
+  bool favorite;
+
   MyStatus(
     int id,
     int hp,
@@ -44,9 +47,6 @@ class MyStatus extends Status {
       : this.have = false,
         this.favorite = false,
         super(id, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
-  bool have;
-  bool favorite;
 
   int sumWithoutHp() {
     return str + vit + dex + agi + intelligence + spirit + love + attr;

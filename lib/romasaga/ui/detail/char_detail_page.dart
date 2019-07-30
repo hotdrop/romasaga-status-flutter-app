@@ -16,9 +16,9 @@ import '../../common/saga_logger.dart';
 import '../../common/strings.dart';
 
 class CharDetailPage extends StatelessWidget {
-  CharDetailPage({@required this.character});
-
   final Character character;
+
+  const CharDetailPage({@required this.character});
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +38,12 @@ class CharDetailPage extends StatelessWidget {
       } else {
         return Scaffold(
           appBar: AppBar(
-            title: Text(character.name),
+            title: Text(viewModel.characterName()),
           ),
           body: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: ListView(
-              children: contentLayout(context),
+              children: contentLayout(),
             ),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -57,12 +57,12 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// 詳細画面に表示する各レイアウトを束ねる
   ///
-  List<Widget> contentLayout(BuildContext context) {
+  List<Widget> contentLayout() {
     final layouts = <Widget>[];
     layouts.add(_contentCharacterCard());
     layouts.add(_contentsStyleChips());
     layouts.add(_contentsStage());
-    layouts.add(_contentsAttribute(context));
+    layouts.add(_contentsAttribute());
     layouts.add(_contentsEachStyleStatus());
     return layouts;
   }
@@ -74,7 +74,7 @@ class CharDetailPage extends StatelessWidget {
     return Card(
       elevation: 4.0,
       child: Padding(
-        padding: EdgeInsets.only(left: 24.0, right: 16.0, top: 8.0, bottom: 16.0),
+        padding: const EdgeInsets.only(left: 24.0, right: 16.0, top: 8.0, bottom: 16.0),
         child: Column(
           children: <Widget>[
             _characterContents(),
@@ -110,7 +110,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   Widget _statusContents() {
     return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
-      final myStatus = viewModel.getMyStatus();
+      final myStatus = viewModel.myStatus();
       return Column(
         children: <Widget>[
           _statusIndicator(Strings.HpName, myStatus.hp, 0),
@@ -129,7 +129,7 @@ class CharDetailPage extends StatelessWidget {
 
   Widget _statusIndicator(String name, int status, int limit) {
     return Padding(
-      padding: EdgeInsets.only(top: 8.0),
+      padding: const EdgeInsets.only(top: 8.0),
       child: StatusIndicator.create(name, status, limit),
     );
   }
@@ -149,10 +149,10 @@ class CharDetailPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 8.0, left: 24.0),
+                  padding: const EdgeInsets.only(top: 8.0, left: 24.0),
                   child: RankChoiceChip(
                       ranks: viewModel.getAllRanks(),
-                      initSelectedRank: viewModel.getSelectedRank(),
+                      initSelectedRank: viewModel.selectedRank(),
                       onSelectedListener: (String rank) {
                         viewModel.saveSelectedRank(rank);
                       }),
@@ -178,7 +178,7 @@ class CharDetailPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: 8.0, left: 24.0),
+              padding: const EdgeInsets.only(top: 8.0, left: 24.0),
               child: _stageDropDownList(),
             ),
           ],
@@ -189,7 +189,7 @@ class CharDetailPage extends StatelessWidget {
 
   Widget _stageDropDownList() {
     return Consumer<CharDetailViewModel>(builder: (_, viewModel, child) {
-      final stages = viewModel.findStages();
+      final stages = viewModel.stages;
 
       return DropdownButton<String>(
         items: stages.map((stage) {
@@ -210,32 +210,36 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// キャラクター属性
   ///
-  Widget _contentsAttribute(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const SizedBox(height: 24.0),
-        Text(Strings.CharacterDetailAttributeLabel, style: TextStyle(fontSize: 16.0)),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+  Widget _contentsAttribute() {
+    return Consumer<CharDetailViewModel>(
+      builder: (context, viewModel, child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 8.0, left: 24.0),
-              child: CircleAvatar(
-                child: RomasagaIcon.weapon(character.weaponType),
-                backgroundColor: Colors.grey,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8.0, left: 24.0),
-              child: CircleAvatar(
-                child: RomasagaIcon.weaponCategory(category: character.weaponCategory),
-                backgroundColor: Colors.grey,
-              ),
+            const SizedBox(height: 24.0),
+            Text(Strings.CharacterDetailAttributeLabel, style: TextStyle(fontSize: 16.0)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, left: 24.0),
+                  child: CircleAvatar(
+                    child: RomasagaIcon.weapon(viewModel.weaponType()),
+                    backgroundColor: Colors.grey,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, left: 24.0),
+                  child: CircleAvatar(
+                    child: RomasagaIcon.weaponCategory(category: viewModel.weaponCategory()),
+                    backgroundColor: Colors.grey,
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -284,7 +288,7 @@ class CharDetailPage extends StatelessWidget {
     final attrRowData = <int>[];
 
     for (var rank in vm.getAllRanks()) {
-      var style = vm.getStyle(rank);
+      final style = vm.style(rank);
       strRowData.add(vm.addUpperLimit(style.str));
       vitRowData.add(vm.addUpperLimit(style.vit));
       agiRowData.add(vm.addUpperLimit(style.agi));
@@ -320,7 +324,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _editStatusFab(BuildContext context) {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        final myStatus = viewModel.getMyStatus();
+        final myStatus = viewModel.myStatus();
 
         return FloatingActionButton(
           child: Icon(Icons.edit, color: Theme.of(context).accentColor),
@@ -351,9 +355,9 @@ class CharDetailPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Padding(padding: EdgeInsets.only(left: 16.0)),
+            Padding(padding: const EdgeInsets.only(left: 16.0)),
             _haveCharacterIcon(context, viewModel),
-            Padding(padding: EdgeInsets.only(left: 16.0)),
+            Padding(padding: const EdgeInsets.only(left: 16.0)),
             _favoriteIcon(context, viewModel),
           ],
         ),
@@ -362,7 +366,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   Widget _haveCharacterIcon(BuildContext context, CharDetailViewModel viewModel) {
-    final myStatus = viewModel.getMyStatus();
+    final myStatus = viewModel.myStatus();
     final color = myStatus.have ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
 
     return IconButton(
@@ -375,7 +379,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   Widget _favoriteIcon(BuildContext context, CharDetailViewModel viewModel) {
-    final myStatus = viewModel.getMyStatus();
+    final myStatus = viewModel.myStatus();
     final color = myStatus.favorite ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
     final icon = myStatus.favorite ? Icons.favorite : Icons.favorite_border;
 
