@@ -39,7 +39,7 @@ class CharDetailPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Center(
-              child: Text(viewModel.characterName()),
+              child: Text(viewModel.characterName),
             ),
           ),
           body: Padding(
@@ -96,11 +96,42 @@ class CharDetailPage extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            RomasagaIcon.characterLarge(viewModel.getSelectedIconFileName()),
+            GestureDetector(
+              child: RomasagaIcon.characterLarge(viewModel.selectedIconFileName),
+              onTap: () async {
+                _showDialog(context, viewModel);
+              },
+            ),
             Text(
-              viewModel.getSelectedStyleTitle(),
+              viewModel.selectedStyleTitle,
               style: TextStyle(color: Colors.grey, fontSize: 16.0),
             ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDialog(BuildContext context, CharDetailViewModel viewModel) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          content: Text(Strings.CharacterDetailChangeStyleIconDialogContent),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                viewModel.saveCurrentSelectStyle();
+                Navigator.pop(context);
+              },
+            )
           ],
         );
       },
@@ -112,7 +143,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   Widget _statusContents() {
     return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
-      final myStatus = viewModel.myStatus();
+      final myStatus = viewModel.myStatus;
       return Column(
         children: <Widget>[
           _statusIndicator(Strings.HpName, myStatus.hp, 0),
@@ -153,11 +184,12 @@ class CharDetailPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, left: 24.0),
                   child: RankChoiceChip(
-                      ranks: viewModel.getAllRanks(),
-                      initSelectedRank: viewModel.selectedRank(),
-                      onSelectedListener: (String rank) {
-                        viewModel.saveSelectedRank(rank);
-                      }),
+                    ranks: viewModel.getAllRanks(),
+                    initSelectedRank: viewModel.selectedRank,
+                    onSelectedListener: (String rank) {
+                      viewModel.onSelectRank(rank);
+                    },
+                  ),
                 ),
               ],
             )
@@ -202,7 +234,7 @@ class CharDetailPage extends StatelessWidget {
           );
         }).toList(),
         onChanged: (value) {
-          viewModel.saveSelectedStage(value);
+          viewModel.onSelectStage(value);
         },
         value: viewModel.getSelectedStageName(),
       );
@@ -226,14 +258,14 @@ class CharDetailPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, left: 24.0),
                   child: CircleAvatar(
-                    child: RomasagaIcon.weapon(viewModel.weaponType()),
+                    child: RomasagaIcon.weapon(viewModel.weaponType),
                     backgroundColor: Colors.grey,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, left: 24.0),
                   child: CircleAvatar(
-                    child: RomasagaIcon.weaponCategory(category: viewModel.weaponCategory()),
+                    child: RomasagaIcon.weaponCategory(category: viewModel.weaponCategory),
                     backgroundColor: Colors.grey,
                   ),
                 ),
@@ -326,7 +358,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _editStatusFab(BuildContext context) {
     return Consumer<CharDetailViewModel>(
       builder: (_, viewModel, child) {
-        final myStatus = viewModel.myStatus();
+        final myStatus = viewModel.myStatus;
 
         return FloatingActionButton(
           child: Icon(Icons.edit, color: Theme.of(context).accentColor),
@@ -368,7 +400,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   Widget _haveCharacterIcon(BuildContext context, CharDetailViewModel viewModel) {
-    final myStatus = viewModel.myStatus();
+    final myStatus = viewModel.myStatus;
     final color = myStatus.have ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
 
     return IconButton(
@@ -381,7 +413,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   Widget _favoriteIcon(BuildContext context, CharDetailViewModel viewModel) {
-    final myStatus = viewModel.myStatus();
+    final myStatus = viewModel.myStatus;
     final color = myStatus.favorite ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
     final icon = myStatus.favorite ? Icons.favorite : Icons.favorite_border;
 
