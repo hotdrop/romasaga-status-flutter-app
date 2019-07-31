@@ -74,4 +74,17 @@ class CharacterSource {
       }
     }
   }
+
+  Future<void> saveSelectedStyle(int id, String rank, String iconFileName) async {
+    final db = await DBProvider.instance.database;
+    await db.rawUpdate("""
+      UPDATE 
+        ${CharacterEntity.tableName}
+      SET 
+        ${CharacterEntity.columnSelectedStyleRank} = '$rank', 
+        ${CharacterEntity.columnSelectedIconFileName} = '$iconFileName' 
+      WHERE 
+        ${CharacterEntity.columnId} = $id
+      """);
+  }
 }

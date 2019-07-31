@@ -34,12 +34,12 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   bool isLoading = true;
 
   void load() async {
-    SagaLogger.d("ロードします。");
+    SagaLogger.d('ロードします。');
     _stages = await _stageRepository.findAll();
     _selectedStage = _stages.first;
 
     if (_character.styles.isEmpty) {
-      SagaLogger.d("キャラクターのスタイルが未取得なので取得します。");
+      SagaLogger.d('キャラクターのスタイルが未取得なので取得します。');
       final styles = await _characterRepository.findStyles(_character.id);
       _character.addStyles(styles);
     }
@@ -54,24 +54,20 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   /// characterオブジェクトはViewクラスからViewModelに渡されるので当然Viewクラスでも参照できる
   /// ただ、どっちからも参照する実装は嫌だったので全てViewModelクラスを経由するようにしている。
   ///
-  String characterName() => _character.name;
-  WeaponType weaponType() => _character.weaponType;
-  WeaponCategory weaponCategory() => _character.weaponCategory;
-  MyStatus myStatus() => _character.myStatus;
-  String selectedRank() => _character.selectedStyleRank;
+  String get characterName => _character.name;
+  WeaponType get weaponType => _character.weaponType;
+  WeaponCategory get weaponCategory => _character.weaponCategory;
+  MyStatus get myStatus => _character.myStatus;
+  String get selectedRank => _character.selectedStyleRank;
   Style style(String rank) => _character.getStyle(rank);
 
-  String getSelectedIconFileName() {
-    return _selectedStyle.iconFileName;
-  }
-  
-  void saveSelectedRank(String rank) {
+  String get selectedIconFileName => _selectedStyle.iconFileName;
+  String get selectedStyleRank => _selectedStyle.rank;
+  String get selectedStyleTitle => _selectedStyle.title;
+
+  void onSelectRank(String rank) {
     _selectedStyle = _character.getStyle(rank);
     notifyListeners();
-  }
-
-  String getSelectedStyleTitle() {
-    return _selectedStyle.title;
   }
 
   List<String> getAllRanks() {
@@ -83,13 +79,8 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     return _selectedStage?.name ?? null;
   }
 
-  void saveSelectedStage(String stageName) {
+  void onSelectStage(String stageName) {
     _selectedStage = _stages.firstWhere((s) => s.name == stageName);
-    notifyListeners();
-  }
-
-  void refreshStatus() async {
-    _character.myStatus = await _myStatusRepository.find(_character.id);
     notifyListeners();
   }
 
@@ -133,15 +124,27 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     return targetStatus + _selectedStage.limit;
   }
 
+  void refreshStatus() async {
+    _character.myStatus = await _myStatusRepository.find(_character.id);
+    notifyListeners();
+  }
+
+  void saveCurrentSelectStyle() async {
+    SagaLogger.d('表示ランクを ${_selectedStyle.rank} にします。');
+    _character.selectedStyleRank = _selectedStyle.rank;
+    _character.selectedIconFileName = _selectedStyle.iconFileName;
+    await _characterRepository.saveSelectedRank(_character.id, _selectedStyle.rank, _selectedStyle.iconFileName);
+  }
+
   void saveHaveCharacter(bool haveChar) async {
-    SagaLogger.d("このキャラの保持を $haveChar にします。");
+    SagaLogger.d('このキャラの保持を $haveChar にします。');
     _character.myStatus.have = haveChar;
     await _myStatusRepository.save(_character.myStatus);
     notifyListeners();
   }
 
   void saveFavorite(bool favorite) async {
-    SagaLogger.d("お気に入りを $favorite にします。");
+    SagaLogger.d('お気に入りを $favorite にします。');
     _character.myStatus.favorite = favorite;
     await _myStatusRepository.save(_character.myStatus);
     notifyListeners();

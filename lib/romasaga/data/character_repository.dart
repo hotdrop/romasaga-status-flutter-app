@@ -44,4 +44,8 @@ class CharacterRepository {
   Future<int> count() async {
     return await _localDataSource.count();
   }
+
+  Future<void> saveSelectedRank(int id, String rank, String iconFileName) async {
+    return await _localDataSource.saveSelectedStyle(id, rank, iconFileName);
+  }
 }
