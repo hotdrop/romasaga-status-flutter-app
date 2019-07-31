@@ -13,6 +13,7 @@ class Strings {
 
   static const String CharacterTotalStatus = '計:';
 
+  static const String CharacterDetailChangeStyleIconDialogContent = 'このアイコンを一覧表示用にしますか？';
   static const String CharacterDetailStyleLabel = '基準スタイル';
   static const String CharacterDetailStageLabel = '基準ステージ';
   static const String CharacterDetailAttributeLabel = '武器と属性';
