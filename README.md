@@ -1,16 +1,17 @@
-# romansing_saga_app
+# 趣味用アプリ
+Flutterの学習用に作成している趣味アプリです。
+モチベーションが保てる題材が良いと考え、ロマサガRSのステータス管理用アプリにしました。
 
-A new Flutter application.
+ver1.0.0では必要なデータは全てローカルの`res/json`から読み込んでおりネットワーク通信はしていません。
+本当は通信処理も書いておきたいので、いずれデータはAPI経由で読めるようにする予定です。
 
-## Getting Started
+## 作成にあたって
+Flutterだけで完結したいのでネイティブには一切手を入れていません。
+ただ、AndroidはAdaptiveIcon対応とProguard有効化のため`build.gradle`には手を入れています。
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## resファイル
+画像やアイコンは著作権があるので全て`gitignore`にしています。
+そのためこのリポジトリのままではアプリが動かないのでご了承ください。
+また、データjsonも管理対象外にしています。
+こちらは入れてもよかったのですが、キャラのステータス上限が公開されておらず自分が勝手に調べたものにっています。  
+そのため正確ではないので管理対象にするのをやめました。
