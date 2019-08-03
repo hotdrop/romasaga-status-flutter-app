@@ -1,4 +1,6 @@
 class Strings {
+  static const String AppTitle = 'ロマサガRSステータス管理';
+
   static const String BottomMenuCharacter = 'キャラ';
   static const String BottomMenuSearch = '検索';
   static const String BottomMenuLetter = 'お便り';
