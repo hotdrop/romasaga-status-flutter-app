@@ -11,12 +11,12 @@ class RomasagaIcon {
   ///
   static Widget character(String fileName) {
     final path = 'res/charIcons/$fileName';
-    return _imageIcon(res: path, iconSize: IconSize.normal);
+    return _imageIcon(path, IconSize.normal);
   }
 
   static Widget characterLarge(String fileName) {
     final path = 'res/charIcons/$fileName';
-    return _imageIcon(res: path, iconSize: IconSize.large);
+    return _imageIcon(path, IconSize.large);
   }
 
   ///
@@ -24,11 +24,11 @@ class RomasagaIcon {
   ///
   static Widget rank(String rank) {
     if (rank.contains(Strings.RankSS)) {
-      return _imageIcon(res: 'res/icons/icon_rank_SS.png', iconSize: IconSize.small);
+      return _imageIcon('res/icons/icon_rank_SS.png', IconSize.small);
     } else if (rank.contains(Strings.RankS)) {
-      return _imageIcon(res: 'res/icons/icon_rank_S.png', iconSize: IconSize.small);
+      return _imageIcon('res/icons/icon_rank_S.png', IconSize.small);
     } else {
-      return _imageIcon(res: 'res/icons/icon_rank_A.png', iconSize: IconSize.small);
+      return _imageIcon('res/icons/icon_rank_A.png', IconSize.small);
     }
   }
 
@@ -36,39 +36,66 @@ class RomasagaIcon {
   /// 武器アイコン
   ///
   static Widget weaponSmall(WeaponType type) {
-    return _convertWeaponIcon(weaponType: type, iconSize: IconSize.small);
+    return _convertWeaponIcon(type, IconSize.small);
   }
 
   static Widget weapon(WeaponType type) {
-    return _convertWeaponIcon(weaponType: type, iconSize: IconSize.normal);
+    return _convertWeaponIcon(type, IconSize.normal);
   }
 
-  static Widget _convertWeaponIcon({@required WeaponType weaponType, IconSize iconSize}) {
+  ///
+  /// Ripple付きの武器アイコン
+  /// 選択しているかしていないかの指定も可能
+  ///
+  static Widget weaponWithRipple({@required WeaponType type, @required Function onTap, bool selected = false}) {
+    String res = _getWeaponIconRes(type);
+    return Material(
+      shape: CircleBorder(),
+      color: selected ? Colors.yellowAccent : Colors.grey,
+      child: Ink.image(
+        image: AssetImage(res),
+        fit: BoxFit.cover,
+        width: 50.0,
+        height: 50.0,
+        child: InkWell(
+          onTap: onTap,
+          child: null,
+        ),
+      ),
+    );
+  }
+
+  static Widget _convertWeaponIcon(WeaponType weaponType, IconSize iconSize) {
+    String res = _getWeaponIconRes(weaponType);
+    return _imageIcon(res, iconSize);
+  }
+
+  static String _getWeaponIconRes(WeaponType weaponType) {
     switch (weaponType.name) {
       case Strings.Sword:
-        return _imageIcon(res: 'res/icons/icon_weap_sword.png', iconSize: iconSize);
+        return 'res/icons/icon_weap_sword.png';
       case Strings.LargeSword:
-        return _imageIcon(res: 'res/icons/icon_weap_large_sword.png', iconSize: iconSize);
+        return 'res/icons/icon_weap_large_sword.png';
       case Strings.Axe:
-        return _imageIcon(res: 'res/icons/icon_weap_axe.png', iconSize: iconSize);
+        return 'res/icons/icon_weap_axe.png';
       case Strings.Hummer:
-        return _imageIcon(res: 'res/icons/icon_weap_hummer.png', iconSize: iconSize);
+        return 'res/icons/icon_weap_hummer.png';
       case Strings.Knuckle:
-        return _imageIcon(res: 'res/icons/icon_weap_knuckle.png', iconSize: iconSize);
+        return 'res/icons/icon_weap_knuckle.png';
       case Strings.Gun:
-        return _imageIcon(res: 'res/icons/icon_weap_gun.png', iconSize: iconSize);
+        return 'res/icons/icon_weap_gun.png';
       case Strings.Rapier:
-        return _imageIcon(res: 'res/icons/icon_weap_rapier.png', iconSize: iconSize);
+        return 'res/icons/icon_weap_rapier.png';
       case Strings.Bow:
-        return _imageIcon(res: 'res/icons/icon_weap_bow.png', iconSize: iconSize);
+        return 'res/icons/icon_weap_bow.png';
       case Strings.Spear:
-        return _imageIcon(res: 'res/icons/icon_weap_spear.png', iconSize: iconSize);
+        return 'res/icons/icon_weap_spear.png';
       case Strings.MagicFire:
       case Strings.MagicWater:
       case Strings.MagicWind:
       case Strings.MagicYin:
       case Strings.MagicShine:
-        return _imageIcon(res: 'res/icons/icon_weap_rod.png', iconSize: iconSize);
+        return 'res/icons/icon_weap_rod.png';
       default:
         SagaLogger.d("不正なWeaponTypeです。weaponType=${weaponType.name}");
         throw FormatException("不正なWeaponTypeです。weaponType=${weaponType.name}");
@@ -81,28 +108,28 @@ class RomasagaIcon {
   static Widget weaponCategory({@required WeaponCategory category}) {
     switch (category) {
       case WeaponCategory.slash:
-        return _imageIcon(res: 'res/icons/icon_type_slash.png', iconSize: IconSize.normal);
+        return _imageIcon('res/icons/icon_type_slash.png', IconSize.normal);
       case WeaponCategory.strike:
-        return _imageIcon(res: 'res/icons/icon_type_strike.png', iconSize: IconSize.normal);
+        return _imageIcon('res/icons/icon_type_strike.png', IconSize.normal);
       case WeaponCategory.poke:
-        return _imageIcon(res: 'res/icons/icon_type_poke.png', iconSize: IconSize.normal);
+        return _imageIcon('res/icons/icon_type_poke.png', IconSize.normal);
       case WeaponCategory.heat:
-        return _imageIcon(res: 'res/icons/icon_type_heat.png', iconSize: IconSize.normal);
+        return _imageIcon('res/icons/icon_type_heat.png', IconSize.normal);
       case WeaponCategory.cold:
-        return _imageIcon(res: 'res/icons/icon_type_cold.png', iconSize: IconSize.normal);
+        return _imageIcon('res/icons/icon_type_cold.png', IconSize.normal);
       case WeaponCategory.thunder:
-        return _imageIcon(res: 'res/icons/icon_type_thunder.png', iconSize: IconSize.normal);
+        return _imageIcon('res/icons/icon_type_thunder.png', IconSize.normal);
       case WeaponCategory.dark:
-        return _imageIcon(res: 'res/icons/icon_type_dark.png', iconSize: IconSize.normal);
+        return _imageIcon('res/icons/icon_type_dark.png', IconSize.normal);
       case WeaponCategory.light:
-        return _imageIcon(res: 'res/icons/icon_type_light.png', iconSize: IconSize.normal);
+        return _imageIcon('res/icons/icon_type_light.png', IconSize.normal);
       default:
         SagaLogger.d("不正なWeaponCategoryです。category=$category");
         throw FormatException("不正なWeaponCategoryです。category=$category");
     }
   }
 
-  static Widget _imageIcon({@required String res, IconSize iconSize}) {
+  static Widget _imageIcon(String res, IconSize iconSize) {
     double size;
     switch (iconSize) {
       case IconSize.small:
