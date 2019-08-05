@@ -65,6 +65,35 @@ class RomasagaIcon {
     );
   }
 
+  ///
+  /// お気に入りアイコン
+  /// 選択しているかしていないかの指定も可能
+  ///
+  static Widget favoriteWithRipple({@required BuildContext context, @required Function onTap, bool selected = false}) {
+    return _createIconWithRipple(context, onTap, selected, Icons.favorite);
+  }
+
+  ///
+  /// チェックアイコン
+  ///
+  static Widget haveCharacterWithRipple({@required BuildContext context, @required Function onTap, bool selected = false}) {
+    return _createIconWithRipple(context, onTap, selected, Icons.check);
+  }
+
+  static Widget _createIconWithRipple(BuildContext context, Function onTap, bool selected, IconData icon) {
+    final iconColor = selected ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+    return RawMaterialButton(
+      shape: CircleBorder(),
+      fillColor: selected ? Colors.yellowAccent : Colors.grey,
+      child: Icon(
+        icon,
+        color: iconColor,
+        size: 50.0,
+      ),
+      onPressed: onTap,
+    );
+  }
+
   static Widget _convertWeaponIcon(WeaponType weaponType, IconSize iconSize) {
     String res = _getWeaponIconRes(weaponType);
     return _imageIcon(res, iconSize);

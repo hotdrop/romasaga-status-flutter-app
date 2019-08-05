@@ -6,7 +6,7 @@ class Strings {
   static const String BottomMenuLetter = 'お便り';
   static const String BottomMenuSettings = '設定';
 
-  static const String CharacterListTabTitle = 'キャラクター一覧';
+  static const String CharacterListTabTitle = 'キャラクターリスト';
   static const String CharacterListTabFavoriteTitle = 'お気に入り';
   static const String CharacterListTabPossessionTitle = '所持';
   static const String CharacterListTabUnownedTitle = '未所持';
@@ -27,6 +27,10 @@ class Strings {
 
   static const String SearchListTabTitle = '検索';
   static const String SearchListQueryHint = 'キャラ名で検索';
+  static const String SearchBackDropTitle = 'キャラ一覧';
+  static const String SearchFilterTitle = 'フィルタ';
+  static const String SearchFilerTitleOwn = 'お気に入りと所持';
+  static const String SearchFilerTitleWeapon = '武器種別';
 
   static const String LetterTabTitle = '運営からのお便り一覧';
   static const String LetterPageTitle = '運営からのお便り詳細';

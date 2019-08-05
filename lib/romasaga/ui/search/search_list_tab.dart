@@ -47,12 +47,6 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
     super.dispose();
   }
 
-  void _selectedFilter() {
-    setState(() {
-      _controller.fling(velocity: 2.0);
-    });
-  }
-
   bool get _backdropPanelVisible {
     final AnimationStatus status = _controller.status;
     return status == AnimationStatus.completed || status == AnimationStatus.forward;
@@ -133,6 +127,10 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
   Widget _filterView() {
     // フィルターしたい要素をここに詰めていく
     final filterViews = <Widget>[];
+    filterViews.add(_filterViewTitle());
+    filterViews.add(_filterViewSubTitle(Strings.SearchFilerTitleOwn));
+    filterViews.add(_filterViewOwnState());
+    filterViews.add(_filterViewSubTitle(Strings.SearchFilerTitleWeapon));
     filterViews.add(_filterViewWeaponType());
 
     return Padding(
@@ -142,6 +140,67 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
         children: filterViews,
       ),
     );
+  }
+
+  Widget _filterViewTitle() {
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            Strings.SearchFilterTitle,
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 24.0,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _filterViewSubTitle(String title) {
+    return Padding(
+      padding: EdgeInsets.only(left: 4.0, top: 8.0, right: 4.0, bottom: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(title, style: TextStyle(color: Colors.grey)),
+          Divider(color: Colors.white70),
+        ],
+      ),
+    );
+  }
+
+  Widget _filterViewOwnState() {
+    return Consumer<SearchListViewModel>(builder: (context, viewModel, child) {
+      bool selectedHaveChar = viewModel.isFilterHave();
+      bool selectedFavorite = viewModel.isFilterFavorite();
+
+      return Wrap(
+        spacing: 16.0,
+        runSpacing: 16.0,
+        children: <Widget>[
+          RomasagaIcon.haveCharacterWithRipple(
+            context: context,
+            selected: selectedHaveChar,
+            onTap: () {
+              viewModel.filterHaveChar(!selectedHaveChar);
+              _showBackDropPanel();
+            },
+          ),
+          RomasagaIcon.favoriteWithRipple(
+            context: context,
+            selected: selectedFavorite,
+            onTap: () {
+              viewModel.filterFavorite(!selectedFavorite);
+              _showBackDropPanel();
+            },
+          )
+        ],
+      );
+    });
   }
 
   Widget _filterViewWeaponType() {
@@ -155,12 +214,18 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
             type: type,
             selected: selected,
             onTap: () {
-              _selectedFilter();
               viewModel.findByWeaponType(type);
+              _showBackDropPanel();
             },
           );
         }).toList(),
       );
+    });
+  }
+
+  void _showBackDropPanel() {
+    setState(() {
+      _controller.fling(velocity: 2.0);
     });
   }
 
@@ -254,8 +319,7 @@ class _BackdropPanel extends StatelessWidget {
               alignment: AlignmentDirectional.centerStart,
               child: DefaultTextStyle(
                 style: Theme.of(context).textTheme.subhead,
-                // TODO このタイトルどうするか・・
-                child: Text('Search'),
+                child: Text(Strings.SearchBackDropTitle),
               ),
             ),
           ),

@@ -29,6 +29,14 @@ class SearchListViewModel extends foundation.ChangeNotifier {
     }
   }
 
+  bool isFilterHave() {
+    return _condition.haveChar;
+  }
+
+  bool isFilterFavorite() {
+    return _condition.favorite;
+  }
+
   bool isSelectWeaponType(WeaponType type) {
     return type == _condition.weaponType;
   }
