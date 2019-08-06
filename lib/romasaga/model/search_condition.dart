@@ -1,25 +1,43 @@
 import 'weapon.dart';
 
 class SearchCondition {
-  
   String keyword;
   WeaponType weaponType;
-  bool favorite;
-  bool haveChar;
+  bool isFavorite = false;
+  bool haveChar = false;
 
   bool filterWord(String name) {
-    return (keyword == null || name.contains(keyword));
+    if (keyword == null) {
+      return true;
+    }
+    return name.contains(keyword);
   }
 
+  ///
+  /// お気に入りのみにするか？のみフィルター可能
+  /// お気に入りでないものはフィルターする価値ないのでしない。
+  ///
   bool filterFavorite(bool fav) {
-    return (favorite == null || favorite == fav);
+    if (!isFavorite) {
+      return true;
+    }
+    return fav;
   }
 
+  ///
+  /// お気に入りと同様
+  ///
   bool filterHave(bool hav) {
-    return (haveChar == null || haveChar == hav);
+    if (!haveChar) {
+      return true;
+    }
+    return hav;
   }
 
   bool filterWeaponType(WeaponType type) {
-    return (weaponType == null || weaponType == type);
+    if (weaponType == null) {
+      return true;
+    }
+    return type == weaponType;
   }
 }

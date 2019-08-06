@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../common/strings.dart';
 
 class Letter {
-
   final LetterType letterType;
   final String title;
   final String gifResource;
@@ -14,12 +13,7 @@ class Letter {
   factory Letter.fromType(LetterType type) {
     switch (type) {
       case LetterType.january:
-        return Letter._(
-          letterType: type,
-          gifResource: 'res/letters/201901_hane.gif',
-          title: Strings.LetterJanuaryTitle,
-          themeColor: Colors.orange,
-        );
+        return Letter._(letterType: type, gifResource: 'res/letters/201901_hane.gif', title: Strings.LetterJanuaryTitle, themeColor: Colors.orange);
       case LetterType.february:
         return Letter._(
             letterType: type, gifResource: 'res/letters/201902_valentine.gif', title: Strings.LetterFebruaryTitle, themeColor: Colors.redAccent);

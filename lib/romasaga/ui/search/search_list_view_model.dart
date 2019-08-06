@@ -9,6 +9,7 @@ import '../../common/saga_logger.dart';
 class SearchListViewModel extends foundation.ChangeNotifier {
   List<Character> _originalCharacters;
   List<Character> charactersWithFilter;
+
   SearchCondition _condition = SearchCondition();
 
   bool isKeywordSearch = false;
@@ -19,12 +20,25 @@ class SearchListViewModel extends foundation.ChangeNotifier {
     if (isKeywordSearch) {
       SagaLogger.d("キーワード検索を終了します。");
       isKeywordSearch = false;
+      _condition.keyword = null;
       clear();
     } else {
       SagaLogger.d("キーワード検索を開始します。");
       isKeywordSearch = true;
       notifyListeners();
     }
+  }
+
+  bool isFilterHave() {
+    return _condition.haveChar;
+  }
+
+  bool isFilterFavorite() {
+    return _condition.isFavorite;
+  }
+
+  bool isSelectWeaponType(WeaponType type) {
+    return type == _condition.weaponType;
   }
 
   void clear() {
@@ -39,6 +53,7 @@ class SearchListViewModel extends foundation.ChangeNotifier {
   }
 
   void findByWeaponType(WeaponType type) async {
+    SagaLogger.d("${type.name} をフィルター指定します。");
     _condition.weaponType = type;
     _search();
   }
@@ -49,7 +64,7 @@ class SearchListViewModel extends foundation.ChangeNotifier {
   }
 
   void filterFavorite(bool favorite) {
-    _condition.favorite = favorite;
+    _condition.isFavorite = favorite;
     _search();
   }
 
@@ -60,6 +75,7 @@ class SearchListViewModel extends foundation.ChangeNotifier {
         .where((c) => _condition.filterFavorite(c.myStatus.favorite))
         .where((c) => _condition.filterWeaponType(c.weaponType))
         .toList();
+    SagaLogger.d("フィルター後のキャラ数=${charactersWithFilter.length}");
     notifyListeners();
   }
 }

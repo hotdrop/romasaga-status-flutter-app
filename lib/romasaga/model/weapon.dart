@@ -33,6 +33,26 @@ class WeaponType {
         return null;
     }
   }
+
+  static List<WeaponType> get types => [
+        WeaponType(Strings.Sword),
+        WeaponType(Strings.LargeSword),
+        WeaponType(Strings.Axe),
+        WeaponType(Strings.Hummer),
+        WeaponType(Strings.Knuckle),
+        WeaponType(Strings.Gun),
+        WeaponType(Strings.Rapier),
+        WeaponType(Strings.Spear),
+        WeaponType(Strings.Bow),
+        WeaponType(Strings.MagicFire),
+        WeaponType(Strings.MagicWater),
+        WeaponType(Strings.MagicWind),
+        WeaponType(Strings.MagicYin),
+        WeaponType(Strings.MagicShine),
+      ];
+
+  bool operator ==(o) => o is WeaponType && o.name == name;
+  int get hashCode => name.hashCode;
 }
 
 enum WeaponCategory {
