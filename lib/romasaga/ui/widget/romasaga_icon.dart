@@ -66,29 +66,29 @@ class RomasagaIcon {
   }
 
   ///
-  /// お気に入りアイコン
-  /// 選択しているかしていないかの指定も可能
+  /// チェックアイコン
   ///
-  static Widget favoriteWithRipple({@required BuildContext context, @required Function onTap, bool selected = false}) {
-    return _createIconWithRipple(context, onTap, selected, Icons.favorite);
+  static Widget haveCharacterWithRipple({@required BuildContext context, @required Function onTap, @required bool selected}) {
+    return _createIconWithRipple(context, onTap, selected, Icons.check);
   }
 
   ///
-  /// チェックアイコン
+  /// お気に入りアイコン
   ///
-  static Widget haveCharacterWithRipple({@required BuildContext context, @required Function onTap, bool selected = false}) {
-    return _createIconWithRipple(context, onTap, selected, Icons.check);
+  static Widget favoriteWithRipple({@required BuildContext context, @required Function onTap, @required bool selected}) {
+    return _createIconWithRipple(context, onTap, selected, Icons.favorite);
   }
 
   static Widget _createIconWithRipple(BuildContext context, Function onTap, bool selected, IconData icon) {
     final iconColor = selected ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
     return RawMaterialButton(
       shape: CircleBorder(),
-      fillColor: selected ? Colors.yellowAccent : Colors.grey,
+      constraints: BoxConstraints(minWidth: 50.0, minHeight: 50.0),
+      fillColor: Color.fromARGB(255, 80, 80, 80), // TODO こういうのColorResにまとめたい
       child: Icon(
         icon,
         color: iconColor,
-        size: 50.0,
+        size: 30.0,
       ),
       onPressed: onTap,
     );

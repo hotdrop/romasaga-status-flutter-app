@@ -178,24 +178,22 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
       bool selectedHaveChar = viewModel.isFilterHave();
       bool selectedFavorite = viewModel.isFilterFavorite();
 
-      return Wrap(
-        spacing: 16.0,
-        runSpacing: 16.0,
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           RomasagaIcon.haveCharacterWithRipple(
             context: context,
             selected: selectedHaveChar,
             onTap: () {
               viewModel.filterHaveChar(!selectedHaveChar);
-              _showBackDropPanel();
             },
           ),
+          const SizedBox(width: 16.0),
           RomasagaIcon.favoriteWithRipple(
             context: context,
             selected: selectedFavorite,
             onTap: () {
               viewModel.filterFavorite(!selectedFavorite);
-              _showBackDropPanel();
             },
           )
         ],

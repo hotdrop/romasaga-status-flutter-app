@@ -29,7 +29,7 @@ class Strings {
   static const String SearchListQueryHint = 'キャラ名で検索';
   static const String SearchBackDropTitle = 'キャラ一覧';
   static const String SearchFilterTitle = 'フィルタ';
-  static const String SearchFilerTitleOwn = 'お気に入りと所持';
+  static const String SearchFilerTitleOwn = '所持とお気に入り';
   static const String SearchFilerTitleWeapon = '武器種別';
 
   static const String LetterTabTitle = '運営からのお便り一覧';

@@ -34,7 +34,7 @@ class SearchListViewModel extends foundation.ChangeNotifier {
   }
 
   bool isFilterFavorite() {
-    return _condition.favorite;
+    return _condition.isFavorite;
   }
 
   bool isSelectWeaponType(WeaponType type) {
@@ -64,7 +64,7 @@ class SearchListViewModel extends foundation.ChangeNotifier {
   }
 
   void filterFavorite(bool favorite) {
-    _condition.favorite = favorite;
+    _condition.isFavorite = favorite;
     _search();
   }
 
