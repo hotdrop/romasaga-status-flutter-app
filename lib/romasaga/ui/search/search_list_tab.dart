@@ -127,11 +127,11 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
   Widget _filterView() {
     // フィルターしたい要素をここに詰めていく
     final filterViews = <Widget>[];
-    filterViews.add(_filterViewTitle());
     filterViews.add(_filterViewSubTitle(Strings.SearchFilerTitleOwn));
     filterViews.add(_filterViewOwnState());
     filterViews.add(_filterViewSubTitle(Strings.SearchFilerTitleWeapon));
     filterViews.add(_filterViewWeaponType());
+    // TODO ここにクリアボタンつけたい
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -142,27 +142,9 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
     );
   }
 
-  Widget _filterViewTitle() {
-    return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            Strings.SearchFilterTitle,
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 24.0,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _filterViewSubTitle(String title) {
     return Padding(
-      padding: EdgeInsets.only(left: 4.0, top: 8.0, right: 4.0, bottom: 16.0),
+      padding: EdgeInsets.only(left: 4.0, top: 32.0, right: 4.0, bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

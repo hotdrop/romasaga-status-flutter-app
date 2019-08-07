@@ -119,6 +119,7 @@ class RomasagaIcon {
         return 'res/icons/icon_weap_bow.png';
       case Strings.Spear:
         return 'res/icons/icon_weap_spear.png';
+      case Strings.Rod:
       case Strings.MagicFire:
       case Strings.MagicWater:
       case Strings.MagicWind:

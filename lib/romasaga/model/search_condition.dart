@@ -38,6 +38,12 @@ class SearchCondition {
     if (weaponType == null) {
       return true;
     }
-    return type == weaponType;
+    // 杖を使用するキャラに設定されている武器種別は系統別の術となっている。
+    // 術は水や火など複数あるが武器種別としては「杖」1つのためフィルターは術なら術のもの全部を引っ掛ける
+    if (weaponType.isRod()) {
+      return type.isMagic();
+    } else {
+      return type == weaponType;
+    }
   }
 }

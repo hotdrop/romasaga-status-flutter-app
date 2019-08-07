@@ -14,6 +14,7 @@ class WeaponType {
       case Strings.Hummer:
       case Strings.Knuckle:
       case Strings.Gun:
+      case Strings.Rod:
         return WeaponCategory.strike;
       case Strings.Rapier:
       case Strings.Spear:
@@ -44,12 +45,23 @@ class WeaponType {
         WeaponType(Strings.Rapier),
         WeaponType(Strings.Spear),
         WeaponType(Strings.Bow),
-        WeaponType(Strings.MagicFire),
-        WeaponType(Strings.MagicWater),
-        WeaponType(Strings.MagicWind),
-        WeaponType(Strings.MagicYin),
-        WeaponType(Strings.MagicShine),
+        WeaponType(Strings.Rod),
       ];
+
+  bool isRod() => name == Strings.Rod;
+
+  bool isMagic() {
+    switch (name) {
+      case Strings.MagicFire:
+      case Strings.MagicWater:
+      case Strings.MagicWind:
+      case Strings.MagicYin:
+      case Strings.MagicShine:
+        return true;
+      default:
+        return false;
+    }
+  }
 
   bool operator ==(o) => o is WeaponType && o.name == name;
   int get hashCode => name.hashCode;
