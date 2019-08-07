@@ -76,7 +76,7 @@ class CharDetailPage extends StatelessWidget {
     return Card(
       elevation: 4.0,
       child: Padding(
-        padding: const EdgeInsets.only(left: 24.0, right: 16.0, top: 8.0, bottom: 16.0),
+        padding: const EdgeInsets.only(left: 16.0, right: 8.0, top: 8.0, bottom: 16.0),
         child: Column(
           children: <Widget>[
             _characterContents(),
