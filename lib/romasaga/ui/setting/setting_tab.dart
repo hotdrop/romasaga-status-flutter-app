@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'setting_view_model.dart';
 
+import '../../common/saga_logger.dart';
 import '../../common/strings.dart';
 
 class SettingTab extends StatelessWidget {
@@ -15,22 +16,98 @@ class SettingTab extends StatelessWidget {
           centerTitle: true,
           title: const Text(Strings.SettingsTabTitle),
         ),
-        body: _widgetContents(context),
+        body: _widgetContents(),
       ),
     );
   }
 
-  Widget _widgetContents(BuildContext context) {
+  Widget _widgetContents() {
+    return Consumer<SettingViewModel>(
+      builder: (context, viewModel, child) {
+        if (viewModel.isLogIn()) {
+          SagaLogger.d("ログイン済みです。");
+          return _loggedInContents(context);
+        } else {
+          SagaLogger.d("未ログインです。");
+          return _noneLoginContents(context);
+        }
+      },
+    );
+  }
+
+  ///
+  /// 未ログインのレイアウト
+  ///
+  Widget _noneLoginContents(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        _cardCharacterReload(),
-        _cardStageReload(),
+        Center(
+          child: _googleSignInButton(),
+        ),
       ],
     );
   }
 
-  Widget _cardCharacterReload() {
+  Widget _googleSignInButton() {
+    return Consumer<SettingViewModel>(
+      builder: (_, viewModel, child) {
+        return RaisedButton(
+          color: Colors.blueAccent,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          child: Text(Strings.SettingsLoginWithGoogle),
+          onPressed: () {
+            if (viewModel.nowLoading) {
+              SagaLogger.d("nowLoading中です。");
+              return;
+            }
+            viewModel.loginWithGoogle();
+          },
+        );
+      },
+    );
+  }
+
+  Widget _loggedInContents(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        _rowAccountInfo(),
+        _rowCharacterReload(),
+        _rowStageReload(),
+        _rowLogoutButton(),
+      ],
+    );
+  }
+
+  Widget _rowAccountInfo() {
+    return Consumer<SettingViewModel>(builder: (context, viewModel, child) {
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: <Widget>[
+            CircleAvatar(
+              child: Text(viewModel.loginUserName[0].toUpperCase()),
+              backgroundColor: Theme.of(context).accentColor,
+              foregroundColor: Theme.of(context).primaryColor,
+            ),
+            SizedBox(
+              width: 16.0,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(viewModel.loginEmail),
+                Text(viewModel.loginUserName, style: TextStyle(color: Colors.grey)),
+              ],
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _rowCharacterReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
         return _settingCard(
@@ -45,7 +122,7 @@ class SettingTab extends StatelessWidget {
     );
   }
 
-  Widget _cardStageReload() {
+  Widget _rowStageReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
         return _settingCard(
@@ -60,6 +137,21 @@ class SettingTab extends StatelessWidget {
     );
   }
 
+  Widget _rowLogoutButton() {
+    return Consumer<SettingViewModel>(builder: (context, viewModel, child) {
+      return Padding(
+        padding: EdgeInsets.only(top: 16.0),
+        child: OutlineButton(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          child: Text(Strings.SettingsLogoutButton),
+          onPressed: () async {
+            _showLogoutConfirmDialog(context, viewModel);
+          },
+        ),
+      );
+    });
+  }
+
   Widget _settingCard({
     @required Icon icon,
     @required String title,
@@ -68,8 +160,6 @@ class SettingTab extends StatelessWidget {
     @required Function onTapListener,
   }) {
     return Card(
-      margin: const EdgeInsets.all(0),
-      shape: BeveledRectangleBorder(),
       child: InkWell(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -134,6 +224,32 @@ class SettingTab extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(color: statusColor),
       ),
+    );
+  }
+
+  void _showLogoutConfirmDialog(BuildContext context, SettingViewModel viewModel) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          content: Text(Strings.SettingsLogoutMessage),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                viewModel.logout();
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }

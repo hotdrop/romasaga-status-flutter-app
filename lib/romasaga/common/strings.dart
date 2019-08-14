@@ -44,8 +44,11 @@ class Strings {
   static const String LetterAugustTitle = '8月 砂浜で競争';
 
   static const String SettingsTabTitle = '設定';
+  static const String SettingsLoginWithGoogle = 'Googleアカウントでログイン';
   static const String SettingsCharacterUpdateLabel = 'キャラクター情報を更新';
   static const String SettingsStageUpdateLabel = 'ステージ情報を更新';
+  static const String SettingsLogoutButton = 'Log out';
+  static const String SettingsLogoutMessage = 'ログアウトしてもよろしいですか？';
   static const String SettingsRegisterCountLabel = '登録数:';
   static const String SettingsUpdateStatusNone = 'ー';
   static const String SettingsUpdateStatusUpdate = '更新中';
