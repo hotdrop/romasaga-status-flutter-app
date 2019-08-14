@@ -107,6 +107,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
   }
 }
 
+// TODO このステータス、個別じゃなくてAccount画面全体のステータスにする。
 enum LoadingStatus {
   none,
   loading,

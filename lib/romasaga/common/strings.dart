@@ -4,7 +4,7 @@ class Strings {
   static const String BottomMenuCharacter = 'キャラ';
   static const String BottomMenuSearch = '検索';
   static const String BottomMenuLetter = 'お便り';
-  static const String BottomMenuSettings = '設定';
+  static const String BottomMenuAccount = 'アカウント';
 
   static const String CharacterListTabTitle = 'キャラクターリスト';
   static const String CharacterListTabFavoriteTitle = 'お気に入り';
@@ -43,16 +43,16 @@ class Strings {
   static const String LetterJulyTitle = '7月 アザミvsディープワン';
   static const String LetterAugustTitle = '8月 砂浜で競争';
 
-  static const String SettingsTabTitle = '設定';
-  static const String SettingsLoginWithGoogle = 'Googleアカウントでログイン';
-  static const String SettingsCharacterUpdateLabel = 'キャラクター情報を更新';
-  static const String SettingsStageUpdateLabel = 'ステージ情報を更新';
-  static const String SettingsLogoutButton = 'Log out';
-  static const String SettingsLogoutMessage = 'ログアウトしてもよろしいですか？';
-  static const String SettingsRegisterCountLabel = '登録数:';
-  static const String SettingsUpdateStatusNone = 'ー';
-  static const String SettingsUpdateStatusUpdate = '更新中';
-  static const String SettingsUpdateStatusComplete = '完了';
+  static const String AccountTabTitle = 'アカウント';
+  static const String AccountLoginWithGoogle = 'Googleアカウントでログイン';
+  static const String AccountCharacterUpdateLabel = 'キャラクター情報';
+  static const String AccountStageUpdateLabel = 'ステージ情報';
+  static const String AccountLogoutButton = 'Log out';
+  static const String AccountLogoutMessage = 'ログアウトしてもよろしいですか？';
+  static const String AccountRegisterCountLabel = '登録数:';
+  static const String UpdateStatusNone = 'ー';
+  static const String UpdateStatusUpdate = '更新中';
+  static const String UpdateStatusComplete = '完了';
 
   static const String HpName = 'ＨＰ';
   static const String StrName = '腕力';

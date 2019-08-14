@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'char_list_tab.dart';
 import 'search/search_list_tab.dart';
 import 'letter/letter_tab.dart';
-import 'setting/setting_tab.dart';
+import 'account/account_tab.dart';
 
 import 'char_list_view_model.dart';
 
@@ -68,8 +68,8 @@ class Destination {
 }
 
 const _allDestinations = <Destination>[
-  Destination(Strings.BottomMenuCharacter, Icons.person, Colors.black12),
+  Destination(Strings.BottomMenuCharacter, Icons.view_list, Colors.black12),
   Destination(Strings.BottomMenuSearch, Icons.search, Colors.white10),
   Destination(Strings.BottomMenuLetter, Icons.mail, Colors.blueGrey),
-  Destination(Strings.BottomMenuSettings, Icons.settings, Colors.white30),
+  Destination(Strings.BottomMenuAccount, Icons.person, Colors.white30),
 ];

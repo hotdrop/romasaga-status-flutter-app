@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'setting_view_model.dart';
+import 'account_view_model.dart';
 
 import '../../common/saga_logger.dart';
 import '../../common/strings.dart';
@@ -14,7 +14,7 @@ class SettingTab extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(Strings.SettingsTabTitle),
+          title: const Text(Strings.AccountTabTitle),
         ),
         body: _widgetContents(),
       ),
@@ -55,7 +55,7 @@ class SettingTab extends StatelessWidget {
         return RaisedButton(
           color: Colors.blueAccent,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          child: Text(Strings.SettingsLoginWithGoogle),
+          child: Text(Strings.AccountLoginWithGoogle),
           onPressed: () {
             if (viewModel.nowLoading) {
               SagaLogger.d("nowLoading中です。");
@@ -112,7 +112,7 @@ class SettingTab extends StatelessWidget {
       builder: (context, viewModel, child) {
         return _settingCard(
             icon: const Icon(Icons.person),
-            title: Strings.SettingsCharacterUpdateLabel,
+            title: Strings.AccountCharacterUpdateLabel,
             registerCount: viewModel.characterCount,
             loadingStatus: viewModel.loadingCharacter,
             onTapListener: () {
@@ -127,7 +127,7 @@ class SettingTab extends StatelessWidget {
       builder: (context, viewModel, child) {
         return _settingCard(
             icon: const Icon(Icons.map),
-            title: Strings.SettingsStageUpdateLabel,
+            title: Strings.AccountStageUpdateLabel,
             registerCount: viewModel.stageCount,
             loadingStatus: viewModel.loadingStage,
             onTapListener: () {
@@ -143,7 +143,7 @@ class SettingTab extends StatelessWidget {
         padding: EdgeInsets.only(top: 16.0),
         child: OutlineButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          child: Text(Strings.SettingsLogoutButton),
+          child: Text(Strings.AccountLogoutButton),
           onPressed: () async {
             _showLogoutConfirmDialog(context, viewModel);
           },
@@ -190,7 +190,7 @@ class SettingTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(title),
-        Text('${Strings.SettingsRegisterCountLabel} ${registerCount ?? 0}', style: TextStyle(color: Colors.grey)),
+        Text('${Strings.AccountRegisterCountLabel} ${registerCount ?? 0}', style: TextStyle(color: Colors.grey)),
       ],
     );
   }
@@ -201,15 +201,15 @@ class SettingTab extends StatelessWidget {
     switch (loadingStatus) {
       case LoadingStatus.none:
         statusColor = Colors.grey;
-        statusTitle = Strings.SettingsUpdateStatusNone;
+        statusTitle = Strings.UpdateStatusNone;
         break;
       case LoadingStatus.loading:
         statusColor = Colors.green;
-        statusTitle = Strings.SettingsUpdateStatusUpdate;
+        statusTitle = Strings.UpdateStatusUpdate;
         break;
       case LoadingStatus.complete:
         statusColor = Colors.blueAccent;
-        statusTitle = Strings.SettingsUpdateStatusComplete;
+        statusTitle = Strings.UpdateStatusComplete;
         break;
     }
 
@@ -232,7 +232,7 @@ class SettingTab extends StatelessWidget {
       context: context,
       builder: (_) {
         return AlertDialog(
-          content: Text(Strings.SettingsLogoutMessage),
+          content: Text(Strings.AccountLogoutMessage),
           actions: <Widget>[
             FlatButton(
               child: Text('Cancel'),
