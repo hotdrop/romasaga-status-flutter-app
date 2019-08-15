@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'account_view_model.dart';
 
+import '../widget/saga_dialog.dart';
+
 import '../../common/saga_logger.dart';
 import '../../common/strings.dart';
 
@@ -83,8 +85,15 @@ class SettingTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         _rowAccountInfo(),
+        _border(),
+        _rowLabel(Strings.AccountDataUpdateLabel),
         _rowCharacterReload(),
         _rowStageReload(),
+        _border(),
+        _rowLabel(Strings.AccountStatusLabel),
+        _rowBackUp(),
+        _rowRestore(),
+        _border(),
         _rowLogoutButton(),
       ],
     );
@@ -117,11 +126,36 @@ class SettingTab extends StatelessWidget {
     });
   }
 
+  Widget _border() {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Colors.grey, width: 0.5),
+        ),
+      ),
+    );
+  }
+
+  Widget _rowLabel(String label) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 16.0, top: 16.0),
+          child: Text(
+            label,
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _rowCharacterReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _settingRow(
-            icon: const Icon(Icons.person),
+        return _rowItemView(
+            icon: const Icon(Icons.people),
             title: Strings.AccountCharacterUpdateLabel,
             registerCount: viewModel.characterCount,
             loadingStatus: viewModel.loadingCharacter,
@@ -135,13 +169,57 @@ class SettingTab extends StatelessWidget {
   Widget _rowStageReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _settingRow(
+        return _rowItemView(
             icon: const Icon(Icons.map),
             title: Strings.AccountStageUpdateLabel,
-            registerCount: viewModel.stageCount,
+            registerCount: viewModel.stageCount ?? 0,
             loadingStatus: viewModel.loadingStage,
             onTapListener: () {
               viewModel.refreshStage();
+            });
+      },
+    );
+  }
+
+  Widget _rowBackUp() {
+    return Consumer<SettingViewModel>(
+      builder: (context, viewModel, child) {
+        return _rowItemView(
+            icon: const Icon(Icons.backup),
+            title: Strings.AccountStatusBackupLabel,
+            subTitle: Strings.AccountStatusBackupDateLabel,
+            loadingStatus: viewModel.loadingBackup,
+            onTapListener: () async {
+              SagaDialog(
+                context,
+                message: Strings.AccountStatusBackupDialogMessage,
+                positiveListener: () {
+                  // TODO バックアップ実行
+                  SagaLogger.d("バックアップボタンでOKタップしました。");
+                },
+              ).show();
+            });
+      },
+    );
+  }
+
+  Widget _rowRestore() {
+    return Consumer<SettingViewModel>(
+      builder: (context, viewModel, child) {
+        return _rowItemView(
+            icon: const Icon(Icons.settings_backup_restore),
+            title: Strings.AccountStatusRestoreLabel,
+            subTitle: Strings.AccountStatusRestoreDescriptionLabel,
+            loadingStatus: viewModel.loadingRestore,
+            onTapListener: () {
+              SagaDialog(
+                context,
+                message: Strings.AccountStatusRestoreDialogMessage,
+                positiveListener: () {
+                  // TODO リストア実行
+                  SagaLogger.d("復元ボタンでOKタップしました。");
+                },
+              ).show();
             });
       },
     );
@@ -155,58 +233,56 @@ class SettingTab extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           child: Text(Strings.AccountLogoutButton),
           onPressed: () async {
-            _showLogoutConfirmDialog(context, viewModel);
+            SagaDialog(
+              context,
+              message: Strings.AccountLogoutDialogMessage,
+              positiveListener: () => viewModel.logout(),
+            ).show();
           },
         ),
       );
     });
   }
 
-  /// TODO ここ見直し
-  Widget _settingRow({
+  Widget _rowItemView({
     @required Icon icon,
     @required String title,
-    @required int registerCount,
+    int registerCount,
+    String subTitle,
     @required DataLoadingStatus loadingStatus,
     @required Function onTapListener,
   }) {
-    return Card(
-      child: InkWell(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(child: _cardPartsIcon(icon), flex: 1),
-              Expanded(child: _cardPartsContents(title, registerCount), flex: 8),
-              Expanded(child: _cardPartsStatus(loadingStatus), flex: 2),
-            ],
-          ),
+    return InkWell(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: <Widget>[
+            Expanded(child: _rowIcon(icon), flex: 1),
+            Expanded(child: _rowContents(title, registerCount, subTitle), flex: 8),
+            Expanded(child: _rowStatus(loadingStatus), flex: 2),
+          ],
         ),
-        onTap: () {
-          onTapListener();
-        },
       ),
+      onTap: () {
+        onTapListener();
+      },
     );
   }
 
-  Widget _cardPartsIcon(Icon icon) {
+  Widget _rowIcon(Icon icon) {
     return Padding(
       padding: const EdgeInsets.only(right: 16.0),
       child: icon,
     );
   }
 
-  ///
-  /// ラベル見直し
-  /// Firestoreから更新日を取得して表示する。で、Sharedに保存
-  /// 登録数とかどうでもいいけどまあ作っちゃったのでそのままにする。。でも消すかも
-  ///
-  Widget _cardPartsContents(String title, int registerCount) {
+  Widget _rowContents(String title, int registerCount, String subTitle) {
+    final str = subTitle ?? '${Strings.AccountRegisterCountLabel} ${registerCount ?? 0}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(title),
-        Text('${Strings.AccountRegisterCountLabel} ${registerCount ?? 0}', style: TextStyle(color: Colors.grey)),
+        Text(str, style: TextStyle(color: Colors.grey, fontSize: 12.0)),
       ],
     );
   }
@@ -219,7 +295,7 @@ class SettingTab extends StatelessWidget {
   /// 　　タップしたら更新しに行く。その間はロード中にする
   /// 　　ロード終了したら「最新」と表示する
   ///
-  Widget _cardPartsStatus(DataLoadingStatus loadingStatus) {
+  Widget _rowStatus(DataLoadingStatus loadingStatus) {
     var statusColor;
     var statusTitle;
     switch (loadingStatus) {
@@ -252,32 +328,6 @@ class SettingTab extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(color: statusColor),
       ),
-    );
-  }
-
-  void _showLogoutConfirmDialog(BuildContext context, SettingViewModel viewModel) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          content: Text(Strings.AccountLogoutMessage),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            FlatButton(
-              child: Text('OK'),
-              onPressed: () {
-                viewModel.logout();
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
     );
   }
 }

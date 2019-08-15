@@ -45,10 +45,18 @@ class Strings {
 
   static const String AccountTabTitle = 'アカウント';
   static const String AccountLoginWithGoogle = 'Googleアカウントでログイン';
-  static const String AccountCharacterUpdateLabel = 'キャラクター最新情報を取得する';
-  static const String AccountStageUpdateLabel = 'ステージ最新情報を取得する';
+  static const String AccountDataUpdateLabel = 'サーバーから最新情報を取得';
+  static const String AccountCharacterUpdateLabel = 'キャラクター';
+  static const String AccountStageUpdateLabel = 'ステージ';
+  static const String AccountStatusLabel = 'ステータスのバックアップと復元';
+  static const String AccountStatusBackupLabel = 'バックアップ';
+  static const String AccountStatusBackupDateLabel = '前回実行日:';
+  static const String AccountStatusBackupDialogMessage = '現在のキャラクターステータスをバックアップします。よろしいですか？';
+  static const String AccountStatusRestoreLabel = '復元';
+  static const String AccountStatusRestoreDescriptionLabel = 'アプリ内のデータを上書きします。';
+  static const String AccountStatusRestoreDialogMessage = 'サーバーにバックアップしたキャラクターステータスを復元します。\n現在のステータスは全て消えますがよろしいですか？';
   static const String AccountLogoutButton = 'Log out';
-  static const String AccountLogoutMessage = 'ログアウトしてもよろしいですか？';
+  static const String AccountLogoutDialogMessage = 'ログアウトしてもよろしいですか？';
   static const String AccountRegisterCountLabel = '現在の登録数:';
   static const String UpdateStatusNone = 'ー';
   static const String UpdateStatusUpdate = '更新中';

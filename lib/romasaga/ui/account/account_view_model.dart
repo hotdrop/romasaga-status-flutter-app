@@ -16,17 +16,20 @@ class SettingViewModel extends foundation.ChangeNotifier {
       : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
         _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo;
 
+  // 全体のステータス
   Status _status = Status.loading;
   Status get status => _status;
 
   bool get nowLoading => status == Status.loading;
 
-  // TODO これ見直し対象
-  int characterCount;
+  // 個別のステータス
   DataLoadingStatus loadingCharacter = DataLoadingStatus.none;
-
-  int stageCount;
   DataLoadingStatus loadingStage = DataLoadingStatus.none;
+  DataLoadingStatus loadingBackup = DataLoadingStatus.none;
+  DataLoadingStatus loadingRestore = DataLoadingStatus.none;
+
+  int characterCount;
+  int stageCount;
 
   void load() async {
     await _romancingService.load();
@@ -89,10 +92,14 @@ class SettingViewModel extends foundation.ChangeNotifier {
     loadingCharacter = DataLoadingStatus.loading;
     notifyListeners();
 
-    await _characterRepository.refresh();
-    characterCount = await _characterRepository.count();
+    try {
+      await _characterRepository.refresh();
+      characterCount = await _characterRepository.count();
+      loadingCharacter = DataLoadingStatus.complete;
+    } catch (e) {
+      loadingCharacter = DataLoadingStatus.error;
+    }
 
-    loadingCharacter = DataLoadingStatus.complete;
     notifyListeners();
   }
 
