@@ -18,8 +18,14 @@ class MyStatusRepository {
     return _localDataSource.save(status);
   }
 
+  String getPreviousBackupDate() {
+    // TODO sharedから取得
+    return '2019-08-10';
+  }
+
   Future<void> backup() async {
     // TODO データを全取得してfirestoreへ保存
+    // TODO 成功したら日付を保存
   }
 
   Future<void> restore() async {

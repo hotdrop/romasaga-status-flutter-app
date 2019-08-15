@@ -143,6 +143,10 @@ class SettingViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
+  String previousDateStr() {
+    return _myStatusRepository.getPreviousBackupDate();
+  }
+
   void restore() async {
     if (loadingRestore == DataLoadingStatus.loading) {
       return;

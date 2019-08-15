@@ -184,10 +184,11 @@ class SettingTab extends StatelessWidget {
   Widget _rowBackUp() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
+        final subTitleText = '${Strings.AccountStatusBackupDateLabel} ${viewModel.previousDateStr()}';
         return _rowItemView(
             icon: const Icon(Icons.backup),
             title: Strings.AccountStatusBackupLabel,
-            subTitle: Strings.AccountStatusBackupDateLabel,
+            subTitle: subTitleText,
             loadingStatus: viewModel.loadingBackup,
             onTapListener: () async {
               SagaDialog(
