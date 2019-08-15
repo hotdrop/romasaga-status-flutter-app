@@ -53,6 +53,7 @@ class Strings {
   static const String UpdateStatusNone = 'ー';
   static const String UpdateStatusUpdate = '更新中';
   static const String UpdateStatusComplete = '完了';
+  static const String UpdateStatusError = 'エラー';
 
   static const String HpName = 'ＨＰ';
   static const String StrName = '腕力';

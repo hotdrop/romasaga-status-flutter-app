@@ -1,13 +1,17 @@
+import 'dart:io';
 import 'database.dart';
+import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'mapper.dart';
+import 'entity/character_entity.dart';
+import 'entity/style_entity.dart';
 
+import '../json/character_object.dart';
 import '../../model/character.dart';
 import '../../model/style.dart';
 
-import 'entity/character_entity.dart';
-import 'entity/style_entity.dart';
+import '../../common/saga_logger.dart';
 
 class CharacterSource {
   static final CharacterSource _instance = CharacterSource._();
@@ -17,9 +21,20 @@ class CharacterSource {
     return _instance;
   }
 
+  Future<List<Character>> load() async {
+    try {
+      return await rootBundle.loadStructuredData('res/json/characters.json', (String json) async {
+        final jsonObjects = CharactersJsonObject.parse(json);
+        return CharactersJsonObject.toModel(jsonObjects);
+      });
+    } on IOException catch (e) {
+      SagaLogger.e('キャラデータ取得時にエラーが発生しました。', e);
+      throw e;
+    }
+  }
+
   ///
   /// 全キャラクター情報を取得
-  ///
   /// スタイル情報は取ってこないので注意
   ///
   Future<List<Character>> findAll() async {

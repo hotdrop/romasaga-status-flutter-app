@@ -1,6 +1,8 @@
 import 'local/stage_source.dart';
 import 'remote/stage_api.dart';
+
 import '../model/stage.dart';
+
 import '../common/saga_logger.dart';
 
 class StageRepository {
@@ -11,12 +13,14 @@ class StageRepository {
       : _localDataSource = (local == null) ? StageSource() : local,
         _remoteDataSource = (remote == null) ? StageApi() : remote;
 
-  Future<List<Stage>> findAll() async {
+  Future<List<Stage>> load() async {
     var stages = await _localDataSource.findAll();
 
     if (stages.isEmpty) {
-      SagaLogger.d('キャッシュにデータがないのでリフレッシュします。');
-      await refresh();
+      SagaLogger.d('キャッシュにデータがないのでローカルファイルを読み込みます。');
+      final tmp = await _localDataSource.load();
+      SagaLogger.d('  ${tmp.length}件のデータを取得しました。キャッシュします。');
+      await _localDataSource.refresh(tmp);
 
       SagaLogger.d('再度キャッシュからデータを取得します。');
       stages = await _localDataSource.findAll();
@@ -28,7 +32,7 @@ class StageRepository {
 
   Future<void> refresh() async {
     final stages = await _remoteDataSource.findAll();
-    SagaLogger.d('${stages.length}件のデータを取得しました。キャッシュします。');
+    SagaLogger.d('リモートから${stages.length}件のデータを取得しました。');
 
     await _localDataSource.refresh(stages);
   }

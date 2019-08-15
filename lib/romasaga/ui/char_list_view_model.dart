@@ -15,7 +15,7 @@ class CharListViewModel extends foundation.ChangeNotifier {
         _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
   void load() async {
-    _characters = await _characterRepository.findAll();
+    _characters = await _characterRepository.load();
     final myStatuses = await _myStatusRepository.findAll();
 
     if (myStatuses.isNotEmpty) {

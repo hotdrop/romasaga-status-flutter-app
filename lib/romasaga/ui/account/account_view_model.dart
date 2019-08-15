@@ -16,58 +16,63 @@ class SettingViewModel extends foundation.ChangeNotifier {
       : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
         _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo;
 
-  bool _nowLoading = false;
-  bool get nowLoading => _nowLoading;
+  Status _status = Status.loading;
+  Status get status => _status;
 
+  bool get nowLoading => status == Status.loading;
+
+  // TODO これ見直し対象
   int characterCount;
-  LoadingStatus loadingCharacter = LoadingStatus.none;
+  DataLoadingStatus loadingCharacter = DataLoadingStatus.none;
 
   int stageCount;
-  LoadingStatus loadingStage = LoadingStatus.none;
+  DataLoadingStatus loadingStage = DataLoadingStatus.none;
 
   void load() async {
-    SagaLogger.d("ロードします。");
     await _romancingService.load();
 
     if (!_romancingService.isLogIn()) {
-      SagaLogger.d("未ログインのためキャラデータとステージデータはロードしません。");
+      SagaLogger.d('未ログインのためキャラデータとステージデータはロードしません。');
+      _status = Status.notLogin;
+      notifyListeners();
       return;
     }
 
     await _loadDataCount();
+
+    _status = Status.loggedIn;
     notifyListeners();
   }
 
-  bool isLogIn() => _romancingService.isLogIn();
   String get loginUserName => _romancingService.userName;
   String get loginEmail => _romancingService.email;
 
   Future<void> loginWithGoogle() async {
-    _nowLoading = true;
+    _status = Status.loading;
     try {
       notifyListeners();
 
       await _romancingService.login();
       await _loadDataCount();
 
-      _nowLoading = false;
+      _status = Status.loggedIn;
       notifyListeners();
     } catch (e) {
-      SagaLogger.e("ログイン中にエラーが発生しました。", e);
-      _nowLoading = false;
+      SagaLogger.e('ログイン中にエラーが発生しました。', e);
+      _status = Status.notLogin;
     }
   }
 
   Future<void> logout() async {
-    _nowLoading = true;
+    _status = Status.loading;
     try {
       await _romancingService.logout();
 
-      _nowLoading = false;
+      _status = Status.notLogin;
       notifyListeners();
     } catch (e) {
-      SagaLogger.e("ログアウト中にエラーが発生しました。", e);
-      _nowLoading = false;
+      SagaLogger.e('ログアウト中にエラーが発生しました。', e);
+      _status = Status.loggedIn;
     }
   }
 
@@ -77,39 +82,49 @@ class SettingViewModel extends foundation.ChangeNotifier {
   }
 
   void refreshCharacters() async {
-    if (loadingCharacter == LoadingStatus.loading) {
+    if (loadingCharacter == DataLoadingStatus.loading) {
       return;
     }
 
-    loadingCharacter = LoadingStatus.loading;
+    loadingCharacter = DataLoadingStatus.loading;
     notifyListeners();
 
     await _characterRepository.refresh();
     characterCount = await _characterRepository.count();
 
-    loadingCharacter = LoadingStatus.complete;
+    loadingCharacter = DataLoadingStatus.complete;
     notifyListeners();
   }
 
   void refreshStage() async {
-    if (loadingStage == LoadingStatus.loading) {
+    if (loadingStage == DataLoadingStatus.loading) {
       return;
     }
 
-    loadingStage = LoadingStatus.loading;
+    loadingStage = DataLoadingStatus.loading;
     notifyListeners();
 
-    await _stageRepository.refresh();
-    stageCount = await _stageRepository.count();
+    try {
+      await _stageRepository.refresh();
+      stageCount = await _stageRepository.count();
+      loadingStage = DataLoadingStatus.complete;
+    } catch (e) {
+      loadingStage = DataLoadingStatus.error;
+    }
 
-    loadingStage = LoadingStatus.complete;
     notifyListeners();
   }
 }
 
-// TODO このステータス、個別じゃなくてAccount画面全体のステータスにする。
-enum LoadingStatus {
+enum Status {
+  loading,
+  notLogin,
+  loggedIn,
+}
+
+enum DataLoadingStatus {
   none,
   loading,
   complete,
+  error,
 }

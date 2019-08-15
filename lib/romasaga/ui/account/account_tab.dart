@@ -24,12 +24,21 @@ class SettingTab extends StatelessWidget {
   Widget _widgetContents() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        if (viewModel.isLogIn()) {
-          return _loggedInContents(context);
-        } else {
-          return _noneLoginContents(context);
+        switch (viewModel.status) {
+          case Status.loading:
+            return _loadingContents(context);
+          case Status.loggedIn:
+            return _loggedInContents(context);
+          default:
+            return _noneLoginContents(context);
         }
       },
+    );
+  }
+
+  Widget _loadingContents(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(),
     );
   }
 
@@ -56,7 +65,7 @@ class SettingTab extends StatelessWidget {
           child: Text(Strings.AccountLoginWithGoogle),
           onPressed: () {
             if (viewModel.nowLoading) {
-              SagaLogger.d("nowLoading中です。");
+              SagaLogger.d("now Loading...");
               return;
             }
             viewModel.loginWithGoogle();
@@ -111,7 +120,7 @@ class SettingTab extends StatelessWidget {
   Widget _rowCharacterReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _settingCard(
+        return _settingRow(
             icon: const Icon(Icons.person),
             title: Strings.AccountCharacterUpdateLabel,
             registerCount: viewModel.characterCount,
@@ -126,7 +135,7 @@ class SettingTab extends StatelessWidget {
   Widget _rowStageReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _settingCard(
+        return _settingRow(
             icon: const Icon(Icons.map),
             title: Strings.AccountStageUpdateLabel,
             registerCount: viewModel.stageCount,
@@ -153,11 +162,12 @@ class SettingTab extends StatelessWidget {
     });
   }
 
-  Widget _settingCard({
+  /// TODO ここ見直し
+  Widget _settingRow({
     @required Icon icon,
     @required String title,
     @required int registerCount,
-    @required LoadingStatus loadingStatus,
+    @required DataLoadingStatus loadingStatus,
     @required Function onTapListener,
   }) {
     return Card(
@@ -209,21 +219,25 @@ class SettingTab extends StatelessWidget {
   /// 　　タップしたら更新しに行く。その間はロード中にする
   /// 　　ロード終了したら「最新」と表示する
   ///
-  Widget _cardPartsStatus(LoadingStatus loadingStatus) {
+  Widget _cardPartsStatus(DataLoadingStatus loadingStatus) {
     var statusColor;
     var statusTitle;
     switch (loadingStatus) {
-      case LoadingStatus.none:
+      case DataLoadingStatus.none:
         statusColor = Colors.grey;
         statusTitle = Strings.UpdateStatusNone;
         break;
-      case LoadingStatus.loading:
+      case DataLoadingStatus.loading:
         statusColor = Colors.green;
         statusTitle = Strings.UpdateStatusUpdate;
         break;
-      case LoadingStatus.complete:
+      case DataLoadingStatus.complete:
         statusColor = Colors.blueAccent;
         statusTitle = Strings.UpdateStatusComplete;
+        break;
+      case DataLoadingStatus.error:
+        statusColor = Colors.redAccent;
+        statusTitle = Strings.UpdateStatusError;
         break;
     }
 
