@@ -29,6 +29,9 @@ class Letter {
         return Letter._(letterType: type, gifResource: 'res/letters/201906_halfAniver.gif', title: Strings.LetterJuneTitle, themeColor: Colors.green);
       case LetterType.july:
         return Letter._(letterType: type, gifResource: 'res/letters/201907_asami.gif', title: Strings.LetterJulyTitle, themeColor: Colors.blueAccent);
+      case LetterType.august:
+        return Letter._(
+            letterType: type, gifResource: 'res/letters/201908_summer.gif', title: Strings.LetterAugustTitle, themeColor: Colors.blueAccent);
       default:
         return null;
     }
@@ -43,4 +46,5 @@ enum LetterType {
   may,
   june,
   july,
+  august,
 }
