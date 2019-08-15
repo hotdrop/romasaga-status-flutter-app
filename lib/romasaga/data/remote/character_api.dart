@@ -6,23 +6,33 @@ import 'response/character_json_object.dart';
 import '../../model/character.dart';
 import '../../model/style.dart';
 
+import '../../common/romancing_service.dart';
 import '../../common/saga_logger.dart';
 
 class CharacterApi {
   static final CharacterApi _instance = CharacterApi._();
+  CharacterApi._();
 
-  const CharacterApi._();
   factory CharacterApi() {
     return _instance;
   }
 
+  RomancingService _romancingService = RomancingService();
+
   Future<List<Character>> findAll() async {
     try {
-      // TODO ここ本当はAPIとかFirestoreからデータ取得したい
-      return await rootBundle.loadStructuredData('res/json/characters.json', (String json) async {
+      if (_romancingService.isLogIn()) {
+        SagaLogger.d('ログインしているのでリモートからデータを取得します。');
+        // TODO パスをgitで管理していないところから取得する
+        String json = await _romancingService.readJson(path: 'todo path');
         final jsonObjects = _parseJson(json);
         return _jsonObjectToModel(jsonObjects);
-      });
+      } else {
+        return await rootBundle.loadStructuredData('res/json/characters.json', (String json) async {
+          final jsonObjects = _parseJson(json);
+          return _jsonObjectToModel(jsonObjects);
+        });
+      }
     } on IOException catch (e) {
       SagaLogger.e('キャラデータ取得時にエラーが発生しました。', e);
       throw e;

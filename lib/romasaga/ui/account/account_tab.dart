@@ -25,10 +25,8 @@ class SettingTab extends StatelessWidget {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
         if (viewModel.isLogIn()) {
-          SagaLogger.d("ログイン済みです。");
           return _loggedInContents(context);
         } else {
-          SagaLogger.d("未ログインです。");
           return _noneLoginContents(context);
         }
       },
@@ -36,7 +34,7 @@ class SettingTab extends StatelessWidget {
   }
 
   ///
-  /// 未ログインのレイアウト
+  /// 未ログインの画面コンテンツ
   ///
   Widget _noneLoginContents(BuildContext context) {
     return Column(
@@ -68,6 +66,9 @@ class SettingTab extends StatelessWidget {
     );
   }
 
+  ///
+  /// ログイン済みの画面コンテンツ
+  ///
   Widget _loggedInContents(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -185,6 +186,11 @@ class SettingTab extends StatelessWidget {
     );
   }
 
+  ///
+  /// ラベル見直し
+  /// Firestoreから更新日を取得して表示する。で、Sharedに保存
+  /// 登録数とかどうでもいいけどまあ作っちゃったのでそのままにする。。でも消すかも
+  ///
   Widget _cardPartsContents(String title, int registerCount) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,6 +201,14 @@ class SettingTab extends StatelessWidget {
     );
   }
 
+  ///
+  /// ステータスは以下のようにしたい
+  /// Firestoreからステータス取得して更新があるかみる
+  /// 　なければ「最新」と表示する。タップしても何も起きない
+  /// 　あれば「更新あり」と表示する
+  /// 　　タップしたら更新しに行く。その間はロード中にする
+  /// 　　ロード終了したら「最新」と表示する
+  ///
   Widget _cardPartsStatus(LoadingStatus loadingStatus) {
     var statusColor;
     var statusTitle;

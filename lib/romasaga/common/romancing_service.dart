@@ -1,4 +1,6 @@
+import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'saga_logger.dart';
@@ -45,6 +47,13 @@ class RomancingService {
   Future<void> logout() async {
     await _firebaseAuth.signOut();
     _user = null;
+  }
+
+  Future<String> readJson({String path}) async {
+    final StorageReference ref = FirebaseStorage().ref().child(path);
+    final String url = await ref.getDownloadURL();
+    final http.Response response = await http.get(url);
+    return response.body;
   }
 
   bool isLogIn() {

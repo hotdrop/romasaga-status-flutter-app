@@ -29,6 +29,9 @@ dependencies:
   # local storage
   sqflite: ^1.1.0
 
+  # network
+  http: ^0.12.0+2
+
   # other
   json_serializable: ^2.0.0
   logger: ^0.7.0

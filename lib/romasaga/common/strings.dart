@@ -45,11 +45,11 @@ class Strings {
 
   static const String AccountTabTitle = 'アカウント';
   static const String AccountLoginWithGoogle = 'Googleアカウントでログイン';
-  static const String AccountCharacterUpdateLabel = 'キャラクター情報';
-  static const String AccountStageUpdateLabel = 'ステージ情報';
+  static const String AccountCharacterUpdateLabel = 'キャラクター最新情報を取得する';
+  static const String AccountStageUpdateLabel = 'ステージ最新情報を取得する';
   static const String AccountLogoutButton = 'Log out';
   static const String AccountLogoutMessage = 'ログアウトしてもよろしいですか？';
-  static const String AccountRegisterCountLabel = '登録数:';
+  static const String AccountRegisterCountLabel = '現在の登録数:';
   static const String UpdateStatusNone = 'ー';
   static const String UpdateStatusUpdate = '更新中';
   static const String UpdateStatusComplete = '完了';
