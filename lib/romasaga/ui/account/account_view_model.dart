@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' as foundation;
 
 import '../../data/character_repository.dart';
 import '../../data/stage_repository.dart';
+import '../../data/my_status_repository.dart';
 
 import '../../common/romancing_service.dart';
 import '../../common/saga_logger.dart';
@@ -9,12 +10,14 @@ import '../../common/saga_logger.dart';
 class SettingViewModel extends foundation.ChangeNotifier {
   final CharacterRepository _characterRepository;
   final StageRepository _stageRepository;
+  final MyStatusRepository _myStatusRepository;
 
   final RomancingService _romancingService = RomancingService();
 
-  SettingViewModel({CharacterRepository characterRepo, StageRepository stageRepo})
+  SettingViewModel({CharacterRepository characterRepo, StageRepository stageRepo, MyStatusRepository myStatusRepo})
       : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
-        _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo;
+        _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
+        _myStatusRepository = (myStatusRepo == null) ? MyStatusRepository() : myStatusRepo;
 
   // 全体のステータス
   Status _status = Status.loading;
@@ -66,6 +69,11 @@ class SettingViewModel extends foundation.ChangeNotifier {
     }
   }
 
+  Future<void> _loadDataCount() async {
+    characterCount = await _characterRepository.count();
+    stageCount = await _stageRepository.count();
+  }
+
   Future<void> logout() async {
     _status = Status.loading;
     try {
@@ -77,11 +85,6 @@ class SettingViewModel extends foundation.ChangeNotifier {
       SagaLogger.e('ログアウト中にエラーが発生しました。', e);
       _status = Status.loggedIn;
     }
-  }
-
-  Future<void> _loadDataCount() async {
-    characterCount = await _characterRepository.count();
-    stageCount = await _stageRepository.count();
   }
 
   void refreshCharacters() async {
@@ -117,6 +120,42 @@ class SettingViewModel extends foundation.ChangeNotifier {
       loadingStage = DataLoadingStatus.complete;
     } catch (e) {
       loadingStage = DataLoadingStatus.error;
+    }
+
+    notifyListeners();
+  }
+
+  void backup() async {
+    if (loadingBackup == DataLoadingStatus.loading) {
+      return;
+    }
+
+    loadingBackup = DataLoadingStatus.loading;
+    notifyListeners();
+
+    try {
+      await _myStatusRepository.backup();
+      loadingBackup = DataLoadingStatus.complete;
+    } catch (e) {
+      loadingBackup = DataLoadingStatus.error;
+    }
+
+    notifyListeners();
+  }
+
+  void restore() async {
+    if (loadingRestore == DataLoadingStatus.loading) {
+      return;
+    }
+
+    loadingRestore = DataLoadingStatus.loading;
+    notifyListeners();
+
+    try {
+      await _myStatusRepository.restore();
+      loadingRestore = DataLoadingStatus.complete;
+    } catch (e) {
+      loadingRestore = DataLoadingStatus.error;
     }
 
     notifyListeners();

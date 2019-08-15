@@ -17,4 +17,12 @@ class MyStatusRepository {
   Future<void> save(MyStatus status) async {
     return _localDataSource.save(status);
   }
+
+  Future<void> backup() async {
+    // TODO データを全取得してfirestoreへ保存
+  }
+
+  Future<void> restore() async {
+    // TODO firestoreからデータ取得してsaveを実行
+  }
 }
