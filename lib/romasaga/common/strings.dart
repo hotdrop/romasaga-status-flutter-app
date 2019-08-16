@@ -47,11 +47,13 @@ class Strings {
   static const String AccountLoginWithGoogle = 'Googleアカウントでログイン';
   static const String AccountDataUpdateLabel = 'サーバーから最新情報を取得';
   static const String AccountCharacterUpdateLabel = 'キャラクター';
+  static const String AccountCharacterUpdateDialogMessage = '現在のキャラクター情報を全て削除してサーバーから再取得します。\nよろしいですか？\n(自身が入力したステータス等は削除されません。)';
   static const String AccountStageUpdateLabel = 'ステージ';
+  static const String AccountStageUpdateDialogMessage = '現在のステージ情報を全て削除してサーバーから再取得します。\nよろしいですか？';
   static const String AccountStatusLabel = 'ステータスのバックアップと復元';
   static const String AccountStatusBackupLabel = 'バックアップ';
   static const String AccountStatusBackupDateLabel = '前回実行日:';
-  static const String AccountStatusBackupDialogMessage = '現在のキャラクターステータスをバックアップします。よろしいですか？';
+  static const String AccountStatusBackupDialogMessage = '現在のキャラクターステータスをサーバーへバックアップします。\nよろしいですか？';
   static const String AccountStatusRestoreLabel = '復元';
   static const String AccountStatusRestoreDescriptionLabel = 'アプリ内のデータを上書きします。';
   static const String AccountStatusRestoreDialogMessage = 'サーバーにバックアップしたキャラクターステータスを復元します。\n現在のステータスは全て消えますがよろしいですか？';

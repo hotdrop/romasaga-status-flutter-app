@@ -160,7 +160,13 @@ class SettingTab extends StatelessWidget {
             registerCount: viewModel.characterCount,
             loadingStatus: viewModel.loadingCharacter,
             onTapListener: () {
-              viewModel.refreshCharacters();
+              SagaDialog(
+                context,
+                message: Strings.AccountCharacterUpdateDialogMessage,
+                positiveListener: () {
+                  viewModel.refreshCharacters();
+                },
+              ).show();
             });
       },
     );
@@ -174,8 +180,14 @@ class SettingTab extends StatelessWidget {
             title: Strings.AccountStageUpdateLabel,
             registerCount: viewModel.stageCount ?? 0,
             loadingStatus: viewModel.loadingStage,
-            onTapListener: () {
-              viewModel.refreshStage();
+            onTapListener: () async {
+              SagaDialog(
+                context,
+                message: Strings.AccountStageUpdateDialogMessage,
+                positiveListener: () {
+                  viewModel.refreshStage();
+                },
+              ).show();
             });
       },
     );
