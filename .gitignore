@@ -72,7 +72,11 @@ build/
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 ## add new
-/res
+/res/charIcons
+/res/icons
+/res/launcher
+/res/letters
+
 /keystore
 **/android/app/google-services.json
 **/ios/Runner/GoogleService-Info.plist

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -53,7 +55,7 @@ class RomancingService {
     final StorageReference ref = FirebaseStorage().ref().child(path);
     final String url = await ref.getDownloadURL();
     final http.Response response = await http.get(url);
-    return response.body;
+    return utf8.decode(response.bodyBytes);
   }
 
   bool isLogIn() {

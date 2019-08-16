@@ -5,6 +5,8 @@ import '../../common/romancing_service.dart';
 import '../../common/saga_logger.dart';
 
 class StageApi {
+  final String storagePath = 'stage.json';
+
   static final StageApi _instance = StageApi._();
   StageApi._();
 
@@ -16,8 +18,7 @@ class StageApi {
 
   Future<List<Stage>> findAll() async {
     try {
-      // TODO パスをgitで管理していないところから取得する
-      String json = await _romancingService.readJson(path: 'todo path');
+      String json = await _romancingService.readJson(path: storagePath);
       final jsonObjects = StagesJsonObject.parse(json);
       return StagesJsonObject.toModel(jsonObjects);
     } catch (e) {
