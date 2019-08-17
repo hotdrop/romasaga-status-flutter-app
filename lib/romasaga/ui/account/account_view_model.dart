@@ -3,21 +3,25 @@ import 'package:flutter/foundation.dart' as foundation;
 import '../../data/character_repository.dart';
 import '../../data/stage_repository.dart';
 import '../../data/my_status_repository.dart';
+import '../../data/account_repository.dart';
 
-import '../../common/romancing_service.dart';
 import '../../common/saga_logger.dart';
 
 class SettingViewModel extends foundation.ChangeNotifier {
   final CharacterRepository _characterRepository;
   final StageRepository _stageRepository;
   final MyStatusRepository _myStatusRepository;
+  final AccountRepository _accountRepository;
 
-  final RomancingService _romancingService = RomancingService();
-
-  SettingViewModel({CharacterRepository characterRepo, StageRepository stageRepo, MyStatusRepository myStatusRepo})
-      : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
+  SettingViewModel({
+    CharacterRepository characterRepo,
+    StageRepository stageRepo,
+    MyStatusRepository myStatusRepo,
+    AccountRepository accountRepo,
+  })  : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
         _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
-        _myStatusRepository = (myStatusRepo == null) ? MyStatusRepository() : myStatusRepo;
+        _myStatusRepository = (myStatusRepo == null) ? MyStatusRepository() : myStatusRepo,
+        _accountRepository = (accountRepo == null) ? AccountRepository() : accountRepo;
 
   // 全体のステータス
   Status _status = Status.loading;
@@ -35,9 +39,10 @@ class SettingViewModel extends foundation.ChangeNotifier {
   int stageCount;
 
   void load() async {
-    await _romancingService.load();
+    await _accountRepository.load();
+    final isLogIn = _accountRepository.isLogIn;
 
-    if (!_romancingService.isLogIn()) {
+    if (!isLogIn) {
       SagaLogger.d('未ログインのためキャラデータとステージデータはロードしません。');
       _status = Status.notLogin;
       notifyListeners();
@@ -50,15 +55,15 @@ class SettingViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
-  String get loginUserName => _romancingService.userName;
-  String get loginEmail => _romancingService.email;
+  String get loginUserName => _accountRepository.getUserName();
+  String get loginEmail => _accountRepository.getEmail();
 
   Future<void> loginWithGoogle() async {
     _status = Status.loading;
     try {
       notifyListeners();
 
-      await _romancingService.login();
+      await _accountRepository.login();
       await _loadDataCount();
 
       _status = Status.loggedIn;
@@ -77,7 +82,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
   Future<void> logout() async {
     _status = Status.loading;
     try {
-      await _romancingService.logout();
+      await _accountRepository.logout();
 
       _status = Status.notLogin;
       notifyListeners();

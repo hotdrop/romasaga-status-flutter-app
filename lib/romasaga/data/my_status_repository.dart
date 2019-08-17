@@ -1,10 +1,17 @@
 import 'local/my_status_source.dart';
+import 'remote/my_status_api.dart';
+
 import '../model/status.dart' show MyStatus;
+
+import '../common/saga_logger.dart';
 
 class MyStatusRepository {
   final MyStatusSource _localDataSource;
+  final MyStatusApi _remoteDataSource;
 
-  MyStatusRepository({MyStatusSource local}) : _localDataSource = (local == null) ? MyStatusSource() : local;
+  MyStatusRepository({MyStatusSource local, MyStatusApi remote})
+      : _localDataSource = (local == null) ? MyStatusSource() : local,
+        _remoteDataSource = (remote == null) ? MyStatusApi() : remote;
 
   Future<List<MyStatus>> findAll() async {
     return await _localDataSource.findAll();
@@ -24,7 +31,9 @@ class MyStatusRepository {
   }
 
   Future<void> backup() async {
-    // TODO データを全取得してfirestoreへ保存
+    final myStatuses = await findAll();
+    await _remoteDataSource.save(myStatuses);
+
     // TODO 成功したら日付を保存
   }
 

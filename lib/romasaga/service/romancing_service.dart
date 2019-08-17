@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'saga_logger.dart';
+import '../common/saga_logger.dart';
 
 class RomancingService {
   static final RomancingService _instance = RomancingService._();
@@ -20,9 +20,10 @@ class RomancingService {
   final GoogleSignIn _google = GoogleSignIn();
 
   Future<void> load() async {
-    if (_user == null) {
-      _user = await _firebaseAuth.currentUser();
+    if (_user != null) {
+      return;
     }
+    _user = await _firebaseAuth.currentUser();
   }
 
   Future<void> login() async {
@@ -58,10 +59,7 @@ class RomancingService {
     return utf8.decode(response.bodyBytes);
   }
 
-  bool isLogIn() {
-    return _user != null;
-  }
-
-  String get userName => _user?.displayName;
-  String get email => _user?.email;
+  bool get isLogIn => _user != null;
+  String get userName => _user.displayName;
+  String get email => _user.email;
 }

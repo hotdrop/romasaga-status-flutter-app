@@ -207,8 +207,7 @@ class SettingTab extends StatelessWidget {
                 context,
                 message: Strings.AccountStatusBackupDialogMessage,
                 positiveListener: () {
-                  // TODO バックアップ実行
-                  SagaLogger.d("バックアップボタンでOKタップしました。");
+                  viewModel.backup();
                 },
               ).show();
             });
@@ -229,8 +228,7 @@ class SettingTab extends StatelessWidget {
                 context,
                 message: Strings.AccountStatusRestoreDialogMessage,
                 positiveListener: () {
-                  // TODO リストア実行
-                  SagaLogger.d("復元ボタンでOKタップしました。");
+                  viewModel.restore();
                 },
               ).show();
             });
