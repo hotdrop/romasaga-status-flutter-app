@@ -16,6 +16,8 @@ mixin RomancingAuth {
   }
 
   bool get isLogIn => _user != null;
+
+  String get uid => _user.uid;
   String get userName => _user.displayName;
   String get email => _user.email;
 

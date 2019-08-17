@@ -1,4 +1,6 @@
 import 'database.dart';
+import 'package:sqflite/sqflite.dart';
+
 import 'mapper.dart';
 
 import '../../model/status.dart' show MyStatus;
@@ -61,5 +63,24 @@ class MyStatusSource {
 
     final entity = MyStatusEntity.fromMap(result.first);
     return Mapper.toMyStatus(entity);
+  }
+
+  void refresh(List<MyStatus> myStatues) async {
+    final db = await DBProvider.instance.database;
+    db.transaction((txn) async {
+      await _delete(txn);
+      await _insert(txn, myStatues);
+    });
+  }
+
+  Future<void> _delete(Transaction txn) async {
+    await txn.delete(MyStatusEntity.tableName);
+  }
+
+  Future<void> _insert(Transaction txn, List<MyStatus> myStatuses) async {
+    for (var myStatus in myStatuses) {
+      final entity = Mapper.toMyStatusEntity(myStatus);
+      await txn.insert(MyStatusEntity.tableName, entity.toMap());
+    }
   }
 }

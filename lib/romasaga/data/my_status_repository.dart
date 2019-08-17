@@ -34,10 +34,13 @@ class MyStatusRepository {
     final myStatuses = await findAll();
     await _remoteDataSource.save(myStatuses);
 
-    // TODO 成功したら日付を保存
+    // TODO 成功したらsharedに日付を保存
   }
 
   Future<void> restore() async {
-    // TODO firestoreからデータ取得してsaveを実行
+    final myStatuses = await _remoteDataSource.findAll();
+    SagaLogger.d('データを取得しました。size=${myStatuses.length}');
+
+    _localDataSource.refresh(myStatuses);
   }
 }
