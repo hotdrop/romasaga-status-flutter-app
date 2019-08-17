@@ -5,8 +5,6 @@ import '../../service/romancing_service.dart';
 import '../../common/saga_logger.dart';
 
 class StageApi {
-  final String storagePath = 'stage.json';
-
   static final StageApi _instance = StageApi._();
   StageApi._();
 
@@ -18,7 +16,7 @@ class StageApi {
 
   Future<List<Stage>> findAll() async {
     try {
-      String json = await _romancingService.readJson(path: storagePath);
+      String json = await _romancingService.readStagesJson();
       final jsonObjects = StagesJsonObject.parse(json);
       return StagesJsonObject.toModel(jsonObjects);
     } catch (e) {

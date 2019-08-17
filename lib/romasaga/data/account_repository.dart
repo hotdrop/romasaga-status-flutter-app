@@ -6,7 +6,7 @@ class AccountRepository {
   AccountRepository({RomancingService service}) : _romancingService = (service == null) ? RomancingService() : service;
 
   Future<void> load() async {
-    await _romancingService.load();
+    await _romancingService.initAuth();
   }
 
   Future<void> login() async {
