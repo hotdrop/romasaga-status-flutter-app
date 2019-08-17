@@ -1,0 +1,24 @@
+{
+  "characters": [
+    {
+      "id": 1,
+      "name": "テスト1",
+      "weapon_type": "剣",
+      "production": "ロマサガ1",
+      "styles": [
+        {"rank": "SS", "title": "SSです。", "str": 50, "vit": 50, "dex": 50, "agi": 50, "int": 50, "spi": 50, "love": 50, "attr": 50, "icon": "test1_ss.jpg"},
+        {"rank": "S", "title": "Sです。", "str": 60, "vit": 60, "dex": 60, "agi": 60, "int": 60, "spi": 60, "love": 60, "attr": 60, "icon": "test1_s.jpg"},
+        {"rank": "A", "title": "Aです。", "str": 50, "vit": 50, "dex": 50, "agi": 50, "int": 50, "spi": 50, "love": 50, "attr": 50, "icon": "test1_a.png"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "テスト2",
+      "weapon_type": "剣",
+      "production": "ロマサガ2",
+      "styles": [
+        {"rank": "A", "title": "Aです。", "str": 45, "vit": 45, "dex": 45, "agi": 45, "int": 45, "spi": 45, "love": 45, "attr": 45, "icon": "test2_a.jpg"}
+      ]
+    }
+  ]
+}

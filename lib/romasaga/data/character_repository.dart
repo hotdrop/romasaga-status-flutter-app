@@ -14,12 +14,14 @@ class CharacterRepository {
       : _localDataSource = (local == null) ? CharacterSource() : local,
         _remoteDataSource = (remote == null) ? CharacterApi() : remote;
 
-  Future<List<Character>> findAll() async {
+  Future<List<Character>> load() async {
     var characters = await _localDataSource.findAll();
 
     if (characters.isEmpty) {
-      SagaLogger.d('キャッシュにデータがないのでリフレッシュします。');
-      await refresh();
+      SagaLogger.d('キャッシュにデータがないのでローカルファイルを読み込みます。');
+      final tmp = await _localDataSource.load();
+      SagaLogger.d('  ${tmp.length}件のデータを取得しました。キャッシュします。');
+      await _localDataSource.refresh(tmp);
 
       SagaLogger.d('再度キャッシュからデータを取得します。');
       characters = await _localDataSource.findAll();
@@ -36,7 +38,7 @@ class CharacterRepository {
 
   Future<void> refresh() async {
     final characters = await _remoteDataSource.findAll();
-    SagaLogger.d('${characters.length}件のデータを取得しました。保存します。');
+    SagaLogger.d('リモートから${characters.length}件のデータを取得しました。');
 
     await _localDataSource.refresh(characters);
   }

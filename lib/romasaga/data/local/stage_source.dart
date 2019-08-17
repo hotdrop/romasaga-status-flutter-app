@@ -1,10 +1,15 @@
+import 'dart:io';
 import 'database.dart';
+import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'mapper.dart';
-
-import '../../model/stage.dart';
 import 'entity/stage_entity.dart';
+
+import '../json/stage_object.dart';
+import '../../model/stage.dart';
+
+import '../../common/saga_logger.dart';
 
 class StageSource {
   static final StageSource _instance = StageSource._();
@@ -14,12 +19,24 @@ class StageSource {
     return _instance;
   }
 
+  Future<List<Stage>> load() async {
+    try {
+      return await rootBundle.loadStructuredData('res/json/stage.json', (String json) async {
+        final jsonObjects = StagesJsonObject.parse(json);
+        return StagesJsonObject.toModel(jsonObjects);
+      });
+    } on IOException catch (e) {
+      SagaLogger.e('ステージデータの取得時にエラーが発生しました。', e);
+      throw e;
+    }
+  }
+
   Future<List<Stage>> findAll() async {
     final db = await DBProvider.instance.database;
     final results = await db.query(StageEntity.tableName, orderBy: StageEntity.columnOrder);
+
     // ステージ情報は最新を先頭に持ってきたいのでorderの降順にしている。
     final entities = results.isNotEmpty ? results.reversed.map((it) => StageEntity.fromMap(it)).toList() : [];
-
     return entities.map((entity) => Mapper.toStage(entity)).toList();
   }
 
