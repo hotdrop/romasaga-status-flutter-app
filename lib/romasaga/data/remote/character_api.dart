@@ -1,7 +1,7 @@
 import '../json/character_object.dart';
 import '../../model/character.dart';
 
-import 'package:rsapp/romasaga/service/romancing_service.dart';
+import '../..//service/romancing_service.dart';
 import '../../common/saga_logger.dart';
 
 class CharacterApi {

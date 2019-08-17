@@ -1,7 +1,7 @@
 import '../json/stage_object.dart';
 import '../../model/stage.dart';
 
-import 'package:rsapp/romasaga/service/romancing_service.dart';
+import '../../service/romancing_service.dart';
 import '../../common/saga_logger.dart';
 
 class StageApi {
