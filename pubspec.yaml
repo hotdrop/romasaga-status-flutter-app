@@ -12,6 +12,13 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  # Firebase
+  google_sign_in: ^4.0.0
+  firebase_core: ^0.4.0+8
+  firebase_auth: ^0.14.0+1
+  cloud_firestore: ^0.12.7+1
+  firebase_storage: ^3.0.5
+
   # UI
   percent_indicator: ^2.1.1
 
@@ -21,6 +28,10 @@ dependencies:
 
   # local storage
   sqflite: ^1.1.0
+  shared_preferences: ^0.5.3+4
+
+  # network
+  http: ^0.12.0+2
 
   # other
   json_serializable: ^2.0.0

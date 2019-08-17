@@ -35,7 +35,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
   void load() async {
     SagaLogger.d('ロードします。');
-    _stages = await _stageRepository.findAll();
+    _stages = await _stageRepository.load();
     _selectedStage = _stages.first;
 
     if (_character.styles.isEmpty) {

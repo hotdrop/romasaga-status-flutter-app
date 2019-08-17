@@ -131,7 +131,6 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
     filterViews.add(_filterViewOwnState());
     filterViews.add(_filterViewSubTitle(Strings.SearchFilerTitleWeapon));
     filterViews.add(_filterViewWeaponType());
-    // TODO ここにクリアボタンつけたい
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -297,9 +296,14 @@ class _BackdropPanel extends StatelessWidget {
               height: 48.0,
               padding: const EdgeInsetsDirectional.only(start: 16.0),
               alignment: AlignmentDirectional.centerStart,
-              child: DefaultTextStyle(
-                style: Theme.of(context).textTheme.subhead,
-                child: Text(Strings.SearchBackDropTitle),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    width: 16.0,
+                  ),
+                  Text(Strings.SearchBackDropTitle, style: Theme.of(context).textTheme.subhead),
+                ],
               ),
             ),
           ),

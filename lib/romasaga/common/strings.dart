@@ -4,7 +4,7 @@ class Strings {
   static const String BottomMenuCharacter = 'キャラ';
   static const String BottomMenuSearch = '検索';
   static const String BottomMenuLetter = 'お便り';
-  static const String BottomMenuSettings = '設定';
+  static const String BottomMenuAccount = 'アカウント';
 
   static const String CharacterListTabTitle = 'キャラクターリスト';
   static const String CharacterListTabFavoriteTitle = 'お気に入り';
@@ -43,13 +43,27 @@ class Strings {
   static const String LetterJulyTitle = '7月 アザミvsディープワン';
   static const String LetterAugustTitle = '8月 砂浜で競争';
 
-  static const String SettingsTabTitle = '設定';
-  static const String SettingsCharacterUpdateLabel = 'キャラクター情報を更新';
-  static const String SettingsStageUpdateLabel = 'ステージ情報を更新';
-  static const String SettingsRegisterCountLabel = '登録数:';
-  static const String SettingsUpdateStatusNone = 'ー';
-  static const String SettingsUpdateStatusUpdate = '更新中';
-  static const String SettingsUpdateStatusComplete = '完了';
+  static const String AccountTabTitle = 'アカウント';
+  static const String AccountLoginWithGoogle = 'Googleアカウントでログイン';
+  static const String AccountDataUpdateLabel = 'サーバーから最新情報を取得';
+  static const String AccountCharacterUpdateLabel = 'キャラクター';
+  static const String AccountCharacterUpdateDialogMessage = '現在のキャラクター情報を全て削除してサーバーから再取得します。\nよろしいですか？\n(自身が入力したステータス等は削除されません。)';
+  static const String AccountStageUpdateLabel = 'ステージ';
+  static const String AccountStageUpdateDialogMessage = '現在のステージ情報を全て削除してサーバーから再取得します。\nよろしいですか？';
+  static const String AccountStatusLabel = 'ステータスのバックアップと復元';
+  static const String AccountStatusBackupLabel = 'バックアップ';
+  static const String AccountStatusBackupDateLabel = '前回実行日:';
+  static const String AccountStatusBackupDialogMessage = '現在のキャラクターステータスをサーバーへバックアップします。\nよろしいですか？';
+  static const String AccountStatusRestoreLabel = '復元';
+  static const String AccountStatusRestoreDescriptionLabel = 'アプリ内のデータを上書きします。';
+  static const String AccountStatusRestoreDialogMessage = 'サーバーにバックアップしたキャラクターステータスを復元します。\n現在のステータスは全て消えますがよろしいですか？';
+  static const String AccountLogoutButton = 'Log out';
+  static const String AccountLogoutDialogMessage = 'ログアウトしてもよろしいですか？';
+  static const String AccountRegisterCountLabel = '現在の登録数:';
+  static const String UpdateStatusNone = 'ー';
+  static const String UpdateStatusUpdate = '更新中';
+  static const String UpdateStatusComplete = '完了';
+  static const String UpdateStatusError = 'エラー';
 
   static const String HpName = 'ＨＰ';
   static const String StrName = '腕力';
