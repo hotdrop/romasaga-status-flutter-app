@@ -168,8 +168,8 @@ class SettingTab extends StatelessWidget {
               SagaDialog(
                 context,
                 message: Strings.AccountCharacterUpdateDialogMessage,
-                positiveListener: () {
-                  viewModel.refreshCharacters();
+                positiveListener: () async {
+                  await viewModel.refreshCharacters();
                   _charListViewModel.refreshCharacters();
                 },
               ).show();
@@ -233,8 +233,8 @@ class SettingTab extends StatelessWidget {
               SagaDialog(
                 context,
                 message: Strings.AccountStatusRestoreDialogMessage,
-                positiveListener: () {
-                  viewModel.restore();
+                positiveListener: () async {
+                  await viewModel.restore();
                   _charListViewModel.refreshMyStatuses();
                 },
               ).show();

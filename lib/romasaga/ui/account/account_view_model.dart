@@ -96,7 +96,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
     }
   }
 
-  void refreshCharacters() async {
+  Future<void> refreshCharacters() async {
     if (loadingCharacter == DataLoadingStatus.loading) {
       return;
     }
@@ -153,7 +153,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
-  void restore() async {
+  Future<void> restore() async {
     if (loadingRestore == DataLoadingStatus.loading) {
       return;
     }

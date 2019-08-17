@@ -44,7 +44,8 @@ class MyStatusRepository {
 
   Future<String> getPreviousBackupDateStr() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.get(backupDateKey);
+    final String dateStr = prefs.get(backupDateKey);
+    return dateStr?.substring(0, 10) ?? "-";
   }
 
   Future<void> _saveBackupDate() async {
