@@ -35,6 +35,9 @@ class SettingViewModel extends foundation.ChangeNotifier {
   DataLoadingStatus loadingBackup = DataLoadingStatus.none;
   DataLoadingStatus loadingRestore = DataLoadingStatus.none;
 
+  String _previousBackupDateStr = "-";
+  String get previousBackupDateStr => _previousBackupDateStr;
+
   int characterCount;
   int stageCount;
 
@@ -49,6 +52,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
       return;
     }
 
+    _previousBackupDateStr = await _myStatusRepository.getPreviousBackupDateStr();
     await _loadDataCount();
 
     _status = Status.loggedIn;
@@ -140,16 +144,13 @@ class SettingViewModel extends foundation.ChangeNotifier {
 
     try {
       await _myStatusRepository.backup();
+      _previousBackupDateStr = await _myStatusRepository.getPreviousBackupDateStr();
       loadingBackup = DataLoadingStatus.complete;
     } catch (e) {
       loadingBackup = DataLoadingStatus.error;
     }
 
     notifyListeners();
-  }
-
-  String previousDateStr() {
-    return _myStatusRepository.getPreviousBackupDate();
   }
 
   void restore() async {

@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'local/my_status_source.dart';
 import 'remote/my_status_api.dart';
 
@@ -25,16 +27,10 @@ class MyStatusRepository {
     return _localDataSource.save(status);
   }
 
-  String getPreviousBackupDate() {
-    // TODO sharedから取得
-    return '2019-08-10';
-  }
-
   Future<void> backup() async {
     final myStatuses = await findAll();
     await _remoteDataSource.save(myStatuses);
-
-    // TODO 成功したらsharedに日付を保存
+    await _saveBackupDate();
   }
 
   Future<void> restore() async {
@@ -42,5 +38,18 @@ class MyStatusRepository {
     SagaLogger.d('データを取得しました。size=${myStatuses.length}');
 
     _localDataSource.refresh(myStatuses);
+  }
+
+  static String backupDateKey = 'backup_date_key';
+
+  Future<String> getPreviousBackupDateStr() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.get(backupDateKey);
+  }
+
+  Future<void> _saveBackupDate() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final nowDate = DateTime.now();
+    await prefs.setString(backupDateKey, nowDate.toString());
   }
 }

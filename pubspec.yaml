@@ -28,6 +28,7 @@ dependencies:
 
   # local storage
   sqflite: ^1.1.0
+  shared_preferences: ^0.5.3+4
 
   # network
   http: ^0.12.0+2

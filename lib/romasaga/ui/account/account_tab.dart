@@ -202,7 +202,7 @@ class SettingTab extends StatelessWidget {
   Widget _rowBackUp() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        final subTitleText = '${Strings.AccountStatusBackupDateLabel} ${viewModel.previousDateStr()}';
+        final subTitleText = '${Strings.AccountStatusBackupDateLabel} ${viewModel.previousBackupDateStr}';
         return _rowItemView(
             icon: const Icon(Icons.backup),
             title: Strings.AccountStatusBackupLabel,
