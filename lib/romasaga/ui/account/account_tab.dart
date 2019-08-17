@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../char_list_view_model.dart';
 import 'account_view_model.dart';
 
 import '../widget/saga_dialog.dart';
@@ -9,6 +10,10 @@ import '../../common/saga_logger.dart';
 import '../../common/strings.dart';
 
 class SettingTab extends StatelessWidget {
+  final CharListViewModel _charListViewModel;
+
+  const SettingTab(this._charListViewModel);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SettingViewModel>(
@@ -165,6 +170,7 @@ class SettingTab extends StatelessWidget {
                 message: Strings.AccountCharacterUpdateDialogMessage,
                 positiveListener: () {
                   viewModel.refreshCharacters();
+                  _charListViewModel.refreshCharacters();
                 },
               ).show();
             });
@@ -229,6 +235,7 @@ class SettingTab extends StatelessWidget {
                 message: Strings.AccountStatusRestoreDialogMessage,
                 positiveListener: () {
                   viewModel.restore();
+                  _charListViewModel.refreshMyStatuses();
                 },
               ).show();
             });

@@ -53,7 +53,9 @@ class _TopPageState extends State<TopPage> {
       case 2:
         return LetterTab();
       case 3:
-        return SettingTab();
+        return Consumer<CharListViewModel>(builder: (_, viewModel, child) {
+          return SettingTab(viewModel);
+        });
       default:
         return null;
     }

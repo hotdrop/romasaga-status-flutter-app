@@ -74,4 +74,21 @@ class CharListViewModel extends foundation.ChangeNotifier {
 
     return haveCharacters;
   }
+
+  void refreshCharacters() async {
+    _characters = await _characterRepository.load();
+    notifyListeners();
+  }
+
+  void refreshMyStatuses() async {
+    final myStatuses = await _myStatusRepository.findAll();
+
+    if (myStatuses.isNotEmpty) {
+      for (var status in myStatuses) {
+        final targetStatus = _characters.firstWhere((character) => character.id == status.id);
+        targetStatus.myStatus = status;
+      }
+    }
+    notifyListeners();
+  }
 }
