@@ -15,17 +15,7 @@ class CharListViewModel extends foundation.ChangeNotifier {
         _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
   void load() async {
-    _characters = await _characterRepository.load();
-    final myStatuses = await _myStatusRepository.findAll();
-
-    if (myStatuses.isNotEmpty) {
-      for (var status in myStatuses) {
-        final targetStatus = _characters.firstWhere((character) => character.id == status.id);
-        targetStatus.myStatus = status;
-      }
-    }
-
-    notifyListeners();
+    refreshCharacters();
   }
 
   List<Character> findAll() {
@@ -77,10 +67,16 @@ class CharListViewModel extends foundation.ChangeNotifier {
 
   void refreshCharacters() async {
     _characters = await _characterRepository.load();
+    _loadMyStatuses();
     notifyListeners();
   }
 
   void refreshMyStatuses() async {
+    _loadMyStatuses();
+    notifyListeners();
+  }
+
+  Future<void> _loadMyStatuses() async {
     final myStatuses = await _myStatusRepository.findAll();
 
     if (myStatuses.isNotEmpty) {
@@ -89,6 +85,5 @@ class CharListViewModel extends foundation.ChangeNotifier {
         targetStatus.myStatus = status;
       }
     }
-    notifyListeners();
   }
 }
