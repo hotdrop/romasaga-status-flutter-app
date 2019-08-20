@@ -117,6 +117,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
               onTap: _toggleBackdropPanelVisibility,
               onVerticalDragUpdate: _handleDragUpdate,
               onVerticalDragEnd: _handleDragEnd,
+              visibleBackdropPanel: _backdropPanelVisible,
             ),
           ),
         ],
@@ -268,12 +269,14 @@ class _BackdropPanel extends StatelessWidget {
   final VoidCallback onTap;
   final GestureDragUpdateCallback onVerticalDragUpdate;
   final GestureDragEndCallback onVerticalDragEnd;
+  final visibleBackdropPanel;
 
   const _BackdropPanel({
     Key key,
     this.onTap,
     this.onVerticalDragUpdate,
     this.onVerticalDragEnd,
+    this.visibleBackdropPanel,
   }) : super(key: key);
 
   @override
@@ -297,12 +300,13 @@ class _BackdropPanel extends StatelessWidget {
               padding: const EdgeInsetsDirectional.only(start: 16.0),
               alignment: AlignmentDirectional.centerStart,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  SizedBox(
-                    width: 16.0,
-                  ),
+                  const SizedBox(width: 16.0),
+                  const SizedBox(width: 16.0),
                   Text(Strings.SearchBackDropTitle, style: Theme.of(context).textTheme.subhead),
+                  const SizedBox(width: 16.0),
+                  visibleBackdropPanel ? Icon(Icons.expand_more) : Icon(Icons.expand_less),
                 ],
               ),
             ),
