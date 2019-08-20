@@ -65,6 +65,21 @@ class CharListViewModel extends foundation.ChangeNotifier {
     return haveCharacters;
   }
 
+  void orderBy(OrderType type) {
+    switch (type) {
+      case OrderType.status:
+        _characters.sort((c1, c2) => c1.getTotalStatus().compareTo(c2.getTotalStatus()));
+        break;
+      case OrderType.weapon:
+        _characters.sort((c1, c2) => c1.weaponType.name.compareTo(c2.weaponType.name));
+        break;
+      case OrderType.none:
+        _characters.sort((c1, c2) => c1.id.compareTo(c2.id));
+        break;
+    }
+    notifyListeners();
+  }
+
   void refreshCharacters() async {
     _characters = await _characterRepository.load();
     _loadMyStatuses();
@@ -87,3 +102,5 @@ class CharListViewModel extends foundation.ChangeNotifier {
     }
   }
 }
+
+enum OrderType { status, weapon, none }
