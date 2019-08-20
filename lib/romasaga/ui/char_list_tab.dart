@@ -17,6 +17,9 @@ class CharListTab extends StatelessWidget {
             appBar: AppBar(
               centerTitle: true,
               title: const Text(Strings.CharacterListTabTitle),
+              actions: <Widget>[
+                _titlePopupMenu(),
+              ],
               bottom: const TabBar(tabs: <Tab>[
                 Tab(text: Strings.CharacterListTabFavoriteTitle),
                 Tab(text: Strings.CharacterListTabPossessionTitle),
@@ -31,6 +34,33 @@ class CharListTab extends StatelessWidget {
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Widget _titlePopupMenu() {
+    return Consumer<CharListViewModel>(
+      builder: (_, viewModel, child) {
+        return PopupMenuButton<OrderType>(
+          padding: EdgeInsets.zero,
+          itemBuilder: (_) => [
+            PopupMenuItem(
+              value: OrderType.status,
+              child: Text(Strings.CharacterListOrderStatus),
+            ),
+            PopupMenuItem(
+              value: OrderType.weapon,
+              child: Text(Strings.CharacterListOrderWeapon),
+            ),
+            PopupMenuItem(
+              value: OrderType.none,
+              child: Text(Strings.CharacterListOrderNone),
+            ),
+          ],
+          onSelected: (OrderType value) {
+            viewModel.orderBy(value);
+          },
         );
       },
     );
