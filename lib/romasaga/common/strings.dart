@@ -10,9 +10,9 @@ class Strings {
   static const String CharacterListTabFavoriteTitle = 'お気に入り';
   static const String CharacterListTabPossessionTitle = '所持';
   static const String CharacterListTabUnownedTitle = '未所持';
-  static const String CharacterListOrderStatus = '高ステータス';
+  static const String CharacterListOrderStatus = 'ステータス';
   static const String CharacterListOrderWeapon = '武器種別';
-  static const String CharacterListOrderNone = '初期に戻す';
+  static const String CharacterListOrderNone = '作品';
   static const String NothingCharacterFavoriteMessage = 'お気に入りキャラは設定されていません。';
   static const String NothingCharacterPossessionMessage = '持っているキャラはいません。';
 

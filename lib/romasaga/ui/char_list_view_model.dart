@@ -68,7 +68,7 @@ class CharListViewModel extends foundation.ChangeNotifier {
   void orderBy(OrderType type) {
     switch (type) {
       case OrderType.status:
-        _characters.sort((c1, c2) => c1.getTotalStatus().compareTo(c2.getTotalStatus()));
+        _characters.sort((c1, c2) => c2.getTotalStatus().compareTo(c1.getTotalStatus()));
         break;
       case OrderType.weapon:
         _characters.sort((c1, c2) => c1.weaponType.name.compareTo(c2.weaponType.name));
