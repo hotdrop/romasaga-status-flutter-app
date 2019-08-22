@@ -216,6 +216,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
       child: Scaffold(
         appBar: AppBar(
           title: _headerTitle(),
+          centerTitle: true,
           actions: <Widget>[_headerIconSearchWord()],
         ),
         body: LayoutBuilder(builder: _buildStack),
@@ -237,9 +238,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
           },
         );
       } else {
-        return Center(
-          child: Text(Strings.SearchListTabTitle),
-        );
+        return Text(Strings.SearchListTabTitle);
       }
     });
   }

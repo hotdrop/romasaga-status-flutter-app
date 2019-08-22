@@ -35,19 +35,6 @@ class WeaponType {
     }
   }
 
-  static List<WeaponType> get types => [
-        WeaponType(Strings.Sword),
-        WeaponType(Strings.LargeSword),
-        WeaponType(Strings.Axe),
-        WeaponType(Strings.Hummer),
-        WeaponType(Strings.Knuckle),
-        WeaponType(Strings.Gun),
-        WeaponType(Strings.Rapier),
-        WeaponType(Strings.Spear),
-        WeaponType(Strings.Bow),
-        WeaponType(Strings.Rod),
-      ];
-
   bool isRod() => name == Strings.Rod;
 
   bool isMagic() {
@@ -63,7 +50,53 @@ class WeaponType {
     }
   }
 
+  int sortOrder() {
+    switch (name) {
+      case Strings.Sword:
+        return 1;
+      case Strings.LargeSword:
+        return 2;
+      case Strings.Axe:
+        return 3;
+      case Strings.Hummer:
+        return 4;
+      case Strings.Knuckle:
+        return 5;
+      case Strings.Gun:
+        return 6;
+      case Strings.Rapier:
+        return 7;
+      case Strings.Spear:
+        return 9;
+      case Strings.Bow:
+        return 10;
+      case Strings.Rod:
+      case Strings.MagicFire:
+      case Strings.MagicWater:
+      case Strings.MagicWind:
+      case Strings.MagicYin:
+      case Strings.MagicShine:
+        return 11;
+      default:
+        return 12;
+    }
+  }
+
+  static List<WeaponType> get types => [
+        WeaponType(Strings.Sword),
+        WeaponType(Strings.LargeSword),
+        WeaponType(Strings.Axe),
+        WeaponType(Strings.Hummer),
+        WeaponType(Strings.Knuckle),
+        WeaponType(Strings.Gun),
+        WeaponType(Strings.Rapier),
+        WeaponType(Strings.Spear),
+        WeaponType(Strings.Bow),
+        WeaponType(Strings.Rod),
+      ];
+
   bool operator ==(o) => o is WeaponType && o.name == name;
+
   int get hashCode => name.hashCode;
 }
 

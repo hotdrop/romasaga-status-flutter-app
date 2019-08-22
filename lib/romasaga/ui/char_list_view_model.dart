@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart' as foundation;
 import '../data/character_repository.dart';
 import '../data/my_status_repository.dart';
 import '../model/character.dart';
+import '../model/weapon.dart';
 
 class CharListViewModel extends foundation.ChangeNotifier {
   final CharacterRepository _characterRepository;
@@ -66,12 +67,16 @@ class CharListViewModel extends foundation.ChangeNotifier {
   }
 
   void orderBy(OrderType type) {
+    if (_characters == null) {
+      return;
+    }
+
     switch (type) {
       case OrderType.status:
-        _characters.sort((c1, c2) => c1.getTotalStatus().compareTo(c2.getTotalStatus()));
+        _characters.sort((c1, c2) => c2.getTotalStatus().compareTo(c1.getTotalStatus()));
         break;
       case OrderType.weapon:
-        _characters.sort((c1, c2) => c1.weaponType.name.compareTo(c2.weaponType.name));
+        _characters.sort((c1, c2) => _compareWeapon(c1.weaponType, c2.weaponType));
         break;
       case OrderType.none:
         _characters.sort((c1, c2) => c1.id.compareTo(c2.id));
@@ -99,6 +104,18 @@ class CharListViewModel extends foundation.ChangeNotifier {
         final targetStatus = _characters.firstWhere((character) => character.id == status.id);
         targetStatus.myStatus = status;
       }
+    }
+  }
+
+  int _compareWeapon(WeaponType c1, WeaponType c2) {
+    final c1SortNo = c1.sortOrder();
+    final c2SortNo = c2.sortOrder();
+    if (c1SortNo > c2SortNo) {
+      return 1;
+    } else if (c1SortNo == c2SortNo) {
+      return 0;
+    } else {
+      return -1;
     }
   }
 }

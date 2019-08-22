@@ -38,14 +38,13 @@ class CharDetailPage extends StatelessWidget {
       } else {
         return Scaffold(
           appBar: AppBar(
-            title: Center(
-              child: Text(viewModel.characterName),
-            ),
+            title: Text(viewModel.characterName),
+            centerTitle: true,
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView(
-              children: contentLayout(),
+              children: _contentLayout(),
             ),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -59,7 +58,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// 詳細画面に表示する各レイアウトを束ねる
   ///
-  List<Widget> contentLayout() {
+  List<Widget> _contentLayout() {
     final layouts = <Widget>[];
     layouts.add(_contentCharacterCard());
     layouts.add(_contentsStyleChips());
