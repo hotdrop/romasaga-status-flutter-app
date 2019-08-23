@@ -1,4 +1,4 @@
-class Strings {
+class RSStrings {
   static const String AppTitle = 'ロマサガRSステータス管理';
 
   static const String BottomMenuCharacter = 'キャラ';

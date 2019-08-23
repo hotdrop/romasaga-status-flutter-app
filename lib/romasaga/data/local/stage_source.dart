@@ -9,7 +9,7 @@ import 'entity/stage_entity.dart';
 import '../json/stage_object.dart';
 import '../../model/stage.dart';
 
-import '../../common/saga_logger.dart';
+import '../../common/rs_logger.dart';
 
 class StageSource {
   static final StageSource _instance = StageSource._();
@@ -26,7 +26,7 @@ class StageSource {
         return StagesJsonObject.toModel(jsonObjects);
       });
     } on IOException catch (e) {
-      SagaLogger.e('ステージデータの取得時にエラーが発生しました。', e);
+      RSLogger.e('ステージデータの取得時にエラーが発生しました。', e);
       throw e;
     }
   }

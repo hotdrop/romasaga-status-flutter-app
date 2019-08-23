@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../model/status.dart' show MyStatus;
-import '../common/saga_logger.dart';
 
 class RomancingFirestore {
   static String _rootCollectionName = 'backup';

@@ -4,9 +4,9 @@ import 'detail/char_detail_page.dart';
 import '../model/character.dart';
 import '../model/weapon.dart';
 
-import 'widget/romasaga_icon.dart';
+import 'widget/rs_icon.dart';
 
-import '../common/strings.dart';
+import '../common/rs_strings.dart';
 
 class CharListRowItem extends StatelessWidget {
   final Character character;
@@ -43,7 +43,7 @@ class CharListRowItem extends StatelessWidget {
   Container _imageIcon(Character character) {
     return Container(
       margin: const EdgeInsets.only(right: 16.0),
-      child: RomasagaIcon.character(character.selectedIconFileName),
+      child: RSIcon.character(character.selectedIconFileName),
     );
   }
 
@@ -77,10 +77,10 @@ class CharListRowItem extends StatelessWidget {
   }
 
   Widget _convertWeaponIcon(WeaponType type) {
-    return RomasagaIcon.weaponSmall(type);
+    return RSIcon.weaponSmall(type);
   }
 
   Widget _labelStatus(Character character, BuildContext context) {
-    return Text('${Strings.CharacterTotalStatus} ${character.getTotalStatus()}');
+    return Text('${RSStrings.CharacterTotalStatus} ${character.getTotalStatus()}');
   }
 }

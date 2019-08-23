@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'common/strings.dart';
+import 'common/rs_strings.dart';
 import 'ui/char_list_view_model.dart';
 import 'ui/top_page.dart';
 
@@ -26,7 +26,7 @@ class RomasagaApp extends StatelessWidget {
       supportedLocales: [
         Locale('ja', ''),
       ],
-      title: Strings.AppTitle,
+      title: RSStrings.AppTitle,
       theme: ThemeData.dark().copyWith(accentColor: Colors.blue),
       home: TopPage(),
     );

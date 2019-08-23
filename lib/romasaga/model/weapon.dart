@@ -1,4 +1,4 @@
-import '../common/strings.dart';
+import '../common/rs_strings.dart';
 
 class WeaponType {
   final String name;
@@ -7,43 +7,43 @@ class WeaponType {
 
   WeaponCategory get category {
     switch (name) {
-      case Strings.Sword:
-      case Strings.LargeSword:
-      case Strings.Axe:
+      case RSStrings.Sword:
+      case RSStrings.LargeSword:
+      case RSStrings.Axe:
         return WeaponCategory.slash;
-      case Strings.Hummer:
-      case Strings.Knuckle:
-      case Strings.Gun:
-      case Strings.Rod:
+      case RSStrings.Hummer:
+      case RSStrings.Knuckle:
+      case RSStrings.Gun:
+      case RSStrings.Rod:
         return WeaponCategory.strike;
-      case Strings.Rapier:
-      case Strings.Spear:
-      case Strings.Bow:
+      case RSStrings.Rapier:
+      case RSStrings.Spear:
+      case RSStrings.Bow:
         return WeaponCategory.poke;
-      case Strings.MagicFire:
+      case RSStrings.MagicFire:
         return WeaponCategory.heat;
-      case Strings.MagicWater:
+      case RSStrings.MagicWater:
         return WeaponCategory.cold;
-      case Strings.MagicWind:
+      case RSStrings.MagicWind:
         return WeaponCategory.thunder;
-      case Strings.MagicYin:
+      case RSStrings.MagicYin:
         return WeaponCategory.dark;
-      case Strings.MagicShine:
+      case RSStrings.MagicShine:
         return WeaponCategory.light;
       default:
         return null;
     }
   }
 
-  bool isRod() => name == Strings.Rod;
+  bool isRod() => name == RSStrings.Rod;
 
   bool isMagic() {
     switch (name) {
-      case Strings.MagicFire:
-      case Strings.MagicWater:
-      case Strings.MagicWind:
-      case Strings.MagicYin:
-      case Strings.MagicShine:
+      case RSStrings.MagicFire:
+      case RSStrings.MagicWater:
+      case RSStrings.MagicWind:
+      case RSStrings.MagicYin:
+      case RSStrings.MagicShine:
         return true;
       default:
         return false;
@@ -52,30 +52,30 @@ class WeaponType {
 
   int sortOrder() {
     switch (name) {
-      case Strings.Sword:
+      case RSStrings.Sword:
         return 1;
-      case Strings.LargeSword:
+      case RSStrings.LargeSword:
         return 2;
-      case Strings.Axe:
+      case RSStrings.Axe:
         return 3;
-      case Strings.Hummer:
+      case RSStrings.Hummer:
         return 4;
-      case Strings.Knuckle:
+      case RSStrings.Knuckle:
         return 5;
-      case Strings.Gun:
+      case RSStrings.Gun:
         return 6;
-      case Strings.Rapier:
+      case RSStrings.Rapier:
         return 7;
-      case Strings.Spear:
+      case RSStrings.Spear:
         return 9;
-      case Strings.Bow:
+      case RSStrings.Bow:
         return 10;
-      case Strings.Rod:
-      case Strings.MagicFire:
-      case Strings.MagicWater:
-      case Strings.MagicWind:
-      case Strings.MagicYin:
-      case Strings.MagicShine:
+      case RSStrings.Rod:
+      case RSStrings.MagicFire:
+      case RSStrings.MagicWater:
+      case RSStrings.MagicWind:
+      case RSStrings.MagicYin:
+      case RSStrings.MagicShine:
         return 11;
       default:
         return 12;
@@ -83,16 +83,16 @@ class WeaponType {
   }
 
   static List<WeaponType> get types => [
-        WeaponType(Strings.Sword),
-        WeaponType(Strings.LargeSword),
-        WeaponType(Strings.Axe),
-        WeaponType(Strings.Hummer),
-        WeaponType(Strings.Knuckle),
-        WeaponType(Strings.Gun),
-        WeaponType(Strings.Rapier),
-        WeaponType(Strings.Spear),
-        WeaponType(Strings.Bow),
-        WeaponType(Strings.Rod),
+        WeaponType(RSStrings.Sword),
+        WeaponType(RSStrings.LargeSword),
+        WeaponType(RSStrings.Axe),
+        WeaponType(RSStrings.Hummer),
+        WeaponType(RSStrings.Knuckle),
+        WeaponType(RSStrings.Gun),
+        WeaponType(RSStrings.Rapier),
+        WeaponType(RSStrings.Spear),
+        WeaponType(RSStrings.Bow),
+        WeaponType(RSStrings.Rod),
       ];
 
   bool operator ==(o) => o is WeaponType && o.name == name;

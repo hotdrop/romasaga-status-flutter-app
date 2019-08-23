@@ -2,7 +2,7 @@ import '../json/stage_object.dart';
 import '../../model/stage.dart';
 
 import '../../service/romancing_service.dart';
-import '../../common/saga_logger.dart';
+import '../../common/rs_logger.dart';
 
 class StageApi {
   static final StageApi _instance = StageApi._();
@@ -20,7 +20,7 @@ class StageApi {
       final jsonObjects = StagesJsonObject.parse(json);
       return StagesJsonObject.toModel(jsonObjects);
     } catch (e) {
-      SagaLogger.e('ステージデータの取得時にエラーが発生しました。', e);
+      RSLogger.e('ステージデータの取得時にエラーが発生しました。', e);
       throw e;
     }
   }

@@ -5,7 +5,7 @@ import 'remote/my_status_api.dart';
 
 import '../model/status.dart' show MyStatus;
 
-import '../common/saga_logger.dart';
+import '../common/rs_logger.dart';
 
 class MyStatusRepository {
   final MyStatusSource _localDataSource;
@@ -35,7 +35,7 @@ class MyStatusRepository {
 
   Future<void> restore() async {
     final myStatuses = await _remoteDataSource.findAll();
-    SagaLogger.d('データを取得しました。size=${myStatuses.length}');
+    RSLogger.d('データを取得しました。size=${myStatuses.length}');
 
     _localDataSource.refresh(myStatuses);
   }

@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import '../char_list_row_item.dart';
 import '../search/search_list_view_model.dart';
 
-import '../widget/romasaga_icon.dart';
+import '../widget/rs_icon.dart';
 
 import '../../model/character.dart';
 import '../../model/weapon.dart';
 
-import '../../common/strings.dart';
+import '../../common/rs_strings.dart';
 
 class SearchListTab extends StatefulWidget {
   final List<Character> _characters;
@@ -128,9 +128,9 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
   Widget _filterView() {
     // フィルターしたい要素をここに詰めていく
     final filterViews = <Widget>[];
-    filterViews.add(_filterViewSubTitle(Strings.SearchFilerTitleOwn));
+    filterViews.add(_filterViewSubTitle(RSStrings.SearchFilerTitleOwn));
     filterViews.add(_filterViewOwnState());
-    filterViews.add(_filterViewSubTitle(Strings.SearchFilerTitleWeapon));
+    filterViews.add(_filterViewSubTitle(RSStrings.SearchFilerTitleWeapon));
     filterViews.add(_filterViewWeaponType());
 
     return Padding(
@@ -163,7 +163,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          RomasagaIcon.haveCharacterWithRipple(
+          RSIcon.haveCharacterWithRipple(
             context: context,
             selected: selectedHaveChar,
             onTap: () {
@@ -171,7 +171,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
             },
           ),
           const SizedBox(width: 16.0),
-          RomasagaIcon.favoriteWithRipple(
+          RSIcon.favoriteWithRipple(
             context: context,
             selected: selectedFavorite,
             onTap: () {
@@ -190,7 +190,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
         runSpacing: 16.0,
         children: WeaponType.types.map<Widget>((WeaponType type) {
           bool selected = viewModel.isSelectWeaponType(type);
-          return RomasagaIcon.weaponWithRipple(
+          return RSIcon.weaponWithRipple(
             type: type,
             selected: selected,
             onTap: () {
@@ -231,14 +231,14 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
           controller: _searchQuery,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.search),
-            hintText: Strings.SearchListQueryHint,
+            hintText: RSStrings.SearchListQueryHint,
           ),
           onChanged: (String query) {
             viewModel.findByKeyword(query);
           },
         );
       } else {
-        return Text(Strings.SearchListTabTitle);
+        return Text(RSStrings.SearchListTabTitle);
       }
     });
   }
@@ -303,7 +303,7 @@ class _BackdropPanel extends StatelessWidget {
                 children: <Widget>[
                   const SizedBox(width: 16.0),
                   const SizedBox(width: 16.0),
-                  Text(Strings.SearchBackDropTitle, style: Theme.of(context).textTheme.subhead),
+                  Text(RSStrings.SearchBackDropTitle, style: Theme.of(context).textTheme.subhead),
                   const SizedBox(width: 16.0),
                   visibleBackdropPanel ? Icon(Icons.expand_more) : Icon(Icons.expand_less),
                 ],
