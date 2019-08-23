@@ -44,6 +44,7 @@ class RSColors {
   static const Color filterText = Colors.white;
 
   // お便り画面
+  static const Color thumbnailCardBackground = Colors.white;
   static const Color titleShadow = Colors.grey;
   static const Color winter = Colors.orange;
   static const Color spring = Colors.pinkAccent;

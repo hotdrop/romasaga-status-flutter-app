@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'letter_main_page.dart';
 import '../../model/letter.dart';
 
+import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 
 class LetterTab extends StatelessWidget {
@@ -14,41 +15,55 @@ class LetterTab extends StatelessWidget {
           child: Text(RSStrings.LetterTabTitle),
         ),
       ),
-      body: Center(
-        child: _widgetContents(context),
-      ),
+      body: _widgetContents(context),
     );
   }
 
   Widget _widgetContents(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: _widgetLetterButtons(context),
+    // GridViewはアスペクト比が1:1になってしまうため個別指定している。
+    return GridView.count(
+      crossAxisCount: 2,
+      childAspectRatio: 7 / 10,
+      scrollDirection: Axis.vertical,
+      children: _widgetLetters(context),
     );
   }
 
-  List<Widget> _widgetLetterButtons(BuildContext context) {
+  List<Widget> _widgetLetters(BuildContext context) {
     final letterButtons = <Widget>[];
-    for (var type in LetterType.values) {
-      letterButtons.add(_letterButton(context, type));
-      letterButtons.add(const SizedBox(height: 16.0));
+    for (final type in LetterType.values) {
+      final letter = Letter.fromType(type);
+      letterButtons.add(_cardLetter(context, letter));
     }
     return letterButtons;
   }
 
-  Widget _letterButton(BuildContext context, LetterType letterType) {
-    final letter = Letter.fromType(letterType);
-    return OutlineButton(
-      textColor: letter.themeColor,
-      borderSide: BorderSide(color: letter.themeColor),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.0)),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LetterMainPage(firstSelectLetterType: letterType)),
-        );
-      },
-      child: Text(letter.title),
+  Widget _cardLetter(BuildContext context, Letter letter) {
+    return Card(
+      color: RSColors.thumbnailCardBackground,
+      child: InkWell(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 250,
+              child: Stack(
+                children: <Widget>[
+                  Positioned.fill(
+                    child: Image.asset(letter.thumbnail, fit: BoxFit.fill),
+                  ),
+                ],
+              ),
+            ),
+            Text(letter.shortTitle, style: TextStyle(color: letter.themeColor)),
+          ],
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LetterMainPage(firstSelectLetterType: letter.type)),
+          );
+        },
+      ),
     );
   }
 }
