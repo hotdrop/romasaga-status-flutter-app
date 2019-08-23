@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../model/status.dart' show MyStatus;
 
-class RomancingFirestore {
+class RSFirestoreMixin {
   static String _rootCollectionName = 'backup';
   static String _statusCollectionName = 'statuses';
 

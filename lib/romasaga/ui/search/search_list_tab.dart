@@ -107,9 +107,6 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
       child: Stack(
         children: <Widget>[
           ListTileTheme(
-            iconColor: theme.primaryIconTheme.color,
-            textColor: theme.primaryTextTheme.title.color.withOpacity(0.6),
-            selectedColor: theme.primaryTextTheme.title.color,
             child: _filterView(),
           ),
           PositionedTransition(

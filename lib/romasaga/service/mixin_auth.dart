@@ -3,7 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../common/rs_logger.dart';
 
-mixin RomancingAuth {
+mixin RSAuthMixin {
   FirebaseUser _user;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _google = GoogleSignIn();

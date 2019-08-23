@@ -1,7 +1,7 @@
 import '../json/stage_object.dart';
 import '../../model/stage.dart';
 
-import '../../service/romancing_service.dart';
+import '../../service/rs_service.dart';
 import '../../common/rs_logger.dart';
 
 class StageApi {
@@ -12,7 +12,7 @@ class StageApi {
     return _instance;
   }
 
-  RomancingService _romancingService = RomancingService();
+  RSService _romancingService = RSService();
 
   Future<List<Stage>> findAll() async {
     try {

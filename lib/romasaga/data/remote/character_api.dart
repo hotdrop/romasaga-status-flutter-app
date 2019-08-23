@@ -1,7 +1,7 @@
 import '../json/character_object.dart';
 import '../../model/character.dart';
 
-import '../..//service/romancing_service.dart';
+import '../..//service/rs_service.dart';
 import '../../common/rs_logger.dart';
 
 class CharacterApi {
@@ -12,7 +12,7 @@ class CharacterApi {
     return _instance;
   }
 
-  RomancingService _romancingService = RomancingService();
+  RSService _romancingService = RSService();
 
   Future<List<Character>> findAll() async {
     try {

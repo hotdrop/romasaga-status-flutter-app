@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SagaDialog {
+class RSDialog {
   final BuildContext context;
   final String message;
   final Function positiveListener;
 
-  const SagaDialog(
+  const RSDialog(
     this.context, {
     @required this.message,
     @required this.positiveListener,

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 
-mixin RomancingStorage {
+mixin RSStorageMixin {
   Future<String> readStagesJson() async {
     return await _readJson(path: 'stage.json');
   }

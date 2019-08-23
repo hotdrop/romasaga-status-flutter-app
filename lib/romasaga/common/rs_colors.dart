@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class RSColors {
-  static const Color bottomNavigationIcon = Colors.black12;
+  static const Color accent = Colors.blueAccent;
+  static const Color bottomNavigation = Colors.white;
+  static const Color bottomNavigationIcon = Colors.black87;
+  static const Color bottomNavigationText = Colors.black87;
+
   static const Color divider = Colors.white70;
   static const Color subText = Colors.grey;
   static const Color staticIcon = Colors.white;
@@ -24,17 +28,20 @@ class RSColors {
   // キャラ詳細画面 - ステータス
   static const Color statusNone = Colors.black;
 
-  static const Color statusLack = Colors.red;
-  static const Color statusLackGraphStart = Color.fromARGB(255, 167, 167, 100);
-  static const Color statusLackGraphEnd = Colors.redAccent;
+  static const Color statusLack = Colors.redAccent;
+  static const Color statusLackGraphStart = Color(0xFFFF8687);
+  static const Color statusLackGraphEnd = Color(0xFFFF5E6A);
 
-  static const Color statusNormal = Colors.green;
-  static const Color statusNormalGraphStart = Color.fromARGB(255, 0, 200, 0);
-  static const Color statusNormalGraphEnd = Colors.greenAccent;
+  static const Color statusNormal = Colors.greenAccent;
+  static const Color statusNormalGraphStart = Color(0xFF9AFFC4);
+  static const Color statusNormalGraphEnd = Color(0xFF09FF3D);
 
-  static const Color statusSufficient = Colors.blue;
-  static const Color statusSufficientGraphStart = Color.fromARGB(255, 0, 100, 255);
-  static const Color statusSufficientGraphEnd = Colors.blueAccent;
+  static const Color statusSufficient = Colors.blueAccent;
+  static const Color statusSufficientGraphStart = Color(0xFF3AA6FF);
+  static const Color statusSufficientGraphEnd = Color(0xFF3476FF);
+
+  // 検索
+  static const Color filterText = Colors.white;
 
   // お便り画面
   static const Color titleShadow = Colors.grey;

@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'common/rs_strings.dart';
 import 'ui/char_list_view_model.dart';
 import 'ui/top_page.dart';
+
+import 'common/rs_colors.dart';
+import 'common/rs_strings.dart';
 
 void main() {
   return runApp(ChangeNotifierProvider<CharListViewModel>(
@@ -27,7 +29,7 @@ class RomasagaApp extends StatelessWidget {
         Locale('ja', ''),
       ],
       title: RSStrings.AppTitle,
-      theme: ThemeData.dark().copyWith(accentColor: Colors.blue),
+      theme: ThemeData.dark().copyWith(accentColor: RSColors.accent),
       home: TopPage(),
     );
   }

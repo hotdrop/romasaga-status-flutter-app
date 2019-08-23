@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../char_list_view_model.dart';
 import 'account_view_model.dart';
 
-import '../widget/saga_dialog.dart';
+import '../widget/rs_dialog.dart';
 
 import '../../common/rs_colors.dart';
 import '../../common/rs_logger.dart';
@@ -152,7 +152,7 @@ class SettingTab extends StatelessWidget {
             title: RSStrings.AccountCharacterUpdateLabel,
             registerCount: viewModel.characterCount,
             loadingStatus: viewModel.loadingCharacter, onTapListener: () {
-          SagaDialog(
+          RSDialog(
             context,
             message: RSStrings.AccountCharacterUpdateDialogMessage,
             positiveListener: () async {
@@ -173,7 +173,7 @@ class SettingTab extends StatelessWidget {
             title: RSStrings.AccountStageUpdateLabel,
             registerCount: viewModel.stageCount ?? 0,
             loadingStatus: viewModel.loadingStage, onTapListener: () async {
-          SagaDialog(
+          RSDialog(
             context,
             message: RSStrings.AccountStageUpdateDialogMessage,
             positiveListener: () {
@@ -194,7 +194,7 @@ class SettingTab extends StatelessWidget {
             title: RSStrings.AccountStatusBackupLabel,
             subTitle: subTitleText,
             loadingStatus: viewModel.loadingBackup, onTapListener: () async {
-          SagaDialog(
+          RSDialog(
             context,
             message: RSStrings.AccountStatusBackupDialogMessage,
             positiveListener: () {
@@ -214,7 +214,7 @@ class SettingTab extends StatelessWidget {
             title: RSStrings.AccountStatusRestoreLabel,
             subTitle: RSStrings.AccountStatusRestoreDescriptionLabel,
             loadingStatus: viewModel.loadingRestore, onTapListener: () {
-          SagaDialog(
+          RSDialog(
             context,
             message: RSStrings.AccountStatusRestoreDialogMessage,
             positiveListener: () async {
@@ -235,7 +235,7 @@ class SettingTab extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           child: Text(RSStrings.AccountLogoutButton),
           onPressed: () async {
-            SagaDialog(
+            RSDialog(
               context,
               message: RSStrings.AccountLogoutDialogMessage,
               positiveListener: () => viewModel.logout(),

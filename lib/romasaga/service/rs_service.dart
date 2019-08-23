@@ -4,11 +4,11 @@ import 'mixin_firestore.dart';
 
 import '../model/status.dart' show MyStatus;
 
-class RomancingService with RomancingAuth, RomancingStorage, RomancingFirestore {
-  static final RomancingService _instance = RomancingService._();
-  RomancingService._();
+class RSService with RSAuthMixin, RSStorageMixin, RSFirestoreMixin {
+  static final RSService _instance = RSService._();
+  RSService._();
 
-  factory RomancingService() {
+  factory RSService() {
     return _instance;
   }
 
