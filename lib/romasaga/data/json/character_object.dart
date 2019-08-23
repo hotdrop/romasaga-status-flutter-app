@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import '../../model/character.dart';
 import '../../model/style.dart';
 
-import '../../common/saga_logger.dart';
+import '../../common/rs_logger.dart';
 
 @JsonSerializable()
 class CharactersJsonObject {
@@ -14,7 +14,7 @@ class CharactersJsonObject {
 
   factory CharactersJsonObject.fromJson(Map<String, dynamic> json) {
     if (json == null) {
-      SagaLogger.d("Character jsonがnullです。");
+      RSLogger.d("Character jsonがnullです。");
       return null;
     }
     return CharactersJsonObject(
@@ -25,7 +25,7 @@ class CharactersJsonObject {
   static CharactersJsonObject parse(String json) {
     final jsonMap = jsonDecode(json);
     final results = CharactersJsonObject.fromJson(jsonMap);
-    SagaLogger.d("Characterをパースしました。 size=${results.characters.length}");
+    RSLogger.d("Characterをパースしました。 size=${results.characters.length}");
     return results;
   }
 

@@ -10,8 +10,8 @@ import '../../data/character_repository.dart';
 import '../../data/my_status_repository.dart';
 import '../../data/stage_repository.dart';
 
-import '../../common/strings.dart';
-import '../../common/saga_logger.dart';
+import '../../common/rs_strings.dart';
+import '../../common/rs_logger.dart';
 
 class CharDetailViewModel extends foundation.ChangeNotifier {
   final CharacterRepository _characterRepository;
@@ -34,12 +34,12 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   bool isLoading = true;
 
   void load() async {
-    SagaLogger.d('ロードします。');
+    RSLogger.d('ロードします。');
     _stages = await _stageRepository.load();
     _selectedStage = _stages.first;
 
     if (_character.styles.isEmpty) {
-      SagaLogger.d('キャラクターのスタイルが未取得なので取得します。');
+      RSLogger.d('キャラクターのスタイルが未取得なので取得します。');
       final styles = await _characterRepository.findStyles(_character.id);
       _character.addStyles(styles);
     }
@@ -89,28 +89,28 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   int getStatusUpperLimit(String statusName) {
     var targetStatus;
     switch (statusName) {
-      case Strings.StrName:
+      case RSStrings.StrName:
         targetStatus = _selectedStyle?.str;
         break;
-      case Strings.VitName:
+      case RSStrings.VitName:
         targetStatus = _selectedStyle?.vit;
         break;
-      case Strings.DexName:
+      case RSStrings.DexName:
         targetStatus = _selectedStyle?.dex;
         break;
-      case Strings.AgiName:
+      case RSStrings.AgiName:
         targetStatus = _selectedStyle?.agi;
         break;
-      case Strings.IntName:
+      case RSStrings.IntName:
         targetStatus = _selectedStyle?.intelligence;
         break;
-      case Strings.SpiName:
+      case RSStrings.SpiName:
         targetStatus = _selectedStyle?.spirit;
         break;
-      case Strings.LoveName:
+      case RSStrings.LoveName:
         targetStatus = _selectedStyle?.love;
         break;
-      case Strings.AttrName:
+      case RSStrings.AttrName:
         targetStatus = _selectedStyle?.attr;
         break;
       default:
@@ -130,21 +130,21 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   }
 
   void saveCurrentSelectStyle() async {
-    SagaLogger.d('表示ランクを ${_selectedStyle.rank} にします。');
+    RSLogger.d('表示ランクを ${_selectedStyle.rank} にします。');
     _character.selectedStyleRank = _selectedStyle.rank;
     _character.selectedIconFileName = _selectedStyle.iconFileName;
     await _characterRepository.saveSelectedRank(_character.id, _selectedStyle.rank, _selectedStyle.iconFileName);
   }
 
   void saveHaveCharacter(bool haveChar) async {
-    SagaLogger.d('このキャラの保持を $haveChar にします。');
+    RSLogger.d('このキャラの保持を $haveChar にします。');
     _character.myStatus.have = haveChar;
     await _myStatusRepository.save(_character.myStatus);
     notifyListeners();
   }
 
   void saveFavorite(bool favorite) async {
-    SagaLogger.d('お気に入りを $favorite にします。');
+    RSLogger.d('お気に入りを $favorite にします。');
     _character.myStatus.favorite = favorite;
     await _myStatusRepository.save(_character.myStatus);
     notifyListeners();

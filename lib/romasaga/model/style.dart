@@ -1,4 +1,4 @@
-import '../common/strings.dart';
+import '../common/rs_strings.dart';
 
 class Style {
   final int characterId;
@@ -31,8 +31,8 @@ class Style {
   );
 
   static int rankSort(String first, String second) {
-    final firstPriority = (first == Strings.RankA) ? 1 : (first == Strings.RankS) ? 2 : 3;
-    final secondPriority = (second == Strings.RankA) ? 1 : (second == Strings.RankS) ? 2 : 3;
+    final firstPriority = (first == RSStrings.RankA) ? 1 : (first == RSStrings.RankS) ? 2 : 3;
+    final secondPriority = (second == RSStrings.RankA) ? 1 : (second == RSStrings.RankS) ? 2 : 3;
     if (firstPriority < secondPriority) {
       return -1;
     } else if (firstPriority == secondPriority) {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'letter_main_page.dart';
 import '../../model/letter.dart';
 
-import '../../common/strings.dart';
+import '../../common/rs_strings.dart';
 
 class LetterTab extends StatelessWidget {
   @override
@@ -11,7 +11,7 @@ class LetterTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text(Strings.LetterTabTitle),
+          child: Text(RSStrings.LetterTabTitle),
         ),
       ),
       body: Center(

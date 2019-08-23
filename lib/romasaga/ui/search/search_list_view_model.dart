@@ -4,7 +4,7 @@ import '../../model/character.dart';
 import '../../model/search_condition.dart';
 import '../../model/weapon.dart';
 
-import '../../common/saga_logger.dart';
+import '../../common/rs_logger.dart';
 
 class SearchListViewModel extends foundation.ChangeNotifier {
   List<Character> _originalCharacters;
@@ -18,12 +18,12 @@ class SearchListViewModel extends foundation.ChangeNotifier {
 
   void tapSearchIcon() {
     if (isKeywordSearch) {
-      SagaLogger.d("キーワード検索を終了します。");
+      RSLogger.d("キーワード検索を終了します。");
       isKeywordSearch = false;
       _condition.keyword = null;
       clear();
     } else {
-      SagaLogger.d("キーワード検索を開始します。");
+      RSLogger.d("キーワード検索を開始します。");
       isKeywordSearch = true;
       notifyListeners();
     }
@@ -48,12 +48,12 @@ class SearchListViewModel extends foundation.ChangeNotifier {
 
   void findByKeyword(String word) async {
     _condition.keyword = word;
-    SagaLogger.d("$word を検索します。");
+    RSLogger.d("$word を検索します。");
     _search();
   }
 
   void findByWeaponType(WeaponType type) async {
-    SagaLogger.d("${type.name} をフィルター指定します。");
+    RSLogger.d("${type.name} をフィルター指定します。");
     _condition.weaponType = type;
     _search();
   }
@@ -75,7 +75,7 @@ class SearchListViewModel extends foundation.ChangeNotifier {
         .where((c) => _condition.filterFavorite(c.myStatus.favorite))
         .where((c) => _condition.filterWeaponType(c.weaponType))
         .toList();
-    SagaLogger.d("フィルター後のキャラ数=${charactersWithFilter.length}");
+    RSLogger.d("フィルター後のキャラ数=${charactersWithFilter.length}");
     notifyListeners();
   }
 }

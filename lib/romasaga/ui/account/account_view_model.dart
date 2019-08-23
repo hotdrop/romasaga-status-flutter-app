@@ -5,7 +5,7 @@ import '../../data/stage_repository.dart';
 import '../../data/my_status_repository.dart';
 import '../../data/account_repository.dart';
 
-import '../../common/saga_logger.dart';
+import '../../common/rs_logger.dart';
 
 class SettingViewModel extends foundation.ChangeNotifier {
   final CharacterRepository _characterRepository;
@@ -46,7 +46,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
     final isLogIn = _accountRepository.isLogIn;
 
     if (!isLogIn) {
-      SagaLogger.d('未ログインのためキャラデータとステージデータはロードしません。');
+      RSLogger.d('未ログインのためキャラデータとステージデータはロードしません。');
       _status = Status.notLogin;
       notifyListeners();
       return;
@@ -73,7 +73,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
       _status = Status.loggedIn;
       notifyListeners();
     } catch (e) {
-      SagaLogger.e('ログイン中にエラーが発生しました。', e);
+      RSLogger.e('ログイン中にエラーが発生しました。', e);
       _status = Status.notLogin;
     }
   }
@@ -91,7 +91,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
       _status = Status.notLogin;
       notifyListeners();
     } catch (e) {
-      SagaLogger.e('ログアウト中にエラーが発生しました。', e);
+      RSLogger.e('ログアウト中にエラーが発生しました。', e);
       _status = Status.loggedIn;
     }
   }

@@ -5,7 +5,7 @@ import 'mapper.dart';
 
 import '../../model/status.dart' show MyStatus;
 import 'entity/my_status_entity.dart';
-import '../../common/saga_logger.dart';
+import '../../common/rs_logger.dart';
 
 class MyStatusSource {
   static final MyStatusSource _instance = MyStatusSource._();
@@ -20,16 +20,16 @@ class MyStatusSource {
   /// 自身のステータス情報を保存
   ///
   void save(MyStatus myStatus) async {
-    SagaLogger.d('ID=${myStatus.id}のキャラクターのステータスを保存します');
+    RSLogger.d('ID=${myStatus.id}のキャラクターのステータスを保存します');
     final entity = Mapper.toMyStatusEntity(myStatus);
     final db = await DBProvider.instance.database;
 
     final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: [myStatus.id]);
     if (result.isEmpty) {
-      SagaLogger.d('ステータスが未登録なのでinsertします。');
+      RSLogger.d('ステータスが未登録なのでinsertします。');
       await db.insert(MyStatusEntity.tableName, entity.toMap());
     } else {
-      SagaLogger.d('ステータスが登録されているのでupdateします。');
+      RSLogger.d('ステータスが登録されているのでupdateします。');
       await db.update(MyStatusEntity.tableName, entity.toMap(), where: '${MyStatusEntity.columnId} = ?', whereArgs: [myStatus.id]);
     }
   }
@@ -49,17 +49,17 @@ class MyStatusSource {
   /// 指定したキャラクターIDのステータス情報を取得
   ///
   Future<MyStatus> find(int id) async {
-    SagaLogger.d('ID=$idのキャラクターのステータスを取得します');
+    RSLogger.d('ID=$idのキャラクターのステータスを取得します');
 
     final db = await DBProvider.instance.database;
     final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: [id]);
 
     if (result.isEmpty) {
-      SagaLogger.d('statusは空でした。');
+      RSLogger.d('statusは空でした。');
       return null;
     }
 
-    SagaLogger.d('statusを取得しました。');
+    RSLogger.d('statusを取得しました。');
 
     final entity = MyStatusEntity.fromMap(result.first);
     return Mapper.toMyStatus(entity);

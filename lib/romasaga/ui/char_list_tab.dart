@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'char_list_row_item.dart';
 import 'char_list_view_model.dart';
 
-import '../common/strings.dart';
+import '../common/rs_strings.dart';
 
 class CharListTab extends StatelessWidget {
   @override
@@ -16,14 +16,14 @@ class CharListTab extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: const Text(Strings.CharacterListTabTitle),
+              title: const Text(RSStrings.CharacterListTabTitle),
               actions: <Widget>[
                 _titlePopupMenu(),
               ],
               bottom: const TabBar(tabs: <Tab>[
-                Tab(text: Strings.CharacterListTabFavoriteTitle),
-                Tab(text: Strings.CharacterListTabPossessionTitle),
-                Tab(text: Strings.CharacterListTabUnownedTitle),
+                Tab(text: RSStrings.CharacterListTabFavoriteTitle),
+                Tab(text: RSStrings.CharacterListTabPossessionTitle),
+                Tab(text: RSStrings.CharacterListTabUnownedTitle),
               ]),
             ),
             body: TabBarView(
@@ -47,15 +47,15 @@ class CharListTab extends StatelessWidget {
           itemBuilder: (_) => [
             PopupMenuItem(
               value: OrderType.status,
-              child: Text(Strings.CharacterListOrderStatus),
+              child: Text(RSStrings.CharacterListOrderStatus),
             ),
             PopupMenuItem(
               value: OrderType.weapon,
-              child: Text(Strings.CharacterListOrderWeapon),
+              child: Text(RSStrings.CharacterListOrderWeapon),
             ),
             PopupMenuItem(
               value: OrderType.none,
-              child: Text(Strings.CharacterListOrderNone),
+              child: Text(RSStrings.CharacterListOrderNone),
             ),
           ],
           onSelected: (OrderType value) {
@@ -72,7 +72,7 @@ class CharListTab extends StatelessWidget {
     if (characters.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text(Strings.NothingCharacterFavoriteMessage)],
+        children: <Widget>[Text(RSStrings.NothingCharacterFavoriteMessage)],
       );
     }
 
@@ -92,7 +92,7 @@ class CharListTab extends StatelessWidget {
     if (characters.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text(Strings.NothingCharacterPossessionMessage)],
+        children: <Widget>[Text(RSStrings.NothingCharacterPossessionMessage)],
       );
     }
 

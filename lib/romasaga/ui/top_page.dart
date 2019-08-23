@@ -8,7 +8,7 @@ import 'account/account_tab.dart';
 
 import 'char_list_view_model.dart';
 
-import '../common/strings.dart';
+import '../common/rs_strings.dart';
 
 class TopPage extends StatefulWidget {
   @override
@@ -70,8 +70,8 @@ class Destination {
 }
 
 const _allDestinations = <Destination>[
-  Destination(Strings.BottomMenuCharacter, Icons.view_list, Colors.black12),
-  Destination(Strings.BottomMenuSearch, Icons.search, Colors.white10),
-  Destination(Strings.BottomMenuLetter, Icons.mail, Colors.blueGrey),
-  Destination(Strings.BottomMenuAccount, Icons.person, Colors.white30),
+  Destination(RSStrings.BottomMenuCharacter, Icons.view_list, Colors.black12),
+  Destination(RSStrings.BottomMenuSearch, Icons.search, Colors.white10),
+  Destination(RSStrings.BottomMenuLetter, Icons.mail, Colors.blueGrey),
+  Destination(RSStrings.BottomMenuAccount, Icons.person, Colors.white30),
 ];

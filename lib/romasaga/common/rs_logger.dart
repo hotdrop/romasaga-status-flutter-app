@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 
-class SagaLogger {
-  SagaLogger._();
+class RSLogger {
+  RSLogger._();
   static final Logger _logger = Logger();
 
   static void d(String message) {

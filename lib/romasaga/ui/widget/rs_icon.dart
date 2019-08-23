@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../model/weapon.dart';
 
-import '../../common/strings.dart';
-import '../../common/saga_logger.dart';
+import '../../common/rs_strings.dart';
+import '../../common/rs_logger.dart';
 
-class RomasagaIcon {
+class RSIcon {
   ///
   /// キャラクターアイコン
   ///
@@ -23,9 +23,9 @@ class RomasagaIcon {
   /// スタイルランクアイコン
   ///
   static Widget rank(String rank) {
-    if (rank.contains(Strings.RankSS)) {
+    if (rank.contains(RSStrings.RankSS)) {
       return _imageIcon('res/icons/icon_rank_SS.png', IconSize.small);
-    } else if (rank.contains(Strings.RankS)) {
+    } else if (rank.contains(RSStrings.RankS)) {
       return _imageIcon('res/icons/icon_rank_S.png', IconSize.small);
     } else {
       return _imageIcon('res/icons/icon_rank_A.png', IconSize.small);
@@ -101,33 +101,33 @@ class RomasagaIcon {
 
   static String _getWeaponIconRes(WeaponType weaponType) {
     switch (weaponType.name) {
-      case Strings.Sword:
+      case RSStrings.Sword:
         return 'res/icons/icon_weap_sword.png';
-      case Strings.LargeSword:
+      case RSStrings.LargeSword:
         return 'res/icons/icon_weap_large_sword.png';
-      case Strings.Axe:
+      case RSStrings.Axe:
         return 'res/icons/icon_weap_axe.png';
-      case Strings.Hummer:
+      case RSStrings.Hummer:
         return 'res/icons/icon_weap_hummer.png';
-      case Strings.Knuckle:
+      case RSStrings.Knuckle:
         return 'res/icons/icon_weap_knuckle.png';
-      case Strings.Gun:
+      case RSStrings.Gun:
         return 'res/icons/icon_weap_gun.png';
-      case Strings.Rapier:
+      case RSStrings.Rapier:
         return 'res/icons/icon_weap_rapier.png';
-      case Strings.Bow:
+      case RSStrings.Bow:
         return 'res/icons/icon_weap_bow.png';
-      case Strings.Spear:
+      case RSStrings.Spear:
         return 'res/icons/icon_weap_spear.png';
-      case Strings.Rod:
-      case Strings.MagicFire:
-      case Strings.MagicWater:
-      case Strings.MagicWind:
-      case Strings.MagicYin:
-      case Strings.MagicShine:
+      case RSStrings.Rod:
+      case RSStrings.MagicFire:
+      case RSStrings.MagicWater:
+      case RSStrings.MagicWind:
+      case RSStrings.MagicYin:
+      case RSStrings.MagicShine:
         return 'res/icons/icon_weap_rod.png';
       default:
-        SagaLogger.d("不正なWeaponTypeです。weaponType=${weaponType.name}");
+        RSLogger.d("不正なWeaponTypeです。weaponType=${weaponType.name}");
         throw FormatException("不正なWeaponTypeです。weaponType=${weaponType.name}");
     }
   }
@@ -154,7 +154,7 @@ class RomasagaIcon {
       case WeaponCategory.light:
         return _imageIcon('res/icons/icon_type_light.png', IconSize.normal);
       default:
-        SagaLogger.d("不正なWeaponCategoryです。category=$category");
+        RSLogger.d("不正なWeaponCategoryです。category=$category");
         throw FormatException("不正なWeaponCategoryです。category=$category");
     }
   }

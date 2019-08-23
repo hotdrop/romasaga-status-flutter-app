@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import '../../common/strings.dart';
+import '../../common/rs_strings.dart';
 
 class StatusIndicator {
   static Widget create(String statusName, int currentStatus, int statusUpperLimit) {
@@ -18,7 +18,7 @@ class StatusIndicator {
 
     int diffLimit;
     // 今はHPはステータス上限の計測外にしているので無条件で0にする。
-    if (name == Strings.HpName) {
+    if (name == RSStrings.HpName) {
       diffLimit = 0;
     } else {
       diffLimit = currentStatus - statusUpperLimit;

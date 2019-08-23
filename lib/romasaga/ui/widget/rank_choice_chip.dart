@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../common/strings.dart';
-import 'romasaga_icon.dart';
+import '../../common/rs_strings.dart';
+import 'rs_icon.dart';
 
 class RankChoiceChip extends StatefulWidget {
   final List<String> ranks;
@@ -56,9 +56,9 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   }
 
   Color _rankToColor(String rank) {
-    if (rank.contains(Strings.RankSS)) {
+    if (rank.contains(RSStrings.RankSS)) {
       return const Color.fromARGB(255, 233, 217, 77);
-    } else if (rank.contains(Strings.RankS)) {
+    } else if (rank.contains(RSStrings.RankS)) {
       return const Color.fromARGB(255, 200, 204, 219);
     } else {
       return const Color.fromARGB(255, 239, 201, 191);
@@ -68,7 +68,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   CircleAvatar _rankToAvatar(String rank) {
     return CircleAvatar(
       backgroundColor: Colors.grey.shade300,
-      child: RomasagaIcon.rank(rank),
+      child: RSIcon.rank(rank),
     );
   }
 }

@@ -6,8 +6,8 @@ import 'account_view_model.dart';
 
 import '../widget/saga_dialog.dart';
 
-import '../../common/saga_logger.dart';
-import '../../common/strings.dart';
+import '../../common/rs_logger.dart';
+import '../../common/rs_strings.dart';
 
 class SettingTab extends StatelessWidget {
   final CharListViewModel _charListViewModel;
@@ -21,7 +21,7 @@ class SettingTab extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(Strings.AccountTabTitle),
+          title: const Text(RSStrings.AccountTabTitle),
         ),
         body: _widgetContents(),
       ),
@@ -65,14 +65,14 @@ class SettingTab extends StatelessWidget {
 
   Widget _googleSignInButton() {
     return Consumer<SettingViewModel>(
-      builder: (_, viewModel, child) {
+      builder: (context, viewModel, child) {
         return RaisedButton(
-          color: Colors.blueAccent,
+          color: Theme.of(context).accentColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          child: Text(Strings.AccountLoginWithGoogle),
+          child: Text(RSStrings.AccountLoginWithGoogle),
           onPressed: () {
             if (viewModel.nowLoading) {
-              SagaLogger.d("now Loading...");
+              RSLogger.d("now Loading...");
               return;
             }
             viewModel.loginWithGoogle();
@@ -90,15 +90,15 @@ class SettingTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         _rowAccountInfo(),
-        _border(),
-        _rowLabel(Strings.AccountDataUpdateLabel),
+        const Divider(color: Colors.white70),
+        _rowLabel(context, RSStrings.AccountDataUpdateLabel),
         _rowCharacterReload(),
         _rowStageReload(),
-        _border(),
-        _rowLabel(Strings.AccountStatusLabel),
+        const Divider(color: Colors.white70),
+        _rowLabel(context, RSStrings.AccountStatusLabel),
         _rowBackUp(),
         _rowRestore(),
-        _border(),
+        const Divider(color: Colors.white70),
         _rowLogoutButton(),
       ],
     );
@@ -122,7 +122,7 @@ class SettingTab extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(viewModel.loginEmail),
-                Text(viewModel.loginUserName, style: TextStyle(color: Colors.grey)),
+                Text(viewModel.loginUserName, style: Theme.of(context).textTheme.caption),
               ],
             ),
           ],
@@ -131,26 +131,13 @@ class SettingTab extends StatelessWidget {
     });
   }
 
-  Widget _border() {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Colors.grey, width: 0.5),
-        ),
-      ),
-    );
-  }
-
-  Widget _rowLabel(String label) {
+  Widget _rowLabel(BuildContext context, String label) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: 16.0, top: 16.0),
-          child: Text(
-            label,
-            style: TextStyle(color: Colors.grey),
-          ),
+          child: Text(label, style: Theme.of(context).textTheme.caption),
         ),
       ],
     );
@@ -159,21 +146,20 @@ class SettingTab extends StatelessWidget {
   Widget _rowCharacterReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _rowItemView(
+        return _rowItemView(context,
             icon: const Icon(Icons.people),
-            title: Strings.AccountCharacterUpdateLabel,
+            title: RSStrings.AccountCharacterUpdateLabel,
             registerCount: viewModel.characterCount,
-            loadingStatus: viewModel.loadingCharacter,
-            onTapListener: () {
-              SagaDialog(
-                context,
-                message: Strings.AccountCharacterUpdateDialogMessage,
-                positiveListener: () async {
-                  await viewModel.refreshCharacters();
-                  _charListViewModel.refreshCharacters();
-                },
-              ).show();
-            });
+            loadingStatus: viewModel.loadingCharacter, onTapListener: () {
+          SagaDialog(
+            context,
+            message: RSStrings.AccountCharacterUpdateDialogMessage,
+            positiveListener: () async {
+              await viewModel.refreshCharacters();
+              _charListViewModel.refreshCharacters();
+            },
+          ).show();
+        });
       },
     );
   }
@@ -181,20 +167,19 @@ class SettingTab extends StatelessWidget {
   Widget _rowStageReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _rowItemView(
+        return _rowItemView(context,
             icon: const Icon(Icons.map),
-            title: Strings.AccountStageUpdateLabel,
+            title: RSStrings.AccountStageUpdateLabel,
             registerCount: viewModel.stageCount ?? 0,
-            loadingStatus: viewModel.loadingStage,
-            onTapListener: () async {
-              SagaDialog(
-                context,
-                message: Strings.AccountStageUpdateDialogMessage,
-                positiveListener: () {
-                  viewModel.refreshStage();
-                },
-              ).show();
-            });
+            loadingStatus: viewModel.loadingStage, onTapListener: () async {
+          SagaDialog(
+            context,
+            message: RSStrings.AccountStageUpdateDialogMessage,
+            positiveListener: () {
+              viewModel.refreshStage();
+            },
+          ).show();
+        });
       },
     );
   }
@@ -202,21 +187,20 @@ class SettingTab extends StatelessWidget {
   Widget _rowBackUp() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        final subTitleText = '${Strings.AccountStatusBackupDateLabel} ${viewModel.previousBackupDateStr}';
-        return _rowItemView(
+        final subTitleText = '${RSStrings.AccountStatusBackupDateLabel} ${viewModel.previousBackupDateStr}';
+        return _rowItemView(context,
             icon: const Icon(Icons.backup),
-            title: Strings.AccountStatusBackupLabel,
+            title: RSStrings.AccountStatusBackupLabel,
             subTitle: subTitleText,
-            loadingStatus: viewModel.loadingBackup,
-            onTapListener: () async {
-              SagaDialog(
-                context,
-                message: Strings.AccountStatusBackupDialogMessage,
-                positiveListener: () {
-                  viewModel.backup();
-                },
-              ).show();
-            });
+            loadingStatus: viewModel.loadingBackup, onTapListener: () async {
+          SagaDialog(
+            context,
+            message: RSStrings.AccountStatusBackupDialogMessage,
+            positiveListener: () {
+              viewModel.backup();
+            },
+          ).show();
+        });
       },
     );
   }
@@ -224,21 +208,20 @@ class SettingTab extends StatelessWidget {
   Widget _rowRestore() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _rowItemView(
+        return _rowItemView(context,
             icon: const Icon(Icons.settings_backup_restore),
-            title: Strings.AccountStatusRestoreLabel,
-            subTitle: Strings.AccountStatusRestoreDescriptionLabel,
-            loadingStatus: viewModel.loadingRestore,
-            onTapListener: () {
-              SagaDialog(
-                context,
-                message: Strings.AccountStatusRestoreDialogMessage,
-                positiveListener: () async {
-                  await viewModel.restore();
-                  _charListViewModel.refreshMyStatuses();
-                },
-              ).show();
-            });
+            title: RSStrings.AccountStatusRestoreLabel,
+            subTitle: RSStrings.AccountStatusRestoreDescriptionLabel,
+            loadingStatus: viewModel.loadingRestore, onTapListener: () {
+          SagaDialog(
+            context,
+            message: RSStrings.AccountStatusRestoreDialogMessage,
+            positiveListener: () async {
+              await viewModel.restore();
+              _charListViewModel.refreshMyStatuses();
+            },
+          ).show();
+        });
       },
     );
   }
@@ -249,11 +232,11 @@ class SettingTab extends StatelessWidget {
         padding: EdgeInsets.only(top: 16.0),
         child: OutlineButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          child: Text(Strings.AccountLogoutButton),
+          child: Text(RSStrings.AccountLogoutButton),
           onPressed: () async {
             SagaDialog(
               context,
-              message: Strings.AccountLogoutDialogMessage,
+              message: RSStrings.AccountLogoutDialogMessage,
               positiveListener: () => viewModel.logout(),
             ).show();
           },
@@ -262,7 +245,8 @@ class SettingTab extends StatelessWidget {
     });
   }
 
-  Widget _rowItemView({
+  Widget _rowItemView(
+    BuildContext context, {
     @required Icon icon,
     @required String title,
     int registerCount,
@@ -276,7 +260,7 @@ class SettingTab extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Expanded(child: _rowIcon(icon), flex: 1),
-            Expanded(child: _rowContents(title, registerCount, subTitle), flex: 8),
+            Expanded(child: _rowContents(context, title, registerCount, subTitle), flex: 8),
             Expanded(child: _rowStatus(loadingStatus), flex: 2),
           ],
         ),
@@ -294,13 +278,13 @@ class SettingTab extends StatelessWidget {
     );
   }
 
-  Widget _rowContents(String title, int registerCount, String subTitle) {
-    final str = subTitle ?? '${Strings.AccountRegisterCountLabel} ${registerCount ?? 0}';
+  Widget _rowContents(BuildContext context, String title, int registerCount, String subTitle) {
+    final str = subTitle ?? '${RSStrings.AccountRegisterCountLabel} ${registerCount ?? 0}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(title),
-        Text(str, style: TextStyle(color: Colors.grey, fontSize: 12.0)),
+        Text(str, style: Theme.of(context).textTheme.caption),
       ],
     );
   }
@@ -319,19 +303,19 @@ class SettingTab extends StatelessWidget {
     switch (loadingStatus) {
       case DataLoadingStatus.none:
         statusColor = Colors.grey;
-        statusTitle = Strings.UpdateStatusNone;
+        statusTitle = RSStrings.UpdateStatusNone;
         break;
       case DataLoadingStatus.loading:
         statusColor = Colors.green;
-        statusTitle = Strings.UpdateStatusUpdate;
+        statusTitle = RSStrings.UpdateStatusUpdate;
         break;
       case DataLoadingStatus.complete:
         statusColor = Colors.blueAccent;
-        statusTitle = Strings.UpdateStatusComplete;
+        statusTitle = RSStrings.UpdateStatusComplete;
         break;
       case DataLoadingStatus.error:
         statusColor = Colors.redAccent;
-        statusTitle = Strings.UpdateStatusError;
+        statusTitle = RSStrings.UpdateStatusError;
         break;
     }
 

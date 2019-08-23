@@ -8,12 +8,12 @@ import '../../model/character.dart';
 import 'char_detail_view_model.dart';
 import 'char_status_edit_page.dart';
 
-import '../widget/romasaga_icon.dart';
+import '../widget/rs_icon.dart';
 import '../widget/rank_choice_chip.dart';
 import '../widget/status_indicator.dart';
 
-import '../../common/saga_logger.dart';
-import '../../common/strings.dart';
+import '../../common/rs_logger.dart';
+import '../../common/rs_strings.dart';
 
 class CharDetailPage extends StatelessWidget {
   final Character character;
@@ -31,7 +31,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _body() {
     return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
       if (viewModel.isLoading) {
-        SagaLogger.d("ロード中です。");
+        RSLogger.d("ロード中です。");
         return Center(
           child: CircularProgressIndicator(),
         );
@@ -96,7 +96,7 @@ class CharDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
-              child: RomasagaIcon.characterLarge(viewModel.selectedIconFileName),
+              child: RSIcon.characterLarge(viewModel.selectedIconFileName),
               onTap: () async {
                 _showDialog(context, viewModel);
               },
@@ -116,7 +116,7 @@ class CharDetailPage extends StatelessWidget {
       context: context,
       builder: (_) {
         return AlertDialog(
-          content: Text(Strings.CharacterDetailChangeStyleIconDialogContent),
+          content: Text(RSStrings.CharacterDetailChangeStyleIconDialogContent),
           actions: <Widget>[
             FlatButton(
               child: Text('Cancel'),
@@ -145,15 +145,15 @@ class CharDetailPage extends StatelessWidget {
       final myStatus = viewModel.myStatus;
       return Column(
         children: <Widget>[
-          _statusIndicator(Strings.HpName, myStatus.hp, 0),
-          _statusIndicator(Strings.StrName, myStatus.str, viewModel.getStatusUpperLimit(Strings.StrName)),
-          _statusIndicator(Strings.VitName, myStatus.vit, viewModel.getStatusUpperLimit(Strings.VitName)),
-          _statusIndicator(Strings.DexName, myStatus.dex, viewModel.getStatusUpperLimit(Strings.DexName)),
-          _statusIndicator(Strings.AgiName, myStatus.agi, viewModel.getStatusUpperLimit(Strings.AgiName)),
-          _statusIndicator(Strings.IntName, myStatus.intelligence, viewModel.getStatusUpperLimit(Strings.IntName)),
-          _statusIndicator(Strings.SpiName, myStatus.spirit, viewModel.getStatusUpperLimit(Strings.SpiName)),
-          _statusIndicator(Strings.LoveName, myStatus.love, viewModel.getStatusUpperLimit(Strings.LoveName)),
-          _statusIndicator(Strings.AttrName, myStatus.attr, viewModel.getStatusUpperLimit(Strings.AttrName)),
+          _statusIndicator(RSStrings.HpName, myStatus.hp, 0),
+          _statusIndicator(RSStrings.StrName, myStatus.str, viewModel.getStatusUpperLimit(RSStrings.StrName)),
+          _statusIndicator(RSStrings.VitName, myStatus.vit, viewModel.getStatusUpperLimit(RSStrings.VitName)),
+          _statusIndicator(RSStrings.DexName, myStatus.dex, viewModel.getStatusUpperLimit(RSStrings.DexName)),
+          _statusIndicator(RSStrings.AgiName, myStatus.agi, viewModel.getStatusUpperLimit(RSStrings.AgiName)),
+          _statusIndicator(RSStrings.IntName, myStatus.intelligence, viewModel.getStatusUpperLimit(RSStrings.IntName)),
+          _statusIndicator(RSStrings.SpiName, myStatus.spirit, viewModel.getStatusUpperLimit(RSStrings.SpiName)),
+          _statusIndicator(RSStrings.LoveName, myStatus.love, viewModel.getStatusUpperLimit(RSStrings.LoveName)),
+          _statusIndicator(RSStrings.AttrName, myStatus.attr, viewModel.getStatusUpperLimit(RSStrings.AttrName)),
         ],
       );
     });
@@ -176,7 +176,7 @@ class CharDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 24.0),
-            Text(Strings.CharacterDetailStyleLabel, style: TextStyle(fontSize: 16.0)),
+            Text(RSStrings.CharacterDetailStyleLabel, style: TextStyle(fontSize: 16.0)),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -206,7 +206,7 @@ class CharDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(height: 24.0),
-        Text(Strings.CharacterDetailStageLabel, style: TextStyle(fontSize: 16.0)),
+        Text(RSStrings.CharacterDetailStageLabel, style: TextStyle(fontSize: 16.0)),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -250,21 +250,21 @@ class CharDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 24.0),
-            Text(Strings.CharacterDetailAttributeLabel, style: TextStyle(fontSize: 16.0)),
+            Text(RSStrings.CharacterDetailAttributeLabel, style: TextStyle(fontSize: 16.0)),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, left: 24.0),
                   child: CircleAvatar(
-                    child: RomasagaIcon.weapon(viewModel.weaponType),
+                    child: RSIcon.weapon(viewModel.weaponType),
                     backgroundColor: Colors.grey,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, left: 24.0),
                   child: CircleAvatar(
-                    child: RomasagaIcon.weaponCategory(category: viewModel.weaponCategory),
+                    child: RSIcon.weaponCategory(category: viewModel.weaponCategory),
                     backgroundColor: Colors.grey,
                   ),
                 ),
@@ -284,8 +284,8 @@ class CharDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(height: 24.0),
-        Text(Strings.CharacterDetailStatusTableLabel, style: TextStyle(fontSize: 16.0)),
-        Text(Strings.CharacterDetailStatusTableSubLabel, style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+        Text(RSStrings.CharacterDetailStatusTableLabel, style: TextStyle(fontSize: 16.0)),
+        Text(RSStrings.CharacterDetailStatusTableSubLabel, style: TextStyle(fontSize: 14.0, color: Colors.grey)),
         _styleStatusTable(),
       ],
     );
@@ -333,14 +333,14 @@ class CharDetailPage extends StatelessWidget {
     }
 
     return <DataRow>[
-      DataRow(cells: _createDataCells(Strings.StrName, strRowData)),
-      DataRow(cells: _createDataCells(Strings.VitName, vitRowData)),
-      DataRow(cells: _createDataCells(Strings.AgiName, agiRowData)),
-      DataRow(cells: _createDataCells(Strings.DexName, dexRowData)),
-      DataRow(cells: _createDataCells(Strings.IntName, intRowData)),
-      DataRow(cells: _createDataCells(Strings.SpiName, spiRowData)),
-      DataRow(cells: _createDataCells(Strings.LoveName, loveRowData)),
-      DataRow(cells: _createDataCells(Strings.AttrName, attrRowData)),
+      DataRow(cells: _createDataCells(RSStrings.StrName, strRowData)),
+      DataRow(cells: _createDataCells(RSStrings.VitName, vitRowData)),
+      DataRow(cells: _createDataCells(RSStrings.AgiName, agiRowData)),
+      DataRow(cells: _createDataCells(RSStrings.DexName, dexRowData)),
+      DataRow(cells: _createDataCells(RSStrings.IntName, intRowData)),
+      DataRow(cells: _createDataCells(RSStrings.SpiName, spiRowData)),
+      DataRow(cells: _createDataCells(RSStrings.LoveName, loveRowData)),
+      DataRow(cells: _createDataCells(RSStrings.AttrName, attrRowData)),
     ];
   }
 
@@ -368,7 +368,7 @@ class CharDetailPage extends StatelessWidget {
                 ) ??
                 false;
             if (isSaved) {
-              SagaLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
+              RSLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
               viewModel.refreshStatus();
             }
           },
