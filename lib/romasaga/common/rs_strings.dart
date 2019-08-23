@@ -38,13 +38,21 @@ class RSStrings {
   static const String LetterPageTitle = '運営からのお便り詳細';
 
   static const String LetterJanuaryTitle = '1月 ブーケとモニカの羽根つき';
-  static const String LetterFebruaryTitle = '2月 バレンタイン';
+  static const String LetterJanuaryShortTitle = '1月 羽根つき';
+  static const String LetterFebruaryTitle = '2月 ハッピーバレンタイン';
+  static const String LetterFebruaryShortTitle = '2月 バレンタイン';
   static const String LetterMarchTitle = '3月 皆で楽しいひな祭り段';
-  static const String LetterAprilTitle = '4月 サガフロ勢で花見';
+  static const String LetterMarchShortTitle = '3月 ひな祭り';
+  static const String LetterAprilTitle = '4月 サガフロ勢でお花見';
+  static const String LetterAprilShortTitle = '4月 お花見';
   static const String LetterMayTitle = '5月 初春の詩人と最終皇帝女';
+  static const String LetterMayShortTitle = '5月 初春';
   static const String LetterJuneTitle = '6月 ハーフアニバーサリー';
+  static const String LetterJuneShortTitle = '6月 アニバ';
   static const String LetterJulyTitle = '7月 アザミvsディープワン';
-  static const String LetterAugustTitle = '8月 砂浜で競争';
+  static const String LetterJulyShortTitle = '7月 アザミとタコ';
+  static const String LetterAugustTitle = '8月 砂浜でサガフロ勢競争';
+  static const String LetterAugustShortTitle = '8月 砂浜リレー';
 
   static const String AccountTabTitle = 'アカウント';
   static const String AccountLoginWithGoogle = 'Googleアカウントでログイン';

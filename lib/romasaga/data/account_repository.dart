@@ -1,9 +1,9 @@
-import '../service/romancing_service.dart';
+import '../service/rs_service.dart';
 
 class AccountRepository {
-  final RomancingService _romancingService;
+  final RSService _romancingService;
 
-  AccountRepository({RomancingService service}) : _romancingService = (service == null) ? RomancingService() : service;
+  AccountRepository({RSService service}) : _romancingService = (service == null) ? RSService() : service;
 
   Future<void> load() async {
     await _romancingService.initAuth();

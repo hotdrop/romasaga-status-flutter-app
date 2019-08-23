@@ -8,6 +8,7 @@ import 'account/account_tab.dart';
 
 import 'char_list_view_model.dart';
 
+import '../common/rs_colors.dart';
 import '../common/rs_strings.dart';
 
 class TopPage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _TopPageState extends State<TopPage> {
           return BottomNavigationBarItem(
             title: Text(destination.title),
             icon: Icon(destination.icon),
-            backgroundColor: destination.color,
+            backgroundColor: RSColors.bottomNavigationIcon,
           );
         }).toList(),
         onTap: (int index) {
@@ -65,13 +66,12 @@ class _TopPageState extends State<TopPage> {
 class Destination {
   final String title;
   final IconData icon;
-  final Color color;
-  const Destination(this.title, this.icon, this.color);
+  const Destination(this.title, this.icon);
 }
 
 const _allDestinations = <Destination>[
-  Destination(RSStrings.BottomMenuCharacter, Icons.view_list, Colors.black12),
-  Destination(RSStrings.BottomMenuSearch, Icons.search, Colors.white10),
-  Destination(RSStrings.BottomMenuLetter, Icons.mail, Colors.blueGrey),
-  Destination(RSStrings.BottomMenuAccount, Icons.person, Colors.white30),
+  Destination(RSStrings.BottomMenuCharacter, Icons.view_list),
+  Destination(RSStrings.BottomMenuSearch, Icons.search),
+  Destination(RSStrings.BottomMenuLetter, Icons.mail),
+  Destination(RSStrings.BottomMenuAccount, Icons.person),
 ];

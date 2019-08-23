@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 
 class StatusIndicator {
@@ -52,25 +53,25 @@ class StatusIndicator {
 
   static Color _labelStatusColor(int diffLimit, int currentStatus) {
     if (currentStatus == 0) {
-      return Colors.black;
+      return RSColors.statusNone;
     } else if (diffLimit < -6) {
-      return Colors.red;
+      return RSColors.statusLack;
     } else if (diffLimit >= -6 && diffLimit < -3) {
-      return Colors.green;
+      return RSColors.statusNormal;
     } else {
-      return Colors.blueAccent;
+      return RSColors.statusSufficient;
     }
   }
 
   static List<Color> _linearGradientColors(int diffLimit, int currentStatus) {
     if (currentStatus == 0) {
-      return [Colors.black];
+      return [RSColors.statusNone];
     } else if (diffLimit < -6) {
-      return [Color.fromARGB(255, 200, 0, 100), Colors.redAccent];
+      return [RSColors.statusLackGraphStart, RSColors.statusLackGraphEnd];
     } else if (diffLimit >= -6 && diffLimit < -3) {
-      return [Color.fromARGB(255, 0, 200, 0), Colors.greenAccent];
+      return [RSColors.statusNormalGraphStart, RSColors.statusNormalGraphEnd];
     } else {
-      return [Color.fromARGB(255, 0, 100, 255), Colors.blueAccent];
+      return [RSColors.statusSufficientGraphStart, RSColors.statusSufficientGraphEnd];
     }
   }
 }

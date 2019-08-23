@@ -1,39 +1,99 @@
 import 'package:flutter/material.dart';
 
+import '../common/rs_colors.dart';
 import '../common/rs_strings.dart';
 
 class Letter {
-  final LetterType letterType;
-  final String title;
+  final LetterType type;
   final String gifResource;
+  final String thumbnail;
+  final String title;
+  final String shortTitle;
   final Color themeColor;
 
-  Letter._({@required this.letterType, @required this.gifResource, @required this.title, @required this.themeColor});
+  Letter._({
+    @required this.type,
+    @required this.gifResource,
+    @required this.thumbnail,
+    @required this.title,
+    @required this.shortTitle,
+    @required this.themeColor,
+  });
 
   factory Letter.fromType(LetterType type) {
     switch (type) {
       case LetterType.january:
-        return Letter._(letterType: type, gifResource: 'res/letters/201901_hane.gif', title: RSStrings.LetterJanuaryTitle, themeColor: Colors.orange);
+        return Letter._(
+          type: type,
+          gifResource: 'res/letters/201901_hane.gif',
+          thumbnail: 'res/letters/201901_hane_static.jpg',
+          title: RSStrings.LetterJanuaryTitle,
+          shortTitle: RSStrings.LetterJanuaryShortTitle,
+          themeColor: RSColors.winter,
+        );
       case LetterType.february:
         return Letter._(
-            letterType: type, gifResource: 'res/letters/201902_valentine.gif', title: RSStrings.LetterFebruaryTitle, themeColor: Colors.redAccent);
+          type: type,
+          gifResource: 'res/letters/201902_valentine.gif',
+          thumbnail: 'res/letters/201902_valentine_static.jpg',
+          title: RSStrings.LetterFebruaryTitle,
+          shortTitle: RSStrings.LetterFebruaryShortTitle,
+          themeColor: RSColors.winter,
+        );
       case LetterType.march:
         return Letter._(
-            letterType: type, gifResource: 'res/letters/201903_hinamaturi.gif', title: RSStrings.LetterMarchTitle, themeColor: Colors.pinkAccent);
+          type: type,
+          gifResource: 'res/letters/201903_hinamaturi.gif',
+          thumbnail: 'res/letters/201903_hinamaturi_static.jpg',
+          title: RSStrings.LetterMarchTitle,
+          shortTitle: RSStrings.LetterMarchShortTitle,
+          themeColor: RSColors.winter,
+        );
       case LetterType.april:
         return Letter._(
-            letterType: type, gifResource: 'res/letters/201904_hanami.gif', title: RSStrings.LetterAprilTitle, themeColor: Colors.pinkAccent);
+          type: type,
+          gifResource: 'res/letters/201904_hanami.gif',
+          thumbnail: 'res/letters/201904_hanami_static.jpg',
+          title: RSStrings.LetterAprilTitle,
+          shortTitle: RSStrings.LetterAprilShortTitle,
+          themeColor: RSColors.spring,
+        );
       case LetterType.may:
-        return Letter._(letterType: type, gifResource: 'res/letters/201905_hiyori.gif', title: RSStrings.LetterMayTitle, themeColor: Colors.green);
+        return Letter._(
+          type: type,
+          gifResource: 'res/letters/201905_hiyori.gif',
+          thumbnail: 'res/letters/201905_hiyori_static.jpg',
+          title: RSStrings.LetterMayTitle,
+          shortTitle: RSStrings.LetterMayShortTitle,
+          themeColor: RSColors.spring,
+        );
       case LetterType.june:
         return Letter._(
-            letterType: type, gifResource: 'res/letters/201906_halfAniver.gif', title: RSStrings.LetterJuneTitle, themeColor: Colors.green);
+          type: type,
+          gifResource: 'res/letters/201906_halfAniver.gif',
+          thumbnail: 'res/letters/201906_halfAniver_static.jpg',
+          title: RSStrings.LetterJuneTitle,
+          shortTitle: RSStrings.LetterJuneShortTitle,
+          themeColor: RSColors.spring,
+        );
       case LetterType.july:
         return Letter._(
-            letterType: type, gifResource: 'res/letters/201907_asami.gif', title: RSStrings.LetterJulyTitle, themeColor: Colors.blueAccent);
+          type: type,
+          gifResource: 'res/letters/201907_asami.gif',
+          thumbnail: 'res/letters/201907_asami_static.jpg',
+          title: RSStrings.LetterJulyTitle,
+          shortTitle: RSStrings.LetterJulyShortTitle,
+          themeColor: RSColors.summer,
+        );
       case LetterType.august:
         return Letter._(
-            letterType: type, gifResource: 'res/letters/201908_summer.gif', title: RSStrings.LetterAugustTitle, themeColor: Colors.blueAccent);
+          type: type,
+          gifResource: 'res/letters/201908_summer.gif',
+          thumbnail: 'res/letters/201908_summer_static.jpg',
+          title: RSStrings.LetterAugustTitle,
+          shortTitle: RSStrings.LetterAugustShortTitle,
+          themeColor: RSColors.summer,
+        );
       default:
         return null;
     }

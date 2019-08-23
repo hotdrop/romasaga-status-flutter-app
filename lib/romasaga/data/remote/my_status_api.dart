@@ -1,6 +1,6 @@
 import '../../model/status.dart' show MyStatus;
 
-import '../../service/romancing_service.dart';
+import '../../service/rs_service.dart';
 import '../../common/rs_logger.dart';
 
 class MyStatusApi {
@@ -11,7 +11,7 @@ class MyStatusApi {
     return _instance;
   }
 
-  RomancingService _romancingService = RomancingService();
+  RSService _romancingService = RSService();
 
   Future<void> save(List<MyStatus> myStatuses) async {
     try {

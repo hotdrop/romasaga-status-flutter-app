@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
+
 import 'rs_icon.dart';
 
 class RankChoiceChip extends StatefulWidget {
@@ -40,7 +42,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
         child: ChoiceChip(
           key: ValueKey(rank),
           selectedColor: _rankToColor(rank),
-          backgroundColor: Colors.grey.shade600,
+          backgroundColor: RSColors.chipBackground,
           label: Text(rank),
           avatar: _rankToAvatar(rank),
           selected: _selectedRankChipName == rank,
@@ -57,17 +59,17 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
 
   Color _rankToColor(String rank) {
     if (rank.contains(RSStrings.RankSS)) {
-      return const Color.fromARGB(255, 233, 217, 77);
+      return RSColors.chipRankSS;
     } else if (rank.contains(RSStrings.RankS)) {
-      return const Color.fromARGB(255, 200, 204, 219);
+      return RSColors.chipRankS;
     } else {
-      return const Color.fromARGB(255, 239, 201, 191);
+      return RSColors.chipRankA;
     }
   }
 
   CircleAvatar _rankToAvatar(String rank) {
     return CircleAvatar(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: RSColors.chipAvatarBackground,
       child: RSIcon.rank(rank),
     );
   }

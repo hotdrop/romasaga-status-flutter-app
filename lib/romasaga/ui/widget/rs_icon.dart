@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../model/weapon.dart';
 
+import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 import '../../common/rs_logger.dart';
 
@@ -51,7 +52,7 @@ class RSIcon {
     String res = _getWeaponIconRes(type);
     return Material(
       shape: CircleBorder(),
-      color: selected ? Colors.yellowAccent : Colors.grey,
+      color: selected ? RSColors.weaponIconSelectedBackground : RSColors.weaponIconUnSelectedBackground,
       child: Ink.image(
         image: AssetImage(res),
         fit: BoxFit.cover,
@@ -84,7 +85,7 @@ class RSIcon {
     return RawMaterialButton(
       shape: CircleBorder(),
       constraints: BoxConstraints(minWidth: 50.0, minHeight: 50.0),
-      fillColor: Color.fromARGB(255, 80, 80, 80), // TODO こういうのColorResにまとめたい
+      fillColor: Theme.of(context).disabledColor,
       child: Icon(
         icon,
         color: iconColor,

@@ -4,8 +4,9 @@ import 'package:provider/provider.dart';
 import '../char_list_view_model.dart';
 import 'account_view_model.dart';
 
-import '../widget/saga_dialog.dart';
+import '../widget/rs_dialog.dart';
 
+import '../../common/rs_colors.dart';
 import '../../common/rs_logger.dart';
 import '../../common/rs_strings.dart';
 
@@ -90,15 +91,15 @@ class SettingTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         _rowAccountInfo(),
-        const Divider(color: Colors.white70),
+        const Divider(color: RSColors.divider),
         _rowLabel(context, RSStrings.AccountDataUpdateLabel),
         _rowCharacterReload(),
         _rowStageReload(),
-        const Divider(color: Colors.white70),
+        const Divider(color: RSColors.divider),
         _rowLabel(context, RSStrings.AccountStatusLabel),
         _rowBackUp(),
         _rowRestore(),
-        const Divider(color: Colors.white70),
+        const Divider(color: RSColors.divider),
         _rowLogoutButton(),
       ],
     );
@@ -151,7 +152,7 @@ class SettingTab extends StatelessWidget {
             title: RSStrings.AccountCharacterUpdateLabel,
             registerCount: viewModel.characterCount,
             loadingStatus: viewModel.loadingCharacter, onTapListener: () {
-          SagaDialog(
+          RSDialog(
             context,
             message: RSStrings.AccountCharacterUpdateDialogMessage,
             positiveListener: () async {
@@ -172,7 +173,7 @@ class SettingTab extends StatelessWidget {
             title: RSStrings.AccountStageUpdateLabel,
             registerCount: viewModel.stageCount ?? 0,
             loadingStatus: viewModel.loadingStage, onTapListener: () async {
-          SagaDialog(
+          RSDialog(
             context,
             message: RSStrings.AccountStageUpdateDialogMessage,
             positiveListener: () {
@@ -193,7 +194,7 @@ class SettingTab extends StatelessWidget {
             title: RSStrings.AccountStatusBackupLabel,
             subTitle: subTitleText,
             loadingStatus: viewModel.loadingBackup, onTapListener: () async {
-          SagaDialog(
+          RSDialog(
             context,
             message: RSStrings.AccountStatusBackupDialogMessage,
             positiveListener: () {
@@ -213,7 +214,7 @@ class SettingTab extends StatelessWidget {
             title: RSStrings.AccountStatusRestoreLabel,
             subTitle: RSStrings.AccountStatusRestoreDescriptionLabel,
             loadingStatus: viewModel.loadingRestore, onTapListener: () {
-          SagaDialog(
+          RSDialog(
             context,
             message: RSStrings.AccountStatusRestoreDialogMessage,
             positiveListener: () async {
@@ -234,7 +235,7 @@ class SettingTab extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           child: Text(RSStrings.AccountLogoutButton),
           onPressed: () async {
-            SagaDialog(
+            RSDialog(
               context,
               message: RSStrings.AccountLogoutDialogMessage,
               positiveListener: () => viewModel.logout(),
@@ -302,19 +303,19 @@ class SettingTab extends StatelessWidget {
     var statusTitle;
     switch (loadingStatus) {
       case DataLoadingStatus.none:
-        statusColor = Colors.grey;
+        statusColor = RSColors.dataLoadStatusNone;
         statusTitle = RSStrings.UpdateStatusNone;
         break;
       case DataLoadingStatus.loading:
-        statusColor = Colors.green;
+        statusColor = RSColors.dataLoadStatusLoading;
         statusTitle = RSStrings.UpdateStatusUpdate;
         break;
       case DataLoadingStatus.complete:
-        statusColor = Colors.blueAccent;
+        statusColor = RSColors.dataLoadStatusComplete;
         statusTitle = RSStrings.UpdateStatusComplete;
         break;
       case DataLoadingStatus.error:
-        statusColor = Colors.redAccent;
+        statusColor = RSColors.dataLoadStatusError;
         statusTitle = RSStrings.UpdateStatusError;
         break;
     }
