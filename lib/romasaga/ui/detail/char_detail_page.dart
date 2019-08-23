@@ -12,6 +12,7 @@ import '../widget/rs_icon.dart';
 import '../widget/rank_choice_chip.dart';
 import '../widget/status_indicator.dart';
 
+import '../../common/rs_colors.dart';
 import '../../common/rs_logger.dart';
 import '../../common/rs_strings.dart';
 
@@ -103,7 +104,7 @@ class CharDetailPage extends StatelessWidget {
             ),
             Text(
               viewModel.selectedStyleTitle,
-              style: TextStyle(color: Colors.grey, fontSize: 16.0),
+              style: TextStyle(color: RSColors.subText, fontSize: 16.0),
             ),
           ],
         );
@@ -258,14 +259,14 @@ class CharDetailPage extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 8.0, left: 24.0),
                   child: CircleAvatar(
                     child: RSIcon.weapon(viewModel.weaponType),
-                    backgroundColor: Colors.grey,
+                    backgroundColor: RSColors.charDetailBackground,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, left: 24.0),
                   child: CircleAvatar(
                     child: RSIcon.weaponCategory(category: viewModel.weaponCategory),
-                    backgroundColor: Colors.grey,
+                    backgroundColor: RSColors.charDetailBackground,
                   ),
                 ),
               ],
@@ -284,8 +285,14 @@ class CharDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(height: 24.0),
-        Text(RSStrings.CharacterDetailStatusTableLabel, style: TextStyle(fontSize: 16.0)),
-        Text(RSStrings.CharacterDetailStatusTableSubLabel, style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+        Text(
+          RSStrings.CharacterDetailStatusTableLabel,
+          style: TextStyle(fontSize: 16.0),
+        ),
+        Text(
+          RSStrings.CharacterDetailStatusTableSubLabel,
+          style: TextStyle(fontSize: 14.0, color: RSColors.subText),
+        ),
         _styleStatusTable(),
       ],
     );
@@ -361,7 +368,7 @@ class CharDetailPage extends StatelessWidget {
 
         return FloatingActionButton(
           child: Icon(Icons.edit, color: Theme.of(context).accentColor),
-          backgroundColor: Colors.white30,
+          backgroundColor: RSColors.fabBackground,
           onPressed: () async {
             final isSaved = await Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => CharStatusEditPage(myStatus)),

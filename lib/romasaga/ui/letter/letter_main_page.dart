@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../model/letter.dart';
+
 import '../../common/rs_strings.dart';
+import '../../common/rs_colors.dart';
 
 class LetterMainPage extends StatelessWidget {
   final LetterType firstSelectLetterType;
@@ -61,7 +63,11 @@ class _LetterDetailPage extends StatelessWidget {
     return Text(
       letter.title,
       style: TextStyle(fontSize: 24.0, color: letter.themeColor, shadows: [
-        Shadow(color: Colors.grey, offset: Offset(1, 2), blurRadius: 2),
+        Shadow(
+          color: RSColors.titleShadow,
+          offset: Offset(1, 2),
+          blurRadius: 2,
+        ),
       ]),
     );
   }

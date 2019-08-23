@@ -10,6 +10,7 @@ import '../widget/rs_icon.dart';
 import '../../model/character.dart';
 import '../../model/weapon.dart';
 
+import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 
 class SearchListTab extends StatefulWidget {
@@ -148,8 +149,8 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(title, style: TextStyle(color: Colors.grey)),
-          Divider(color: Colors.white70),
+          Text(title, style: TextStyle(color: RSColors.subText)),
+          Divider(color: RSColors.divider),
         ],
       ),
     );
@@ -247,9 +248,9 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
     return Consumer<SearchListViewModel>(builder: (_, viewModel, child) {
       Widget searchIcon;
       if (viewModel.isKeywordSearch) {
-        searchIcon = Icon(Icons.close, color: Colors.white);
+        searchIcon = Icon(Icons.close, color: RSColors.staticIcon);
       } else {
-        searchIcon = Icon(Icons.search, color: Colors.white);
+        searchIcon = Icon(Icons.search, color: RSColors.staticIcon);
       }
       return IconButton(
         icon: searchIcon,
