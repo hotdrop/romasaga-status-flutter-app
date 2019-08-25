@@ -5,14 +5,8 @@ import '../..//service/rs_service.dart';
 import '../../common/rs_logger.dart';
 
 class CharacterApi {
-  static final CharacterApi _instance = CharacterApi._();
-  CharacterApi._();
-
-  factory CharacterApi() {
-    return _instance;
-  }
-
-  RSService _romancingService = RSService();
+  final RSService _romancingService;
+  CharacterApi({RSService rsService}) : _romancingService = (rsService == null) ? RSService() : rsService;
 
   Future<List<Character>> findAll() async {
     try {

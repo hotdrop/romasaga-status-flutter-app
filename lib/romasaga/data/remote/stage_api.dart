@@ -5,14 +5,8 @@ import '../../service/rs_service.dart';
 import '../../common/rs_logger.dart';
 
 class StageApi {
-  static final StageApi _instance = StageApi._();
-  StageApi._();
-
-  factory StageApi() {
-    return _instance;
-  }
-
-  RSService _romancingService = RSService();
+  final RSService _romancingService;
+  StageApi({RSService rsService}) : _romancingService = (rsService == null) ? RSService() : rsService;
 
   Future<List<Stage>> findAll() async {
     try {
