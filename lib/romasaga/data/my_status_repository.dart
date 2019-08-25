@@ -11,6 +11,8 @@ class MyStatusRepository {
   final MyStatusSource _localDataSource;
   final MyStatusApi _remoteDataSource;
 
+  static String backupDateKey = 'backup_date_key';
+
   MyStatusRepository({MyStatusSource local, MyStatusApi remote})
       : _localDataSource = (local == null) ? MyStatusSource() : local,
         _remoteDataSource = (remote == null) ? MyStatusApi() : remote;
@@ -39,8 +41,6 @@ class MyStatusRepository {
 
     _localDataSource.refresh(myStatuses);
   }
-
-  static String backupDateKey = 'backup_date_key';
 
   Future<String> getPreviousBackupDateStr() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
