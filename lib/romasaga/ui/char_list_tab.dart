@@ -86,6 +86,7 @@ class CharListTab extends StatelessWidget {
               child: Text(RSStrings.CharacterListOrderNone),
             ),
           ],
+          initialValue: viewModel.selectedOrderType,
           onSelected: (OrderType value) {
             viewModel.orderBy(value);
           },

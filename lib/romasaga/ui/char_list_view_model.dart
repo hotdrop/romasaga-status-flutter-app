@@ -14,6 +14,7 @@ class CharListViewModel extends foundation.ChangeNotifier with ViewState {
   final MyStatusRepository _myStatusRepository;
 
   List<Character> _characters;
+  OrderType selectedOrderType = OrderType.none;
 
   CharListViewModel({CharacterRepository characterRepo, MyStatusRepository statusRepo})
       : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
@@ -30,6 +31,8 @@ class CharListViewModel extends foundation.ChangeNotifier with ViewState {
     try {
       _characters = await _characterRepository.load();
       _loadMyStatuses();
+      // 初期の並び順はステータスにする
+      orderBy(OrderType.status);
 
       onSuccess();
       notifyListeners();
@@ -71,6 +74,7 @@ class CharListViewModel extends foundation.ChangeNotifier with ViewState {
         _characters.sort((c1, c2) => c1.id.compareTo(c2.id));
         break;
     }
+    selectedOrderType = type;
     notifyListeners();
   }
 
