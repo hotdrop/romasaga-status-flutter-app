@@ -19,9 +19,9 @@ class StageSource {
     return _instance;
   }
 
-  Future<List<Stage>> load() async {
+  Future<List<Stage>> load({String localPath = 'res/json/stage.json'}) async {
     try {
-      return await rootBundle.loadStructuredData('res/json/stage.json', (String json) async {
+      return await rootBundle.loadStructuredData(localPath, (String json) async {
         final jsonObjects = StagesJsonObject.parse(json);
         return StagesJsonObject.toModel(jsonObjects);
       });

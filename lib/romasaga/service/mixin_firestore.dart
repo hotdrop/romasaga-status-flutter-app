@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/status.dart' show MyStatus;
 
 class RSFirestoreMixin {
-  static String _rootCollectionName = 'backup';
-  static String _statusCollectionName = 'statuses';
+  static final String _rootCollectionName = 'backup';
+  static final String _statusCollectionName = 'statuses';
 
   Future<void> setMyStatuses(List<MyStatus> myStatuses, String uid) async {
     for (var myStatus in myStatuses) {

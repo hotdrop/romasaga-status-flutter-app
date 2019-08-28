@@ -21,9 +21,9 @@ class CharacterSource {
     return _instance;
   }
 
-  Future<List<Character>> load() async {
+  Future<List<Character>> load({String localPath = 'res/json/characters.json'}) async {
     try {
-      return await rootBundle.loadStructuredData('res/json/characters.json', (String json) async {
+      return await rootBundle.loadStructuredData(localPath, (String json) async {
         final jsonObjects = CharactersJsonObject.parse(json);
         return CharactersJsonObject.toModel(jsonObjects);
       });
@@ -38,6 +38,7 @@ class CharacterSource {
   /// スタイル情報は取ってこないので注意
   ///
   Future<List<Character>> findAll() async {
+    // TODO dbが密結合しているのでコンストラクタインジェクションで持ってきたい・・
     final db = await DBProvider.instance.database;
     final results = await db.query(CharacterEntity.tableName);
 

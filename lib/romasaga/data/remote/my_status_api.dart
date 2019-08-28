@@ -4,14 +4,8 @@ import '../../service/rs_service.dart';
 import '../../common/rs_logger.dart';
 
 class MyStatusApi {
-  static final MyStatusApi _instance = MyStatusApi._();
-  MyStatusApi._();
-
-  factory MyStatusApi() {
-    return _instance;
-  }
-
-  RSService _romancingService = RSService();
+  final RSService _romancingService;
+  MyStatusApi({RSService rsService}) : _romancingService = (rsService == null) ? RSService() : rsService;
 
   Future<void> save(List<MyStatus> myStatuses) async {
     try {
