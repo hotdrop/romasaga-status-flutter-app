@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'char_list_row_item.dart';
 import 'char_list_view_model.dart';
 
+import '../common/rs_logger.dart';
 import '../common/rs_strings.dart';
 
 class CharListTab extends StatelessWidget {
@@ -82,7 +83,7 @@ class CharListTab extends StatelessWidget {
               child: Text(RSStrings.CharacterListOrderWeapon),
             ),
             PopupMenuItem(
-              value: OrderType.none,
+              value: OrderType.production,
               child: Text(RSStrings.CharacterListOrderNone),
             ),
           ],
