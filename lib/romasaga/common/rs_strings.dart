@@ -15,6 +15,7 @@ class RSStrings {
   static const String CharacterListOrderNone = '作品';
   static const String NothingCharacterFavoriteMessage = 'お気に入りキャラは設定されていません。';
   static const String NothingCharacterPossessionMessage = '持っているキャラはいません。';
+  static const String CharacterListLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 
   static const String CharacterTotalStatus = '計:';
 

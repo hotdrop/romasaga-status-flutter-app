@@ -2,10 +2,14 @@ import 'package:flutter/foundation.dart' as foundation;
 
 import '../data/character_repository.dart';
 import '../data/my_status_repository.dart';
+
 import '../model/character.dart';
 import '../model/weapon.dart';
 
-class CharListViewModel extends foundation.ChangeNotifier {
+import '../common/rs_logger.dart';
+import 'view_state.dart';
+
+class CharListViewModel extends foundation.ChangeNotifier with ViewState {
   final CharacterRepository _characterRepository;
   final MyStatusRepository _myStatusRepository;
 
@@ -19,58 +23,43 @@ class CharListViewModel extends foundation.ChangeNotifier {
     refreshCharacters();
   }
 
-  List<Character> findAll() {
-    if (_characters == null) {
-      return [];
-    }
+  void refreshCharacters() async {
+    onLoading();
+    notifyListeners();
 
+    try {
+      _characters = await _characterRepository.load();
+      _loadMyStatuses();
+
+      onSuccess();
+      notifyListeners();
+    } catch (e) {
+      RSLogger.e("キャラ情報ロード時にエラー", e);
+      onError();
+      notifyListeners();
+    }
+  }
+
+  List<Character> findAll() {
     return _characters;
   }
 
   List<Character> findFavorite() {
-    if (_characters == null) {
-      return [];
-    }
-
     final favoriteCharacters = _characters.where((character) => character.myStatus.favorite).toList();
-    if (favoriteCharacters.isEmpty) {
-      return [];
-    }
-
-    return favoriteCharacters;
+    return favoriteCharacters.isEmpty ? [] : favoriteCharacters;
   }
 
   List<Character> findHaveCharacter() {
-    if (_characters == null) {
-      return [];
-    }
-
     final haveCharacters = _characters.where((character) => character.myStatus.have).toList();
-    if (haveCharacters.isEmpty) {
-      return [];
-    }
-
-    return haveCharacters;
+    return haveCharacters.isEmpty ? [] : haveCharacters;
   }
 
   List<Character> findNotHaveCharacter() {
-    if (_characters == null) {
-      return [];
-    }
-
     final haveCharacters = _characters.where((character) => !character.myStatus.have).toList();
-    if (haveCharacters.isEmpty) {
-      return [];
-    }
-
-    return haveCharacters;
+    return haveCharacters.isEmpty ? [] : haveCharacters;
   }
 
   void orderBy(OrderType type) {
-    if (_characters == null) {
-      return;
-    }
-
     switch (type) {
       case OrderType.status:
         _characters.sort((c1, c2) => c2.getTotalStatus().compareTo(c1.getTotalStatus()));
@@ -85,12 +74,11 @@ class CharListViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
-  void refreshCharacters() async {
-    _characters = await _characterRepository.load();
-    _loadMyStatuses();
-    notifyListeners();
-  }
-
+  ///
+  /// 自身のステータス情報を更新する。
+  /// 通常、自身のステータスはロード時に持ってきて以降は更新処理がいちいち走るのでこのメソッドは不要。
+  /// ただ、アカウント画面で自身のステータス情報を復元した場合のみリフレッシュが必要なのでこれを用意している。
+  ///
   void refreshMyStatuses() async {
     _loadMyStatuses();
     notifyListeners();

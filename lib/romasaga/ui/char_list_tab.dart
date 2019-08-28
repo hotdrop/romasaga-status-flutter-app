@@ -11,31 +11,59 @@ class CharListTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<CharListViewModel>(
       builder: (context, viewModel, child) {
-        return DefaultTabController(
-          length: 3,
-          child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: const Text(RSStrings.CharacterListTabTitle),
-              actions: <Widget>[
-                _titlePopupMenu(),
-              ],
-              bottom: const TabBar(tabs: <Tab>[
-                Tab(text: RSStrings.CharacterListTabFavoriteTitle),
-                Tab(text: RSStrings.CharacterListTabPossessionTitle),
-                Tab(text: RSStrings.CharacterListTabUnownedTitle),
-              ]),
-            ),
-            body: TabBarView(
-              children: <Widget>[
-                _favoriteTab(viewModel),
-                _haveCharTab(viewModel),
-                _notHaveCharTab(viewModel),
-              ],
-            ),
-          ),
-        );
+        if (viewModel.isLoading) {
+          return _loadingView();
+        } else if (viewModel.isSuccess) {
+          return _loadSuccessView(viewModel);
+        } else {
+          return _loadErrorView();
+        }
       },
+    );
+  }
+
+  Widget _loadingView() {
+    return Scaffold(
+      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.CharacterListTabTitle)),
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _loadErrorView() {
+    return Scaffold(
+      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.CharacterListTabTitle)),
+      body: Center(
+        child: Text(RSStrings.CharacterListLoadingErrorMessage),
+      ),
+    );
+  }
+
+  Widget _loadSuccessView(CharListViewModel viewModel) {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(RSStrings.CharacterListTabTitle),
+          actions: <Widget>[
+            _titlePopupMenu(),
+          ],
+          bottom: const TabBar(tabs: <Tab>[
+            Tab(text: RSStrings.CharacterListTabFavoriteTitle),
+            Tab(text: RSStrings.CharacterListTabPossessionTitle),
+            Tab(text: RSStrings.CharacterListTabUnownedTitle),
+          ]),
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            _favoriteTab(viewModel),
+            _haveCharTab(viewModel),
+            _notHaveCharTab(viewModel),
+          ],
+        ),
+      ),
     );
   }
 
