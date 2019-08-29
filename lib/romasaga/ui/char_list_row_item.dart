@@ -5,14 +5,16 @@ import '../model/character.dart';
 import '../model/weapon.dart';
 
 import 'widget/rs_icon.dart';
+import 'widget/character_icon_loader.dart';
 
 import '../common/rs_strings.dart';
 
 class CharListRowItem extends StatelessWidget {
   final Character character;
   final int index;
+  final CharacterIconLoader charIconLoader;
 
-  const CharListRowItem({@required this.character, this.index});
+  const CharListRowItem(this.character, this.charIconLoader, {this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class CharListRowItem extends StatelessWidget {
   Container _imageIcon(Character character) {
     return Container(
       margin: const EdgeInsets.only(right: 16.0),
-      child: RSIcon.character(character.selectedIconFileName),
+      child: charIconLoader.load(character.selectedIconFileName),
     );
   }
 
