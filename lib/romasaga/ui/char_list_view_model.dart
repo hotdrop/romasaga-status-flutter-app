@@ -14,7 +14,7 @@ class CharListViewModel extends foundation.ChangeNotifier with ViewState {
   final MyStatusRepository _myStatusRepository;
 
   List<Character> _characters;
-  OrderType selectedOrderType = OrderType.production;
+  OrderType selectedOrderType = OrderType.status;
 
   CharListViewModel({CharacterRepository characterRepo, MyStatusRepository statusRepo})
       : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
@@ -33,7 +33,6 @@ class CharListViewModel extends foundation.ChangeNotifier with ViewState {
       await _loadMyStatuses();
       onSuccess();
 
-      // 初期の並び順はステータスにする
       orderBy(OrderType.status);
     } catch (e) {
       RSLogger.e("キャラ情報ロード時にエラー", e);
@@ -61,19 +60,16 @@ class CharListViewModel extends foundation.ChangeNotifier with ViewState {
     return haveCharacters.isEmpty ? [] : haveCharacters;
   }
 
-  void orderBy(OrderType type) {
-    switch (type) {
-      case OrderType.status:
-        _characters.sort((c1, c2) => c2.getTotalStatus().compareTo(c1.getTotalStatus()));
-        break;
+  void orderBy(OrderType order) {
+    switch (order) {
       case OrderType.weapon:
         _characters.sort((c1, c2) => _compareWeapon(c1.weaponType, c2.weaponType));
         break;
-      case OrderType.production:
-        _characters.sort((c1, c2) => c1.id.compareTo(c2.id));
+      default:
+        _characters.sort((c1, c2) => c2.getTotalStatus().compareTo(c1.getTotalStatus()));
         break;
     }
-    selectedOrderType = type;
+    selectedOrderType = order;
     notifyListeners();
   }
 
@@ -111,4 +107,4 @@ class CharListViewModel extends foundation.ChangeNotifier with ViewState {
   }
 }
 
-enum OrderType { status, weapon, production }
+enum OrderType { status, weapon }
