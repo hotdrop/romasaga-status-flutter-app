@@ -7,18 +7,9 @@ import '../../common/rs_strings.dart';
 import '../../common/rs_logger.dart';
 
 class RSIcon {
-  ///
-  /// キャラクターアイコン
-  ///
-  static Widget character(String fileName) {
-    final path = 'res/charIcons/$fileName';
-    return _imageIcon(path, IconSize.normal);
-  }
-
-  static Widget characterLarge(String fileName) {
-    final path = 'res/charIcons/$fileName';
-    return _imageIcon(path, IconSize.large);
-  }
+  static final double smallSize = 30.0;
+  static final double normalSize = 50.0;
+  static final double largeSize = 80.0;
 
   ///
   /// スタイルランクアイコン
@@ -56,8 +47,8 @@ class RSIcon {
       child: Ink.image(
         image: AssetImage(res),
         fit: BoxFit.cover,
-        width: 50.0,
-        height: 50.0,
+        width: normalSize,
+        height: normalSize,
         child: InkWell(
           onTap: onTap,
           child: null,
@@ -84,7 +75,10 @@ class RSIcon {
     final iconColor = selected ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
     return RawMaterialButton(
       shape: CircleBorder(),
-      constraints: BoxConstraints(minWidth: 50.0, minHeight: 50.0),
+      constraints: BoxConstraints(
+        minWidth: normalSize,
+        minHeight: normalSize,
+      ),
       fillColor: Theme.of(context).disabledColor,
       child: Icon(
         icon,
@@ -164,13 +158,13 @@ class RSIcon {
     double size;
     switch (iconSize) {
       case IconSize.small:
-        size = 30.0;
+        size = smallSize;
         break;
       case IconSize.normal:
-        size = 50.0;
+        size = normalSize;
         break;
       case IconSize.large:
-        size = 80.0;
+        size = largeSize;
         break;
       default:
         size = 0;

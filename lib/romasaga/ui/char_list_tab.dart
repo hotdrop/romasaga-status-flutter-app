@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'char_list_row_item.dart';
 import 'char_list_view_model.dart';
 
+import 'widget/character_icon_loader.dart';
+
 import '../common/rs_strings.dart';
 
 class CharListTab extends StatelessWidget {
@@ -101,14 +103,16 @@ class CharListTab extends StatelessWidget {
       );
     }
 
-    return ListView.builder(itemBuilder: (BuildContext context, int index) {
-      if (index < characters.length) {
-        return CharListRowItem(
-          character: characters[index],
-        );
-      }
-      return null;
-    });
+    return Consumer<CharacterIconLoader>(
+      builder: (_, iconLoader, child) {
+        return ListView.builder(itemBuilder: (BuildContext context, int index) {
+          if (index < characters.length) {
+            return CharListRowItem(characters[index], iconLoader);
+          }
+          return null;
+        });
+      },
+    );
   }
 
   Widget _haveCharTab(CharListViewModel viewModel) {
@@ -121,28 +125,32 @@ class CharListTab extends StatelessWidget {
       );
     }
 
-    return ListView.builder(itemBuilder: (BuildContext context, int index) {
-      final characters = viewModel.findHaveCharacter();
+    return Consumer<CharacterIconLoader>(
+      builder: (_, iconLoader, child) {
+        return ListView.builder(itemBuilder: (BuildContext context, int index) {
+          final characters = viewModel.findHaveCharacter();
 
-      if (index < characters.length) {
-        return CharListRowItem(
-          character: characters[index],
-        );
-      }
-      return null;
-    });
+          if (index < characters.length) {
+            return CharListRowItem(characters[index], iconLoader);
+          }
+          return null;
+        });
+      },
+    );
   }
 
   Widget _notHaveCharTab(CharListViewModel viewModel) {
-    return ListView.builder(itemBuilder: (BuildContext context, int index) {
-      final characters = viewModel.findNotHaveCharacter();
+    return Consumer<CharacterIconLoader>(
+      builder: (_, iconLoader, child) {
+        return ListView.builder(itemBuilder: (BuildContext context, int index) {
+          final characters = viewModel.findNotHaveCharacter();
 
-      if (index < characters.length) {
-        return CharListRowItem(
-          character: characters[index],
-        );
-      }
-      return null;
-    });
+          if (index < characters.length) {
+            return CharListRowItem(characters[index], iconLoader);
+          }
+          return null;
+        });
+      },
+    );
   }
 }

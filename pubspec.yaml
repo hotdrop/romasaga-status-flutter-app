@@ -21,6 +21,7 @@ dependencies:
 
   # UI
   percent_indicator: ^2.1.1
+  cached_network_image: ^1.1.1
 
   # Design
   provider: ^3.0.0
