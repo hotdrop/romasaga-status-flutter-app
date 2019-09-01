@@ -34,29 +34,37 @@ class CharDetailPage extends StatelessWidget {
   }
 
   Widget _body() {
-    return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
+    return Consumer<CharDetailViewModel>(builder: (_, viewModel, child) {
       if (viewModel.isSuccess) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(viewModel.characterName),
-            centerTitle: true,
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ListView(
-              children: _contentLayout(),
-            ),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-          floatingActionButton: _editStatusFab(context),
-          bottomNavigationBar: _appBarContent(),
-        );
+        return _loadSuccessView(viewModel);
       } else {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return _loadingView();
       }
     });
+  }
+
+  Widget _loadingView() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _loadSuccessView(CharDetailViewModel viewModel) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(viewModel.characterName),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: _contentLayout(),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: _editStatusFab(),
+      bottomNavigationBar: _appBarContent(),
+    );
   }
 
   ///
@@ -263,14 +271,14 @@ class CharDetailPage extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 8.0, left: 24.0),
                   child: CircleAvatar(
                     child: RSIcon.weapon(viewModel.weaponType),
-                    backgroundColor: RSColors.charDetailBackground,
+                    backgroundColor: RSColors.charDetailIconBackground,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, left: 24.0),
                   child: CircleAvatar(
                     child: RSIcon.weaponCategory(category: viewModel.weaponCategory),
-                    backgroundColor: RSColors.charDetailBackground,
+                    backgroundColor: RSColors.charDetailIconBackground,
                   ),
                 ),
               ],
@@ -365,9 +373,9 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// ステータス編集のfab
   ///
-  Widget _editStatusFab(BuildContext context) {
+  Widget _editStatusFab() {
     return Consumer<CharDetailViewModel>(
-      builder: (_, viewModel, child) {
+      builder: (context, viewModel, child) {
         final myStatus = viewModel.myStatus;
 
         return FloatingActionButton(
