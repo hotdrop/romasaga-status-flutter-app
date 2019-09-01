@@ -35,12 +35,7 @@ class CharDetailPage extends StatelessWidget {
 
   Widget _body() {
     return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
-      if (viewModel.isLoading) {
-        RSLogger.d("ロード中です。");
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      } else {
+      if (viewModel.isSuccess) {
         return Scaffold(
           appBar: AppBar(
             title: Text(viewModel.characterName),
@@ -55,6 +50,10 @@ class CharDetailPage extends StatelessWidget {
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           floatingActionButton: _editStatusFab(context),
           bottomNavigationBar: _appBarContent(),
+        );
+      } else {
+        return Center(
+          child: CircularProgressIndicator(),
         );
       }
     });

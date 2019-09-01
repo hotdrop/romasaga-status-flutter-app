@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'char_list_tab.dart';
+import 'characters/char_list_tab.dart';
+import 'characters/char_list_view_model.dart';
+
 import 'search/search_list_tab.dart';
 import 'letter/letter_tab.dart';
 import 'account/account_tab.dart';
-
-import 'char_list_view_model.dart';
 
 import '../common/rs_colors.dart';
 import '../common/rs_strings.dart';

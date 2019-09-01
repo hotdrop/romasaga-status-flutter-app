@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'ui/char_list_view_model.dart';
+import 'ui/characters/char_list_view_model.dart';
 import 'ui/top_page.dart';
 
 import 'ui/widget/character_icon_loader.dart';

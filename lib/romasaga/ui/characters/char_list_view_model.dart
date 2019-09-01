@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart' as foundation;
 
-import '../data/character_repository.dart';
-import '../data/my_status_repository.dart';
+import '../view_state.dart';
 
-import '../model/character.dart';
-import '../model/weapon.dart';
+import '../../data/character_repository.dart';
+import '../../data/my_status_repository.dart';
 
-import '../common/rs_logger.dart';
-import 'view_state.dart';
+import '../../model/character.dart';
+import '../../model/weapon.dart';
+
+import '../../common/rs_logger.dart';
 
 class CharListViewModel extends foundation.ChangeNotifier with ViewState {
   final CharacterRepository _characterRepository;

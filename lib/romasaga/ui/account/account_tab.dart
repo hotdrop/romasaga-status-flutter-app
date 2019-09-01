@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../char_list_view_model.dart';
+import '../characters/char_list_view_model.dart';
 import 'account_view_model.dart';
 
 import '../widget/rs_dialog.dart';
