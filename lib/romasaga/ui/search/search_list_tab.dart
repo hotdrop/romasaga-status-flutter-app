@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../char_list_row_item.dart';
+import '../characters/char_list_row_item.dart';
 import '../search/search_list_view_model.dart';
 
 import '../widget/character_icon_loader.dart';

@@ -22,7 +22,7 @@ class RSColors {
   static final Color weaponIconUnSelectedBackground = Colors.grey;
 
   // キャラ詳細画面
-  static const Color charDetailBackground = Colors.grey;
+  static const Color charDetailIconBackground = Colors.grey;
   static const Color fabBackground = Colors.white30;
 
   // キャラ詳細画面 - ステータス

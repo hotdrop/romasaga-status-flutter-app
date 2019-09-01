@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'char_list_row_item.dart';
 import 'char_list_view_model.dart';
 
-import 'widget/character_icon_loader.dart';
+import '../widget/character_icon_loader.dart';
 
-import '../common/rs_strings.dart';
+import '../../common/rs_strings.dart';
 
 class CharListTab extends StatelessWidget {
   @override

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'detail/char_detail_page.dart';
 
-import '../model/character.dart';
-import '../model/weapon.dart';
+import '../detail/char_detail_page.dart';
 
-import 'widget/rs_icon.dart';
-import 'widget/character_icon_loader.dart';
+import '../widget/rs_icon.dart';
+import '../widget/character_icon_loader.dart';
 
-import '../common/rs_strings.dart';
+import '../../model/character.dart';
+import '../../model/weapon.dart';
+
+import '../../common/rs_strings.dart';
 
 class CharListRowItem extends StatelessWidget {
   final Character character;
