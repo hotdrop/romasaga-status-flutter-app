@@ -19,7 +19,7 @@ mixin RSStorageMixin {
     return utf8.decode(response.bodyBytes);
   }
 
-  Future<String> getImageUrl(String fileName) async {
+  Future<String> getCharacterIconUrl(String fileName) async {
     final StorageReference ref = FirebaseStorage().ref().child('icons/$fileName');
     return await ref.getDownloadURL();
   }

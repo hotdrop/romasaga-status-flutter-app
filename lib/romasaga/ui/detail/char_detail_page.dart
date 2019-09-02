@@ -8,7 +8,6 @@ import '../../model/character.dart';
 import 'char_detail_view_model.dart';
 import 'char_status_edit_page.dart';
 
-import '../widget/character_icon_loader.dart';
 import '../widget/rs_icon.dart';
 import '../widget/rank_choice_chip.dart';
 import '../widget/status_indicator.dart';
@@ -24,11 +23,8 @@ class CharDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(builder: (_) => CharDetailViewModel(character)..load()),
-        Provider(builder: (_) => CharacterIconLoader()..init()),
-      ],
+    return ChangeNotifierProvider(
+      builder: (_) => CharDetailViewModel(character)..load(),
       child: _body(),
     );
   }
@@ -104,12 +100,11 @@ class CharDetailPage extends StatelessWidget {
   Widget _characterContents() {
     return Consumer<CharDetailViewModel>(
       builder: (context, viewModel, child) {
-        final iconLoader = Provider.of<CharacterIconLoader>(context);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
-              child: iconLoader.loadLargeSize(viewModel.selectedIconFileName),
+              child: RSIcon.characterLargeSize(viewModel.selectedIconFileName),
               onTap: () async {
                 _showDialog(context, viewModel);
               },

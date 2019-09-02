@@ -6,7 +6,7 @@ class StyleEntity {
         $columnCharacterId INTEGER,
         $columnRank TEXT,
         $columnTitle TEXT,
-        $columnIconFileName TEXT,
+        $columnIconFilePath TEXT,
         $columnStr INTEGER,
         $columnVit INTEGER,
         $columnDex INTEGER,
@@ -30,8 +30,8 @@ class StyleEntity {
   static const String columnTitle = 'title';
   final String title;
 
-  static const String columnIconFileName = 'icon_file_name';
-  final String iconFileName;
+  static const String columnIconFilePath = 'icon_file_path';
+  final String iconFilePath;
 
   static const String columnStr = 'str';
   final int str;
@@ -61,7 +61,7 @@ class StyleEntity {
     this.characterId,
     this.rank,
     this.title,
-    this.iconFileName,
+    this.iconFilePath,
     this.str,
     this.vit,
     this.dex,
@@ -77,7 +77,7 @@ class StyleEntity {
         characterId = map[columnCharacterId],
         rank = map[columnRank],
         title = map[columnTitle],
-        iconFileName = map[columnIconFileName],
+        iconFilePath = map[columnIconFilePath],
         str = map[columnStr],
         vit = map[columnVit],
         dex = map[columnDex],
@@ -92,7 +92,7 @@ class StyleEntity {
       columnCharacterId: characterId,
       columnRank: rank,
       columnTitle: title,
-      columnIconFileName: iconFileName,
+      columnIconFilePath: iconFilePath,
       columnStr: str,
       columnVit: vit,
       columnDex: dex,

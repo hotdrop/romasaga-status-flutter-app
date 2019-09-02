@@ -63,7 +63,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier with ViewState {
   String get selectedRank => _character.selectedStyleRank;
   Style style(String rank) => _character.getStyle(rank);
 
-  String get selectedIconFileName => _selectedStyle.iconFileName;
+  String get selectedIconFileName => _selectedStyle.iconFilePath;
   String get selectedStyleRank => _selectedStyle.rank;
   String get selectedStyleTitle => _selectedStyle.title;
 
@@ -134,8 +134,8 @@ class CharDetailViewModel extends foundation.ChangeNotifier with ViewState {
   void saveCurrentSelectStyle() async {
     RSLogger.d('表示ランクを ${_selectedStyle.rank} にします。');
     _character.selectedStyleRank = _selectedStyle.rank;
-    _character.selectedIconFileName = _selectedStyle.iconFileName;
-    await _characterRepository.saveSelectedRank(_character.id, _selectedStyle.rank, _selectedStyle.iconFileName);
+    _character.selectedIconFilePath = _selectedStyle.iconFilePath;
+    await _characterRepository.saveSelectedRank(_character.id, _selectedStyle.rank, _selectedStyle.iconFilePath);
   }
 
   void saveHaveCharacter(bool haveChar) async {

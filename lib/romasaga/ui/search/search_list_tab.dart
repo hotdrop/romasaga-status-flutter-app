@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../characters/char_list_row_item.dart';
 import '../search/search_list_view_model.dart';
 
-import '../widget/character_icon_loader.dart';
 import '../widget/rs_icon.dart';
 
 import '../../model/character.dart';
@@ -318,12 +317,11 @@ class _BackdropPanel extends StatelessWidget {
 
   Widget _searchResultList() {
     return Consumer<SearchListViewModel>(
-      builder: (context, viewModel, child) {
-        final iconLoader = Provider.of<CharacterIconLoader>(context);
-        return ListView.builder(itemBuilder: (context, index) {
+      builder: (_, viewModel, child) {
+        return ListView.builder(itemBuilder: (_, index) {
           final characters = viewModel.charactersWithFilter;
           if (index < characters.length) {
-            return CharListRowItem(characters[index], iconLoader);
+            return CharListRowItem(characters[index]);
           }
           return null;
         });
