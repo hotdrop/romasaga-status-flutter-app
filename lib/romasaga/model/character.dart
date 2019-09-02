@@ -9,7 +9,7 @@ class Character {
   final WeaponType weaponType;
 
   String selectedStyleRank;
-  String selectedIconFileName;
+  String selectedIconFilePath;
 
   final styles = <Style>[];
 
@@ -21,7 +21,7 @@ class Character {
     this.production,
     String weaponType, {
     this.selectedStyleRank,
-    this.selectedIconFileName,
+    this.selectedIconFilePath,
   })  : this.weaponType = WeaponType(weaponType),
         this.myStatus = MyStatus.empty(id);
 
@@ -47,5 +47,9 @@ class Character {
 
   int getTotalStatus() {
     return myStatus.sumWithoutHp();
+  }
+
+  String _findIconFilePath() {
+    // TODO FireStoreへ
   }
 }

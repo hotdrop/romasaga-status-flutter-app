@@ -24,7 +24,7 @@ class Mapper {
       c.production,
       c.weaponType.name,
       c.selectedStyleRank,
-      c.selectedIconFileName,
+      c.selectedIconFilePath,
     );
   }
 
@@ -35,7 +35,7 @@ class Mapper {
       entity.production,
       entity.weaponType,
       selectedStyleRank: entity.selectedStyleRank,
-      selectedIconFileName: entity.selectedIconFileName,
+      selectedIconFilePath: entity.selectedIconFilePath,
     );
   }
 
@@ -44,7 +44,7 @@ class Mapper {
       style.characterId,
       style.rank,
       style.title,
-      style.iconFileName,
+      style.iconFilePath,
       style.str,
       style.vit,
       style.dex,
@@ -61,7 +61,7 @@ class Mapper {
       entity.characterId,
       entity.rank,
       entity.title,
-      entity.iconFileName,
+      entity.iconFilePath,
       entity.str,
       entity.vit,
       entity.dex,

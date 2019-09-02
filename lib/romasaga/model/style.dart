@@ -4,7 +4,7 @@ class Style {
   final int characterId;
   final String rank;
   final String title;
-  final String iconFileName;
+  final String iconFilePath;
 
   final int str;
   final int vit;
@@ -15,11 +15,11 @@ class Style {
   final int love;
   final int attr;
 
-  const Style(
+  Style(
     this.characterId,
     this.rank,
     this.title,
-    this.iconFileName,
+    this.iconFilePath,
     this.str,
     this.vit,
     this.dex,

@@ -25,12 +25,57 @@ class CharacterSource {
     try {
       return await rootBundle.loadStructuredData(localPath, (String json) async {
         final jsonObjects = CharactersJsonObject.parse(json);
-        return CharactersJsonObject.toModel(jsonObjects);
+        return _parseToModelList(jsonObjects);
       });
     } on IOException catch (e) {
       RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
       throw e;
     }
+  }
+
+  ///
+  /// このメソッドはCharacterApiの_parseToModelListとほぼ同じ。
+  /// アイコンファイルがダミーでありリモートから読む必要がないのでその処理だけ除外したもの
+  ///
+  List<Character> _parseToModelList(CharactersJsonObject obj) {
+    final characters = <Character>[];
+
+    for (var charObj in obj.characters) {
+      final character = Character(charObj.id, charObj.name, charObj.production, charObj.weaponType);
+
+      for (var styleObj in charObj.styles) {
+        final style = _jsonObjectToStyleModel(character.id, styleObj);
+        character.addStyle(style);
+
+        if (character.selectedStyleRank == null) {
+          character.selectedStyleRank = style.rank;
+          character.selectedIconFilePath = style.iconFilePath;
+        }
+      }
+
+      characters.add(character);
+    }
+    return characters;
+  }
+
+  ///
+  /// 上のコメントと同じ
+  ///
+  Style _jsonObjectToStyleModel(int characterId, StyleJsonObject obj) {
+    return Style(
+      characterId,
+      obj.rank,
+      obj.title,
+      obj.iconFileName,
+      obj.str,
+      obj.vit,
+      obj.dex,
+      obj.agi,
+      obj.intelligence,
+      obj.spi,
+      obj.love,
+      obj.attr,
+    );
   }
 
   ///
@@ -98,7 +143,7 @@ class CharacterSource {
         ${CharacterEntity.tableName}
       SET 
         ${CharacterEntity.columnSelectedStyleRank} = '$rank', 
-        ${CharacterEntity.columnSelectedIconFileName} = '$iconFileName' 
+        ${CharacterEntity.columnSelectedIconFilePath} = '$iconFileName' 
       WHERE 
         ${CharacterEntity.columnId} = $id
       """);

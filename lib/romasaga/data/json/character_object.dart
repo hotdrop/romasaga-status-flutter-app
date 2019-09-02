@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../model/character.dart';
-import '../../model/style.dart';
-
 import '../../common/rs_logger.dart';
 
 @JsonSerializable()
@@ -27,40 +24,6 @@ class CharactersJsonObject {
     final results = CharactersJsonObject.fromJson(jsonMap);
     RSLogger.d("Characterをパースしました。 size=${results.characters.length}");
     return results;
-  }
-
-  static List<Character> toModel(CharactersJsonObject obj) {
-    final characters = <Character>[];
-    for (var charObj in obj.characters) {
-      final character = Character(charObj.id, charObj.name, charObj.production, charObj.weaponType);
-      for (var styleObj in charObj.styles) {
-        final style = _jsonObjectToStyleModel(character.id, styleObj);
-        character.addStyle(style);
-        if (character.selectedStyleRank == null) {
-          character.selectedStyleRank = style.rank;
-          character.selectedIconFileName = style.iconFileName;
-        }
-      }
-      characters.add(character);
-    }
-    return characters;
-  }
-
-  static Style _jsonObjectToStyleModel(int characterId, StyleJsonObject obj) {
-    return Style(
-      characterId,
-      obj.rank,
-      obj.title,
-      obj.iconFileName,
-      obj.str,
-      obj.vit,
-      obj.dex,
-      obj.agi,
-      obj.intelligence,
-      obj.spi,
-      obj.love,
-      obj.attr,
-    );
   }
 }
 

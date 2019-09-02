@@ -23,12 +23,4 @@ class RSService with RSAuthMixin, RSStorageMixin, RSFirestoreMixin {
   Future<List<MyStatus>> findMyStatues() async {
     return await this.getMyStatues(uid);
   }
-
-  Future<String> getCharacterIconUrl(String fileName) async {
-    if (isLogIn) {
-      return await this.getImageUrl(fileName);
-    } else {
-      return null;
-    }
-  }
 }

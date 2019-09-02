@@ -17,7 +17,7 @@ class RSLogger {
     _logger.w(message);
   }
 
-  static void e(String message, Exception e) {
+  static void e(String message, dynamic e) {
     _logger.e(message, e);
   }
 }

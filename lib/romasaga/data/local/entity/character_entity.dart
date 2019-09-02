@@ -7,7 +7,7 @@ class CharacterEntity {
         $columnProduction TEXT,
         $columnWeaponType TEXT,
         $columnSelectedStyleRank TEXT,
-        $columnSelectedIconFileName TEXT
+        $columnSelectedIconFilePath TEXT
       )
       ''';
 
@@ -26,8 +26,8 @@ class CharacterEntity {
   static const String columnSelectedStyleRank = 'selected_style_rank';
   final String selectedStyleRank;
 
-  static const String columnSelectedIconFileName = 'selected_icon_file_name';
-  final String selectedIconFileName;
+  static const String columnSelectedIconFilePath = 'selected_icon_file_path';
+  final String selectedIconFilePath;
 
   const CharacterEntity(
     this.id,
@@ -35,7 +35,7 @@ class CharacterEntity {
     this.production,
     this.weaponType,
     this.selectedStyleRank,
-    this.selectedIconFileName,
+    this.selectedIconFilePath,
   );
 
   CharacterEntity.fromMap(Map<String, dynamic> map)
@@ -44,7 +44,7 @@ class CharacterEntity {
         production = map[columnProduction],
         weaponType = map[columnWeaponType],
         selectedStyleRank = map[columnSelectedStyleRank],
-        selectedIconFileName = map[columnSelectedIconFileName];
+        selectedIconFilePath = map[columnSelectedIconFilePath];
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -53,7 +53,7 @@ class CharacterEntity {
       columnProduction: production,
       columnWeaponType: weaponType,
       columnSelectedStyleRank: selectedStyleRank,
-      columnSelectedIconFileName: selectedIconFileName,
+      columnSelectedIconFilePath: selectedIconFilePath,
     };
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../model/weapon.dart';
 
@@ -10,6 +11,38 @@ class RSIcon {
   static final double smallSize = 30.0;
   static final double normalSize = 50.0;
   static final double largeSize = 80.0;
+
+  ///
+  /// キャラアイコン
+  ///
+  static Widget character(String iconFilePath) {
+    return _loadImage(iconFilePath, RSIcon.normalSize);
+  }
+
+  static Widget characterLargeSize(String iconFilePath) {
+    return _loadImage(iconFilePath, RSIcon.largeSize);
+  }
+
+  static Widget _loadImage(String iconFilePath, double size) {
+    return CachedNetworkImage(
+      imageUrl: iconFilePath,
+      width: size,
+      height: size,
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) {
+        RSLogger.e('画像ロードでエラー', error);
+        return _defaultIcon(size);
+      },
+    );
+  }
+
+  static Widget _defaultIcon(double size) {
+    return Image.asset(
+      'res/charIcons/default.jpg',
+      width: size,
+      height: size,
+    );
+  }
 
   ///
   /// スタイルランクアイコン
