@@ -21,11 +21,12 @@ class CharacterSource {
     return _instance;
   }
 
-  Future<List<Character>> load({String localPath = 'res/json/characters.json'}) async {
+  Future<void> loadDummy({String localPath = 'res/json/characters.json'}) async {
     try {
-      return await rootBundle.loadStructuredData(localPath, (String json) async {
+      await rootBundle.loadStructuredData(localPath, (String json) async {
         final jsonObjects = CharactersJsonObject.parse(json);
-        return _parseToModelList(jsonObjects);
+        final characters = _parse(jsonObjects);
+        await refresh(characters);
       });
     } on IOException catch (e) {
       RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
@@ -34,55 +35,10 @@ class CharacterSource {
   }
 
   ///
-  /// このメソッドはCharacterApiの_parseToModelListとほぼ同じ。
-  /// アイコンファイルがダミーでありリモートから読む必要がないのでその処理だけ除外したもの
-  ///
-  List<Character> _parseToModelList(CharactersJsonObject obj) {
-    final characters = <Character>[];
-
-    for (var charObj in obj.characters) {
-      final character = Character(charObj.id, charObj.name, charObj.production, charObj.weaponType);
-
-      for (var styleObj in charObj.styles) {
-        final style = _jsonObjectToStyleModel(character.id, styleObj);
-        character.addStyle(style);
-
-        if (character.selectedStyleRank == null) {
-          character.selectedStyleRank = style.rank;
-          character.selectedIconFilePath = style.iconFilePath;
-        }
-      }
-
-      characters.add(character);
-    }
-    return characters;
-  }
-
-  ///
-  /// 上のコメントと同じ
-  ///
-  Style _jsonObjectToStyleModel(int characterId, StyleJsonObject obj) {
-    return Style(
-      characterId,
-      obj.rank,
-      obj.title,
-      obj.iconFileName,
-      obj.str,
-      obj.vit,
-      obj.dex,
-      obj.agi,
-      obj.intelligence,
-      obj.spi,
-      obj.love,
-      obj.attr,
-    );
-  }
-
-  ///
   /// 全キャラクター情報を取得
   /// スタイル情報は取ってこないので注意
   ///
-  Future<List<Character>> findAll() async {
+  Future<List<Character>> findAllSummary() async {
     // TODO dbが密結合しているのでコンストラクタインジェクションで持ってきたい・・
     final db = await DBProvider.instance.database;
     final results = await db.query(CharacterEntity.tableName);
@@ -111,11 +67,19 @@ class CharacterSource {
     return count;
   }
 
-  Future<void> refresh(List<Character> stages) async {
+  Future<void> save(List<Character> characters) async {
+    final db = await DBProvider.instance.database;
+
+    db.transaction((txn) async {
+      await _insert(txn, characters);
+    });
+  }
+
+  Future<void> refresh(List<Character> characters) async {
     final db = await DBProvider.instance.database;
     db.transaction((txn) async {
       await _delete(txn);
-      await _insert(txn, stages);
+      await _insert(txn, characters);
     });
   }
 
@@ -147,5 +111,52 @@ class CharacterSource {
       WHERE 
         ${CharacterEntity.columnId} = $id
       """);
+  }
+
+  ///
+  /// このメソッドはCharacterApiの_parseとほぼ同じ。
+  /// アイコンファイルがダミーでありリモートから読む必要がないのでその処理だけ除外したもの
+  ///
+  List<Character> _parse(CharactersJsonObject obj) {
+    final characters = <Character>[];
+
+    for (var charObj in obj.characters) {
+      final character = _jsonObjectToCharacter(charObj);
+      characters.add(character);
+    }
+    return characters;
+  }
+
+  Character _jsonObjectToCharacter(CharacterJsonObject obj) {
+    final character = Character(obj.id, obj.name, obj.production, obj.weaponType);
+
+    for (var styleObj in obj.styles) {
+      final style = _jsonObjectToStyle(character.id, styleObj);
+      character.addStyle(style);
+
+      if (character.selectedStyleRank == null) {
+        character.selectedStyleRank = style.rank;
+        character.selectedIconFilePath = style.iconFilePath;
+      }
+    }
+
+    return character;
+  }
+
+  Style _jsonObjectToStyle(int characterId, StyleJsonObject obj) {
+    return Style(
+      characterId,
+      obj.rank,
+      obj.title,
+      obj.iconFileName,
+      obj.str,
+      obj.vit,
+      obj.dex,
+      obj.agi,
+      obj.intelligence,
+      obj.spi,
+      obj.love,
+      obj.attr,
+    );
   }
 }

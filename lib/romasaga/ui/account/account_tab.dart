@@ -92,11 +92,10 @@ class SettingTab extends StatelessWidget {
       children: <Widget>[
         _rowAccountInfo(),
         const Divider(color: RSColors.divider),
-        _rowLabel(context, RSStrings.AccountDataUpdateLabel),
+        _rowDataUpdateLabel(context),
         _rowCharacterReload(),
         _rowStageReload(),
         const Divider(color: RSColors.divider),
-        _rowLabel(context, RSStrings.AccountStatusLabel),
         _rowBackUp(),
         _rowRestore(),
         const Divider(color: RSColors.divider),
@@ -116,9 +115,7 @@ class SettingTab extends StatelessWidget {
               backgroundColor: Theme.of(context).accentColor,
               foregroundColor: Theme.of(context).primaryColor,
             ),
-            SizedBox(
-              width: 16.0,
-            ),
+            SizedBox(width: 16.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -132,14 +129,18 @@ class SettingTab extends StatelessWidget {
     });
   }
 
-  Widget _rowLabel(BuildContext context, String label) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+  Widget _rowDataUpdateLabel(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: 16.0, top: 16.0),
-          child: Text(label, style: Theme.of(context).textTheme.caption),
+          child: Text(RSStrings.AccountDataUpdateTitle),
         ),
+        Padding(
+          padding: EdgeInsets.only(left: 16.0, right: 16.0),
+          child: Text(RSStrings.AccountDataUpdateDetail, style: TextStyle(fontSize: 12.0, color: RSColors.textAttention)),
+        )
       ],
     );
   }
@@ -147,20 +148,33 @@ class SettingTab extends StatelessWidget {
   Widget _rowCharacterReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _rowItemView(context,
-            icon: const Icon(Icons.people),
-            title: RSStrings.AccountCharacterUpdateLabel,
-            registerCount: viewModel.characterCount,
-            loadingStatus: viewModel.loadingCharacter, onTapListener: () {
-          RSDialog(
-            context,
-            message: RSStrings.AccountCharacterUpdateDialogMessage,
-            positiveListener: () async {
-              await viewModel.refreshCharacters();
-              _charListViewModel.refreshCharacters();
-            },
-          ).show();
-        });
+        return _rowItemViewWithCount(
+          context,
+          icon: const Icon(Icons.people),
+          title: RSStrings.AccountCharacterUpdateLabel,
+          registerCount: viewModel.characterCount ?? 0,
+          loadingStatus: viewModel.loadingCharacter,
+          onTapListener: () {
+            RSDialog(
+              context,
+              message: RSStrings.AccountCharacterOnlyNewUpdateDialogMessage,
+              positiveListener: () async {
+                await viewModel.registerNewCharacters();
+                _charListViewModel.refreshCharacters();
+              },
+            ).show();
+          },
+          onLongTapListener: () {
+            RSDialog(
+              context,
+              message: RSStrings.AccountCharacterAllUpdateDialogMessage,
+              positiveListener: () async {
+                await viewModel.updateAllCharacters();
+                _charListViewModel.refreshCharacters();
+              },
+            ).show();
+          },
+        );
       },
     );
   }
@@ -168,19 +182,22 @@ class SettingTab extends StatelessWidget {
   Widget _rowStageReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _rowItemView(context,
-            icon: const Icon(Icons.map),
-            title: RSStrings.AccountStageUpdateLabel,
-            registerCount: viewModel.stageCount ?? 0,
-            loadingStatus: viewModel.loadingStage, onTapListener: () async {
-          RSDialog(
-            context,
-            message: RSStrings.AccountStageUpdateDialogMessage,
-            positiveListener: () {
-              viewModel.refreshStage();
-            },
-          ).show();
-        });
+        return _rowItemViewWithCount(
+          context,
+          icon: const Icon(Icons.map),
+          title: RSStrings.AccountStageUpdateLabel,
+          registerCount: viewModel.stageCount ?? 0,
+          loadingStatus: viewModel.loadingStage,
+          onTapListener: () async {
+            RSDialog(
+              context,
+              message: RSStrings.AccountStageUpdateDialogMessage,
+              positiveListener: () {
+                viewModel.refreshStage();
+              },
+            ).show();
+          },
+        );
       },
     );
   }
@@ -189,19 +206,22 @@ class SettingTab extends StatelessWidget {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
         final subTitleText = '${RSStrings.AccountStatusBackupDateLabel} ${viewModel.previousBackupDateStr}';
-        return _rowItemView(context,
-            icon: const Icon(Icons.backup),
-            title: RSStrings.AccountStatusBackupLabel,
-            subTitle: subTitleText,
-            loadingStatus: viewModel.loadingBackup, onTapListener: () async {
-          RSDialog(
-            context,
-            message: RSStrings.AccountStatusBackupDialogMessage,
-            positiveListener: () {
-              viewModel.backup();
-            },
-          ).show();
-        });
+        return _rowItemView(
+          context,
+          icon: const Icon(Icons.backup),
+          title: RSStrings.AccountStatusBackupLabel,
+          subTitle: subTitleText,
+          loadingStatus: viewModel.loadingBackup,
+          onTapListener: () async {
+            RSDialog(
+              context,
+              message: RSStrings.AccountStatusBackupDialogMessage,
+              positiveListener: () {
+                viewModel.backup();
+              },
+            ).show();
+          },
+        );
       },
     );
   }
@@ -209,20 +229,23 @@ class SettingTab extends StatelessWidget {
   Widget _rowRestore() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _rowItemView(context,
-            icon: const Icon(Icons.settings_backup_restore),
-            title: RSStrings.AccountStatusRestoreLabel,
-            subTitle: RSStrings.AccountStatusRestoreDescriptionLabel,
-            loadingStatus: viewModel.loadingRestore, onTapListener: () {
-          RSDialog(
-            context,
-            message: RSStrings.AccountStatusRestoreDialogMessage,
-            positiveListener: () async {
-              await viewModel.restore();
-              _charListViewModel.refreshMyStatuses();
-            },
-          ).show();
-        });
+        return _rowItemView(
+          context,
+          icon: const Icon(Icons.settings_backup_restore),
+          title: RSStrings.AccountStatusRestoreLabel,
+          subTitle: RSStrings.AccountStatusRestoreDescriptionLabel,
+          loadingStatus: viewModel.loadingRestore,
+          onTapListener: () {
+            RSDialog(
+              context,
+              message: RSStrings.AccountStatusRestoreDialogMessage,
+              positiveListener: () async {
+                await viewModel.restore();
+                _charListViewModel.refreshMyStatuses();
+              },
+            ).show();
+          },
+        );
       },
     );
   }
@@ -250,8 +273,7 @@ class SettingTab extends StatelessWidget {
     BuildContext context, {
     @required Icon icon,
     @required String title,
-    int registerCount,
-    String subTitle,
+    @required String subTitle,
     @required DataLoadingStatus loadingStatus,
     @required Function onTapListener,
   }) {
@@ -261,7 +283,7 @@ class SettingTab extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Expanded(child: _rowIcon(icon), flex: 1),
-            Expanded(child: _rowContents(context, title, registerCount, subTitle), flex: 8),
+            Expanded(child: _rowTitle(context, title, subTitle), flex: 8),
             Expanded(child: _rowStatus(loadingStatus), flex: 2),
           ],
         ),
@@ -279,8 +301,49 @@ class SettingTab extends StatelessWidget {
     );
   }
 
-  Widget _rowContents(BuildContext context, String title, int registerCount, String subTitle) {
-    final str = subTitle ?? '${RSStrings.AccountRegisterCountLabel} ${registerCount ?? 0}';
+  Widget _rowTitle(BuildContext context, String title, String subTitle) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(title),
+        Text(subTitle, style: Theme.of(context).textTheme.caption),
+      ],
+    );
+  }
+
+  Widget _rowItemViewWithCount(
+    BuildContext context, {
+    @required Icon icon,
+    @required String title,
+    @required int registerCount,
+    @required DataLoadingStatus loadingStatus,
+    @required Function onTapListener,
+    Function onLongTapListener,
+  }) {
+    return InkWell(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: <Widget>[
+            Expanded(child: _rowIcon(icon), flex: 1),
+            Expanded(child: _rowTitleWithCount(context, title, registerCount), flex: 8),
+            Expanded(child: _rowStatus(loadingStatus), flex: 2),
+          ],
+        ),
+      ),
+      onTap: () {
+        onTapListener();
+      },
+      onLongPress: () {
+        if (onLongTapListener != null) {
+          onLongTapListener();
+        }
+      },
+    );
+  }
+
+  Widget _rowTitleWithCount(BuildContext context, String title, int registerCount) {
+    final str = '${RSStrings.AccountRegisterCountLabel} ${registerCount ?? 0}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

@@ -96,7 +96,26 @@ class SettingViewModel extends foundation.ChangeNotifier {
     }
   }
 
-  Future<void> refreshCharacters() async {
+  Future<void> registerNewCharacters() async {
+    if (loadingCharacter == DataLoadingStatus.loading) {
+      return;
+    }
+
+    loadingCharacter = DataLoadingStatus.loading;
+    notifyListeners();
+
+    try {
+      await _characterRepository.refreshOnlyNewCharacters();
+      loadingCharacter = DataLoadingStatus.complete;
+    } catch (e) {
+      RSLogger.e('新キャラのデータ登録処理でエラーが発生しました', e);
+      loadingCharacter = DataLoadingStatus.error;
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> updateAllCharacters() async {
     if (loadingCharacter == DataLoadingStatus.loading) {
       return;
     }
@@ -109,6 +128,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
       characterCount = await _characterRepository.count();
       loadingCharacter = DataLoadingStatus.complete;
     } catch (e) {
+      RSLogger.e('キャラデータ全更新処理でエラーが発生しました', e);
       loadingCharacter = DataLoadingStatus.error;
     }
 
@@ -128,6 +148,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
       stageCount = await _stageRepository.count();
       loadingStage = DataLoadingStatus.complete;
     } catch (e) {
+      RSLogger.e('ステージデータ更新処理でエラーが発生しました', e);
       loadingStage = DataLoadingStatus.error;
     }
 
@@ -147,6 +168,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
       _previousBackupDateStr = await _myStatusRepository.getPreviousBackupDateStr();
       loadingBackup = DataLoadingStatus.complete;
     } catch (e) {
+      RSLogger.e('ステータスバックアップ処理でエラーが発生しました', e);
       loadingBackup = DataLoadingStatus.error;
     }
 
@@ -165,6 +187,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
       await _myStatusRepository.restore();
       loadingRestore = DataLoadingStatus.complete;
     } catch (e) {
+      RSLogger.e('ステータス復元処理でエラーが発生しました', e);
       loadingRestore = DataLoadingStatus.error;
     }
 

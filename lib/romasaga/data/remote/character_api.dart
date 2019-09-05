@@ -15,35 +15,58 @@ class CharacterApi {
     try {
       String json = await _rsService.readCharactersJson();
       final jsonObjects = CharactersJsonObject.parse(json);
-      return await _parseToModelList(jsonObjects);
+
+      return await _parse(jsonObjects);
     } catch (e) {
       RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
       throw e;
     }
   }
 
-  Future<List<Character>> _parseToModelList(CharactersJsonObject obj) async {
+  Future<List<Character>> findByExcludeIds(List<int> ids) async {
+    try {
+      String json = await _rsService.readCharactersJson();
+      final jsonObjects = CharactersJsonObject.parse(json);
+
+      return await _parse(jsonObjects, excludeIds: ids);
+    } catch (e) {
+      RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
+      throw e;
+    }
+  }
+
+  Future<List<Character>> _parse(CharactersJsonObject obj, {List<int> excludeIds}) async {
     final characters = <Character>[];
 
     for (var charObj in obj.characters) {
-      final character = Character(charObj.id, charObj.name, charObj.production, charObj.weaponType);
-
-      for (var styleObj in charObj.styles) {
-        final style = await jsonObjectToStyleModel(character.id, styleObj);
-        character.addStyle(style);
-
-        if (character.selectedStyleRank == null) {
-          character.selectedStyleRank = style.rank;
-          character.selectedIconFilePath = style.iconFilePath;
-        }
+      final exist = excludeIds?.contains(charObj.id) ?? false;
+      if (exist) {
+        continue;
       }
 
+      final character = await _jsonObjectToCharacter(charObj);
       characters.add(character);
     }
     return characters;
   }
 
-  Future<Style> jsonObjectToStyleModel(int characterId, StyleJsonObject obj) async {
+  Future<Character> _jsonObjectToCharacter(CharacterJsonObject obj) async {
+    final character = Character(obj.id, obj.name, obj.production, obj.weaponType);
+
+    for (var styleObj in obj.styles) {
+      final style = await _jsonObjectToStyle(character.id, styleObj);
+      character.addStyle(style);
+
+      if (character.selectedStyleRank == null) {
+        character.selectedStyleRank = style.rank;
+        character.selectedIconFilePath = style.iconFilePath;
+      }
+    }
+
+    return character;
+  }
+
+  Future<Style> _jsonObjectToStyle(int characterId, StyleJsonObject obj) async {
     final iconFilePath = await _rsService.getCharacterIconUrl(obj.iconFileName);
     return Style(
       characterId,
