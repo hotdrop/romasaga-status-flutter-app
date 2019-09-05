@@ -56,12 +56,13 @@ class RSStrings {
 
   static const String AccountTabTitle = 'アカウント';
   static const String AccountLoginWithGoogle = 'Googleアカウントでログイン';
-  static const String AccountDataUpdateLabel = 'サーバーから最新情報を取得';
   static const String AccountCharacterUpdateLabel = 'キャラクター';
-  static const String AccountCharacterUpdateDialogMessage = '現在のキャラクター情報を全て削除してサーバーから再取得します。\nよろしいですか？\n(自身が入力したステータス等は削除されません。)';
+  static const String AccountCharacterLabel = 'タップ: 新キャラのみ取得  ロングタップ: 全キャラ取得';
+  static const String AccountCharacterOnlyNewUpdateDialogMessage = '新しく登録されたキャラクター情報を取得します。\nよろしいですか？\n(自身が入力したステータス等は削除されません。)';
+  static const String AccountCharacterAllUpdateDialogMessage =
+      '注意！！\n現在のキャラクター情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
   static const String AccountStageUpdateLabel = 'ステージ';
   static const String AccountStageUpdateDialogMessage = '現在のステージ情報を全て削除してサーバーから再取得します。\nよろしいですか？';
-  static const String AccountStatusLabel = 'ステータスのバックアップと復元';
   static const String AccountStatusBackupLabel = 'バックアップ';
   static const String AccountStatusBackupDateLabel = '前回実行日:';
   static const String AccountStatusBackupDialogMessage = '現在のキャラクターステータスをサーバーへバックアップします。\nよろしいですか？';

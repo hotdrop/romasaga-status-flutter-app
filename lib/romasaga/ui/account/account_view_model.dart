@@ -38,7 +38,6 @@ class SettingViewModel extends foundation.ChangeNotifier {
   String _previousBackupDateStr = "-";
   String get previousBackupDateStr => _previousBackupDateStr;
 
-  int characterCount;
   int stageCount;
 
   void load() async {
@@ -79,7 +78,6 @@ class SettingViewModel extends foundation.ChangeNotifier {
   }
 
   Future<void> _loadDataCount() async {
-    characterCount = await _characterRepository.count();
     stageCount = await _stageRepository.count();
   }
 
@@ -96,7 +94,26 @@ class SettingViewModel extends foundation.ChangeNotifier {
     }
   }
 
-  Future<void> refreshCharacters() async {
+  Future<void> registerNewCharacters() async {
+    if (loadingCharacter == DataLoadingStatus.loading) {
+      return;
+    }
+
+    loadingCharacter = DataLoadingStatus.loading;
+    notifyListeners();
+
+    try {
+      // TODO 新キャラのみ更新するメソッドを作成してそれ呼ぶ
+      await _characterRepository.refresh();
+      loadingCharacter = DataLoadingStatus.complete;
+    } catch (e) {
+      loadingCharacter = DataLoadingStatus.error;
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> updateAllCharacters() async {
     if (loadingCharacter == DataLoadingStatus.loading) {
       return;
     }
@@ -106,7 +123,6 @@ class SettingViewModel extends foundation.ChangeNotifier {
 
     try {
       await _characterRepository.refresh();
-      characterCount = await _characterRepository.count();
       loadingCharacter = DataLoadingStatus.complete;
     } catch (e) {
       loadingCharacter = DataLoadingStatus.error;
