@@ -92,6 +92,7 @@ class SettingTab extends StatelessWidget {
       children: <Widget>[
         _rowAccountInfo(),
         const Divider(color: RSColors.divider),
+        _rowDataUpdateLabel(context),
         _rowCharacterReload(),
         _rowStageReload(),
         const Divider(color: RSColors.divider),
@@ -114,9 +115,7 @@ class SettingTab extends StatelessWidget {
               backgroundColor: Theme.of(context).accentColor,
               foregroundColor: Theme.of(context).primaryColor,
             ),
-            SizedBox(
-              width: 16.0,
-            ),
+            SizedBox(width: 16.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -130,14 +129,30 @@ class SettingTab extends StatelessWidget {
     });
   }
 
+  Widget _rowDataUpdateLabel(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 16.0, top: 16.0),
+          child: Text(RSStrings.AccountDataUpdateTitle),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 16.0, right: 16.0),
+          child: Text(RSStrings.AccountDataUpdateDetail, style: TextStyle(fontSize: 12.0, color: RSColors.textAttention)),
+        )
+      ],
+    );
+  }
+
   Widget _rowCharacterReload() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        return _rowItemView(
+        return _rowItemViewWithCount(
           context,
           icon: const Icon(Icons.people),
           title: RSStrings.AccountCharacterUpdateLabel,
-          subTitle: RSStrings.AccountCharacterLabel,
+          registerCount: viewModel.characterCount ?? 0,
           loadingStatus: viewModel.loadingCharacter,
           onTapListener: () {
             RSDialog(
@@ -261,7 +276,6 @@ class SettingTab extends StatelessWidget {
     @required String subTitle,
     @required DataLoadingStatus loadingStatus,
     @required Function onTapListener,
-    Function onLongTapListener,
   }) {
     return InkWell(
       child: Padding(
@@ -276,11 +290,6 @@ class SettingTab extends StatelessWidget {
       ),
       onTap: () {
         onTapListener();
-      },
-      onLongPress: () {
-        if (onLongTapListener != null) {
-          onLongTapListener();
-        }
       },
     );
   }
@@ -309,6 +318,7 @@ class SettingTab extends StatelessWidget {
     @required int registerCount,
     @required DataLoadingStatus loadingStatus,
     @required Function onTapListener,
+    Function onLongTapListener,
   }) {
     return InkWell(
       child: Padding(
@@ -323,6 +333,11 @@ class SettingTab extends StatelessWidget {
       ),
       onTap: () {
         onTapListener();
+      },
+      onLongPress: () {
+        if (onLongTapListener != null) {
+          onLongTapListener();
+        }
       },
     );
   }

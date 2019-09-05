@@ -38,6 +38,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
   String _previousBackupDateStr = "-";
   String get previousBackupDateStr => _previousBackupDateStr;
 
+  int characterCount;
   int stageCount;
 
   void load() async {
@@ -78,6 +79,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
   }
 
   Future<void> _loadDataCount() async {
+    characterCount = await _characterRepository.count();
     stageCount = await _stageRepository.count();
   }
 
@@ -103,10 +105,10 @@ class SettingViewModel extends foundation.ChangeNotifier {
     notifyListeners();
 
     try {
-      // TODO 新キャラのみ更新するメソッドを作成してそれ呼ぶ
-      await _characterRepository.refresh();
+      await _characterRepository.refreshOnlyNewCharacters();
       loadingCharacter = DataLoadingStatus.complete;
     } catch (e) {
+      RSLogger.e('新キャラのデータ登録処理でエラーが発生しました', e);
       loadingCharacter = DataLoadingStatus.error;
     }
 
@@ -123,8 +125,10 @@ class SettingViewModel extends foundation.ChangeNotifier {
 
     try {
       await _characterRepository.refresh();
+      characterCount = await _characterRepository.count();
       loadingCharacter = DataLoadingStatus.complete;
     } catch (e) {
+      RSLogger.e('キャラデータ全更新処理でエラーが発生しました', e);
       loadingCharacter = DataLoadingStatus.error;
     }
 
@@ -144,6 +148,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
       stageCount = await _stageRepository.count();
       loadingStage = DataLoadingStatus.complete;
     } catch (e) {
+      RSLogger.e('ステージデータ更新処理でエラーが発生しました', e);
       loadingStage = DataLoadingStatus.error;
     }
 
@@ -163,6 +168,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
       _previousBackupDateStr = await _myStatusRepository.getPreviousBackupDateStr();
       loadingBackup = DataLoadingStatus.complete;
     } catch (e) {
+      RSLogger.e('ステータスバックアップ処理でエラーが発生しました', e);
       loadingBackup = DataLoadingStatus.error;
     }
 
@@ -181,6 +187,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
       await _myStatusRepository.restore();
       loadingRestore = DataLoadingStatus.complete;
     } catch (e) {
+      RSLogger.e('ステータス復元処理でエラーが発生しました', e);
       loadingRestore = DataLoadingStatus.error;
     }
 
