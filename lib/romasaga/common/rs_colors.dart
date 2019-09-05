@@ -6,9 +6,11 @@ class RSColors {
   static const Color bottomNavigationIcon = Colors.black87;
   static const Color bottomNavigationText = Colors.black87;
 
+  // common
   static const Color divider = Colors.white70;
   static const Color subText = Colors.grey;
   static const Color staticIcon = Colors.white;
+  static const Color textAttention = Colors.yellowAccent;
 
   // Chip
   static final Color chipBackground = Colors.grey.shade600;
