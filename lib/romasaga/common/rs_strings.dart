@@ -53,6 +53,8 @@ class RSStrings {
   static const String LetterJulyShortTitle = '7月 アザミとタコ';
   static const String LetterAugustTitle = '8月 砂浜でサガフロ勢競争';
   static const String LetterAugustShortTitle = '8月 砂浜リレー';
+  static const String LetterSeptemberTitle = '9月 エレンとモニカの夜祭り';
+  static const String LetterSeptemberShortTitle = '9月 夜祭り';
 
   static const String AccountTabTitle = 'アカウント';
   static const String AccountLoginWithGoogle = 'Googleアカウントでログイン';

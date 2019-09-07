@@ -46,11 +46,12 @@ class RSColors {
   static const Color filterText = Colors.white;
 
   // お便り画面
-  static const Color thumbnailCardBackground = Colors.white;
+  static const Color thumbnailCardBackground = Color(0xFF4C4C4C);
   static const Color titleShadow = Colors.grey;
   static const Color winter = Colors.orange;
   static const Color spring = Colors.pinkAccent;
   static const Color summer = Colors.blueAccent;
+  static const Color fall = Color(0xFFF2E100);
 
   // アカウント画面
   static const Color dataLoadStatusNone = Colors.grey;
