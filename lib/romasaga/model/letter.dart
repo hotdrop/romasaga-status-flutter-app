@@ -94,6 +94,15 @@ class Letter {
           shortTitle: RSStrings.LetterAugustShortTitle,
           themeColor: RSColors.summer,
         );
+      case LetterType.september:
+        return Letter._(
+          type: type,
+          gifResource: 'res/letters/201909_award.gif',
+          thumbnail: 'res/letters/201909_award_static.jpg',
+          title: RSStrings.LetterSeptemberTitle,
+          shortTitle: RSStrings.LetterSeptemberShortTitle,
+          themeColor: RSColors.fall,
+        );
       default:
         return null;
     }
@@ -109,4 +118,5 @@ enum LetterType {
   june,
   july,
   august,
+  september,
 }
