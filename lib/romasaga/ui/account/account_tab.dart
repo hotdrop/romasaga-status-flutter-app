@@ -32,13 +32,12 @@ class SettingTab extends StatelessWidget {
   Widget _widgetContents() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        switch (viewModel.status) {
-          case Status.loading:
-            return _loadingContents(context);
-          case Status.loggedIn:
-            return _loggedInContents(context);
-          default:
-            return _noneLoginContents(context);
+        if (viewModel.nowLoading) {
+          return _loadingContents(context);
+        } else if (viewModel.loggedIn) {
+          return _loggedInContents(context);
+        } else {
+          return _noneLoginContents(context);
         }
       },
     );
