@@ -67,6 +67,7 @@ class CharacterApi {
   }
 
   Future<Style> _jsonObjectToStyle(int characterId, StyleJsonObject obj) async {
+    RSLogger.d("キャラID=$characterId icon=${obj.iconFileName}");
     final iconFilePath = await _rsService.getCharacterIconUrl(obj.iconFileName);
     return Style(
       characterId,
