@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart' as foundation;
 
-import '../view_state.dart';
-
 import '../../data/character_repository.dart';
 import '../../data/my_status_repository.dart';
 
@@ -10,7 +8,7 @@ import '../../model/weapon.dart';
 
 import '../../common/rs_logger.dart';
 
-class CharListViewModel extends foundation.ChangeNotifier with ViewState {
+class CharListViewModel extends foundation.ChangeNotifier {
   final CharacterRepository _characterRepository;
   final MyStatusRepository _myStatusRepository;
 
@@ -21,23 +19,29 @@ class CharListViewModel extends foundation.ChangeNotifier with ViewState {
       : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
         _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
+  _State _state = _State.none;
+
+  bool get isLoading => _state == _State.loading;
+  bool get isSuccess => _state == _State.success;
+  bool get isError => _state == _State.error;
+
   void load() async {
     refreshCharacters();
   }
 
   void refreshCharacters() async {
-    onLoading();
+    _state = _State.loading;
     notifyListeners();
 
     try {
       _characters = await _characterRepository.load();
       await _loadMyStatuses();
-      onSuccess();
+      _state = _State.success;
 
       orderBy(OrderType.status);
     } catch (e) {
       RSLogger.e("キャラ情報ロード時にエラー", e);
-      onError();
+      _state = _State.error;
       notifyListeners();
     }
   }
@@ -109,3 +113,4 @@ class CharListViewModel extends foundation.ChangeNotifier with ViewState {
 }
 
 enum OrderType { status, weapon }
+enum _State { none, loading, success, error }
