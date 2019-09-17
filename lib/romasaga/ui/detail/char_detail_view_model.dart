@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart' as foundation;
 
-import '../view_state.dart';
-
 import '../../model/character.dart';
 import '../../model/style.dart';
 import '../../model/status.dart';
@@ -15,7 +13,7 @@ import '../../data/stage_repository.dart';
 import '../../common/rs_strings.dart';
 import '../../common/rs_logger.dart';
 
-class CharDetailViewModel extends foundation.ChangeNotifier with ViewState {
+class CharDetailViewModel extends foundation.ChangeNotifier {
   final CharacterRepository _characterRepository;
   final StageRepository _stageRepository;
   final MyStatusRepository _myStatusRepository;
@@ -35,7 +33,6 @@ class CharDetailViewModel extends foundation.ChangeNotifier with ViewState {
 
   void load() async {
     RSLogger.d('ロードします。');
-    onLoading();
 
     _stages = await _stageRepository.load();
     _selectedStage = _stages.first;
@@ -47,8 +44,6 @@ class CharDetailViewModel extends foundation.ChangeNotifier with ViewState {
     }
 
     _selectedStyle = _character.getSelectedStyle();
-
-    onSuccess();
     notifyListeners();
   }
 

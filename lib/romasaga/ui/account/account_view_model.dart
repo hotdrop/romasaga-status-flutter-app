@@ -24,10 +24,10 @@ class SettingViewModel extends foundation.ChangeNotifier {
         _accountRepository = (accountRepo == null) ? AccountRepository() : accountRepo;
 
   // 全体のステータス
-  Status _status = Status.loading;
-  Status get status => _status;
+  _Status _status = _Status.loading;
 
-  bool get nowLoading => status == Status.loading;
+  bool get nowLoading => _status == _Status.loading;
+  bool get loggedIn => _status == _Status.loggedIn;
 
   // 個別のステータス
   DataLoadingStatus loadingCharacter = DataLoadingStatus.none;
@@ -47,7 +47,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
 
     if (!isLogIn) {
       RSLogger.d('未ログインのためキャラデータとステージデータはロードしません。');
-      _status = Status.notLogin;
+      _status = _Status.notLogin;
       notifyListeners();
       return;
     }
@@ -55,7 +55,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
     _previousBackupDateStr = await _myStatusRepository.getPreviousBackupDateStr();
     await _loadDataCount();
 
-    _status = Status.loggedIn;
+    _status = _Status.loggedIn;
     notifyListeners();
   }
 
@@ -63,18 +63,18 @@ class SettingViewModel extends foundation.ChangeNotifier {
   String get loginEmail => _accountRepository.getEmail();
 
   Future<void> loginWithGoogle() async {
-    _status = Status.loading;
+    _status = _Status.loading;
     try {
       notifyListeners();
 
       await _accountRepository.login();
       await _loadDataCount();
 
-      _status = Status.loggedIn;
+      _status = _Status.loggedIn;
       notifyListeners();
     } catch (e) {
       RSLogger.e('ログイン中にエラーが発生しました。', e);
-      _status = Status.notLogin;
+      _status = _Status.notLogin;
     }
   }
 
@@ -84,15 +84,15 @@ class SettingViewModel extends foundation.ChangeNotifier {
   }
 
   Future<void> logout() async {
-    _status = Status.loading;
+    _status = _Status.loading;
     try {
       await _accountRepository.logout();
 
-      _status = Status.notLogin;
+      _status = _Status.notLogin;
       notifyListeners();
     } catch (e) {
       RSLogger.e('ログアウト中にエラーが発生しました。', e);
-      _status = Status.loggedIn;
+      _status = _Status.loggedIn;
     }
   }
 
@@ -195,7 +195,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
   }
 }
 
-enum Status {
+enum _Status {
   loading,
   notLogin,
   loggedIn,
