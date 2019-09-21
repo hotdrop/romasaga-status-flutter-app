@@ -174,8 +174,7 @@ class CharDetailPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, left: 24.0),
+                Expanded(
                   child: RankChoiceChip(
                     ranks: viewModel.getAllRanks(),
                     initSelectedRank: viewModel.selectedRank,
