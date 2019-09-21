@@ -7,7 +7,10 @@
       "production": "ロマンシング・サガ2",
       "styles": [
         {"rank": "SS", "title": "運命を背負う者", "str": 50, "vit": 48, "dex": 48, "agi": 45, "int": 43, "spi": 45, "love": 44, "attr": 45, "icon": "saisyukoutei_ss.jpg"},
-        {"rank": "ホワSS", "title": "皇位でなくてすまない", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "saisyukoutei_white_ss.jpg"}
+        {"rank": "ホワSS", "title": "皇位でなくてすまない", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "saisyukoutei_white_ss.jpg"},
+        {"rank": "S", "title": "よし、準備しよう", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "saisyukoutei_white_ss.jpg"},
+        {"rank": "A", "title": "テストその1", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "saisyukoutei_white_ss.jpg"},
+        {"rank": "スパSS", "title": "テストその2", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "saisyukoutei_white_ss.jpg"}
       ]
     }
   ]
