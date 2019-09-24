@@ -58,7 +58,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   String get selectedRank => _character.selectedStyleRank;
   Style style(String rank) => _character.getStyle(rank);
 
-  String get selectedIconFileName => _selectedStyle.iconFilePath;
+  String get selectedIconFilePath => _selectedStyle.iconFilePath;
   String get selectedStyleRank => _selectedStyle.rank;
   String get selectedStyleTitle => _selectedStyle.title;
 

@@ -90,7 +90,7 @@ class CharDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
-              child: RSIcon.characterLargeSize(viewModel.selectedIconFileName),
+              child: RSIcon.characterLargeSize(viewModel.selectedIconFilePath),
               onTap: () async {
                 _showDialog(context, viewModel);
               },

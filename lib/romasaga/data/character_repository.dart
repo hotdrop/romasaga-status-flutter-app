@@ -30,26 +30,29 @@ class CharacterRepository {
     return characters;
   }
 
-  Future<void> refreshOnlyNewCharacters() async {
-    final characters = await _remoteDataSource.findAll();
-    RSLogger.d('リモートから${characters.length}件のデータを取得しました。');
-
+  ///
+  /// キャラデータはネットワーク経由で取得しても秒速なのだがアイコンのURL取得処理が異常に重い。
+  /// アイコン画像をstorageに置いており、いちいちアイコン名からURLを取得するので仕方ないのだが新ガチャのたびにキャラ追加が行われるので
+  /// これを頻繁にやってたら面倒になった。
+  /// なので、すでにアイコンURLを取得しているものはそのままにして新規データのみ取得するようなメソッドを作成した
+  ///
+  Future<void> update() async {
+    final remoteCharacters = await _remoteDataSource.findAll();
     final localCharacters = await _localDataSource.findAllSummary();
-    final registeredIds = localCharacters.map((c) => c.id).toList();
-    RSLogger.d('登録済みのためスキップする件数は${registeredIds.length}件です。');
 
-    final newCharacters = await _remoteDataSource.findByExcludeIds(registeredIds);
-    await _localDataSource.save(newCharacters);
+    final newCharacters = await _updateStyles(remoteCharacters, localCharacters: localCharacters);
+
+    await _localDataSource.refresh(newCharacters);
   }
 
   ///
   /// リモートから全キャラデータを取得しローカルに保存する
   ///
   Future<void> refresh() async {
-    final characters = await _remoteDataSource.findAll();
-    RSLogger.d('リモートから${characters.length}件のデータを取得しました。');
+    final remoteCharacters = await _remoteDataSource.findAll();
 
-    await _localDataSource.refresh(characters);
+    final newCharacters = await _updateStyles(remoteCharacters);
+    await _localDataSource.refresh(newCharacters);
   }
 
   Future<int> count() async {
@@ -60,7 +63,33 @@ class CharacterRepository {
     return _localDataSource.findStyles(id);
   }
 
-  Future<void> saveSelectedRank(int id, String rank, String iconFileName) async {
-    return await _localDataSource.saveSelectedStyle(id, rank, iconFileName);
+  Future<void> saveSelectedRank(int id, String rank, String iconFilePath) async {
+    return await _localDataSource.saveSelectedStyle(id, rank, iconFilePath);
+  }
+
+  /// TODO ここテストコード書く
+  Future<List<Character>> _updateStyles(List<Character> latestCharacters, {List<Character> localCharacters}) async {
+    final resultCharacter = <Character>[];
+
+    for (var latestCharacter in latestCharacters) {
+      final localCharacter = localCharacters?.firstWhere((lc) => lc.id == latestCharacter.id);
+
+      for (var style in latestCharacter.styles) {
+        var localStyle = localCharacter?.styles?.firstWhere((ls) => ls.rank == style.rank);
+
+        if (localStyle != null && localStyle.iconFilePath.isNotEmpty) {
+          style.iconFilePath = localStyle.iconFilePath;
+        } else {
+          style.iconFilePath = await _remoteDataSource.findIconUrl(style.iconFileName);
+        }
+
+        if (latestCharacter.selectedStyleRank == style.rank) {
+          latestCharacter.selectedIconFilePath = style.iconFilePath;
+        }
+      }
+      resultCharacter.add(latestCharacter);
+    }
+
+    return resultCharacter;
   }
 }
