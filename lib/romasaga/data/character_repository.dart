@@ -38,7 +38,10 @@ class CharacterRepository {
   ///
   Future<void> update() async {
     final remoteCharacters = await _remoteDataSource.findAll();
+    RSLogger.d('リモートからデータ取得 件数=${remoteCharacters.length}');
+
     final localCharacters = await _localDataSource.findAllSummary();
+    RSLogger.d('ローカルからデータ取得 件数=${remoteCharacters.length}');
 
     final newCharacters = await _updateStyles(remoteCharacters, localCharacters: localCharacters);
 
@@ -50,6 +53,7 @@ class CharacterRepository {
   ///
   Future<void> refresh() async {
     final remoteCharacters = await _remoteDataSource.findAll();
+    RSLogger.d('リモートからデータ取得 件数=${remoteCharacters.length}');
 
     final newCharacters = await _updateStyles(remoteCharacters);
     await _localDataSource.refresh(newCharacters);
@@ -67,7 +71,6 @@ class CharacterRepository {
     return await _localDataSource.saveSelectedStyle(id, rank, iconFilePath);
   }
 
-  /// TODO ここテストコード書く
   Future<List<Character>> _updateStyles(List<Character> latestCharacters, {List<Character> localCharacters}) async {
     final resultCharacter = <Character>[];
 
