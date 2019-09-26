@@ -44,7 +44,7 @@ class Mapper {
       style.characterId,
       style.rank,
       style.title,
-      style.iconFilePath,
+      style.iconFileName,
       style.str,
       style.vit,
       style.dex,
@@ -53,6 +53,7 @@ class Mapper {
       style.spirit,
       style.love,
       style.attr,
+      style.iconFilePath,
     );
   }
 

@@ -67,14 +67,6 @@ class CharacterSource {
     return count;
   }
 
-  Future<void> save(List<Character> characters) async {
-    final db = await DBProvider.instance.database;
-
-    db.transaction((txn) async {
-      await _insert(txn, characters);
-    });
-  }
-
   Future<void> refresh(List<Character> characters) async {
     final db = await DBProvider.instance.database;
     db.transaction((txn) async {
@@ -100,14 +92,14 @@ class CharacterSource {
     }
   }
 
-  Future<void> saveSelectedStyle(int id, String rank, String iconFileName) async {
+  Future<void> saveSelectedStyle(int id, String rank, String iconFilePath) async {
     final db = await DBProvider.instance.database;
     await db.rawUpdate("""
       UPDATE 
         ${CharacterEntity.tableName}
       SET 
         ${CharacterEntity.columnSelectedStyleRank} = '$rank', 
-        ${CharacterEntity.columnSelectedIconFilePath} = '$iconFileName' 
+        ${CharacterEntity.columnSelectedIconFilePath} = '$iconFilePath' 
       WHERE 
         ${CharacterEntity.columnId} = $id
       """);
