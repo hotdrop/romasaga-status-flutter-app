@@ -72,13 +72,18 @@ class CharacterRepository {
   }
 
   Future<List<Character>> _updateStyles(List<Character> latestCharacters, {List<Character> localCharacters}) async {
-    final resultCharacter = <Character>[];
+    final result = <Character>[];
 
-    for (var latestCharacter in latestCharacters) {
-      final localCharacter = localCharacters?.firstWhere((lc) => lc.id == latestCharacter.id);
+    // listのfirstWhereで同一idを見つけようと思ったがforをぶん回していて効率悪そうだったのでmapを作る
+    final localMap = <int, Character>{};
+    localCharacters?.forEach((lc) => localMap[lc.id] = lc);
 
-      for (var style in latestCharacter.styles) {
-        var localStyle = localCharacter?.styles?.firstWhere((ls) => ls.rank == style.rank);
+    for (var latest in latestCharacters) {
+      final localCharacter = localMap.containsKey(latest.id) ? localMap[latest.id] : null;
+
+      for (var style in latest.styles) {
+        // ここはスタイル自体がせいぜい数個程度なのでfirstWhereを使う
+        final localStyle = localCharacter?.styles?.firstWhere((ls) => ls.rank == style.rank, orElse: () => null);
 
         if (localStyle != null && localStyle.iconFilePath.isNotEmpty) {
           style.iconFilePath = localStyle.iconFilePath;
@@ -86,13 +91,13 @@ class CharacterRepository {
           style.iconFilePath = await _remoteDataSource.findIconUrl(style.iconFileName);
         }
 
-        if (latestCharacter.selectedStyleRank == style.rank) {
-          latestCharacter.selectedIconFilePath = style.iconFilePath;
+        if (latest.selectedStyleRank == style.rank) {
+          latest.selectedIconFilePath = style.iconFilePath;
         }
       }
-      resultCharacter.add(latestCharacter);
+      result.add(latest);
     }
 
-    return resultCharacter;
+    return result;
   }
 }
