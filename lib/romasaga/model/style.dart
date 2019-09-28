@@ -4,7 +4,7 @@ class Style {
   final int characterId;
   final String rank;
   final String title;
-  final String iconFilePath;
+  final String iconFileName;
 
   final int str;
   final int vit;
@@ -15,11 +15,14 @@ class Style {
   final int love;
   final int attr;
 
+  // アイコンはネットワーク経由で取得するためパスを別に取得する必要がありfinalをつけていない
+  String iconFilePath;
+
   Style(
     this.characterId,
     this.rank,
     this.title,
-    this.iconFilePath,
+    this.iconFileName,
     this.str,
     this.vit,
     this.dex,

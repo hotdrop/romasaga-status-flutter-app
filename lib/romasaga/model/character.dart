@@ -48,8 +48,4 @@ class Character {
   int getTotalStatus() {
     return myStatus.sumWithoutHp();
   }
-
-  String _findIconFilePath() {
-    // TODO FireStoreへ
-  }
 }

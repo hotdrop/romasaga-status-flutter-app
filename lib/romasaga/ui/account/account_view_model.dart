@@ -105,7 +105,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
     notifyListeners();
 
     try {
-      await _characterRepository.refreshOnlyNewCharacters();
+      await _characterRepository.update();
       loadingCharacter = DataLoadingStatus.complete;
     } catch (e) {
       RSLogger.e('新キャラのデータ登録処理でエラーが発生しました', e);

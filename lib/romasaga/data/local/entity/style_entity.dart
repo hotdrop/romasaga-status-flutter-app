@@ -6,7 +6,7 @@ class StyleEntity {
         $columnCharacterId INTEGER,
         $columnRank TEXT,
         $columnTitle TEXT,
-        $columnIconFilePath TEXT,
+        $columnIconFileName TEXT,
         $columnStr INTEGER,
         $columnVit INTEGER,
         $columnDex INTEGER,
@@ -14,7 +14,8 @@ class StyleEntity {
         $columnInt INTEGER,
         $columnSpirit INTEGER,
         $columnLove INTEGER,
-        $columnAttr INTEGER
+        $columnAttr INTEGER,
+        $columnIconFilePath TEXT,
       )
       ''';
 
@@ -30,8 +31,8 @@ class StyleEntity {
   static const String columnTitle = 'title';
   final String title;
 
-  static const String columnIconFilePath = 'icon_file_path';
-  final String iconFilePath;
+  static const String columnIconFileName = 'icon_file_name';
+  final String iconFileName;
 
   static const String columnStr = 'str';
   final int str;
@@ -57,11 +58,14 @@ class StyleEntity {
   static const String columnAttr = 'attr';
   final int attr;
 
+  static const String columnIconFilePath = 'icon_file_path';
+  final String iconFilePath;
+
   StyleEntity(
     this.characterId,
     this.rank,
     this.title,
-    this.iconFilePath,
+    this.iconFileName,
     this.str,
     this.vit,
     this.dex,
@@ -70,6 +74,7 @@ class StyleEntity {
     this.spirit,
     this.love,
     this.attr,
+    this.iconFilePath,
   );
 
   StyleEntity.fromMap(Map<String, dynamic> map)
@@ -77,7 +82,7 @@ class StyleEntity {
         characterId = map[columnCharacterId],
         rank = map[columnRank],
         title = map[columnTitle],
-        iconFilePath = map[columnIconFilePath],
+        iconFileName = map[columnIconFileName],
         str = map[columnStr],
         vit = map[columnVit],
         dex = map[columnDex],
@@ -85,14 +90,15 @@ class StyleEntity {
         intelligence = map[columnInt],
         spirit = map[columnSpirit],
         love = map[columnLove],
-        attr = map[columnAttr];
+        attr = map[columnAttr],
+        iconFilePath = map[columnIconFilePath];
 
   Map<String, dynamic> toMap() {
     final map = <String, dynamic>{
       columnCharacterId: characterId,
       columnRank: rank,
       columnTitle: title,
-      columnIconFilePath: iconFilePath,
+      columnIconFileName: iconFileName,
       columnStr: str,
       columnVit: vit,
       columnDex: dex,
@@ -101,6 +107,7 @@ class StyleEntity {
       columnSpirit: spirit,
       columnLove: love,
       columnAttr: attr,
+      columnIconFilePath: iconFilePath,
     };
 
     if (id != null) {
