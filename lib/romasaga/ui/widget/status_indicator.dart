@@ -65,7 +65,7 @@ class StatusIndicator {
 
   static List<Color> _linearGradientColors(int diffLimit, int currentStatus) {
     if (currentStatus == 0) {
-      return [RSColors.statusNone];
+      return [RSColors.statusNoneGraphStart, RSColors.statusNoneGraphEnd];
     } else if (diffLimit < -6) {
       return [RSColors.statusLackGraphStart, RSColors.statusLackGraphEnd];
     } else if (diffLimit >= -6 && diffLimit < -3) {
