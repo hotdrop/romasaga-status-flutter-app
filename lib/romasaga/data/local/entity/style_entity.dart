@@ -15,7 +15,7 @@ class StyleEntity {
         $columnSpirit INTEGER,
         $columnLove INTEGER,
         $columnAttr INTEGER,
-        $columnIconFilePath TEXT,
+        $columnIconFilePath TEXT
       )
       ''';
 

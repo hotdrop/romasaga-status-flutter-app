@@ -36,6 +36,27 @@ class CharacterSource {
 
   ///
   /// 全キャラクター情報を取得
+  ///
+  Future<List<Character>> findAll() async {
+    final db = await DBProvider.instance.database;
+
+    final fromDb = await db.query(CharacterEntity.tableName);
+    final fromDbStyle = await db.query(StyleEntity.tableName);
+
+    if (fromDb.isEmpty) {
+      return [];
+    }
+
+    final styles = fromDbStyle.map((result) => StyleEntity.fromMap(result)).map((entity) => Mapper.toStyle(entity)).toList();
+
+    return fromDb.map((result) => CharacterEntity.fromMap(result)).map((entity) => Mapper.toCharacter(entity)).map((character) {
+      styles.where((style) => style.characterId == character.id).forEach((style) => character.addStyle(style));
+      return character;
+    }).toList();
+  }
+
+  ///
+  /// 全キャラクター情報を取得
   /// スタイル情報は取ってこないので注意
   ///
   Future<List<Character>> findAllSummary() async {
@@ -107,7 +128,6 @@ class CharacterSource {
 
   ///
   /// このメソッドはCharacterApiの_parseとほぼ同じ。
-  /// アイコンファイルがダミーでありリモートから読む必要がないのでその処理だけ除外したもの
   ///
   List<Character> _parse(CharactersJsonObject obj) {
     final characters = <Character>[];
@@ -124,6 +144,8 @@ class CharacterSource {
 
     for (var styleObj in obj.styles) {
       final style = _jsonObjectToStyle(character.id, styleObj);
+      // ダミーなのでPathもNameと同値にする
+      style.iconFilePath = style.iconFileName;
       character.addStyle(style);
 
       if (character.selectedStyleRank == null) {

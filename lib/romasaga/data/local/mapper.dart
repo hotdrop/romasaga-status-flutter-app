@@ -71,7 +71,7 @@ class Mapper {
       entity.spirit,
       entity.love,
       entity.attr,
-    );
+    )..iconFilePath = entity.iconFilePath;
   }
 
   static MyStatusEntity toMyStatusEntity(MyStatus status) {

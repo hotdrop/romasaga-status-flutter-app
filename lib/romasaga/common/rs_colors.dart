@@ -29,6 +29,8 @@ class RSColors {
 
   // キャラ詳細画面 - ステータス
   static const Color statusNone = Colors.black;
+  static const Color statusNoneGraphStart = Colors.black;
+  static const Color statusNoneGraphEnd = Colors.black;
 
   static const Color statusLack = Colors.redAccent;
   static const Color statusLackGraphStart = Color(0xFFFF8687);
