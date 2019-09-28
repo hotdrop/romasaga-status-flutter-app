@@ -40,12 +40,47 @@ class CharacterRepository {
     final remoteCharacters = await _remoteDataSource.findAll();
     RSLogger.d('リモートからデータ取得 件数=${remoteCharacters.length}');
 
-    final localCharacters = await _localDataSource.findAllSummary();
-    RSLogger.d('ローカルからデータ取得 件数=${remoteCharacters.length}');
+    final localCharacters = await _localDataSource.findAll();
+    RSLogger.d('ローカルからデータ取得 件数=${localCharacters.length}');
 
-    final newCharacters = await _updateStyles(remoteCharacters, localCharacters: localCharacters);
+    final newCharacters = await _updateStyles(remoteCharacters, localCharacters);
 
     await _localDataSource.refresh(newCharacters);
+  }
+
+  Future<List<Character>> _updateStyles(List<Character> remoteCharacters, List<Character> localCharacters) async {
+    final result = <Character>[];
+
+    // listのfirstWhereで同一idを見つけようと思ったがforをぶん回していて効率悪そうだったのでmapを作る
+    final localMap = <int, Character>{};
+    localCharacters?.forEach((lc) => localMap[lc.id] = lc);
+
+    for (var latest in remoteCharacters) {
+      final localCharacter = localMap.containsKey(latest.id) ? localMap[latest.id] : null;
+
+      RSLogger.d('キャラ ${latest.name} ローカルには $localCharacter} ');
+      for (var style in latest.styles) {
+        // ここはスタイル自体がせいぜい数個程度なのでfirstWhereを使う
+        RSLogger.d('取得したスタイル ${style.rank} ');
+        final localStyle = localCharacter?.styles?.firstWhere((ls) => ls.rank == style.rank, orElse: () => null);
+
+        RSLogger.d('DBから取得したstyle = $localStyle');
+        if (localStyle != null && localStyle.iconFilePath.isNotEmpty) {
+          RSLogger.d('${latest.name}のスタイル${localStyle.rank} はアイコン取得済みなのでスキップ');
+          style.iconFilePath = localStyle.iconFilePath;
+        } else {
+          RSLogger.d('${latest.name}のスタイル${style.rank} はアイコン未取得なのでリモートから取得');
+          style.iconFilePath = await _remoteDataSource.findIconUrl(style.iconFileName);
+        }
+
+        if (latest.selectedStyleRank == style.rank) {
+          latest.selectedIconFilePath = style.iconFilePath;
+        }
+      }
+      result.add(latest);
+    }
+
+    return result;
   }
 
   ///
@@ -55,8 +90,27 @@ class CharacterRepository {
     final remoteCharacters = await _remoteDataSource.findAll();
     RSLogger.d('リモートからデータ取得 件数=${remoteCharacters.length}');
 
-    final newCharacters = await _updateStyles(remoteCharacters);
+    final newCharacters = await _refreshStyles(remoteCharacters);
     await _localDataSource.refresh(newCharacters);
+  }
+
+  ///
+  /// リフレッシュはローカルのデータ無視して全更新する
+  ///
+  Future<List<Character>> _refreshStyles(List<Character> characters) async {
+    final result = <Character>[];
+    for (var character in characters) {
+      for (var style in character.styles) {
+        style.iconFilePath = await _remoteDataSource.findIconUrl(style.iconFileName);
+
+        if (character.selectedStyleRank == style.rank) {
+          character.selectedIconFilePath = style.iconFilePath;
+        }
+      }
+      result.add(character);
+    }
+
+    return result;
   }
 
   Future<int> count() async {
@@ -69,35 +123,5 @@ class CharacterRepository {
 
   Future<void> saveSelectedRank(int id, String rank, String iconFilePath) async {
     return await _localDataSource.saveSelectedStyle(id, rank, iconFilePath);
-  }
-
-  Future<List<Character>> _updateStyles(List<Character> latestCharacters, {List<Character> localCharacters}) async {
-    final result = <Character>[];
-
-    // listのfirstWhereで同一idを見つけようと思ったがforをぶん回していて効率悪そうだったのでmapを作る
-    final localMap = <int, Character>{};
-    localCharacters?.forEach((lc) => localMap[lc.id] = lc);
-
-    for (var latest in latestCharacters) {
-      final localCharacter = localMap.containsKey(latest.id) ? localMap[latest.id] : null;
-
-      for (var style in latest.styles) {
-        // ここはスタイル自体がせいぜい数個程度なのでfirstWhereを使う
-        final localStyle = localCharacter?.styles?.firstWhere((ls) => ls.rank == style.rank, orElse: () => null);
-
-        if (localStyle != null && localStyle.iconFilePath.isNotEmpty) {
-          style.iconFilePath = localStyle.iconFilePath;
-        } else {
-          style.iconFilePath = await _remoteDataSource.findIconUrl(style.iconFileName);
-        }
-
-        if (latest.selectedStyleRank == style.rank) {
-          latest.selectedIconFilePath = style.iconFilePath;
-        }
-      }
-      result.add(latest);
-    }
-
-    return result;
   }
 }
