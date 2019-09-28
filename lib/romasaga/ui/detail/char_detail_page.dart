@@ -139,7 +139,7 @@ class CharDetailPage extends StatelessWidget {
       final myStatus = viewModel.myStatus;
       return Column(
         children: <Widget>[
-          _statusIndicator(RSStrings.HpName, myStatus.hp, 0),
+          _statusIndicator(RSStrings.HpName, myStatus.hp, 1), // 0だとStatusIndicator.createで0割してしまうので1にする。
           _statusIndicator(RSStrings.StrName, myStatus.str, viewModel.getStatusUpperLimit(RSStrings.StrName)),
           _statusIndicator(RSStrings.VitName, myStatus.vit, viewModel.getStatusUpperLimit(RSStrings.VitName)),
           _statusIndicator(RSStrings.DexName, myStatus.dex, viewModel.getStatusUpperLimit(RSStrings.DexName)),
