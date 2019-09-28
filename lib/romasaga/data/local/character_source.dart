@@ -107,7 +107,6 @@ class CharacterSource {
 
   ///
   /// このメソッドはCharacterApiの_parseとほぼ同じ。
-  /// アイコンファイルがダミーでありリモートから読む必要がないのでその処理だけ除外したもの
   ///
   List<Character> _parse(CharactersJsonObject obj) {
     final characters = <Character>[];
@@ -124,6 +123,8 @@ class CharacterSource {
 
     for (var styleObj in obj.styles) {
       final style = _jsonObjectToStyle(character.id, styleObj);
+      // ダミーなのでPathもNameと同値にする
+      style.iconFilePath = style.iconFileName;
       character.addStyle(style);
 
       if (character.selectedStyleRank == null) {
