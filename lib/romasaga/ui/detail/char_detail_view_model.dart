@@ -26,7 +26,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
         _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
   List<Stage> _stages;
-  List<Stage> get stages => _stages;
+  List<Stage> get stages => _stages ?? [];
 
   Style _selectedStyle;
   Stage _selectedStage;
@@ -58,9 +58,8 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   String get selectedRank => _character.selectedStyleRank;
   Style style(String rank) => _character.getStyle(rank);
 
-  String get selectedIconFilePath => _selectedStyle.iconFilePath;
-  String get selectedStyleRank => _selectedStyle.rank;
-  String get selectedStyleTitle => _selectedStyle.title;
+  String get selectedIconFilePath => _selectedStyle?.iconFilePath ?? 'default';
+  String get selectedStyleTitle => _selectedStyle?.title ?? '';
 
   void onSelectRank(String rank) {
     _selectedStyle = _character.getStyle(rank);
