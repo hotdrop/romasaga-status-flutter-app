@@ -111,12 +111,12 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
         targetStatus = _selectedStyle?.attr;
         break;
       default:
-        targetStatus = 0;
+        targetStatus = null;
         break;
     }
 
     if (targetStatus == null) {
-      return 0;
+      return 1;
     }
     return targetStatus + _selectedStage.limit;
   }
