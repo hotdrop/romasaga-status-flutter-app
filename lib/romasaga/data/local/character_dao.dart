@@ -13,25 +13,12 @@ import '../../model/style.dart';
 
 import '../../common/rs_logger.dart';
 
-class CharacterSource {
-  static final CharacterSource _instance = CharacterSource._();
+class CharacterDao {
+  static final CharacterDao _instance = CharacterDao._();
 
-  const CharacterSource._();
-  factory CharacterSource() {
+  const CharacterDao._();
+  factory CharacterDao() {
     return _instance;
-  }
-
-  Future<void> loadDummy({String localPath = 'res/json/characters.json'}) async {
-    try {
-      await rootBundle.loadStructuredData(localPath, (String json) async {
-        final jsonObjects = CharactersJsonObject.parse(json);
-        final characters = _parse(jsonObjects);
-        await refresh(characters);
-      });
-    } on IOException catch (e) {
-      RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
-      throw e;
-    }
   }
 
   ///
@@ -88,6 +75,17 @@ class CharacterSource {
     return count;
   }
 
+  Future<List<Character>> loadDummy({String localPath = 'res/json/characters.json'}) async {
+    try {
+      return await rootBundle.loadStructuredData(localPath, (String json) async {
+        return CharactersJsonObject.parse(json);
+      });
+    } on IOException catch (e) {
+      RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
+      throw e;
+    }
+  }
+
   Future<void> refresh(List<Character> characters) async {
     final db = await DBProvider.instance.database;
     db.transaction((txn) async {
@@ -124,53 +122,5 @@ class CharacterSource {
       WHERE 
         ${CharacterEntity.columnId} = $id
       """);
-  }
-
-  ///
-  /// このメソッドはCharacterApiの_parseとほぼ同じ。
-  ///
-  List<Character> _parse(CharactersJsonObject obj) {
-    final characters = <Character>[];
-
-    for (var charObj in obj.characters) {
-      final character = _jsonObjectToCharacter(charObj);
-      characters.add(character);
-    }
-    return characters;
-  }
-
-  Character _jsonObjectToCharacter(CharacterJsonObject obj) {
-    final character = Character(obj.id, obj.name, obj.production, obj.weaponType);
-
-    for (var styleObj in obj.styles) {
-      final style = _jsonObjectToStyle(character.id, styleObj);
-      // ダミーなのでPathもNameと同値にする
-      style.iconFilePath = style.iconFileName;
-      character.addStyle(style);
-
-      if (character.selectedStyleRank == null) {
-        character.selectedStyleRank = style.rank;
-        character.selectedIconFilePath = style.iconFilePath;
-      }
-    }
-
-    return character;
-  }
-
-  Style _jsonObjectToStyle(int characterId, StyleJsonObject obj) {
-    return Style(
-      characterId,
-      obj.rank,
-      obj.title,
-      obj.iconFileName,
-      obj.str,
-      obj.vit,
-      obj.dex,
-      obj.agi,
-      obj.intelligence,
-      obj.spi,
-      obj.love,
-      obj.attr,
-    );
   }
 }

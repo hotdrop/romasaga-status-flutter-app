@@ -11,19 +11,18 @@ import '../../model/stage.dart';
 
 import '../../common/rs_logger.dart';
 
-class StageSource {
-  static final StageSource _instance = StageSource._();
+class StageDao {
+  static final StageDao _instance = StageDao._();
 
-  const StageSource._();
-  factory StageSource() {
+  const StageDao._();
+  factory StageDao() {
     return _instance;
   }
 
-  Future<List<Stage>> load({String localPath = 'res/json/stage.json'}) async {
+  Future<List<Stage>> loadDummy({String localPath = 'res/json/stage.json'}) async {
     try {
       return await rootBundle.loadStructuredData(localPath, (String json) async {
-        final jsonObjects = StagesJsonObject.parse(json);
-        return StagesJsonObject.toModel(jsonObjects);
+        return StagesJsonObject.parse(json);
       });
     } on IOException catch (e) {
       RSLogger.e('ステージデータの取得時にエラーが発生しました。', e);

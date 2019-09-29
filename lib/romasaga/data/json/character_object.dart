@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../model/character.dart';
+import '../../model/style.dart';
+
 import '../../common/rs_logger.dart';
 
 @JsonSerializable()
@@ -19,11 +22,54 @@ class CharactersJsonObject {
     );
   }
 
-  static CharactersJsonObject parse(String json) {
+  static List<Character> parse(String json) {
     final jsonMap = jsonDecode(json);
     final results = CharactersJsonObject.fromJson(jsonMap);
     RSLogger.d("Characterをパースしました。 size=${results.characters.length}");
-    return results;
+
+    return _parse(results);
+  }
+
+  static List<Character> _parse(CharactersJsonObject obj) {
+    final characters = <Character>[];
+
+    for (var charObj in obj.characters) {
+      final character = _jsonObjectToCharacter(charObj);
+      characters.add(character);
+    }
+    return characters;
+  }
+
+  static Character _jsonObjectToCharacter(CharacterJsonObject obj) {
+    final character = Character(obj.id, obj.name, obj.production, obj.weaponType);
+
+    for (var styleObj in obj.styles) {
+      final style = _jsonObjectToStyle(character.id, styleObj);
+      character.addStyle(style);
+
+      if (character.selectedStyleRank == null) {
+        character.selectedStyleRank = style.rank;
+      }
+    }
+
+    return character;
+  }
+
+  static Style _jsonObjectToStyle(int characterId, StyleJsonObject obj) {
+    return Style(
+      characterId,
+      obj.rank,
+      obj.title,
+      obj.iconFileName,
+      obj.str,
+      obj.vit,
+      obj.dex,
+      obj.agi,
+      obj.intelligence,
+      obj.spi,
+      obj.love,
+      obj.attr,
+    );
   }
 }
 

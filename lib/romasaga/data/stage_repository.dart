@@ -1,4 +1,4 @@
-import 'local/stage_source.dart';
+import 'local/stage_dao.dart';
 import 'remote/stage_api.dart';
 
 import '../model/stage.dart';
@@ -6,19 +6,22 @@ import '../model/stage.dart';
 import '../common/rs_logger.dart';
 
 class StageRepository {
-  final StageSource _localDataSource;
+  final StageDao _localDataSource;
   final StageApi _remoteDataSource;
 
-  StageRepository({StageSource local, StageApi remote})
-      : _localDataSource = (local == null) ? StageSource() : local,
+  StageRepository({StageDao local, StageApi remote})
+      : _localDataSource = (local == null) ? StageDao() : local,
         _remoteDataSource = (remote == null) ? StageApi() : remote;
 
+  ///
+  /// ステージデータのロード
+  ///
   Future<List<Stage>> load() async {
     var stages = await _localDataSource.findAll();
 
     if (stages.isEmpty) {
       RSLogger.d('キャッシュにデータがないのでローカルファイルを読み込みます。');
-      final tmp = await _localDataSource.load();
+      final tmp = await _localDataSource.loadDummy();
       RSLogger.d('  ${tmp.length}件のデータを取得しました。キャッシュします。');
       await _localDataSource.refresh(tmp);
 

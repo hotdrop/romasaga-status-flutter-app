@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
-import 'package:rsapp/romasaga/data/local/character_source.dart';
+import 'package:rsapp/romasaga/data/local/character_dao.dart';
 import 'package:rsapp/romasaga/data/remote/character_api.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/style.dart';
@@ -291,13 +291,18 @@ void main() {
   });
 }
 
-class FakeCharacterSource extends Fake implements CharacterSource {
+class FakeCharacterSource extends Fake implements CharacterDao {
   List<Character> results;
   List<Character> fakeSummaryData;
 
   @override
   Future<void> refresh(List<Character> characters) {
     results = characters;
+  }
+
+  @override
+  Future<List<Character>> findAll() {
+    return Future.value(fakeSummaryData);
   }
 
   @override

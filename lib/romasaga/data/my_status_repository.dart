@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'local/my_status_source.dart';
+import 'local/my_status_dao.dart';
 import 'remote/my_status_api.dart';
 
 import '../model/status.dart' show MyStatus;
@@ -8,13 +8,13 @@ import '../model/status.dart' show MyStatus;
 import '../common/rs_logger.dart';
 
 class MyStatusRepository {
-  final MyStatusSource _localDataSource;
+  final MyStatusDao _localDataSource;
   final MyStatusApi _remoteDataSource;
 
   static String backupDateKey = 'backup_date_key';
 
-  MyStatusRepository({MyStatusSource local, MyStatusApi remote})
-      : _localDataSource = (local == null) ? MyStatusSource() : local,
+  MyStatusRepository({MyStatusDao local, MyStatusApi remote})
+      : _localDataSource = (local == null) ? MyStatusDao() : local,
         _remoteDataSource = (remote == null) ? MyStatusApi() : remote;
 
   Future<List<MyStatus>> findAll() async {
