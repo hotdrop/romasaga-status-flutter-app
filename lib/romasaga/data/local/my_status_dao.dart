@@ -7,31 +7,13 @@ import '../../model/status.dart' show MyStatus;
 import 'entity/my_status_entity.dart';
 import '../../common/rs_logger.dart';
 
-class MyStatusSource {
-  static final MyStatusSource _instance = MyStatusSource._();
+class MyStatusDao {
+  static final MyStatusDao _instance = MyStatusDao._();
 
-  const MyStatusSource._();
+  const MyStatusDao._();
 
-  factory MyStatusSource() {
+  factory MyStatusDao() {
     return _instance;
-  }
-
-  ///
-  /// 自身のステータス情報を保存
-  ///
-  void save(MyStatus myStatus) async {
-    RSLogger.d('ID=${myStatus.id}のキャラクターのステータスを保存します');
-    final entity = Mapper.toMyStatusEntity(myStatus);
-    final db = await DBProvider.instance.database;
-
-    final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: [myStatus.id]);
-    if (result.isEmpty) {
-      RSLogger.d('ステータスが未登録なのでinsertします。');
-      await db.insert(MyStatusEntity.tableName, entity.toMap());
-    } else {
-      RSLogger.d('ステータスが登録されているのでupdateします。');
-      await db.update(MyStatusEntity.tableName, entity.toMap(), where: '${MyStatusEntity.columnId} = ?', whereArgs: [myStatus.id]);
-    }
   }
 
   ///
@@ -63,6 +45,24 @@ class MyStatusSource {
 
     final entity = MyStatusEntity.fromMap(result.first);
     return Mapper.toMyStatus(entity);
+  }
+
+  ///
+  /// 自身のステータス情報を保存
+  ///
+  void save(MyStatus myStatus) async {
+    RSLogger.d('ID=${myStatus.id}のキャラクターのステータスを保存します');
+    final entity = Mapper.toMyStatusEntity(myStatus);
+    final db = await DBProvider.instance.database;
+
+    final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: [myStatus.id]);
+    if (result.isEmpty) {
+      RSLogger.d('ステータスが未登録なのでinsertします。');
+      await db.insert(MyStatusEntity.tableName, entity.toMap());
+    } else {
+      RSLogger.d('ステータスが登録されているのでupdateします。');
+      await db.update(MyStatusEntity.tableName, entity.toMap(), where: '${MyStatusEntity.columnId} = ?', whereArgs: [myStatus.id]);
+    }
   }
 
   void refresh(List<MyStatus> myStatues) async {

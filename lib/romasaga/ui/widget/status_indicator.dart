@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 
 class StatusIndicator {
   static Widget create(String statusName, int currentStatus, int statusUpperLimit) {
-    return _createIndicator(statusName, currentStatus ?? 0, statusUpperLimit);
+    return _createIndicator(statusName, currentStatus, statusUpperLimit);
   }
 
   static Widget _createIndicator(String name, int currentStatus, int statusUpperLimit) {

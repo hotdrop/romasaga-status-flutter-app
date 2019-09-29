@@ -21,14 +21,15 @@ class StagesJsonObject {
     );
   }
 
-  static StagesJsonObject parse(String json) {
+  static List<Stage> parse(String json) {
     final jsonMap = jsonDecode(json);
     final results = StagesJsonObject.fromJson(jsonMap);
     RSLogger.d('Stageをパースしました。 size=${results.stages.length}');
-    return results;
+
+    return _toModel(results);
   }
 
-  static List<Stage> toModel(StagesJsonObject obj) {
+  static List<Stage> _toModel(StagesJsonObject obj) {
     return obj.stages.map((o) => Stage(o.name, o.limit, o.order)).toList();
   }
 }

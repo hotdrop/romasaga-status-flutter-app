@@ -11,8 +11,7 @@ class StageApi {
   Future<List<Stage>> findAll() async {
     try {
       String json = await _romancingService.readStagesJson();
-      final jsonObjects = StagesJsonObject.parse(json);
-      return StagesJsonObject.toModel(jsonObjects);
+      return StagesJsonObject.parse(json);
     } catch (e) {
       RSLogger.e('ステージデータの取得時にエラーが発生しました。', e);
       throw e;

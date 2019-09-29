@@ -30,7 +30,6 @@ class RSIcon {
       height: size,
       placeholder: (context, url) => CircularProgressIndicator(),
       errorWidget: (context, url, error) {
-        RSLogger.e('画像ロードでエラー', error);
         return _defaultIcon(size);
       },
     );

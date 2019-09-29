@@ -1,4 +1,4 @@
-import 'local/character_source.dart';
+import 'local/character_dao.dart';
 import 'remote/character_api.dart';
 
 import '../model/character.dart';
@@ -7,11 +7,11 @@ import '../model/style.dart';
 import '../common/rs_logger.dart';
 
 class CharacterRepository {
-  final CharacterSource _localDataSource;
+  final CharacterDao _localDataSource;
   final CharacterApi _remoteDataSource;
 
-  CharacterRepository({CharacterSource local, CharacterApi remote})
-      : _localDataSource = (local == null) ? CharacterSource() : local,
+  CharacterRepository({CharacterDao local, CharacterApi remote})
+      : _localDataSource = (local == null) ? CharacterDao() : local,
         _remoteDataSource = (remote == null) ? CharacterApi() : remote;
 
   ///
@@ -22,12 +22,36 @@ class CharacterRepository {
 
     if (characters.isEmpty) {
       RSLogger.d('保持しているデータが0件のためローカルファイルを読み込みます。');
-      await _localDataSource.loadDummy();
+      final tmp = await _localDataSource.loadDummy();
+      RSLogger.d('  ${tmp.length}件のデータを取得しました。キャッシュします。');
+      final tmpWithStyle = _updateDummyStyles(tmp);
+      await _localDataSource.refresh(tmpWithStyle);
+
+      RSLogger.d('再度キャッシュからデータを取得します。');
       characters = await _localDataSource.findAllSummary();
     }
 
     RSLogger.d('データ取得完了 件数=${characters.length}');
     return characters;
+  }
+
+  ///
+  /// ダミーデータロード時のスタイルを更新する
+  ///
+  List<Character> _updateDummyStyles(List<Character> characters) {
+    final result = <Character>[];
+    for (var character in characters) {
+      for (var style in character.styles) {
+        style.iconFilePath = style.iconFileName;
+
+        if (character.selectedStyleRank == style.rank) {
+          character.selectedIconFilePath = style.iconFilePath;
+        }
+      }
+      result.add(character);
+    }
+
+    return result;
   }
 
   ///
