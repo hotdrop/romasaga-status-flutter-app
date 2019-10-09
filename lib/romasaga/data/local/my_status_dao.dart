@@ -8,13 +8,13 @@ import 'entity/my_status_entity.dart';
 import '../../common/rs_logger.dart';
 
 class MyStatusDao {
-  static final MyStatusDao _instance = MyStatusDao._();
-
-  const MyStatusDao._();
-
   factory MyStatusDao() {
     return _instance;
   }
+
+  const MyStatusDao._();
+
+  static final MyStatusDao _instance = MyStatusDao._();
 
   ///
   /// 登録されているステータス情報を全て取得
@@ -22,7 +22,7 @@ class MyStatusDao {
   Future<List<MyStatus>> findAll() async {
     final db = await DBProvider.instance.database;
     final results = await db.query(MyStatusEntity.tableName);
-    final entities = results.isNotEmpty ? results.map((it) => MyStatusEntity.fromMap(it)).toList() : [];
+    final List<MyStatusEntity> entities = results.isNotEmpty ? results.map((it) => MyStatusEntity.fromMap(it)).toList() : [];
 
     return entities.map((entity) => Mapper.toMyStatus(entity)).toList();
   }
@@ -34,7 +34,7 @@ class MyStatusDao {
     RSLogger.d('ID=$idのキャラクターのステータスを取得します');
 
     final db = await DBProvider.instance.database;
-    final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: [id]);
+    final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: <int>[id]);
 
     if (result.isEmpty) {
       RSLogger.d('statusは空でした。');
@@ -50,24 +50,24 @@ class MyStatusDao {
   ///
   /// 自身のステータス情報を保存
   ///
-  void save(MyStatus myStatus) async {
+  Future<void> save(MyStatus myStatus) async {
     RSLogger.d('ID=${myStatus.id}のキャラクターのステータスを保存します');
     final entity = Mapper.toMyStatusEntity(myStatus);
     final db = await DBProvider.instance.database;
 
-    final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: [myStatus.id]);
+    final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: <int>[myStatus.id]);
     if (result.isEmpty) {
       RSLogger.d('ステータスが未登録なのでinsertします。');
       await db.insert(MyStatusEntity.tableName, entity.toMap());
     } else {
       RSLogger.d('ステータスが登録されているのでupdateします。');
-      await db.update(MyStatusEntity.tableName, entity.toMap(), where: '${MyStatusEntity.columnId} = ?', whereArgs: [myStatus.id]);
+      await db.update(MyStatusEntity.tableName, entity.toMap(), where: '${MyStatusEntity.columnId} = ?', whereArgs: <int>[myStatus.id]);
     }
   }
 
-  void refresh(List<MyStatus> myStatues) async {
+  Future<void> refresh(List<MyStatus> myStatues) async {
     final db = await DBProvider.instance.database;
-    db.transaction((txn) async {
+    await db.transaction((txn) async {
       await _delete(txn);
       await _insert(txn, myStatues);
     });

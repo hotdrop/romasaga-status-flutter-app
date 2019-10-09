@@ -12,7 +12,7 @@ class LetterTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text(RSStrings.LetterTabTitle),
+          child: Text(RSStrings.letterTabTitle),
         ),
       ),
       body: _widgetContents(context),

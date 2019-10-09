@@ -82,6 +82,6 @@ class CharListRowItem extends StatelessWidget {
   }
 
   Widget _labelStatus(Character character, BuildContext context) {
-    return Text('${RSStrings.CharacterTotalStatus} ${character.getTotalStatus()}');
+    return Text('${RSStrings.characterTotalStatus} ${character.getTotalStatus()}');
   }
 }

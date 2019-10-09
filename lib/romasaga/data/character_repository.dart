@@ -11,7 +11,7 @@ class CharacterRepository {
   final CharacterApi _remoteDataSource;
 
   CharacterRepository({CharacterDao local, CharacterApi remote})
-      : _localDataSource = (local == null) ? CharacterDao() : local,
+      : _localDataSource = (local == null) ? CharacterDao.create() : local,
         _remoteDataSource = (remote == null) ? CharacterApi() : remote;
 
   ///

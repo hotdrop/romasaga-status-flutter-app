@@ -34,8 +34,8 @@ class Style {
   );
 
   static int rankSort(String first, String second) {
-    final firstPriority = (first == RSStrings.RankA) ? 1 : (first == RSStrings.RankS) ? 2 : 3;
-    final secondPriority = (second == RSStrings.RankA) ? 1 : (second == RSStrings.RankS) ? 2 : 3;
+    final firstPriority = (first == RSStrings.rankA) ? 1 : (first == RSStrings.rankS) ? 2 : 3;
+    final secondPriority = (second == RSStrings.rankA) ? 1 : (second == RSStrings.rankS) ? 2 : 3;
     if (firstPriority < secondPriority) {
       return -1;
     } else if (firstPriority == secondPriority) {

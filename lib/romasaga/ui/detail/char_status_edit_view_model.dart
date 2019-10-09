@@ -38,31 +38,31 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
 
   void updateStatus(String statusName, int newStatus) {
     switch (statusName) {
-      case RSStrings.HpName:
+      case RSStrings.hpName:
         _newHp = newStatus;
         break;
-      case RSStrings.StrName:
+      case RSStrings.strName:
         _newStr = newStatus;
         break;
-      case RSStrings.VitName:
+      case RSStrings.vitName:
         _newVit = newStatus;
         break;
-      case RSStrings.DexName:
+      case RSStrings.dexName:
         _newDex = newStatus;
         break;
-      case RSStrings.AgiName:
+      case RSStrings.agiName:
         _newAgi = newStatus;
         break;
-      case RSStrings.IntName:
+      case RSStrings.intName:
         _newInt = newStatus;
         break;
-      case RSStrings.SpiName:
+      case RSStrings.spiName:
         _newSpi = newStatus;
         break;
-      case RSStrings.LoveName:
+      case RSStrings.loveName:
         _newLove = newStatus;
         break;
-      case RSStrings.AttrName:
+      case RSStrings.attrName:
         _newAttr = newStatus;
         break;
     }

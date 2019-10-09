@@ -70,8 +70,8 @@ class Destination {
 }
 
 const _allDestinations = <Destination>[
-  Destination(RSStrings.BottomMenuCharacter, Icons.view_list),
-  Destination(RSStrings.BottomMenuSearch, Icons.search),
-  Destination(RSStrings.BottomMenuLetter, Icons.mail),
-  Destination(RSStrings.BottomMenuAccount, Icons.person),
+  Destination(RSStrings.bottomMenuCharacter, Icons.view_list),
+  Destination(RSStrings.bottomMenuSearch, Icons.search),
+  Destination(RSStrings.bottomMenuLetter, Icons.mail),
+  Destination(RSStrings.bottomMenuAccount, Icons.person),
 ];

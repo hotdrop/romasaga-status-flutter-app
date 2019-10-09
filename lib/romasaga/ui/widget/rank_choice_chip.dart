@@ -60,9 +60,9 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   }
 
   Color _rankToColor(String rank) {
-    if (rank.contains(RSStrings.RankSS)) {
+    if (rank.contains(RSStrings.rankSS)) {
       return RSColors.chipRankSS;
-    } else if (rank.contains(RSStrings.RankS)) {
+    } else if (rank.contains(RSStrings.rankS)) {
       return RSColors.chipRankS;
     } else {
       return RSColors.chipRankA;

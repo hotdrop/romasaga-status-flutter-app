@@ -20,7 +20,7 @@ class StatusIndicator {
 
     int diffLimit;
     // 今はHPはステータス上限の計測外にしているので無条件で0にする。
-    if (name == RSStrings.HpName) {
+    if (name == RSStrings.hpName) {
       diffLimit = 0;
     } else {
       diffLimit = currentStatus - statusUpperLimit;

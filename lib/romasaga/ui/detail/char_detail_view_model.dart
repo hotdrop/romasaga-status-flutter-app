@@ -85,28 +85,28 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   int getStatusUpperLimit(String statusName) {
     var targetStatus;
     switch (statusName) {
-      case RSStrings.StrName:
+      case RSStrings.strName:
         targetStatus = _selectedStyle?.str;
         break;
-      case RSStrings.VitName:
+      case RSStrings.vitName:
         targetStatus = _selectedStyle?.vit;
         break;
-      case RSStrings.DexName:
+      case RSStrings.dexName:
         targetStatus = _selectedStyle?.dex;
         break;
-      case RSStrings.AgiName:
+      case RSStrings.agiName:
         targetStatus = _selectedStyle?.agi;
         break;
-      case RSStrings.IntName:
+      case RSStrings.intName:
         targetStatus = _selectedStyle?.intelligence;
         break;
-      case RSStrings.SpiName:
+      case RSStrings.spiName:
         targetStatus = _selectedStyle?.spirit;
         break;
-      case RSStrings.LoveName:
+      case RSStrings.loveName:
         targetStatus = _selectedStyle?.love;
         break;
-      case RSStrings.AttrName:
+      case RSStrings.attrName:
         targetStatus = _selectedStyle?.attr;
         break;
       default:

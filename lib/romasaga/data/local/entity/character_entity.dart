@@ -1,4 +1,21 @@
 class CharacterEntity {
+  const CharacterEntity(
+    this.id,
+    this.name,
+    this.production,
+    this.weaponType,
+    this.selectedStyleRank,
+    this.selectedIconFilePath,
+  );
+
+  CharacterEntity.fromMap(Map<String, dynamic> map)
+      : id = map[columnId] as int,
+        name = map[columnName] as String,
+        production = map[columnProduction] as String,
+        weaponType = map[columnWeaponType] as String,
+        selectedStyleRank = map[columnSelectedStyleRank] as String,
+        selectedIconFilePath = map[columnSelectedIconFilePath] as String;
+
   static const String tableName = 'Character';
   static const String createTableSql = '''
       CREATE TABLE $tableName (
@@ -28,23 +45,6 @@ class CharacterEntity {
 
   static const String columnSelectedIconFilePath = 'selected_icon_file_path';
   final String selectedIconFilePath;
-
-  const CharacterEntity(
-    this.id,
-    this.name,
-    this.production,
-    this.weaponType,
-    this.selectedStyleRank,
-    this.selectedIconFilePath,
-  );
-
-  CharacterEntity.fromMap(Map<String, dynamic> map)
-      : id = map[columnId],
-        name = map[columnName],
-        production = map[columnProduction],
-        weaponType = map[columnWeaponType],
-        selectedStyleRank = map[columnSelectedStyleRank],
-        selectedIconFilePath = map[columnSelectedIconFilePath];
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

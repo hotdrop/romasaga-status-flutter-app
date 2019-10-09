@@ -27,8 +27,8 @@ class Letter {
           type: type,
           gifResource: 'res/letters/201901_hane.gif',
           thumbnail: 'res/letters/201901_hane_static.jpg',
-          title: RSStrings.LetterJanuaryTitle,
-          shortTitle: RSStrings.LetterJanuaryShortTitle,
+          title: RSStrings.letterJanuaryTitle,
+          shortTitle: RSStrings.letterJanuaryShortTitle,
           themeColor: RSColors.winter,
         );
       case LetterType.february:
@@ -36,8 +36,8 @@ class Letter {
           type: type,
           gifResource: 'res/letters/201902_valentine.gif',
           thumbnail: 'res/letters/201902_valentine_static.jpg',
-          title: RSStrings.LetterFebruaryTitle,
-          shortTitle: RSStrings.LetterFebruaryShortTitle,
+          title: RSStrings.letterFebruaryTitle,
+          shortTitle: RSStrings.letterFebruaryShortTitle,
           themeColor: RSColors.winter,
         );
       case LetterType.march:
@@ -45,8 +45,8 @@ class Letter {
           type: type,
           gifResource: 'res/letters/201903_hinamaturi.gif',
           thumbnail: 'res/letters/201903_hinamaturi_static.jpg',
-          title: RSStrings.LetterMarchTitle,
-          shortTitle: RSStrings.LetterMarchShortTitle,
+          title: RSStrings.letterMarchTitle,
+          shortTitle: RSStrings.letterMarchShortTitle,
           themeColor: RSColors.winter,
         );
       case LetterType.april:
@@ -54,8 +54,8 @@ class Letter {
           type: type,
           gifResource: 'res/letters/201904_hanami.gif',
           thumbnail: 'res/letters/201904_hanami_static.jpg',
-          title: RSStrings.LetterAprilTitle,
-          shortTitle: RSStrings.LetterAprilShortTitle,
+          title: RSStrings.letterAprilTitle,
+          shortTitle: RSStrings.letterAprilShortTitle,
           themeColor: RSColors.spring,
         );
       case LetterType.may:
@@ -63,8 +63,8 @@ class Letter {
           type: type,
           gifResource: 'res/letters/201905_hiyori.gif',
           thumbnail: 'res/letters/201905_hiyori_static.jpg',
-          title: RSStrings.LetterMayTitle,
-          shortTitle: RSStrings.LetterMayShortTitle,
+          title: RSStrings.letterMayTitle,
+          shortTitle: RSStrings.letterMayShortTitle,
           themeColor: RSColors.spring,
         );
       case LetterType.june:
@@ -72,8 +72,8 @@ class Letter {
           type: type,
           gifResource: 'res/letters/201906_halfAniver.gif',
           thumbnail: 'res/letters/201906_halfAniver_static.jpg',
-          title: RSStrings.LetterJuneTitle,
-          shortTitle: RSStrings.LetterJuneShortTitle,
+          title: RSStrings.letterJuneTitle,
+          shortTitle: RSStrings.letterJuneShortTitle,
           themeColor: RSColors.spring,
         );
       case LetterType.july:
@@ -81,8 +81,8 @@ class Letter {
           type: type,
           gifResource: 'res/letters/201907_asami.gif',
           thumbnail: 'res/letters/201907_asami_static.jpg',
-          title: RSStrings.LetterJulyTitle,
-          shortTitle: RSStrings.LetterJulyShortTitle,
+          title: RSStrings.letterJulyTitle,
+          shortTitle: RSStrings.letterJulyShortTitle,
           themeColor: RSColors.summer,
         );
       case LetterType.august:
@@ -90,8 +90,8 @@ class Letter {
           type: type,
           gifResource: 'res/letters/201908_summer.gif',
           thumbnail: 'res/letters/201908_summer_static.jpg',
-          title: RSStrings.LetterAugustTitle,
-          shortTitle: RSStrings.LetterAugustShortTitle,
+          title: RSStrings.letterAugustTitle,
+          shortTitle: RSStrings.letterAugustShortTitle,
           themeColor: RSColors.summer,
         );
       case LetterType.september:
@@ -99,8 +99,8 @@ class Letter {
           type: type,
           gifResource: 'res/letters/201909_award.gif',
           thumbnail: 'res/letters/201909_award_static.jpg',
-          title: RSStrings.LetterSeptemberTitle,
-          shortTitle: RSStrings.LetterSeptemberShortTitle,
+          title: RSStrings.letterSeptemberTitle,
+          shortTitle: RSStrings.letterSeptemberShortTitle,
           themeColor: RSColors.fall,
         );
       default:

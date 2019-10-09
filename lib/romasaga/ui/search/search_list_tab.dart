@@ -126,9 +126,9 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
   Widget _filterView() {
     // フィルターしたい要素をここに詰めていく
     final filterViews = <Widget>[];
-    filterViews.add(_filterViewSubTitle(RSStrings.SearchFilerTitleOwn));
+    filterViews.add(_filterViewSubTitle(RSStrings.searchFilerTitleOwn));
     filterViews.add(_filterViewOwnState());
-    filterViews.add(_filterViewSubTitle(RSStrings.SearchFilerTitleWeapon));
+    filterViews.add(_filterViewSubTitle(RSStrings.searchFilerTitleWeapon));
     filterViews.add(_filterViewWeaponType());
 
     return Padding(
@@ -229,14 +229,14 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
           controller: _searchQuery,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.search),
-            hintText: RSStrings.SearchListQueryHint,
+            hintText: RSStrings.searchListQueryHint,
           ),
           onChanged: (String query) {
             viewModel.findByKeyword(query);
           },
         );
       } else {
-        return Text(RSStrings.SearchListTabTitle);
+        return Text(RSStrings.searchListTabTitle);
       }
     });
   }
@@ -301,7 +301,7 @@ class _BackdropPanel extends StatelessWidget {
                 children: <Widget>[
                   const SizedBox(width: 16.0),
                   const SizedBox(width: 16.0),
-                  Text(RSStrings.SearchBackDropTitle, style: Theme.of(context).textTheme.subhead),
+                  Text(RSStrings.searchBackDropTitle, style: Theme.of(context).textTheme.subhead),
                   const SizedBox(width: 16.0),
                   visibleBackdropPanel ? Icon(Icons.expand_more) : Icon(Icons.expand_less),
                 ],
