@@ -5,8 +5,9 @@ import '../../service/rs_service.dart';
 import '../../common/rs_logger.dart';
 
 class StageApi {
-  final RSService _romancingService;
   StageApi({RSService rsService}) : _romancingService = (rsService == null) ? RSService() : rsService;
+
+  final RSService _romancingService;
 
   Future<List<Stage>> findAll() async {
     try {
@@ -14,7 +15,7 @@ class StageApi {
       return StagesJsonObject.parse(json);
     } catch (e) {
       RSLogger.e('ステージデータの取得時にエラーが発生しました。', e);
-      throw e;
+      rethrow;
     }
   }
 }

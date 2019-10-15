@@ -7,12 +7,12 @@ import '../model/style.dart';
 import '../common/rs_logger.dart';
 
 class CharacterRepository {
-  final CharacterDao _localDataSource;
-  final CharacterApi _remoteDataSource;
-
   CharacterRepository({CharacterDao local, CharacterApi remote})
       : _localDataSource = (local == null) ? CharacterDao.create() : local,
         _remoteDataSource = (remote == null) ? CharacterApi() : remote;
+
+  final CharacterDao _localDataSource;
+  final CharacterApi _remoteDataSource;
 
   ///
   /// キャラデータのロード

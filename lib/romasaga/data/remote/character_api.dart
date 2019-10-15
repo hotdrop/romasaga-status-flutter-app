@@ -4,8 +4,9 @@ import '../../model/character.dart';
 import '../../common/rs_logger.dart';
 
 class CharacterApi {
-  final RSService _rsService;
   CharacterApi({RSService rsService}) : _rsService = (rsService == null) ? RSService() : rsService;
+
+  final RSService _rsService;
 
   Future<List<Character>> findAll() async {
     try {
