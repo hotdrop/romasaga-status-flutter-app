@@ -1,9 +1,9 @@
 import '../common/rs_strings.dart';
 
 class WeaponType {
-  final String name;
-
   const WeaponType(this.name);
+
+  final String name;
 
   WeaponCategory get category {
     switch (name) {
@@ -95,7 +95,7 @@ class WeaponType {
         WeaponType(RSStrings.rod),
       ];
 
-  bool operator ==(o) => o is WeaponType && o.name == name;
+  bool operator ==(dynamic o) => o is WeaponType && o.name == name;
 
   int get hashCode => name.hashCode;
 }

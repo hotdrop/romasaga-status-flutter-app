@@ -4,13 +4,6 @@ import '../common/rs_colors.dart';
 import '../common/rs_strings.dart';
 
 class Letter {
-  final LetterType type;
-  final String gifResource;
-  final String thumbnail;
-  final String title;
-  final String shortTitle;
-  final Color themeColor;
-
   Letter._({
     @required this.type,
     @required this.gifResource,
@@ -107,6 +100,13 @@ class Letter {
         return null;
     }
   }
+
+  final LetterType type;
+  final String gifResource;
+  final String thumbnail;
+  final String title;
+  final String shortTitle;
+  final Color themeColor;
 }
 
 enum LetterType {

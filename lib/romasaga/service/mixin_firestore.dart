@@ -3,9 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/status.dart' show MyStatus;
 
 class RSFirestoreMixin {
-  static final String _rootCollectionName = 'backup';
-  static final String _statusCollectionName = 'statuses';
-
   Future<void> setMyStatuses(List<MyStatus> myStatuses, String uid) async {
     for (var myStatus in myStatuses) {
       await Firestore()
@@ -16,6 +13,9 @@ class RSFirestoreMixin {
           .setData(_toMap(myStatus));
     }
   }
+
+  static final String _rootCollectionName = 'backup';
+  static final String _statusCollectionName = 'statuses';
 
   Map<String, dynamic> _toMap(MyStatus myStatus) {
     return <String, dynamic>{
@@ -45,17 +45,17 @@ class RSFirestoreMixin {
   MyStatus _toMyStatus(DocumentSnapshot doc) {
     return MyStatus(
       int.parse(doc.documentID),
-      doc['hp'],
-      doc['str'],
-      doc['vit'],
-      doc['dex'],
-      doc['agi'],
-      doc['intelligence'],
-      doc['spirit'],
-      doc['love'],
-      doc['attr'],
-      doc['haveChar'],
-      doc['favorite'],
+      doc['hp'] as int,
+      doc['str'] as int,
+      doc['vit'] as int,
+      doc['dex'] as int,
+      doc['agi'] as int,
+      doc['intelligence'] as int,
+      doc['spirit'] as int,
+      doc['love'] as int,
+      doc['attr'] as int,
+      doc['haveChar'] as bool,
+      doc['favorite'] as bool,
     );
   }
 }
