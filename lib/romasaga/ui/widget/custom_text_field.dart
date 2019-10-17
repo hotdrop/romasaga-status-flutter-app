@@ -80,7 +80,7 @@ class TextFormFieldWithChanged extends StatefulWidget {
 class _TextFormFieldWithChanged extends State<TextFormFieldWithChanged> {
   TextEditingController _controller;
 
-  _onChangedValue() {
+  void _onChangedValue() {
     if (widget.onChanged != null) {
       widget.onChanged(_controller.text);
     }

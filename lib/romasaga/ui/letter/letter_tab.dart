@@ -58,7 +58,7 @@ class LetterTab extends StatelessWidget {
           ],
         ),
         onTap: () {
-          Navigator.push(
+          Navigator.push<void>(
             context,
             MaterialPageRoute(builder: (context) => LetterMainPage(firstSelectLetterType: letter.type)),
           );

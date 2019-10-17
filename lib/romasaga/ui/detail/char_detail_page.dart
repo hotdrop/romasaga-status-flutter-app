@@ -17,9 +17,9 @@ import '../../common/rs_logger.dart';
 import '../../common/rs_strings.dart';
 
 class CharDetailPage extends StatelessWidget {
-  final Character character;
-
   const CharDetailPage({@required this.character});
+
+  final Character character;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +106,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   void _showDialog(BuildContext context, CharDetailViewModel viewModel) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (_) {
         return AlertDialog(
@@ -178,7 +178,7 @@ class CharDetailPage extends StatelessWidget {
                   child: RankChoiceChip(
                     ranks: viewModel.getAllRanks(),
                     initSelectedRank: viewModel.selectedRank,
-                    onSelectedListener: (String rank) {
+                    onSelectedListener: (rank) {
                       viewModel.onSelectRank(rank);
                     },
                   ),
@@ -362,13 +362,13 @@ class CharDetailPage extends StatelessWidget {
           child: Icon(Icons.edit, color: Theme.of(context).accentColor),
           backgroundColor: RSColors.fabBackground,
           onPressed: () async {
-            final isSaved = await Navigator.of(context).push(
+            final bool isSaved = await Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => CharStatusEditPage(myStatus)),
                 ) ??
                 false;
             if (isSaved) {
               RSLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
-              viewModel.refreshStatus();
+              await viewModel.refreshStatus();
             }
           },
         );

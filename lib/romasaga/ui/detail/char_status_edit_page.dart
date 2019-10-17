@@ -8,9 +8,9 @@ import '../widget/status_text_field.dart';
 import '../../common/rs_strings.dart';
 
 class CharStatusEditPage extends StatelessWidget {
-  final MyStatus _myStatus;
-
   const CharStatusEditPage(this._myStatus);
+
+  final MyStatus _myStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -31,23 +31,22 @@ class CharStatusEditPage extends StatelessWidget {
     return Consumer<CharStatusEditViewModel>(
       builder: (context, viewModel, child) {
         // フォーカスが必要なので末尾のステータスから順に作成していく
-        final attrTextField = StatusTextField(RSStrings.attrName, _myStatus.attr, (int value) => viewModel.updateStatus(RSStrings.attrName, value));
-        final loveTextField = StatusTextField(RSStrings.loveName, _myStatus.love, (int value) => viewModel.updateStatus(RSStrings.loveName, value),
+        final attrTextField = StatusTextField(RSStrings.attrName, _myStatus.attr, (value) => viewModel.updateStatus(RSStrings.attrName, value));
+        final loveTextField = StatusTextField(RSStrings.loveName, _myStatus.love, (value) => viewModel.updateStatus(RSStrings.loveName, value),
             nextFocusNode: attrTextField.focusNode);
-        final spiTextField = StatusTextField(RSStrings.spiName, _myStatus.spirit, (int value) => viewModel.updateStatus(RSStrings.spiName, value),
+        final spiTextField = StatusTextField(RSStrings.spiName, _myStatus.spirit, (value) => viewModel.updateStatus(RSStrings.spiName, value),
             nextFocusNode: loveTextField.focusNode);
-        final intTextField = StatusTextField(
-            RSStrings.intName, _myStatus.intelligence, (int value) => viewModel.updateStatus(RSStrings.intName, value),
+        final intTextField = StatusTextField(RSStrings.intName, _myStatus.intelligence, (value) => viewModel.updateStatus(RSStrings.intName, value),
             nextFocusNode: spiTextField.focusNode);
-        final agiTextField = StatusTextField(RSStrings.agiName, _myStatus.agi, (int value) => viewModel.updateStatus(RSStrings.agiName, value),
+        final agiTextField = StatusTextField(RSStrings.agiName, _myStatus.agi, (value) => viewModel.updateStatus(RSStrings.agiName, value),
             nextFocusNode: intTextField.focusNode);
-        final dexTextField = StatusTextField(RSStrings.dexName, _myStatus.dex, (int value) => viewModel.updateStatus(RSStrings.dexName, value),
+        final dexTextField = StatusTextField(RSStrings.dexName, _myStatus.dex, (value) => viewModel.updateStatus(RSStrings.dexName, value),
             nextFocusNode: agiTextField.focusNode);
-        final vitTextField = StatusTextField(RSStrings.vitName, _myStatus.vit, (int value) => viewModel.updateStatus(RSStrings.vitName, value),
+        final vitTextField = StatusTextField(RSStrings.vitName, _myStatus.vit, (value) => viewModel.updateStatus(RSStrings.vitName, value),
             nextFocusNode: dexTextField.focusNode);
-        final strTextField = StatusTextField(RSStrings.strName, _myStatus.str, (int value) => viewModel.updateStatus(RSStrings.strName, value),
+        final strTextField = StatusTextField(RSStrings.strName, _myStatus.str, (value) => viewModel.updateStatus(RSStrings.strName, value),
             nextFocusNode: vitTextField.focusNode);
-        final hpTextField = StatusTextField(RSStrings.hpName, _myStatus.hp, (int value) => viewModel.updateStatus(RSStrings.hpName, value),
+        final hpTextField = StatusTextField(RSStrings.hpName, _myStatus.hp, (value) => viewModel.updateStatus(RSStrings.hpName, value),
             nextFocusNode: strTextField.focusNode);
 
         return Column(

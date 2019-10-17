@@ -6,9 +6,9 @@ import '../../common/rs_strings.dart';
 import '../../common/rs_colors.dart';
 
 class LetterMainPage extends StatelessWidget {
-  final LetterType firstSelectLetterType;
-
   const LetterMainPage({@required this.firstSelectLetterType});
+
+  final LetterType firstSelectLetterType;
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +36,9 @@ class LetterMainPage extends StatelessWidget {
 }
 
 class _LetterDetailPage extends StatelessWidget {
-  final Letter letter;
-
   const _LetterDetailPage(this.letter);
+
+  final Letter letter;
 
   @override
   Widget build(BuildContext context) {

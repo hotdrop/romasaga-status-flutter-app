@@ -34,7 +34,7 @@ class _TopPageState extends State<TopPage> {
             backgroundColor: RSColors.bottomNavigationIcon,
           );
         }).toList(),
-        onTap: (int index) {
+        onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
@@ -64,9 +64,9 @@ class _TopPageState extends State<TopPage> {
 }
 
 class Destination {
+  const Destination(this.title, this.icon);
   final String title;
   final IconData icon;
-  const Destination(this.title, this.icon);
 }
 
 const _allDestinations = <Destination>[

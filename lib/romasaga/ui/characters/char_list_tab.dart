@@ -83,7 +83,7 @@ class CharListTab extends StatelessWidget {
             ),
           ],
           initialValue: viewModel.selectedOrderType,
-          onSelected: (OrderType value) {
+          onSelected: (value) {
             viewModel.orderBy(value);
           },
         );
@@ -101,7 +101,7 @@ class CharListTab extends StatelessWidget {
       );
     }
 
-    return ListView.builder(itemBuilder: (BuildContext context, int index) {
+    return ListView.builder(itemBuilder: (context, index) {
       if (index < characters.length) {
         return CharListRowItem(characters[index]);
       }
@@ -119,7 +119,7 @@ class CharListTab extends StatelessWidget {
       );
     }
 
-    return ListView.builder(itemBuilder: (BuildContext context, int index) {
+    return ListView.builder(itemBuilder: (context, index) {
       final characters = viewModel.findHaveCharacter();
 
       if (index < characters.length) {
@@ -130,7 +130,7 @@ class CharListTab extends StatelessWidget {
   }
 
   Widget _notHaveCharTab(CharListViewModel viewModel) {
-    return ListView.builder(itemBuilder: (BuildContext context, int index) {
+    return ListView.builder(itemBuilder: (context, index) {
       final characters = viewModel.findNotHaveCharacter();
 
       if (index < characters.length) {

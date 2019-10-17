@@ -6,6 +6,20 @@ import '../../data/my_status_repository.dart';
 import '../../common/rs_strings.dart';
 
 class CharStatusEditViewModel extends foundation.ChangeNotifier {
+  CharStatusEditViewModel(this.currentStatus, {MyStatusRepository statusRepo})
+      : _newHp = currentStatus.hp,
+        _newStr = currentStatus.str,
+        _newVit = currentStatus.vit,
+        _newDex = currentStatus.dex,
+        _newAgi = currentStatus.agi,
+        _newInt = currentStatus.intelligence,
+        _newSpi = currentStatus.spirit,
+        _newLove = currentStatus.love,
+        _newAttr = currentStatus.attr,
+        _have = currentStatus.have,
+        _favorite = currentStatus.favorite,
+        _statusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
+
   final MyStatusRepository _statusRepository;
   final MyStatus currentStatus;
 
@@ -21,20 +35,6 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
 
   bool _have;
   bool _favorite;
-
-  CharStatusEditViewModel(this.currentStatus, {MyStatusRepository statusRepo})
-      : _newHp = currentStatus.hp,
-        _newStr = currentStatus.str,
-        _newVit = currentStatus.vit,
-        _newDex = currentStatus.dex,
-        _newAgi = currentStatus.agi,
-        _newInt = currentStatus.intelligence,
-        _newSpi = currentStatus.spirit,
-        _newLove = currentStatus.love,
-        _newAttr = currentStatus.attr,
-        _have = currentStatus.have,
-        _favorite = currentStatus.favorite,
-        _statusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
   void updateStatus(String statusName, int newStatus) {
     switch (statusName) {

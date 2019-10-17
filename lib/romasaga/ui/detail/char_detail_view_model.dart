@@ -14,16 +14,16 @@ import '../../common/rs_strings.dart';
 import '../../common/rs_logger.dart';
 
 class CharDetailViewModel extends foundation.ChangeNotifier {
+  CharDetailViewModel(this._character, {CharacterRepository characterRepo, StageRepository stageRepo, MyStatusRepository statusRepo})
+      : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
+        _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
+        _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
+
   final CharacterRepository _characterRepository;
   final StageRepository _stageRepository;
   final MyStatusRepository _myStatusRepository;
 
   final Character _character;
-
-  CharDetailViewModel(this._character, {CharacterRepository characterRepo, StageRepository stageRepo, MyStatusRepository statusRepo})
-      : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
-        _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
-        _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
   List<Stage> _stages;
   List<Stage> get stages => _stages ?? [];
@@ -31,7 +31,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   Style _selectedStyle;
   Stage _selectedStage;
 
-  void load() async {
+  Future<void> load() async {
     RSLogger.d('ロードします。');
 
     _stages = await _stageRepository.load();
@@ -72,7 +72,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   }
 
   String getSelectedStageName() {
-    return _selectedStage?.name ?? null;
+    return _selectedStage?.name;
   }
 
   void onSelectStage(String stageName) {
@@ -83,7 +83,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   int addUpperLimit(int status) => status + _selectedStage.limit;
 
   int getStatusUpperLimit(String statusName) {
-    var targetStatus;
+    int targetStatus;
     switch (statusName) {
       case RSStrings.strName:
         targetStatus = _selectedStyle?.str;
@@ -120,26 +120,26 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     return targetStatus + _selectedStage.limit;
   }
 
-  void refreshStatus() async {
+  Future<void> refreshStatus() async {
     _character.myStatus = await _myStatusRepository.find(_character.id);
     notifyListeners();
   }
 
-  void saveCurrentSelectStyle() async {
+  Future<void> saveCurrentSelectStyle() async {
     RSLogger.d('表示ランクを ${_selectedStyle.rank} にします。');
     _character.selectedStyleRank = _selectedStyle.rank;
     _character.selectedIconFilePath = _selectedStyle.iconFilePath;
     await _characterRepository.saveSelectedRank(_character.id, _selectedStyle.rank, _selectedStyle.iconFilePath);
   }
 
-  void saveHaveCharacter(bool haveChar) async {
+  Future<void> saveHaveCharacter(bool haveChar) async {
     RSLogger.d('このキャラの保持を $haveChar にします。');
     _character.myStatus.have = haveChar;
     await _myStatusRepository.save(_character.myStatus);
     notifyListeners();
   }
 
-  void saveFavorite(bool favorite) async {
+  Future<void> saveFavorite(bool favorite) async {
     RSLogger.d('お気に入りを $favorite にします。');
     _character.myStatus.favorite = favorite;
     await _myStatusRepository.save(_character.myStatus);

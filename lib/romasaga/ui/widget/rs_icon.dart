@@ -71,7 +71,7 @@ class RSIcon {
   /// Ripple付きの武器アイコン
   /// 選択しているかしていないかの指定も可能
   ///
-  static Widget weaponWithRipple({@required WeaponType type, @required Function onTap, bool selected = false}) {
+  static Widget weaponWithRipple({@required WeaponType type, @required void Function() onTap, bool selected = false}) {
     String res = _getWeaponIconRes(type);
     return Material(
       shape: CircleBorder(),
@@ -92,18 +92,18 @@ class RSIcon {
   ///
   /// チェックアイコン
   ///
-  static Widget haveCharacterWithRipple({@required BuildContext context, @required Function onTap, @required bool selected}) {
+  static Widget haveCharacterWithRipple({@required BuildContext context, @required void Function() onTap, @required bool selected}) {
     return _createIconWithRipple(context, onTap, selected, Icons.check);
   }
 
   ///
   /// お気に入りアイコン
   ///
-  static Widget favoriteWithRipple({@required BuildContext context, @required Function onTap, @required bool selected}) {
+  static Widget favoriteWithRipple({@required BuildContext context, @required void Function() onTap, @required bool selected}) {
     return _createIconWithRipple(context, onTap, selected, Icons.favorite);
   }
 
-  static Widget _createIconWithRipple(BuildContext context, Function onTap, bool selected, IconData icon) {
+  static Widget _createIconWithRipple(BuildContext context, void Function() onTap, bool selected, IconData icon) {
     final iconColor = selected ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
     return RawMaterialButton(
       shape: CircleBorder(),

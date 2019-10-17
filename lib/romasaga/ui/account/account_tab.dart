@@ -11,9 +11,9 @@ import '../../common/rs_logger.dart';
 import '../../common/rs_strings.dart';
 
 class SettingTab extends StatelessWidget {
-  final CharListViewModel _charListViewModel;
-
   const SettingTab(this._charListViewModel);
+
+  final CharListViewModel _charListViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +159,7 @@ class SettingTab extends StatelessWidget {
               message: RSStrings.accountCharacterOnlyNewUpdateDialogMessage,
               positiveListener: () async {
                 await viewModel.registerNewCharacters();
-                _charListViewModel.refreshCharacters();
+                await _charListViewModel.refreshCharacters();
               },
             ).show();
           },
@@ -169,7 +169,7 @@ class SettingTab extends StatelessWidget {
               message: RSStrings.accountCharacterAllUpdateDialogMessage,
               positiveListener: () async {
                 await viewModel.updateAllCharacters();
-                _charListViewModel.refreshCharacters();
+                await _charListViewModel.refreshCharacters();
               },
             ).show();
           },
@@ -240,7 +240,7 @@ class SettingTab extends StatelessWidget {
               message: RSStrings.accountStatusRestoreDialogMessage,
               positiveListener: () async {
                 await viewModel.restore();
-                _charListViewModel.refreshMyStatuses();
+                await _charListViewModel.refreshMyStatuses();
               },
             ).show();
           },
@@ -361,8 +361,8 @@ class SettingTab extends StatelessWidget {
   /// 　　ロード終了したら「最新」と表示する
   ///
   Widget _rowStatus(DataLoadingStatus loadingStatus) {
-    var statusColor;
-    var statusTitle;
+    Color statusColor;
+    String statusTitle;
     switch (loadingStatus) {
       case DataLoadingStatus.none:
         statusColor = RSColors.dataLoadStatusNone;

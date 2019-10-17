@@ -14,7 +14,7 @@ class CharacterApi {
       return CharactersJsonObject.parse(json);
     } catch (e) {
       RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
-      throw e;
+      rethrow;
     }
   }
 

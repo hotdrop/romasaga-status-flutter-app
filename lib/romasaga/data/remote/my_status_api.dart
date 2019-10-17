@@ -14,7 +14,7 @@ class MyStatusApi {
       await _romancingService.saveMyStatuses(myStatuses);
     } catch (e) {
       RSLogger.e('ステータス保存時にエラーが発生しました。', e);
-      throw e;
+      rethrow;
     }
   }
 
@@ -24,7 +24,7 @@ class MyStatusApi {
       return await _romancingService.findMyStatues();
     } catch (e) {
       RSLogger.e('保存したステータス取得時にエラーが発生しました。', e);
-      throw e;
+      rethrow;
     }
   }
 }

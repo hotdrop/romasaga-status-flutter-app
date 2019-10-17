@@ -10,10 +10,10 @@ import '../../model/weapon.dart';
 import '../../common/rs_strings.dart';
 
 class CharListRowItem extends StatelessWidget {
+  const CharListRowItem(this.character, {this.index});
+
   final Character character;
   final int index;
-
-  const CharListRowItem(this.character, {this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +30,9 @@ class CharListRowItem extends StatelessWidget {
               ],
             )),
         onTap: () {
-          Navigator.push(
+          Navigator.push<void>(
             context,
-            MaterialPageRoute(
+            MaterialPageRoute<void>(
               builder: (context) => CharDetailPage(character: character),
             ),
           );
