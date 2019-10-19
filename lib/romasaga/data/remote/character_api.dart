@@ -4,8 +4,9 @@ import '../../model/character.dart';
 import '../../common/rs_logger.dart';
 
 class CharacterApi {
-  final RSService _rsService;
   CharacterApi({RSService rsService}) : _rsService = (rsService == null) ? RSService() : rsService;
+
+  final RSService _rsService;
 
   Future<List<Character>> findAll() async {
     try {
@@ -13,7 +14,7 @@ class CharacterApi {
       return CharactersJsonObject.parse(json);
     } catch (e) {
       RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
-      throw e;
+      rethrow;
     }
   }
 

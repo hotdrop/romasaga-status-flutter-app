@@ -1,31 +1,33 @@
 import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../common/rs_logger.dart';
+
 import '../../model/character.dart';
 import '../../model/style.dart';
 
-import '../../common/rs_logger.dart';
-
 @JsonSerializable()
 class CharactersJsonObject {
-  final List<CharacterJsonObject> characters;
-
   const CharactersJsonObject({this.characters});
 
-  factory CharactersJsonObject.fromJson(Map<String, dynamic> json) {
+  factory CharactersJsonObject.fromJson(dynamic json) {
     if (json == null) {
-      RSLogger.d("Character jsonがnullです。");
+      RSLogger.d('Character jsonがnullです。');
       return null;
     }
     return CharactersJsonObject(
-      characters: (json['characters'] as List)?.map((o) => CharacterJsonObject.fromJson(o as Map<String, dynamic>))?.toList(),
+      characters: (json['characters'] as List)?.map((dynamic o) {
+        return CharacterJsonObject.fromJson(o as Map<String, dynamic>);
+      })?.toList(),
     );
   }
 
+  final List<CharacterJsonObject> characters;
+
   static List<Character> parse(String json) {
-    final jsonMap = jsonDecode(json);
+    final dynamic jsonMap = jsonDecode(json);
     final results = CharactersJsonObject.fromJson(jsonMap);
-    RSLogger.d("Characterをパースしました。 size=${results.characters.length}");
+    RSLogger.d('Characterをパースしました。 size=${results.characters.length}');
 
     return _parse(results);
   }
@@ -75,12 +77,6 @@ class CharactersJsonObject {
 
 @JsonSerializable()
 class CharacterJsonObject {
-  final int id;
-  final String name;
-  final String weaponType;
-  final String production;
-  final List<StyleJsonObject> styles;
-
   const CharacterJsonObject(this.id, this.name, this.weaponType, this.production, this.styles);
 
   CharacterJsonObject.fromJson(Map<String, dynamic> json)
@@ -88,23 +84,17 @@ class CharacterJsonObject {
         name = json['name'] as String,
         weaponType = json['weapon_type'] as String,
         production = json['production'] as String,
-        styles = (json['styles'] as List)?.map((o) => StyleJsonObject.fromJson(o as Map<String, dynamic>))?.toList();
+        styles = (json['styles'] as List)?.map((dynamic o) => StyleJsonObject.fromJson(o as Map<String, dynamic>))?.toList();
+
+  final int id;
+  final String name;
+  final String weaponType;
+  final String production;
+  final List<StyleJsonObject> styles;
 }
 
 @JsonSerializable()
 class StyleJsonObject {
-  final String rank;
-  final String title;
-  final int str;
-  final int vit;
-  final int dex;
-  final int agi;
-  final int intelligence;
-  final int spi;
-  final int love;
-  final int attr;
-  final String iconFileName;
-
   const StyleJsonObject(
     this.rank,
     this.title,
@@ -131,4 +121,16 @@ class StyleJsonObject {
         love = json['love'] as int,
         attr = json['attr'] as int,
         iconFileName = json['icon'] as String;
+
+  final String rank;
+  final String title;
+  final int str;
+  final int vit;
+  final int dex;
+  final int agi;
+  final int intelligence;
+  final int spi;
+  final int love;
+  final int attr;
+  final String iconFileName;
 }

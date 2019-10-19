@@ -34,7 +34,7 @@ class _TopPageState extends State<TopPage> {
             backgroundColor: RSColors.bottomNavigationIcon,
           );
         }).toList(),
-        onTap: (int index) {
+        onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
@@ -64,14 +64,14 @@ class _TopPageState extends State<TopPage> {
 }
 
 class Destination {
+  const Destination(this.title, this.icon);
   final String title;
   final IconData icon;
-  const Destination(this.title, this.icon);
 }
 
 const _allDestinations = <Destination>[
-  Destination(RSStrings.BottomMenuCharacter, Icons.view_list),
-  Destination(RSStrings.BottomMenuSearch, Icons.search),
-  Destination(RSStrings.BottomMenuLetter, Icons.mail),
-  Destination(RSStrings.BottomMenuAccount, Icons.person),
+  Destination(RSStrings.bottomMenuCharacter, Icons.view_list),
+  Destination(RSStrings.bottomMenuSearch, Icons.search),
+  Destination(RSStrings.bottomMenuLetter, Icons.mail),
+  Destination(RSStrings.bottomMenuAccount, Icons.person),
 ];

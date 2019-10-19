@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
@@ -20,7 +19,7 @@ class StatusIndicator {
 
     int diffLimit;
     // 今はHPはステータス上限の計測外にしているので無条件で0にする。
-    if (name == RSStrings.HpName) {
+    if (name == RSStrings.hpName) {
       diffLimit = 0;
     } else {
       diffLimit = currentStatus - statusUpperLimit;

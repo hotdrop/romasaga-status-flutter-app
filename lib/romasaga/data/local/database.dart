@@ -8,9 +8,9 @@ import 'entity/stage_entity.dart';
 import 'entity/my_status_entity.dart';
 
 class DBProvider {
-  static final DBProvider instance = DBProvider._();
-
   const DBProvider._();
+
+  static final DBProvider instance = DBProvider._();
   static Database _database;
 
   Future<Database> get database async {
@@ -27,11 +27,11 @@ class DBProvider {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, 'romasaga.db');
 
-    return await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
-      db.execute(CharacterEntity.createTableSql);
-      db.execute(StyleEntity.createTableSql);
-      db.execute(StageEntity.createTableSql);
-      db.execute(MyStatusEntity.createTableSql);
+    return await openDatabase(path, version: 1, onCreate: (db, version) async {
+      await db.execute(CharacterEntity.createTableSql);
+      await db.execute(StyleEntity.createTableSql);
+      await db.execute(StageEntity.createTableSql);
+      await db.execute(MyStatusEntity.createTableSql);
     });
   }
 }

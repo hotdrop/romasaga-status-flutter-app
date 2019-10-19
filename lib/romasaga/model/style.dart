@@ -1,6 +1,21 @@
 import '../common/rs_strings.dart';
 
 class Style {
+  Style(
+    this.characterId,
+    this.rank,
+    this.title,
+    this.iconFileName,
+    this.str,
+    this.vit,
+    this.dex,
+    this.agi,
+    this.intelligence,
+    this.spirit,
+    this.love,
+    this.attr,
+  );
+
   final int characterId;
   final String rank;
   final String title;
@@ -18,24 +33,9 @@ class Style {
   // アイコンはネットワーク経由で取得するためパスを別に取得する必要がありfinalをつけていない
   String iconFilePath;
 
-  Style(
-    this.characterId,
-    this.rank,
-    this.title,
-    this.iconFileName,
-    this.str,
-    this.vit,
-    this.dex,
-    this.agi,
-    this.intelligence,
-    this.spirit,
-    this.love,
-    this.attr,
-  );
-
   static int rankSort(String first, String second) {
-    final firstPriority = (first == RSStrings.RankA) ? 1 : (first == RSStrings.RankS) ? 2 : 3;
-    final secondPriority = (second == RSStrings.RankA) ? 1 : (second == RSStrings.RankS) ? 2 : 3;
+    final firstPriority = (first == RSStrings.rankA) ? 1 : (first == RSStrings.rankS) ? 2 : 3;
+    final secondPriority = (second == RSStrings.rankA) ? 1 : (second == RSStrings.rankS) ? 2 : 3;
     if (firstPriority < secondPriority) {
       return -1;
     } else if (firstPriority == secondPriority) {

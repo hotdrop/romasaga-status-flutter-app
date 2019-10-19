@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../widget/custom_text_field.dart';
 
-// ignore: must_be_immutable
 class StatusTextField extends StatelessWidget {
+  StatusTextField(this._statusName, this._currentStatus, this._onChanged, {FocusNode nextFocusNode}) : _nextFocusNode = nextFocusNode;
+
   final String _statusName;
   final int _currentStatus;
   final Function(int) _onChanged;
   final FocusNode _nextFocusNode;
 
-  FocusNode _currentFocusNode = FocusNode();
+  final FocusNode _currentFocusNode = FocusNode();
   FocusNode get focusNode => _currentFocusNode;
-
-  StatusTextField(this._statusName, this._currentStatus, this._onChanged, {FocusNode nextFocusNode}) : _nextFocusNode = nextFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class StatusTextField extends StatelessWidget {
       ),
       focusNode: _currentFocusNode,
       initialValue: _currentStatus != 0 ? _currentStatus.toString() : '',
-      onChanged: (String value) {
+      onChanged: (value) {
         final toIntValue = int.tryParse(value, radix: 10) ?? 0;
         _onChanged(toIntValue);
       },

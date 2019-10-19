@@ -14,12 +14,12 @@ import '../../model/style.dart';
 import '../../common/rs_logger.dart';
 
 class CharacterDao {
-  static final CharacterDao _instance = CharacterDao._();
-
   const CharacterDao._();
-  factory CharacterDao() {
+  factory CharacterDao.create() {
     return _instance;
   }
+
+  static final CharacterDao _instance = CharacterDao._();
 
   ///
   /// 全キャラクター情報を取得
@@ -63,7 +63,7 @@ class CharacterDao {
   ///
   Future<List<Style>> findStyles(int id) async {
     final db = await DBProvider.instance.database;
-    final results = await db.query(StyleEntity.tableName, where: '${StyleEntity.columnCharacterId} = ?', whereArgs: [id]);
+    final results = await db.query(StyleEntity.tableName, where: '${StyleEntity.columnCharacterId} = ?', whereArgs: <int>[id]);
 
     return results.map((result) => StyleEntity.fromMap(result)).map((entity) => Mapper.toStyle(entity)).toList();
   }
@@ -77,18 +77,18 @@ class CharacterDao {
 
   Future<List<Character>> loadDummy({String localPath = 'res/json/characters.json'}) async {
     try {
-      return await rootBundle.loadStructuredData(localPath, (String json) async {
+      return await rootBundle.loadStructuredData(localPath, (json) async {
         return CharactersJsonObject.parse(json);
       });
     } on IOException catch (e) {
       RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
-      throw e;
+      rethrow;
     }
   }
 
   Future<void> refresh(List<Character> characters) async {
     final db = await DBProvider.instance.database;
-    db.transaction((txn) async {
+    await db.transaction((txn) async {
       await _delete(txn);
       await _insert(txn, characters);
     });

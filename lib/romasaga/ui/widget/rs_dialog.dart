@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class RSDialog {
-  final BuildContext context;
-  final String message;
-  final Function positiveListener;
-
   const RSDialog(
     this.context, {
     @required this.message,
     @required this.positiveListener,
   });
 
+  final BuildContext context;
+  final String message;
+  final Function positiveListener;
+
   void show() {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (_) {
         return AlertDialog(

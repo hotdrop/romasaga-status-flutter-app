@@ -9,15 +9,15 @@ import '../../model/weapon.dart';
 import '../../common/rs_logger.dart';
 
 class CharListViewModel extends foundation.ChangeNotifier {
+  CharListViewModel({CharacterRepository characterRepo, MyStatusRepository statusRepo})
+      : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
+        _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
+
   final CharacterRepository _characterRepository;
   final MyStatusRepository _myStatusRepository;
 
   List<Character> _characters;
   OrderType selectedOrderType = OrderType.status;
-
-  CharListViewModel({CharacterRepository characterRepo, MyStatusRepository statusRepo})
-      : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
-        _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
 
   _State _state = _State.none;
 
@@ -25,11 +25,11 @@ class CharListViewModel extends foundation.ChangeNotifier {
   bool get isSuccess => _state == _State.success;
   bool get isError => _state == _State.error;
 
-  void load() async {
-    refreshCharacters();
+  Future<void> load() async {
+    await refreshCharacters();
   }
 
-  void refreshCharacters() async {
+  Future<void> refreshCharacters() async {
     _state = _State.loading;
     notifyListeners();
 
@@ -83,8 +83,8 @@ class CharListViewModel extends foundation.ChangeNotifier {
   /// 通常、自身のステータスはロード時に持ってきて以降は更新処理がいちいち走るのでこのメソッドは不要。
   /// ただ、アカウント画面で自身のステータス情報を復元した場合のみリフレッシュが必要なのでこれを用意している。
   ///
-  void refreshMyStatuses() async {
-    _loadMyStatuses();
+  Future<void> refreshMyStatuses() async {
+    await _loadMyStatuses();
     notifyListeners();
   }
 

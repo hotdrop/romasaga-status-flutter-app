@@ -3,6 +3,16 @@ import 'status.dart';
 import 'style.dart';
 
 class Character {
+  Character(
+    this.id,
+    this.name,
+    this.production,
+    String weaponType, {
+    this.selectedStyleRank,
+    this.selectedIconFilePath,
+  })  : this.weaponType = WeaponType(weaponType),
+        this.myStatus = MyStatus.empty(id);
+
   final int id;
   final String name;
   final String production; // 登場作品
@@ -14,16 +24,6 @@ class Character {
   final styles = <Style>[];
 
   MyStatus myStatus;
-
-  Character(
-    this.id,
-    this.name,
-    this.production,
-    String weaponType, {
-    this.selectedStyleRank,
-    this.selectedIconFilePath,
-  })  : this.weaponType = WeaponType(weaponType),
-        this.myStatus = MyStatus.empty(id);
 
   WeaponCategory get weaponCategory => weaponType.category;
 
