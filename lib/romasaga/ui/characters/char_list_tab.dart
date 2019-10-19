@@ -24,7 +24,7 @@ class CharListTab extends StatelessWidget {
 
   Widget _loadingView() {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.CharacterListTabTitle)),
+      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.characterListTabTitle)),
       body: Center(
         child: CircularProgressIndicator(),
       ),
@@ -33,9 +33,9 @@ class CharListTab extends StatelessWidget {
 
   Widget _loadErrorView() {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.CharacterListTabTitle)),
+      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.characterListTabTitle)),
       body: Center(
-        child: Text(RSStrings.CharacterListLoadingErrorMessage),
+        child: Text(RSStrings.characterListLoadingErrorMessage),
       ),
     );
   }
@@ -46,14 +46,14 @@ class CharListTab extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(RSStrings.CharacterListTabTitle),
+          title: const Text(RSStrings.characterListTabTitle),
           actions: <Widget>[
             _titlePopupMenu(),
           ],
           bottom: const TabBar(tabs: <Tab>[
-            Tab(text: RSStrings.CharacterListTabFavoriteTitle),
-            Tab(text: RSStrings.CharacterListTabPossessionTitle),
-            Tab(text: RSStrings.CharacterListTabUnownedTitle),
+            Tab(text: RSStrings.characterListTabFavoriteTitle),
+            Tab(text: RSStrings.characterListTabPossessionTitle),
+            Tab(text: RSStrings.characterListTabUnownedTitle),
           ]),
         ),
         body: TabBarView(
@@ -75,15 +75,15 @@ class CharListTab extends StatelessWidget {
           itemBuilder: (_) => [
             PopupMenuItem(
               value: OrderType.status,
-              child: Text(RSStrings.CharacterListOrderStatus),
+              child: Text(RSStrings.characterListOrderStatus),
             ),
             PopupMenuItem(
               value: OrderType.weapon,
-              child: Text(RSStrings.CharacterListOrderWeapon),
+              child: Text(RSStrings.characterListOrderWeapon),
             ),
           ],
           initialValue: viewModel.selectedOrderType,
-          onSelected: (OrderType value) {
+          onSelected: (value) {
             viewModel.orderBy(value);
           },
         );
@@ -97,11 +97,11 @@ class CharListTab extends StatelessWidget {
     if (characters.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text(RSStrings.NothingCharacterFavoriteMessage)],
+        children: <Widget>[Text(RSStrings.nothingCharacterFavoriteMessage)],
       );
     }
 
-    return ListView.builder(itemBuilder: (BuildContext context, int index) {
+    return ListView.builder(itemBuilder: (context, index) {
       if (index < characters.length) {
         return CharListRowItem(characters[index]);
       }
@@ -115,11 +115,11 @@ class CharListTab extends StatelessWidget {
     if (characters.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text(RSStrings.NothingCharacterPossessionMessage)],
+        children: <Widget>[Text(RSStrings.nothingCharacterPossessionMessage)],
       );
     }
 
-    return ListView.builder(itemBuilder: (BuildContext context, int index) {
+    return ListView.builder(itemBuilder: (context, index) {
       final characters = viewModel.findHaveCharacter();
 
       if (index < characters.length) {
@@ -130,7 +130,7 @@ class CharListTab extends StatelessWidget {
   }
 
   Widget _notHaveCharTab(CharListViewModel viewModel) {
-    return ListView.builder(itemBuilder: (BuildContext context, int index) {
+    return ListView.builder(itemBuilder: (context, index) {
       final characters = viewModel.findNotHaveCharacter();
 
       if (index < characters.length) {

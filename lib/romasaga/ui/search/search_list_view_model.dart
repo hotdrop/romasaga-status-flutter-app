@@ -7,14 +7,14 @@ import '../../model/weapon.dart';
 import '../../common/rs_logger.dart';
 
 class SearchListViewModel extends foundation.ChangeNotifier {
+  SearchListViewModel(this._originalCharacters) : charactersWithFilter = _originalCharacters;
+
   List<Character> _originalCharacters;
   List<Character> charactersWithFilter;
 
   SearchCondition _condition = SearchCondition();
 
   bool isKeywordSearch = false;
-
-  SearchListViewModel(this._originalCharacters) : charactersWithFilter = _originalCharacters;
 
   void tapSearchIcon() {
     if (isKeywordSearch) {
@@ -46,13 +46,13 @@ class SearchListViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
-  void findByKeyword(String word) async {
+  void findByKeyword(String word) {
     _condition.keyword = word;
     RSLogger.d("$word を検索します。");
     _search();
   }
 
-  void findByWeaponType(WeaponType type) async {
+  void findByWeaponType(WeaponType type) {
     RSLogger.d("${type.name} をフィルター指定します。");
     _condition.weaponType = type;
     _search();

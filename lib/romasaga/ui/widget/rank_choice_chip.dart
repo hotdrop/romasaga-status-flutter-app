@@ -6,26 +6,26 @@ import '../../common/rs_strings.dart';
 import 'rs_icon.dart';
 
 class RankChoiceChip extends StatefulWidget {
+  const RankChoiceChip({this.ranks, this.initSelectedRank, this.onSelectedListener});
+
   final List<String> ranks;
   final String initSelectedRank;
   final Function(String) onSelectedListener;
-
-  const RankChoiceChip({this.ranks, this.initSelectedRank, this.onSelectedListener});
 
   @override
   _RankChoiceChipState createState() => _RankChoiceChipState(ranks, initSelectedRank, onSelectedListener);
 }
 
 class _RankChoiceChipState extends State<RankChoiceChip> {
+  _RankChoiceChipState(this._ranks, this._initSelectedRank, this._listener) {
+    _selectedRankChipName = _initSelectedRank;
+  }
+
   final List<String> _ranks;
   final String _initSelectedRank;
   final Function(String) _listener;
 
   String _selectedRankChipName;
-
-  _RankChoiceChipState(this._ranks, this._initSelectedRank, this._listener) {
-    _selectedRankChipName = _initSelectedRank;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   }
 
   List<Widget> _rankChips() {
-    return _ranks.map<Widget>((String rank) {
+    return _ranks.map<Widget>((rank) {
       return Padding(
         padding: const EdgeInsets.only(right: 8.0),
         child: ChoiceChip(
@@ -48,7 +48,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
           label: Text(rank),
           avatar: _rankToAvatar(rank),
           selected: _selectedRankChipName == rank,
-          onSelected: (bool value) {
+          onSelected: (value) {
             setState(() {
               _selectedRankChipName = value ? rank : '';
             });
@@ -60,9 +60,9 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   }
 
   Color _rankToColor(String rank) {
-    if (rank.contains(RSStrings.RankSS)) {
+    if (rank.contains(RSStrings.rankSS)) {
       return RSColors.chipRankSS;
-    } else if (rank.contains(RSStrings.RankS)) {
+    } else if (rank.contains(RSStrings.rankS)) {
       return RSColors.chipRankS;
     } else {
       return RSColors.chipRankA;

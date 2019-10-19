@@ -1,9 +1,9 @@
 import 'package:logger/logger.dart';
 
 class RSLogger {
-  static final Logger _logger = Logger();
-
   const RSLogger._();
+
+  static final Logger _logger = Logger();
 
   static void d(String message) {
     _logger.d(message);

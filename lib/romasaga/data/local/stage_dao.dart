@@ -12,21 +12,22 @@ import '../../model/stage.dart';
 import '../../common/rs_logger.dart';
 
 class StageDao {
-  static final StageDao _instance = StageDao._();
-
-  const StageDao._();
   factory StageDao() {
     return _instance;
   }
 
+  const StageDao._();
+
+  static final StageDao _instance = StageDao._();
+
   Future<List<Stage>> loadDummy({String localPath = 'res/json/stage.json'}) async {
     try {
-      return await rootBundle.loadStructuredData(localPath, (String json) async {
+      return await rootBundle.loadStructuredData(localPath, (json) async {
         return StagesJsonObject.parse(json);
       });
     } on IOException catch (e) {
       RSLogger.e('ステージデータの取得時にエラーが発生しました。', e);
-      throw e;
+      rethrow;
     }
   }
 
@@ -35,7 +36,7 @@ class StageDao {
     final results = await db.query(StageEntity.tableName, orderBy: StageEntity.columnOrder);
 
     // ステージ情報は最新を先頭に持ってきたいのでorderの降順にしている。
-    final entities = results.isNotEmpty ? results.reversed.map((it) => StageEntity.fromMap(it)).toList() : [];
+    final List<StageEntity> entities = results.isNotEmpty ? results.reversed.map((it) => StageEntity.fromMap(it)).toList() : [];
     return entities.map((entity) => Mapper.toStage(entity)).toList();
   }
 
@@ -48,7 +49,7 @@ class StageDao {
 
   Future<void> refresh(List<Stage> stages) async {
     final db = await DBProvider.instance.database;
-    db.transaction((txn) async {
+    await db.transaction((txn) async {
       await _delete(txn);
       await _insert(txn, stages);
     });

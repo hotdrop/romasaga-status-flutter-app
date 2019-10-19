@@ -29,7 +29,7 @@ class RomasagaApp extends StatelessWidget {
       supportedLocales: [
         Locale('ja', ''),
       ],
-      title: RSStrings.AppTitle,
+      title: RSStrings.appTitle,
       theme: ThemeData.dark().copyWith(accentColor: RSColors.accent),
       home: TopPage(),
     );

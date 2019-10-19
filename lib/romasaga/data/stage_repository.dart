@@ -6,12 +6,12 @@ import '../model/stage.dart';
 import '../common/rs_logger.dart';
 
 class StageRepository {
-  final StageDao _localDataSource;
-  final StageApi _remoteDataSource;
-
   StageRepository({StageDao local, StageApi remote})
       : _localDataSource = (local == null) ? StageDao() : local,
         _remoteDataSource = (remote == null) ? StageApi() : remote;
+
+  final StageDao _localDataSource;
+  final StageApi _remoteDataSource;
 
   ///
   /// ステージデータのロード

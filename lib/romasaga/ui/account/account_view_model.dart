@@ -8,11 +8,6 @@ import '../../data/account_repository.dart';
 import '../../common/rs_logger.dart';
 
 class SettingViewModel extends foundation.ChangeNotifier {
-  final CharacterRepository _characterRepository;
-  final StageRepository _stageRepository;
-  final MyStatusRepository _myStatusRepository;
-  final AccountRepository _accountRepository;
-
   SettingViewModel({
     CharacterRepository characterRepo,
     StageRepository stageRepo,
@@ -22,6 +17,11 @@ class SettingViewModel extends foundation.ChangeNotifier {
         _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
         _myStatusRepository = (myStatusRepo == null) ? MyStatusRepository() : myStatusRepo,
         _accountRepository = (accountRepo == null) ? AccountRepository() : accountRepo;
+
+  final CharacterRepository _characterRepository;
+  final StageRepository _stageRepository;
+  final MyStatusRepository _myStatusRepository;
+  final AccountRepository _accountRepository;
 
   // 全体のステータス
   _Status _status = _Status.loading;
@@ -41,7 +41,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
   int characterCount;
   int stageCount;
 
-  void load() async {
+  Future<void> load() async {
     await _accountRepository.load();
     final isLogIn = _accountRepository.isLogIn;
 
@@ -135,7 +135,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
-  void refreshStage() async {
+  Future<void> refreshStage() async {
     if (loadingStage == DataLoadingStatus.loading) {
       return;
     }
@@ -155,7 +155,7 @@ class SettingViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
-  void backup() async {
+  Future<void> backup() async {
     if (loadingBackup == DataLoadingStatus.loading) {
       return;
     }

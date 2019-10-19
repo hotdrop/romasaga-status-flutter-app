@@ -11,9 +11,9 @@ import '../../common/rs_logger.dart';
 import '../../common/rs_strings.dart';
 
 class SettingTab extends StatelessWidget {
-  final CharListViewModel _charListViewModel;
-
   const SettingTab(this._charListViewModel);
+
+  final CharListViewModel _charListViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class SettingTab extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(RSStrings.AccountTabTitle),
+          title: const Text(RSStrings.accountTabTitle),
         ),
         body: _widgetContents(),
       ),
@@ -69,7 +69,7 @@ class SettingTab extends StatelessWidget {
         return RaisedButton(
           color: Theme.of(context).accentColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          child: Text(RSStrings.AccountLoginWithGoogle),
+          child: Text(RSStrings.accountLoginWithGoogle),
           onPressed: () {
             if (viewModel.nowLoading) {
               RSLogger.d("now Loading...");
@@ -134,11 +134,11 @@ class SettingTab extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: 16.0, top: 16.0),
-          child: Text(RSStrings.AccountDataUpdateTitle),
+          child: Text(RSStrings.accountDataUpdateTitle),
         ),
         Padding(
           padding: EdgeInsets.only(left: 16.0, right: 16.0),
-          child: Text(RSStrings.AccountDataUpdateDetail, style: TextStyle(fontSize: 12.0, color: RSColors.textAttention)),
+          child: Text(RSStrings.accountDataUpdateDetail, style: TextStyle(fontSize: 12.0, color: RSColors.textAttention)),
         )
       ],
     );
@@ -150,26 +150,26 @@ class SettingTab extends StatelessWidget {
         return _rowItemViewWithCount(
           context,
           icon: const Icon(Icons.people),
-          title: RSStrings.AccountCharacterUpdateLabel,
+          title: RSStrings.accountCharacterUpdateLabel,
           registerCount: viewModel.characterCount ?? 0,
           loadingStatus: viewModel.loadingCharacter,
           onTapListener: () {
             RSDialog(
               context,
-              message: RSStrings.AccountCharacterOnlyNewUpdateDialogMessage,
+              message: RSStrings.accountCharacterOnlyNewUpdateDialogMessage,
               positiveListener: () async {
                 await viewModel.registerNewCharacters();
-                _charListViewModel.refreshCharacters();
+                await _charListViewModel.refreshCharacters();
               },
             ).show();
           },
           onLongTapListener: () {
             RSDialog(
               context,
-              message: RSStrings.AccountCharacterAllUpdateDialogMessage,
+              message: RSStrings.accountCharacterAllUpdateDialogMessage,
               positiveListener: () async {
                 await viewModel.updateAllCharacters();
-                _charListViewModel.refreshCharacters();
+                await _charListViewModel.refreshCharacters();
               },
             ).show();
           },
@@ -184,13 +184,13 @@ class SettingTab extends StatelessWidget {
         return _rowItemViewWithCount(
           context,
           icon: const Icon(Icons.map),
-          title: RSStrings.AccountStageUpdateLabel,
+          title: RSStrings.accountStageUpdateLabel,
           registerCount: viewModel.stageCount ?? 0,
           loadingStatus: viewModel.loadingStage,
           onTapListener: () async {
             RSDialog(
               context,
-              message: RSStrings.AccountStageUpdateDialogMessage,
+              message: RSStrings.accountStageUpdateDialogMessage,
               positiveListener: () {
                 viewModel.refreshStage();
               },
@@ -204,17 +204,17 @@ class SettingTab extends StatelessWidget {
   Widget _rowBackUp() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
-        final subTitleText = '${RSStrings.AccountStatusBackupDateLabel} ${viewModel.previousBackupDateStr}';
+        final subTitleText = '${RSStrings.accountStatusBackupDateLabel} ${viewModel.previousBackupDateStr}';
         return _rowItemView(
           context,
           icon: const Icon(Icons.backup),
-          title: RSStrings.AccountStatusBackupLabel,
+          title: RSStrings.accountStatusBackupLabel,
           subTitle: subTitleText,
           loadingStatus: viewModel.loadingBackup,
           onTapListener: () async {
             RSDialog(
               context,
-              message: RSStrings.AccountStatusBackupDialogMessage,
+              message: RSStrings.accountStatusBackupDialogMessage,
               positiveListener: () {
                 viewModel.backup();
               },
@@ -231,16 +231,16 @@ class SettingTab extends StatelessWidget {
         return _rowItemView(
           context,
           icon: const Icon(Icons.settings_backup_restore),
-          title: RSStrings.AccountStatusRestoreLabel,
-          subTitle: RSStrings.AccountStatusRestoreDescriptionLabel,
+          title: RSStrings.accountStatusRestoreLabel,
+          subTitle: RSStrings.accountStatusRestoreDescriptionLabel,
           loadingStatus: viewModel.loadingRestore,
           onTapListener: () {
             RSDialog(
               context,
-              message: RSStrings.AccountStatusRestoreDialogMessage,
+              message: RSStrings.accountStatusRestoreDialogMessage,
               positiveListener: () async {
                 await viewModel.restore();
-                _charListViewModel.refreshMyStatuses();
+                await _charListViewModel.refreshMyStatuses();
               },
             ).show();
           },
@@ -255,11 +255,11 @@ class SettingTab extends StatelessWidget {
         padding: EdgeInsets.only(top: 16.0),
         child: OutlineButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          child: Text(RSStrings.AccountLogoutButton),
+          child: Text(RSStrings.accountLogoutButton),
           onPressed: () async {
             RSDialog(
               context,
-              message: RSStrings.AccountLogoutDialogMessage,
+              message: RSStrings.accountLogoutDialogMessage,
               positiveListener: () => viewModel.logout(),
             ).show();
           },
@@ -342,7 +342,7 @@ class SettingTab extends StatelessWidget {
   }
 
   Widget _rowTitleWithCount(BuildContext context, String title, int registerCount) {
-    final str = '${RSStrings.AccountRegisterCountLabel} ${registerCount ?? 0}';
+    final str = '${RSStrings.accountRegisterCountLabel} ${registerCount ?? 0}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -361,24 +361,24 @@ class SettingTab extends StatelessWidget {
   /// 　　ロード終了したら「最新」と表示する
   ///
   Widget _rowStatus(DataLoadingStatus loadingStatus) {
-    var statusColor;
-    var statusTitle;
+    Color statusColor;
+    String statusTitle;
     switch (loadingStatus) {
       case DataLoadingStatus.none:
         statusColor = RSColors.dataLoadStatusNone;
-        statusTitle = RSStrings.UpdateStatusNone;
+        statusTitle = RSStrings.updateStatusNone;
         break;
       case DataLoadingStatus.loading:
         statusColor = RSColors.dataLoadStatusLoading;
-        statusTitle = RSStrings.UpdateStatusUpdate;
+        statusTitle = RSStrings.updateStatusUpdate;
         break;
       case DataLoadingStatus.complete:
         statusColor = RSColors.dataLoadStatusComplete;
-        statusTitle = RSStrings.UpdateStatusComplete;
+        statusTitle = RSStrings.updateStatusComplete;
         break;
       case DataLoadingStatus.error:
         statusColor = RSColors.dataLoadStatusError;
-        statusTitle = RSStrings.UpdateStatusError;
+        statusTitle = RSStrings.updateStatusError;
         break;
     }
 

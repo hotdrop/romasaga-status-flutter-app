@@ -12,7 +12,7 @@ class LetterTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text(RSStrings.LetterTabTitle),
+          child: Text(RSStrings.letterTabTitle),
         ),
       ),
       body: _widgetContents(context),
@@ -58,7 +58,7 @@ class LetterTab extends StatelessWidget {
           ],
         ),
         onTap: () {
-          Navigator.push(
+          Navigator.push<void>(
             context,
             MaterialPageRoute(builder: (context) => LetterMainPage(firstSelectLetterType: letter.type)),
           );

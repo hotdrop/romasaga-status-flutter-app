@@ -1,4 +1,12 @@
 class StageEntity {
+  StageEntity(this.name, this.statusUpperLimit, this.itemOrder);
+
+  StageEntity.fromMap(Map<String, dynamic> map)
+      : id = map[columnId] as int,
+        name = map[columnName] as String,
+        statusUpperLimit = map[columnAddLimit] as int,
+        itemOrder = map[columnOrder] as int;
+
   static const String tableName = 'Stage';
   static const String createTableSql = '''
       CREATE TABLE $tableName (
@@ -20,14 +28,6 @@ class StageEntity {
 
   static const String columnOrder = 'item_order';
   final int itemOrder;
-
-  StageEntity(this.name, this.statusUpperLimit, this.itemOrder);
-
-  StageEntity.fromMap(Map<String, dynamic> map)
-      : id = map[columnId],
-        name = map[columnName],
-        statusUpperLimit = map[columnAddLimit],
-        itemOrder = map[columnOrder];
 
   Map<String, dynamic> toMap() {
     final map = <String, dynamic>{columnName: name, columnAddLimit: statusUpperLimit, columnOrder: itemOrder};

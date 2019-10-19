@@ -47,9 +47,9 @@ class RSIcon {
   /// スタイルランクアイコン
   ///
   static Widget rank(String rank) {
-    if (rank.contains(RSStrings.RankSS)) {
+    if (rank.contains(RSStrings.rankSS)) {
       return _imageIcon('res/icons/icon_rank_SS.png', IconSize.small);
-    } else if (rank.contains(RSStrings.RankS)) {
+    } else if (rank.contains(RSStrings.rankS)) {
       return _imageIcon('res/icons/icon_rank_S.png', IconSize.small);
     } else {
       return _imageIcon('res/icons/icon_rank_A.png', IconSize.small);
@@ -71,7 +71,7 @@ class RSIcon {
   /// Ripple付きの武器アイコン
   /// 選択しているかしていないかの指定も可能
   ///
-  static Widget weaponWithRipple({@required WeaponType type, @required Function onTap, bool selected = false}) {
+  static Widget weaponWithRipple({@required WeaponType type, @required void Function() onTap, bool selected = false}) {
     String res = _getWeaponIconRes(type);
     return Material(
       shape: CircleBorder(),
@@ -92,18 +92,18 @@ class RSIcon {
   ///
   /// チェックアイコン
   ///
-  static Widget haveCharacterWithRipple({@required BuildContext context, @required Function onTap, @required bool selected}) {
+  static Widget haveCharacterWithRipple({@required BuildContext context, @required void Function() onTap, @required bool selected}) {
     return _createIconWithRipple(context, onTap, selected, Icons.check);
   }
 
   ///
   /// お気に入りアイコン
   ///
-  static Widget favoriteWithRipple({@required BuildContext context, @required Function onTap, @required bool selected}) {
+  static Widget favoriteWithRipple({@required BuildContext context, @required void Function() onTap, @required bool selected}) {
     return _createIconWithRipple(context, onTap, selected, Icons.favorite);
   }
 
-  static Widget _createIconWithRipple(BuildContext context, Function onTap, bool selected, IconData icon) {
+  static Widget _createIconWithRipple(BuildContext context, void Function() onTap, bool selected, IconData icon) {
     final iconColor = selected ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
     return RawMaterialButton(
       shape: CircleBorder(),
@@ -128,30 +128,30 @@ class RSIcon {
 
   static String _getWeaponIconRes(WeaponType weaponType) {
     switch (weaponType.name) {
-      case RSStrings.Sword:
+      case RSStrings.sword:
         return 'res/icons/icon_weap_sword.png';
-      case RSStrings.LargeSword:
+      case RSStrings.largeSword:
         return 'res/icons/icon_weap_large_sword.png';
-      case RSStrings.Axe:
+      case RSStrings.axe:
         return 'res/icons/icon_weap_axe.png';
-      case RSStrings.Hummer:
+      case RSStrings.hummer:
         return 'res/icons/icon_weap_hummer.png';
-      case RSStrings.Knuckle:
+      case RSStrings.knuckle:
         return 'res/icons/icon_weap_knuckle.png';
-      case RSStrings.Gun:
+      case RSStrings.gun:
         return 'res/icons/icon_weap_gun.png';
-      case RSStrings.Rapier:
+      case RSStrings.rapier:
         return 'res/icons/icon_weap_rapier.png';
-      case RSStrings.Bow:
+      case RSStrings.bow:
         return 'res/icons/icon_weap_bow.png';
-      case RSStrings.Spear:
+      case RSStrings.spear:
         return 'res/icons/icon_weap_spear.png';
-      case RSStrings.Rod:
-      case RSStrings.MagicFire:
-      case RSStrings.MagicWater:
-      case RSStrings.MagicWind:
-      case RSStrings.MagicYin:
-      case RSStrings.MagicShine:
+      case RSStrings.rod:
+      case RSStrings.magicFire:
+      case RSStrings.magicWater:
+      case RSStrings.magicWind:
+      case RSStrings.magicYin:
+      case RSStrings.magicShine:
         return 'res/icons/icon_weap_rod.png';
       default:
         RSLogger.d("不正なWeaponTypeです。weaponType=${weaponType.name}");

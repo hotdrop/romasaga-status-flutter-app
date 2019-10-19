@@ -1,49 +1,49 @@
 import '../common/rs_strings.dart';
 
 class WeaponType {
-  final String name;
-
   const WeaponType(this.name);
+
+  final String name;
 
   WeaponCategory get category {
     switch (name) {
-      case RSStrings.Sword:
-      case RSStrings.LargeSword:
-      case RSStrings.Axe:
+      case RSStrings.sword:
+      case RSStrings.largeSword:
+      case RSStrings.axe:
         return WeaponCategory.slash;
-      case RSStrings.Hummer:
-      case RSStrings.Knuckle:
-      case RSStrings.Gun:
-      case RSStrings.Rod:
+      case RSStrings.hummer:
+      case RSStrings.knuckle:
+      case RSStrings.gun:
+      case RSStrings.rod:
         return WeaponCategory.strike;
-      case RSStrings.Rapier:
-      case RSStrings.Spear:
-      case RSStrings.Bow:
+      case RSStrings.rapier:
+      case RSStrings.spear:
+      case RSStrings.bow:
         return WeaponCategory.poke;
-      case RSStrings.MagicFire:
+      case RSStrings.magicFire:
         return WeaponCategory.heat;
-      case RSStrings.MagicWater:
+      case RSStrings.magicWater:
         return WeaponCategory.cold;
-      case RSStrings.MagicWind:
+      case RSStrings.magicWind:
         return WeaponCategory.thunder;
-      case RSStrings.MagicYin:
+      case RSStrings.magicYin:
         return WeaponCategory.dark;
-      case RSStrings.MagicShine:
+      case RSStrings.magicShine:
         return WeaponCategory.light;
       default:
         return null;
     }
   }
 
-  bool isRod() => name == RSStrings.Rod;
+  bool isRod() => name == RSStrings.rod;
 
   bool isMagic() {
     switch (name) {
-      case RSStrings.MagicFire:
-      case RSStrings.MagicWater:
-      case RSStrings.MagicWind:
-      case RSStrings.MagicYin:
-      case RSStrings.MagicShine:
+      case RSStrings.magicFire:
+      case RSStrings.magicWater:
+      case RSStrings.magicWind:
+      case RSStrings.magicYin:
+      case RSStrings.magicShine:
         return true;
       default:
         return false;
@@ -52,30 +52,30 @@ class WeaponType {
 
   int sortOrder() {
     switch (name) {
-      case RSStrings.Sword:
+      case RSStrings.sword:
         return 1;
-      case RSStrings.LargeSword:
+      case RSStrings.largeSword:
         return 2;
-      case RSStrings.Axe:
+      case RSStrings.axe:
         return 3;
-      case RSStrings.Hummer:
+      case RSStrings.hummer:
         return 4;
-      case RSStrings.Knuckle:
+      case RSStrings.knuckle:
         return 5;
-      case RSStrings.Gun:
+      case RSStrings.gun:
         return 6;
-      case RSStrings.Rapier:
+      case RSStrings.rapier:
         return 7;
-      case RSStrings.Spear:
+      case RSStrings.spear:
         return 9;
-      case RSStrings.Bow:
+      case RSStrings.bow:
         return 10;
-      case RSStrings.Rod:
-      case RSStrings.MagicFire:
-      case RSStrings.MagicWater:
-      case RSStrings.MagicWind:
-      case RSStrings.MagicYin:
-      case RSStrings.MagicShine:
+      case RSStrings.rod:
+      case RSStrings.magicFire:
+      case RSStrings.magicWater:
+      case RSStrings.magicWind:
+      case RSStrings.magicYin:
+      case RSStrings.magicShine:
         return 11;
       default:
         return 12;
@@ -83,19 +83,19 @@ class WeaponType {
   }
 
   static List<WeaponType> get types => [
-        WeaponType(RSStrings.Sword),
-        WeaponType(RSStrings.LargeSword),
-        WeaponType(RSStrings.Axe),
-        WeaponType(RSStrings.Hummer),
-        WeaponType(RSStrings.Knuckle),
-        WeaponType(RSStrings.Gun),
-        WeaponType(RSStrings.Rapier),
-        WeaponType(RSStrings.Spear),
-        WeaponType(RSStrings.Bow),
-        WeaponType(RSStrings.Rod),
+        WeaponType(RSStrings.sword),
+        WeaponType(RSStrings.largeSword),
+        WeaponType(RSStrings.axe),
+        WeaponType(RSStrings.hummer),
+        WeaponType(RSStrings.knuckle),
+        WeaponType(RSStrings.gun),
+        WeaponType(RSStrings.rapier),
+        WeaponType(RSStrings.spear),
+        WeaponType(RSStrings.bow),
+        WeaponType(RSStrings.rod),
       ];
 
-  bool operator ==(o) => o is WeaponType && o.name == name;
+  bool operator ==(dynamic o) => o is WeaponType && o.name == name;
 
   int get hashCode => name.hashCode;
 }

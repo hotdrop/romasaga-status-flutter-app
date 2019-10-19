@@ -14,22 +14,22 @@ import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 
 class SearchListTab extends StatefulWidget {
-  final List<Character> _characters;
-
   SearchListTab(this._characters);
+
+  final List<Character> _characters;
 
   @override
   _SearchListTabState createState() => _SearchListTabState(_characters);
 }
 
 class _SearchListTabState extends State<SearchListTab> with SingleTickerProviderStateMixin {
+  _SearchListTabState(this._characters);
+
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   final List<Character> _characters;
 
   AnimationController _controller;
   final TextEditingController _searchQuery = TextEditingController();
-
-  _SearchListTabState(this._characters);
 
   @override
   void initState() {
@@ -58,7 +58,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
   }
 
   double get _backdropHeight {
-    final RenderBox renderBox = _backdropKey.currentContext.findRenderObject();
+    final renderBox = _backdropKey.currentContext.findRenderObject() as RenderBox;
     return renderBox.size.height;
   }
 
@@ -126,9 +126,9 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
   Widget _filterView() {
     // フィルターしたい要素をここに詰めていく
     final filterViews = <Widget>[];
-    filterViews.add(_filterViewSubTitle(RSStrings.SearchFilerTitleOwn));
+    filterViews.add(_filterViewSubTitle(RSStrings.searchFilerTitleOwn));
     filterViews.add(_filterViewOwnState());
-    filterViews.add(_filterViewSubTitle(RSStrings.SearchFilerTitleWeapon));
+    filterViews.add(_filterViewSubTitle(RSStrings.searchFilerTitleWeapon));
     filterViews.add(_filterViewWeaponType());
 
     return Padding(
@@ -186,7 +186,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
       return Wrap(
         spacing: 16.0,
         runSpacing: 16.0,
-        children: WeaponType.types.map<Widget>((WeaponType type) {
+        children: WeaponType.types.map<Widget>((type) {
           bool selected = viewModel.isSelectWeaponType(type);
           return RSIcon.weaponWithRipple(
             type: type,
@@ -229,14 +229,14 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
           controller: _searchQuery,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.search),
-            hintText: RSStrings.SearchListQueryHint,
+            hintText: RSStrings.searchListQueryHint,
           ),
-          onChanged: (String query) {
+          onChanged: (query) {
             viewModel.findByKeyword(query);
           },
         );
       } else {
-        return Text(RSStrings.SearchListTabTitle);
+        return Text(RSStrings.searchListTabTitle);
       }
     });
   }
@@ -263,11 +263,6 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
 }
 
 class _BackdropPanel extends StatelessWidget {
-  final VoidCallback onTap;
-  final GestureDragUpdateCallback onVerticalDragUpdate;
-  final GestureDragEndCallback onVerticalDragEnd;
-  final visibleBackdropPanel;
-
   const _BackdropPanel({
     Key key,
     this.onTap,
@@ -275,6 +270,11 @@ class _BackdropPanel extends StatelessWidget {
     this.onVerticalDragEnd,
     this.visibleBackdropPanel,
   }) : super(key: key);
+
+  final VoidCallback onTap;
+  final GestureDragUpdateCallback onVerticalDragUpdate;
+  final GestureDragEndCallback onVerticalDragEnd;
+  final bool visibleBackdropPanel;
 
   @override
   Widget build(BuildContext context) {
@@ -301,7 +301,7 @@ class _BackdropPanel extends StatelessWidget {
                 children: <Widget>[
                   const SizedBox(width: 16.0),
                   const SizedBox(width: 16.0),
-                  Text(RSStrings.SearchBackDropTitle, style: Theme.of(context).textTheme.subhead),
+                  Text(RSStrings.searchBackDropTitle, style: Theme.of(context).textTheme.subhead),
                   const SizedBox(width: 16.0),
                   visibleBackdropPanel ? Icon(Icons.expand_more) : Icon(Icons.expand_less),
                 ],

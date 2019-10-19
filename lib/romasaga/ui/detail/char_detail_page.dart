@@ -17,9 +17,9 @@ import '../../common/rs_logger.dart';
 import '../../common/rs_strings.dart';
 
 class CharDetailPage extends StatelessWidget {
-  final Character character;
-
   const CharDetailPage({@required this.character});
+
+  final Character character;
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +106,11 @@ class CharDetailPage extends StatelessWidget {
   }
 
   void _showDialog(BuildContext context, CharDetailViewModel viewModel) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (_) {
         return AlertDialog(
-          content: Text(RSStrings.CharacterDetailChangeStyleIconDialogContent),
+          content: Text(RSStrings.characterDetailChangeStyleIconDialogContent),
           actions: <Widget>[
             FlatButton(
               child: Text('Cancel'),
@@ -139,15 +139,15 @@ class CharDetailPage extends StatelessWidget {
       final myStatus = viewModel.myStatus;
       return Column(
         children: <Widget>[
-          _statusIndicator(RSStrings.HpName, myStatus.hp, 1), // 0だとStatusIndicator.createで0割してしまうので1にする。
-          _statusIndicator(RSStrings.StrName, myStatus.str, viewModel.getStatusUpperLimit(RSStrings.StrName)),
-          _statusIndicator(RSStrings.VitName, myStatus.vit, viewModel.getStatusUpperLimit(RSStrings.VitName)),
-          _statusIndicator(RSStrings.DexName, myStatus.dex, viewModel.getStatusUpperLimit(RSStrings.DexName)),
-          _statusIndicator(RSStrings.AgiName, myStatus.agi, viewModel.getStatusUpperLimit(RSStrings.AgiName)),
-          _statusIndicator(RSStrings.IntName, myStatus.intelligence, viewModel.getStatusUpperLimit(RSStrings.IntName)),
-          _statusIndicator(RSStrings.SpiName, myStatus.spirit, viewModel.getStatusUpperLimit(RSStrings.SpiName)),
-          _statusIndicator(RSStrings.LoveName, myStatus.love, viewModel.getStatusUpperLimit(RSStrings.LoveName)),
-          _statusIndicator(RSStrings.AttrName, myStatus.attr, viewModel.getStatusUpperLimit(RSStrings.AttrName)),
+          _statusIndicator(RSStrings.hpName, myStatus.hp, 1), // 0だとStatusIndicator.createで0割してしまうので1にする。
+          _statusIndicator(RSStrings.strName, myStatus.str, viewModel.getStatusUpperLimit(RSStrings.strName)),
+          _statusIndicator(RSStrings.vitName, myStatus.vit, viewModel.getStatusUpperLimit(RSStrings.vitName)),
+          _statusIndicator(RSStrings.dexName, myStatus.dex, viewModel.getStatusUpperLimit(RSStrings.dexName)),
+          _statusIndicator(RSStrings.agiName, myStatus.agi, viewModel.getStatusUpperLimit(RSStrings.agiName)),
+          _statusIndicator(RSStrings.intName, myStatus.intelligence, viewModel.getStatusUpperLimit(RSStrings.intName)),
+          _statusIndicator(RSStrings.spiName, myStatus.spirit, viewModel.getStatusUpperLimit(RSStrings.spiName)),
+          _statusIndicator(RSStrings.loveName, myStatus.love, viewModel.getStatusUpperLimit(RSStrings.loveName)),
+          _statusIndicator(RSStrings.attrName, myStatus.attr, viewModel.getStatusUpperLimit(RSStrings.attrName)),
         ],
       );
     });
@@ -170,7 +170,7 @@ class CharDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 24.0),
-            Text(RSStrings.CharacterDetailStyleLabel, style: TextStyle(fontSize: 16.0)),
+            Text(RSStrings.characterDetailStyleLabel, style: TextStyle(fontSize: 16.0)),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -178,7 +178,7 @@ class CharDetailPage extends StatelessWidget {
                   child: RankChoiceChip(
                     ranks: viewModel.getAllRanks(),
                     initSelectedRank: viewModel.selectedRank,
-                    onSelectedListener: (String rank) {
+                    onSelectedListener: (rank) {
                       viewModel.onSelectRank(rank);
                     },
                   ),
@@ -199,7 +199,7 @@ class CharDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(height: 24.0),
-        Text(RSStrings.CharacterDetailStageLabel, style: TextStyle(fontSize: 16.0)),
+        Text(RSStrings.characterDetailStageLabel, style: TextStyle(fontSize: 16.0)),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -243,7 +243,7 @@ class CharDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 24.0),
-            Text(RSStrings.CharacterDetailAttributeLabel, style: TextStyle(fontSize: 16.0)),
+            Text(RSStrings.characterDetailAttributeLabel, style: TextStyle(fontSize: 16.0)),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -278,11 +278,11 @@ class CharDetailPage extends StatelessWidget {
       children: <Widget>[
         const SizedBox(height: 24.0),
         Text(
-          RSStrings.CharacterDetailStatusTableLabel,
+          RSStrings.characterDetailStatusTableLabel,
           style: TextStyle(fontSize: 16.0),
         ),
         Text(
-          RSStrings.CharacterDetailStatusTableSubLabel,
+          RSStrings.characterDetailStatusTableSubLabel,
           style: TextStyle(fontSize: 14.0, color: RSColors.subText),
         ),
         _styleStatusTable(),
@@ -332,14 +332,14 @@ class CharDetailPage extends StatelessWidget {
     }
 
     return <DataRow>[
-      DataRow(cells: _createDataCells(RSStrings.StrName, strRowData)),
-      DataRow(cells: _createDataCells(RSStrings.VitName, vitRowData)),
-      DataRow(cells: _createDataCells(RSStrings.AgiName, agiRowData)),
-      DataRow(cells: _createDataCells(RSStrings.DexName, dexRowData)),
-      DataRow(cells: _createDataCells(RSStrings.IntName, intRowData)),
-      DataRow(cells: _createDataCells(RSStrings.SpiName, spiRowData)),
-      DataRow(cells: _createDataCells(RSStrings.LoveName, loveRowData)),
-      DataRow(cells: _createDataCells(RSStrings.AttrName, attrRowData)),
+      DataRow(cells: _createDataCells(RSStrings.strName, strRowData)),
+      DataRow(cells: _createDataCells(RSStrings.vitName, vitRowData)),
+      DataRow(cells: _createDataCells(RSStrings.agiName, agiRowData)),
+      DataRow(cells: _createDataCells(RSStrings.dexName, dexRowData)),
+      DataRow(cells: _createDataCells(RSStrings.intName, intRowData)),
+      DataRow(cells: _createDataCells(RSStrings.spiName, spiRowData)),
+      DataRow(cells: _createDataCells(RSStrings.loveName, loveRowData)),
+      DataRow(cells: _createDataCells(RSStrings.attrName, attrRowData)),
     ];
   }
 
@@ -362,13 +362,13 @@ class CharDetailPage extends StatelessWidget {
           child: Icon(Icons.edit, color: Theme.of(context).accentColor),
           backgroundColor: RSColors.fabBackground,
           onPressed: () async {
-            final isSaved = await Navigator.of(context).push(
+            final bool isSaved = await Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => CharStatusEditPage(myStatus)),
                 ) ??
                 false;
             if (isSaved) {
               RSLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
-              viewModel.refreshStatus();
+              await viewModel.refreshStatus();
             }
           },
         );
