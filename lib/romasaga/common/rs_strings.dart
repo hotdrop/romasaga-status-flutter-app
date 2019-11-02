@@ -24,6 +24,7 @@ class RSStrings {
   static const String characterDetailAttributeLabel = '武器と属性';
   static const String characterDetailStatusTableLabel = 'スタイル別のステータス上限';
   static const String characterDetailStatusTableSubLabel = '選択ステージで切り替え可能';
+  static const String characterDetailLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 
   static const String statusEditTitle = 'ステータス編集';
   static const String statusEditSaveButtonLabel = '保存';
