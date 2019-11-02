@@ -11,6 +11,7 @@ import 'char_status_edit_page.dart';
 import '../widget/rs_icon.dart';
 import '../widget/rank_choice_chip.dart';
 import '../widget/status_indicator.dart';
+import '../widget/custom_page_route.dart';
 
 import '../../common/rs_colors.dart';
 import '../../common/rs_logger.dart';
@@ -393,7 +394,7 @@ class CharDetailPage extends StatelessWidget {
           backgroundColor: RSColors.fabBackground,
           onPressed: () async {
             final bool isSaved = await Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => CharStatusEditPage(myStatus)),
+                  RightSlidePageRoute<bool>(page: CharStatusEditPage(myStatus)),
                 ) ??
                 false;
             if (isSaved) {
