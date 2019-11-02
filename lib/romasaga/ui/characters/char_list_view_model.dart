@@ -19,29 +19,29 @@ class CharListViewModel extends foundation.ChangeNotifier {
   List<Character> _characters;
   OrderType selectedOrderType = OrderType.status;
 
-  _State _state = _State.none;
+  _PageState _pageState = _PageState.loading;
 
-  bool get isLoading => _state == _State.loading;
-  bool get isSuccess => _state == _State.success;
-  bool get isError => _state == _State.error;
+  bool get isLoading => _pageState == _PageState.loading;
+  bool get isSuccess => _pageState == _PageState.success;
+  bool get isError => _pageState == _PageState.error;
 
   Future<void> load() async {
     await refreshCharacters();
   }
 
   Future<void> refreshCharacters() async {
-    _state = _State.loading;
+    _pageState = _PageState.loading;
     notifyListeners();
 
     try {
       _characters = await _characterRepository.load();
       await _loadMyStatuses();
-      _state = _State.success;
+      _pageState = _PageState.success;
 
       orderBy(OrderType.status);
     } catch (e) {
-      RSLogger.e("キャラ情報ロード時にエラー", e);
-      _state = _State.error;
+      RSLogger.e("キャラ情報ロード時にエラーが発生しました。", e);
+      _pageState = _PageState.error;
       notifyListeners();
     }
   }
@@ -113,4 +113,4 @@ class CharListViewModel extends foundation.ChangeNotifier {
 }
 
 enum OrderType { status, weapon }
-enum _State { none, loading, success, error }
+enum _PageState { loading, success, error }
