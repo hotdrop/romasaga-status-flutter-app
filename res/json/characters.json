@@ -1,7 +1,7 @@
 {
   "characters": [
     {
-      "id": 2001,
+      "id": 1000,
       "name": "最終皇帝(男)",
       "weapon_type": "大剣",
       "production": "ロマンシング・サガ2",
@@ -11,6 +11,39 @@
         {"rank": "S", "title": "よし、準備しよう", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "saisyukoutei_white_ss.jpg"},
         {"rank": "A", "title": "テストその1", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "saisyukoutei_white_ss.jpg"},
         {"rank": "スパSS", "title": "テストその2", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "saisyukoutei_white_ss.jpg"}
+      ]
+    },
+    {
+      "id": 1001,
+      "name": "テストキャラ1",
+      "weapon_type": "体術",
+      "production": "ロマンシング・サガ1",
+      "styles": [
+        {"rank": "SS", "title": "SSキャラです。", "str": 50, "vit": 48, "dex": 48, "agi": 45, "int": 43, "spi": 45, "love": 44, "attr": 45, "icon": "test_ss.jpg"},
+        {"rank": "S", "title": "Sキャラです", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "test_ss.jpg"},
+        {"rank": "A", "title": "Aキャラです", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "test_ss.jpg"}
+      ]
+    },
+    {
+      "id": 1002,
+      "name": "テストキャラ2",
+      "weapon_type": "大剣",
+      "production": "サガ",
+      "styles": [
+        {"rank": "S", "title": "Sキャラです", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "test_ss.jpg"}
+      ]
+    },
+    {
+      "id": 1003,
+      "name": "テストキャラ3",
+      "weapon_type": "小剣",
+      "production": "ロマンシング・サガ2",
+      "styles": [
+        {"rank": "SS", "title": "アイウエオ", "str": 50, "vit": 48, "dex": 48, "agi": 45, "int": 43, "spi": 45, "love": 44, "attr": 45, "icon": "test_ss.jpg"},
+        {"rank": "温泉SS", "title": "アイウエオ", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "test_ss.jpg"},
+        {"rank": "アワS", "title": "アワキャラ", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "test_ss.jpg"},
+        {"rank": "A", "title": "テストその1", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "test_ss.jpg"},
+        {"rank": "テスA", "title": "テストその2", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "test_ss.jpg"}
       ]
     }
   ]
