@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'letter_main_page.dart';
+import '../widget/custom_page_route.dart';
 import '../../model/letter.dart';
 
 import '../../common/rs_colors.dart';
@@ -60,7 +61,7 @@ class LetterTab extends StatelessWidget {
         onTap: () {
           Navigator.push<void>(
             context,
-            MaterialPageRoute(builder: (context) => LetterMainPage(firstSelectLetterType: letter.type)),
+            ScalePageRoute(page: LetterMainPage(firstSelectLetterType: letter.type)),
           );
         },
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rsapp/romasaga/ui/widget/custom_page_route.dart';
 
 import '../detail/char_detail_page.dart';
 
@@ -32,8 +33,8 @@ class CharListRowItem extends StatelessWidget {
         onTap: () {
           Navigator.push<void>(
             context,
-            MaterialPageRoute<void>(
-              builder: (context) => CharDetailPage(character: character),
+            RightSlidePageRoute<void>(
+              page: CharDetailPage(character: character),
             ),
           );
         },

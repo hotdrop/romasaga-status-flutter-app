@@ -31,20 +31,35 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   Style _selectedStyle;
   Stage _selectedStage;
 
+  _PageState _pageState = _PageState.loading;
+  bool get isLoading => _pageState == _PageState.loading;
+  bool get isSuccess => _pageState == _PageState.success;
+  bool get isError => _pageState == _PageState.error;
+
   Future<void> load() async {
-    RSLogger.d('ロードします。');
-
-    _stages = await _stageRepository.load();
-    _selectedStage = _stages.first;
-
-    if (_character.styles.isEmpty) {
-      RSLogger.d('キャラクターのスタイルが未取得なので取得します。');
-      final styles = await _characterRepository.findStyles(_character.id);
-      _character.addStyles(styles);
-    }
-
-    _selectedStyle = _character.getSelectedStyle();
+    RSLogger.d('キャラ詳細情報をロードします。');
+    _pageState = _PageState.loading;
     notifyListeners();
+
+    try {
+      _stages = await _stageRepository.load();
+      _selectedStage = _stages.first;
+
+      if (_character.styles.isEmpty) {
+        RSLogger.d('キャラクターのスタイルが未取得なので取得します。');
+        final styles = await _characterRepository.findStyles(_character.id);
+        _character.addStyles(styles);
+      }
+
+      _selectedStyle = _character.getSelectedStyle();
+
+      _pageState = _PageState.success;
+      notifyListeners();
+    } catch (e) {
+      RSLogger.e('${_character.name}のロード時にエラーが発生しました。', e);
+      _pageState = _PageState.error;
+      notifyListeners();
+    }
   }
 
   ///
@@ -146,3 +161,5 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 }
+
+enum _PageState { loading, success, error }
