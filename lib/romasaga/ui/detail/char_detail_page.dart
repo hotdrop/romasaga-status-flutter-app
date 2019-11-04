@@ -255,17 +255,19 @@ class CharDetailPage extends StatelessWidget {
       int totalStatus = viewModel.myTotalStatus;
       int limitStatus = viewModel.getTotalLimitStatusWithSelectedStage();
       return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          _totalStatusCircle(totalStatus, limitStatus),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 12.0),
-              _contentHp(context, viewModel.myStatus.hp),
-              SizedBox(height: 12.0),
-              _contentUpperTotalLimitStatus(context, limitStatus),
-            ],
+          Expanded(child: _totalStatusCircle(totalStatus, limitStatus)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 12.0),
+                _contentHp(context, viewModel.myStatus.hp),
+                SizedBox(height: 12.0),
+                _contentUpperTotalLimitStatus(context, limitStatus),
+              ],
+            ),
           ),
         ],
       );
@@ -277,7 +279,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   Widget _totalStatusCircle(int totalStatus, int limitStatus) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24.0, top: 8.0, right: 32.0),
+      padding: const EdgeInsets.only(top: 8.0),
       child: TotalStatusCircularIndicator(totalStatus: totalStatus, limitStatus: limitStatus),
     );
   }
@@ -292,7 +294,6 @@ class CharDetailPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(RSStrings.hpName, style: Theme.of(context).textTheme.caption),
