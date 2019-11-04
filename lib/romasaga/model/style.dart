@@ -44,4 +44,6 @@ class Style {
       return 1;
     }
   }
+
+  int sum() => str + vit + dex + agi + intelligence + spirit + love + attr;
 }

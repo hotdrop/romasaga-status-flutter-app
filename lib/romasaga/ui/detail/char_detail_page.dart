@@ -3,14 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/character.dart';
+import '../../model/status.dart';
 
 import 'char_detail_view_model.dart';
 import 'char_status_edit_page.dart';
-import 'status_card_widget.dart';
 
+import '../widget/custom_rs_widgets.dart';
 import '../widget/rs_icon.dart';
 import '../widget/rank_choice_chip.dart';
-import '../widget/status_indicator.dart';
 import '../widget/custom_page_route.dart';
 
 import '../../common/rs_colors.dart';
@@ -86,7 +86,7 @@ class CharDetailPage extends StatelessWidget {
   List<Widget> _contentLayout() {
     final layouts = <Widget>[];
     layouts.add(_contentNewCard());
-    layouts.add(_contentCharacterCard());
+//    layouts.add(_contentCharacterCard());
     layouts.add(_contentsStyleChips());
     layouts.add(_contentsStage());
     layouts.add(_contentsAttribute());
@@ -95,12 +95,167 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// 検証 ステータス
+  /// 今やっている検証 新しいステータスカード
   ///
   Widget _contentNewCard() {
-    return StatusCardWidget();
+    return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
+      return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              bottomLeft: Radius.circular(8.0),
+              bottomRight: Radius.circular(8.0),
+              topRight: Radius.circular(68.0),
+            ),
+            boxShadow: <BoxShadow>[
+              BoxShadow(color: RSColors.characterDetailCardShadow.withOpacity(0.2), offset: Offset(1.1, 1.1), blurRadius: 10.0),
+            ],
+          ),
+          child: Column(
+            children: <Widget>[
+              _contentTotalStatus(),
+              _statusBorderLine(context),
+              _contentEachStatus(),
+            ],
+          ));
+    });
   }
 
+  ///
+  /// 合計ステータス表示欄
+  ///
+  Widget _contentTotalStatus() {
+    return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
+      int totalStatus = viewModel.myTotalStatus;
+      int limitStatus = viewModel.getTotalLimitStatusWithSelectedStage();
+      return Row(
+        children: <Widget>[
+          _totalStatusCircle(totalStatus, limitStatus),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 12.0),
+              _contentHp(context, viewModel.myStatus.hp),
+              SizedBox(height: 12.0),
+              _contentUpperTotalLimitStatus(context, limitStatus),
+            ],
+          ),
+        ],
+      );
+    });
+  }
+
+  ///
+  /// 合計ステータス
+  ///
+  Widget _totalStatusCircle(int totalStatus, int limitStatus) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, right: 60.0, left: 32.0),
+      child: TotalStatusCircularIndicator(totalStatus: totalStatus, limitStatus: limitStatus),
+    );
+  }
+
+  ///
+  /// 合計ステータス欄と一緒に表示するHP
+  ///
+  Widget _contentHp(BuildContext context, int hp) {
+    return Row(
+      children: <Widget>[
+        VerticalColorBorder(color: RSColors.characterDetailHpLabel),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(RSStrings.hpName, style: Theme.of(context).textTheme.caption),
+              SizedBox(height: 8.0),
+              Text(hp.toString(), style: Theme.of(context).textTheme.title),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  ///
+  /// 合計ステータス欄を一緒に表示する現スタイルの最大値
+  ///
+  Widget _contentUpperTotalLimitStatus(BuildContext context, int totalLimit) {
+    return Row(
+      children: <Widget>[
+        VerticalColorBorder(color: RSColors.characterDetailStylesLabel),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(RSStrings.characterDetailTotalLimitStatusLabel, style: Theme.of(context).textTheme.caption),
+              SizedBox(height: 8.0),
+              Text(totalLimit.toString(), style: Theme.of(context).textTheme.title),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _statusBorderLine(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 8),
+      child: Container(
+        height: 2,
+        decoration: BoxDecoration(
+          color: Theme.of(context).dividerColor,
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        ),
+      ),
+    );
+  }
+
+  Widget _contentEachStatus() {
+    return Consumer<CharDetailViewModel>(
+      builder: (context, viewModel, child) {
+        final MyStatus myStatus = viewModel.myStatus;
+        return Padding(
+          padding: const EdgeInsets.only(left: 32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(child: RSStatusBar(title: RSStrings.strName, status: myStatus.str, limit: viewModel.getStatusLimit(RSStrings.strName))),
+                  Expanded(child: RSStatusBar(title: RSStrings.vitName, status: myStatus.vit, limit: viewModel.getStatusLimit(RSStrings.vitName))),
+                  Expanded(child: RSStatusBar(title: RSStrings.dexName, status: myStatus.dex, limit: viewModel.getStatusLimit(RSStrings.dexName))),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(child: RSStatusBar(title: RSStrings.agiName, status: myStatus.agi, limit: viewModel.getStatusLimit(RSStrings.agiName))),
+                  Expanded(
+                      child:
+                          RSStatusBar(title: RSStrings.intName, status: myStatus.intelligence, limit: viewModel.getStatusLimit(RSStrings.intName))),
+                  Expanded(child: RSStatusBar(title: RSStrings.spiName, status: myStatus.spirit, limit: viewModel.getStatusLimit(RSStrings.spiName))),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(child: RSStatusBar(title: RSStrings.loveName, status: myStatus.love, limit: viewModel.getStatusLimit(RSStrings.loveName))),
+                  Expanded(child: RSStatusBar(title: RSStrings.attrName, status: myStatus.attr, limit: viewModel.getStatusLimit(RSStrings.attrName))),
+                  Expanded(child: SizedBox(width: 48.0)),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  /// TODO これ以降は見直し
   ///
   /// キャラクターカード
   ///
@@ -112,7 +267,6 @@ class CharDetailPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             _characterContents(),
-            _statusContents(),
           ],
         ),
       ),
@@ -167,35 +321,6 @@ class CharDetailPage extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-
-  ///
-  /// ステータス
-  ///
-  Widget _statusContents() {
-    return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
-      final myStatus = viewModel.myStatus;
-      return Column(
-        children: <Widget>[
-          _statusIndicator(RSStrings.hpName, myStatus.hp, 1), // 0だとStatusIndicator.createで0割してしまうので1にする。
-          _statusIndicator(RSStrings.strName, myStatus.str, viewModel.getStatusUpperLimit(RSStrings.strName)),
-          _statusIndicator(RSStrings.vitName, myStatus.vit, viewModel.getStatusUpperLimit(RSStrings.vitName)),
-          _statusIndicator(RSStrings.dexName, myStatus.dex, viewModel.getStatusUpperLimit(RSStrings.dexName)),
-          _statusIndicator(RSStrings.agiName, myStatus.agi, viewModel.getStatusUpperLimit(RSStrings.agiName)),
-          _statusIndicator(RSStrings.intName, myStatus.intelligence, viewModel.getStatusUpperLimit(RSStrings.intName)),
-          _statusIndicator(RSStrings.spiName, myStatus.spirit, viewModel.getStatusUpperLimit(RSStrings.spiName)),
-          _statusIndicator(RSStrings.loveName, myStatus.love, viewModel.getStatusUpperLimit(RSStrings.loveName)),
-          _statusIndicator(RSStrings.attrName, myStatus.attr, viewModel.getStatusUpperLimit(RSStrings.attrName)),
-        ],
-      );
-    });
-  }
-
-  Widget _statusIndicator(String name, int status, int limit) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: StatusIndicator.create(name, status, limit),
     );
   }
 
