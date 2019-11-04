@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +6,7 @@ import '../../model/character.dart';
 
 import 'char_detail_view_model.dart';
 import 'char_status_edit_page.dart';
+import 'status_card_widget.dart';
 
 import '../widget/rs_icon.dart';
 import '../widget/rank_choice_chip.dart';
@@ -85,12 +85,20 @@ class CharDetailPage extends StatelessWidget {
   ///
   List<Widget> _contentLayout() {
     final layouts = <Widget>[];
+    layouts.add(_contentNewCard());
     layouts.add(_contentCharacterCard());
     layouts.add(_contentsStyleChips());
     layouts.add(_contentsStage());
     layouts.add(_contentsAttribute());
     layouts.add(_contentsEachStyleStatus());
     return layouts;
+  }
+
+  ///
+  /// 検証 ステータス
+  ///
+  Widget _contentNewCard() {
+    return StatusCardWidget();
   }
 
   ///

@@ -18,6 +18,7 @@ class RSStrings {
 
   static const String characterTotalStatus = '計:';
 
+  static const String characterDetailTotalStatusCircleLabel = 'total status';
   static const String characterDetailChangeStyleIconDialogContent = 'このアイコンを一覧表示用にしますか？';
   static const String characterDetailStyleLabel = '基準スタイル';
   static const String characterDetailStageLabel = '基準ステージ';

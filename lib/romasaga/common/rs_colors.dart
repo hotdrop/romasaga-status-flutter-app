@@ -7,6 +7,7 @@ class RSColors {
   static const Color bottomNavigationText = Colors.black87;
 
   // common
+  static const Color background = Color(0xFFFFFFFF);
   static const Color divider = Colors.white70;
   static const Color subText = Colors.grey;
   static const Color staticIcon = Colors.white;
@@ -28,6 +29,9 @@ class RSColors {
   static const Color fabBackground = Colors.white30;
 
   // キャラ詳細画面 - ステータス
+  static const Color detailBackground = Color(0xFFFFFFFF);
+  static const Color detailCardShadow = Color(0xFF3A5160);
+  static const Color detailTotalStatusGraph = Color(0xFF364EFF);
   static const Color statusNone = Colors.black;
   static const Color statusNoneGraphStart = Colors.black;
   static const Color statusNoneGraphEnd = Colors.black;
@@ -60,4 +64,16 @@ class RSColors {
   static const Color dataLoadStatusLoading = Colors.green;
   static const Color dataLoadStatusComplete = Colors.blueAccent;
   static const Color dataLoadStatusError = Colors.redAccent;
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
