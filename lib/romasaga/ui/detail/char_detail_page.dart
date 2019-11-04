@@ -119,7 +119,7 @@ class CharDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 32.0, top: 16.0, bottom: 8.0, right: 16.0),
+          padding: const EdgeInsets.only(left: 24.0, top: 16.0, bottom: 8.0, right: 16.0),
           child: GestureDetector(
             child: RSIcon.characterLargeSize(viewModel.selectedIconFilePath),
             onTap: () async {
@@ -167,7 +167,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _contentsStyleChips(BuildContext context) {
     final viewModel = Provider.of<CharDetailViewModel>(context);
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, top: 4.0, right: 8.0),
+      padding: const EdgeInsets.only(left: 24.0, top: 4.0, right: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -277,7 +277,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   Widget _totalStatusCircle(int totalStatus, int limitStatus) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, right: 60.0, left: 32.0),
+      padding: const EdgeInsets.only(left: 24.0, top: 8.0, right: 32.0),
       child: TotalStatusCircularIndicator(totalStatus: totalStatus, limitStatus: limitStatus),
     );
   }
@@ -332,7 +332,7 @@ class CharDetailPage extends StatelessWidget {
       builder: (context, viewModel, child) {
         final MyStatus myStatus = viewModel.myStatus;
         return Padding(
-          padding: const EdgeInsets.only(left: 32.0),
+          padding: const EdgeInsets.only(left: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
