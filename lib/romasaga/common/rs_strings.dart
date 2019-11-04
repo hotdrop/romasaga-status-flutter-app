@@ -18,12 +18,10 @@ class RSStrings {
 
   static const String characterTotalStatus = '計:';
 
+  static const String characterDetailTotalStatusCircleLabel = 'Total Status';
+  static const String characterDetailTotalLimitStatusLabel = 'Total Limit Status';
   static const String characterDetailChangeStyleIconDialogContent = 'このアイコンを一覧表示用にしますか？';
-  static const String characterDetailStyleLabel = '基準スタイル';
-  static const String characterDetailStageLabel = '基準ステージ';
-  static const String characterDetailAttributeLabel = '武器と属性';
-  static const String characterDetailStatusTableLabel = 'スタイル別のステータス上限';
-  static const String characterDetailStatusTableSubLabel = '選択ステージで切り替え可能';
+  static const String characterDetailStatusTableLabel = 'ステータス上限表';
   static const String characterDetailLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 
   static const String statusEditTitle = 'ステータス編集';
@@ -83,7 +81,7 @@ class RSStrings {
   static const String updateStatusComplete = '完了';
   static const String updateStatusError = 'エラー';
 
-  static const String hpName = 'ＨＰ';
+  static const String hpName = 'HP';
   static const String strName = '腕力';
   static const String vitName = '体力';
   static const String dexName = '器用';

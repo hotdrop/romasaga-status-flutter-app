@@ -7,6 +7,7 @@ class RSColors {
   static const Color bottomNavigationText = Colors.black87;
 
   // common
+  static const Color background = Color(0xFFFFFFFF);
   static const Color divider = Colors.white70;
   static const Color subText = Colors.grey;
   static const Color staticIcon = Colors.white;
@@ -23,6 +24,18 @@ class RSColors {
   static final Color weaponIconSelectedBackground = Colors.yellowAccent;
   static final Color weaponIconUnSelectedBackground = Colors.grey;
 
+  // キャラクター詳細（検証用。いずれ下のキャラ詳細は全部消す）
+  static const Color characterDetailCardShadow = Color(0xFF3A5160);
+  static const Color characterDetailTotalStatusIndicator = Color(0xFF699BFF);
+  static const Color characterDetailHpLabel = Color(0xFF87A0E5);
+  static const Color characterDetailStylesLabel = Color(0xFFFFF987);
+
+  static const Color characterDetailStatusNone = Colors.grey;
+  static const Color characterDetailStatusBackground = Colors.white;
+  static const Color characterDetailStatusLack = Color(0xFFFF5E6A);
+  static const Color characterDetailStatusNormal = Color(0xFF74FF97);
+  static const Color characterDetailStatusSufficient = Color(0xFF26BCFF);
+
   // キャラ詳細画面
   static const Color charDetailIconBackground = Colors.grey;
   static const Color fabBackground = Colors.white30;
@@ -31,18 +44,6 @@ class RSColors {
   static const Color statusNone = Colors.black;
   static const Color statusNoneGraphStart = Colors.black;
   static const Color statusNoneGraphEnd = Colors.black;
-
-  static const Color statusLack = Colors.redAccent;
-  static const Color statusLackGraphStart = Color(0xFFFF8687);
-  static const Color statusLackGraphEnd = Color(0xFFFF5E6A);
-
-  static const Color statusNormal = Colors.greenAccent;
-  static const Color statusNormalGraphStart = Color(0xFF9AFFC4);
-  static const Color statusNormalGraphEnd = Color(0xFF09FF3D);
-
-  static const Color statusSufficient = Colors.blueAccent;
-  static const Color statusSufficientGraphStart = Color(0xFF3AA6FF);
-  static const Color statusSufficientGraphEnd = Color(0xFF3476FF);
 
   // 検索
   static const Color filterText = Colors.white;
@@ -60,4 +61,16 @@ class RSColors {
   static const Color dataLoadStatusLoading = Colors.green;
   static const Color dataLoadStatusComplete = Colors.blueAccent;
   static const Color dataLoadStatusError = Colors.redAccent;
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

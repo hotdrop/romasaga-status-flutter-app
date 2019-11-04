@@ -72,6 +72,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   MyStatus get myStatus => _character.myStatus;
   String get selectedRank => _character.selectedStyleRank;
   Style style(String rank) => _character.getStyle(rank);
+  int get myTotalStatus => myStatus.sumWithoutHp();
 
   String get selectedIconFilePath => _selectedStyle?.iconFilePath ?? 'default';
   String get selectedStyleTitle => _selectedStyle?.title ?? '';
@@ -90,6 +91,10 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     return _selectedStage?.name;
   }
 
+  int getTotalLimitStatusWithSelectedStage() {
+    return _selectedStyle.sum() + (8 * _selectedStage.limit);
+  }
+
   void onSelectStage(String stageName) {
     _selectedStage = _stages.firstWhere((s) => s.name == stageName);
     notifyListeners();
@@ -97,7 +102,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
   int addUpperLimit(int status) => status + _selectedStage.limit;
 
-  int getStatusUpperLimit(String statusName) {
+  int getStatusLimit(String statusName) {
     int targetStatus;
     switch (statusName) {
       case RSStrings.strName:
