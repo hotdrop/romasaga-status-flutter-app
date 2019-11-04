@@ -32,7 +32,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
     return Wrap(
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
-      spacing: 8.0,
+      spacing: 4.0,
       children: _rankChips(),
     );
   }
@@ -40,7 +40,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   List<Widget> _rankChips() {
     return _ranks.map<Widget>((rank) {
       return Padding(
-        padding: const EdgeInsets.only(right: 8.0),
+        padding: const EdgeInsets.only(right: 4.0),
         child: ChoiceChip(
           key: ValueKey(rank),
           selectedColor: _rankToColor(rank),
