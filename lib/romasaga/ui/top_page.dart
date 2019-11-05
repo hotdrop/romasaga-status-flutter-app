@@ -31,7 +31,7 @@ class _TopPageState extends State<TopPage> {
           return BottomNavigationBarItem(
             title: Text(destination.title),
             icon: Icon(destination.icon),
-            backgroundColor: RSColors.bottomNavigationIcon,
+            backgroundColor: RSColors.bottomNavigationBackground,
           );
         }).toList(),
         onTap: (index) {

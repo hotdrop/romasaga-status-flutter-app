@@ -107,7 +107,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
       child: Stack(
         children: <Widget>[
           ListTileTheme(
-            child: _filterView(),
+            child: _filterView(context),
           ),
           PositionedTransition(
             rect: panelAnimation,
@@ -123,12 +123,12 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
     );
   }
 
-  Widget _filterView() {
+  Widget _filterView(BuildContext context) {
     // フィルターしたい要素をここに詰めていく
     final filterViews = <Widget>[];
-    filterViews.add(_filterViewSubTitle(RSStrings.searchFilerTitleOwn));
+    filterViews.add(_filterViewSubTitle(context, RSStrings.searchFilerTitleOwn));
     filterViews.add(_filterViewOwnState());
-    filterViews.add(_filterViewSubTitle(RSStrings.searchFilerTitleWeapon));
+    filterViews.add(_filterViewSubTitle(context, RSStrings.searchFilerTitleWeapon));
     filterViews.add(_filterViewWeaponType());
 
     return Padding(
@@ -140,13 +140,13 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
     );
   }
 
-  Widget _filterViewSubTitle(String title) {
+  Widget _filterViewSubTitle(BuildContext context, String title) {
     return Padding(
       padding: EdgeInsets.only(left: 4.0, top: 32.0, right: 4.0, bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(title, style: TextStyle(color: RSColors.subText)),
+          Text(title, style: Theme.of(context).textTheme.subtitle),
           Divider(color: RSColors.divider),
         ],
       ),
@@ -245,9 +245,9 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
     return Consumer<SearchListViewModel>(builder: (_, viewModel, child) {
       Widget searchIcon;
       if (viewModel.isKeywordSearch) {
-        searchIcon = Icon(Icons.close, color: RSColors.staticIcon);
+        searchIcon = Icon(Icons.close);
       } else {
-        searchIcon = Icon(Icons.search, color: RSColors.staticIcon);
+        searchIcon = Icon(Icons.search);
       }
       return IconButton(
         icon: searchIcon,
