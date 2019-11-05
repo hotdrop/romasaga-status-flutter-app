@@ -113,6 +113,7 @@ class CharDetailPage extends StatelessWidget {
 
   ///
   /// キャラクターの名前、肩書き、武器情報
+  ///
   Widget _contentCharacterTitle(BuildContext context) {
     final viewModel = Provider.of<CharDetailViewModel>(context);
     return Row(
@@ -192,6 +193,7 @@ class CharDetailPage extends StatelessWidget {
 
   ///
   /// キャラクターアイコンタップ時のダイアログ
+  ///
   void _showDialog(BuildContext context, CharDetailViewModel viewModel) {
     showDialog<void>(
       context: context,
@@ -224,6 +226,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _contentStatus() {
     return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
       return Container(
+        margin: EdgeInsets.only(left: 4.0, right: 4.0),
         decoration: BoxDecoration(
           color: Theme.of(context).backgroundColor,
           borderRadius: BorderRadius.only(
