@@ -75,7 +75,7 @@ class RSIcon {
     String res = _getWeaponIconRes(type);
     return Material(
       shape: CircleBorder(),
-      color: selected ? RSColors.weaponIconSelectedBackground : RSColors.weaponIconUnSelectedBackground,
+      color: selected ? RSColors.weaponIconSelectedBackground : RSColors.iconBackground,
       child: Ink.image(
         image: AssetImage(res),
         fit: BoxFit.cover,

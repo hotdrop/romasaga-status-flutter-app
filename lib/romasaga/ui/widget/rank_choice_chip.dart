@@ -44,7 +44,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
         child: ChoiceChip(
           key: ValueKey(rank),
           selectedColor: _rankToColor(rank),
-          backgroundColor: RSColors.chipBackground,
+          backgroundColor: RSColors.iconBackground,
           label: Text(rank),
           avatar: _rankToAvatar(rank),
           selected: _selectedRankChipName == rank,

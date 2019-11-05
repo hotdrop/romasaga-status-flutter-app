@@ -147,14 +147,14 @@ class CharDetailPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 4.0),
           child: CircleAvatar(
             child: RSIcon.weapon(viewModel.weaponType),
-            backgroundColor: RSColors.charDetailIconBackground,
+            backgroundColor: RSColors.iconBackground,
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4.0, left: 16.0),
           child: CircleAvatar(
             child: RSIcon.weaponCategory(category: viewModel.weaponCategory),
-            backgroundColor: RSColors.charDetailIconBackground,
+            backgroundColor: RSColors.iconBackground,
           ),
         ),
       ],
