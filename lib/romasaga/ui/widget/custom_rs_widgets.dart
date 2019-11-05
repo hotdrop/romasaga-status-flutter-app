@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
@@ -18,6 +19,7 @@ class TotalStatusCircularIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     double percent = totalStatus / limitStatus;
     percent = (percent > 1) ? 1 : percent;
+    CircularStrokeCap strokeCap = (percent < 1) ? CircularStrokeCap.round : CircularStrokeCap.butt;
 
     return CircularPercentIndicator(
       radius: 110.0,
@@ -26,7 +28,7 @@ class TotalStatusCircularIndicator extends StatelessWidget {
       animationDuration: 500,
       percent: percent,
       center: _centerText(context, totalStatus),
-      circularStrokeCap: CircularStrokeCap.round,
+      circularStrokeCap: strokeCap,
       backgroundColor: RSColors.characterDetailTotalStatusIndicator.withOpacity(0.3),
       progressColor: RSColors.characterDetailTotalStatusIndicator,
     );
