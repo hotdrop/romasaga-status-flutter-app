@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/status.dart';
 import 'char_status_edit_view_model.dart';
 
-import '../widget/status_text_field.dart';
+import '../widget/custom_rs_widgets.dart' show StatusTextField;
+
+import '../../model/status.dart';
 import '../../common/rs_strings.dart';
 
 class CharStatusEditPage extends StatelessWidget {
