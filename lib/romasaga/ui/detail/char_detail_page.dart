@@ -5,8 +5,8 @@ import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
-import 'package:rsapp/romasaga/model/stage.dart';
 
+import '../../model/stage.dart';
 import '../../model/character.dart';
 import '../../model/status.dart';
 
@@ -493,7 +493,7 @@ class CharDetailPage extends StatelessWidget {
   /// スタイル別ステータス表
   ///
   Widget _contentsEachStyleStatus(BuildContext context) {
-    final BorderSide side = BorderSide(color: Theme.of(context).accentColor, width: 1.0, style: BorderStyle.solid);
+    final BorderSide side = BorderSide(color: Theme.of(context).dividerColor, width: 1.0, style: BorderStyle.solid);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -552,21 +552,46 @@ class CharDetailPage extends StatelessWidget {
 
   List<TableRow> _statusTableContentsRow(BuildContext context) {
     final vm = Provider.of<CharDetailViewModel>(context);
-    final List<TableRow> tableRows = [];
 
-    for (final rank in vm.getAllRanks()) {
+    int maxStr = 0;
+    int maxVit = 0;
+    int maxAgi = 0;
+    int maxDex = 0;
+    int maxInt = 0;
+    int maxSpi = 0;
+    int maxLove = 0;
+    int maxAttr = 0;
+
+    // 最大ステータスが欲しいので、スタイル毎のステータスを全て取得してからwidgetを作る
+    final List<String> allRanks = vm.getAllRanks();
+    for (final rank in allRanks) {
+      final style = vm.style(rank);
+      maxStr = (style.str > maxStr) ? style.str : maxStr;
+      maxVit = (style.vit > maxVit) ? style.vit : maxVit;
+      maxAgi = (style.agi > maxAgi) ? style.agi : maxAgi;
+      maxDex = (style.dex > maxDex) ? style.dex : maxDex;
+      maxInt = (style.intelligence > maxInt) ? style.intelligence : maxInt;
+      maxSpi = (style.spirit > maxSpi) ? style.spirit : maxSpi;
+      maxLove = (style.love > maxLove) ? style.love : maxLove;
+      maxAttr = (style.attr > maxAttr) ? style.attr : maxAttr;
+    }
+
+    final List<TableRow> tableRows = [];
+    final int stageStatusLimit = vm.getSelectedStageLimit();
+
+    for (final rank in allRanks) {
       final style = vm.style(rank);
       final tableRow = TableRow(
         children: [
           _tableRowIcon(vm.selectedIconFilePath),
-          _tableRowStatus(vm.addUpperLimit(style.str)),
-          _tableRowStatus(vm.addUpperLimit(style.vit)),
-          _tableRowStatus(vm.addUpperLimit(style.agi)),
-          _tableRowStatus(vm.addUpperLimit(style.dex)),
-          _tableRowStatus(vm.addUpperLimit(style.intelligence)),
-          _tableRowStatus(vm.addUpperLimit(style.spirit)),
-          _tableRowStatus(vm.addUpperLimit(style.love)),
-          _tableRowStatus(vm.addUpperLimit(style.attr)),
+          _tableRowStatus(style.str, stageStatusLimit, maxStr),
+          _tableRowStatus(style.vit, stageStatusLimit, maxVit),
+          _tableRowStatus(style.agi, stageStatusLimit, maxAgi),
+          _tableRowStatus(style.dex, stageStatusLimit, maxDex),
+          _tableRowStatus(style.intelligence, stageStatusLimit, maxInt),
+          _tableRowStatus(style.spirit, stageStatusLimit, maxSpi),
+          _tableRowStatus(style.love, stageStatusLimit, maxLove),
+          _tableRowStatus(style.attr, stageStatusLimit, maxAttr),
         ],
       );
       tableRows.add(tableRow);
@@ -584,12 +609,13 @@ class CharDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _tableRowStatus(int status) {
+  Widget _tableRowStatus(int status, int stageStatusLimit, int maxStatus) {
+    final textStyle = (status >= maxStatus) ? TextStyle(color: RSColors.characterDetailStatusSufficient) : TextStyle();
     return Container(
       child: Center(
         child: Text(
           status.toString(),
-          style: TextStyle(color: RSColors.accent),
+          style: textStyle,
         ),
       ),
     );

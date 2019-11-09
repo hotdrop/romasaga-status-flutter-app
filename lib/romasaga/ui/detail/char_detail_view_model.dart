@@ -91,6 +91,10 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     return _selectedStage?.name;
   }
 
+  int getSelectedStageLimit() {
+    return _selectedStage.limit ?? 0;
+  }
+
   int getTotalLimitStatusWithSelectedStage() {
     return _selectedStyle.sum() + (8 * _selectedStage.limit);
   }
@@ -99,8 +103,6 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     _selectedStage = stage;
     notifyListeners();
   }
-
-  int addUpperLimit(int status) => status + _selectedStage.limit;
 
   int getStatusLimit(String statusName) {
     int targetStatus;
