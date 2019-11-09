@@ -21,7 +21,7 @@ class RSStrings {
   static const String characterDetailTotalStatusCircleLabel = 'Total Status';
   static const String characterDetailTotalLimitStatusLabel = 'Total Limit Status';
   static const String characterDetailChangeStyleIconDialogContent = 'このアイコンを一覧表示用にしますか？';
-  static const String characterDetailSelectStageStatusLimitLabel = 'ステータス上限';
+  static const String characterDetailStageSelectDescLabel = 'カッコの値はステータス上限です。';
   static const String characterDetailStatusTableLabel = 'ステータス上限表';
   static const String characterDetailLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 
@@ -61,6 +61,8 @@ class RSStrings {
   static const String letterNovemberShortTitle = '11月 秋の温泉で一息';
 
   static const String accountTabTitle = 'アカウント';
+  static const String accountNotLoginEmailLabel = '未ログイン';
+  static const String accountNotLoginNameLabel = 'ー';
   static const String accountLoginWithGoogle = 'Googleアカウントでログイン';
   static const String accountDataUpdateTitle = 'サーバーからデータ取得';
   static const String accountDataUpdateDetail = 'キャラ情報はタップで新キャラのみ取得、ロングタップで全キャラ取得します。';

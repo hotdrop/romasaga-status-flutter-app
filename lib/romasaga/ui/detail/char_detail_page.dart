@@ -1,12 +1,7 @@
-import 'package:direct_select_flutter/direct_select_container.dart';
-import 'package:direct_select_flutter/direct_select_item.dart';
-import 'package:direct_select_flutter/direct_select_list.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/stage.dart';
 import '../../model/character.dart';
 import '../../model/status.dart';
 
@@ -70,12 +65,10 @@ class CharDetailPage extends StatelessWidget {
   Widget _loadSuccessView(String charName, BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(charName), centerTitle: true),
-      body: DirectSelectContainer(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 4.0, left: 16.0, right: 16.0, bottom: 16.0),
-          child: ListView(
-            children: _contentLayout(context),
-          ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 4.0, left: 16.0, right: 16.0, bottom: 16.0),
+        child: ListView(
+          children: _contentLayout(context),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -93,8 +86,8 @@ class CharDetailPage extends StatelessWidget {
     layouts.add(SizedBox(height: 16.0));
     layouts.add(_contentStatus());
     layouts.add(SizedBox(height: 16.0));
-    layouts.add(_contentsStage());
-    layouts.add(SizedBox(height: 16.0));
+    layouts.add(_contentsStage(context));
+    layouts.add(SizedBox(height: 24.0));
     layouts.add(_contentsEachStyleStatus(context));
     layouts.add(SizedBox(height: 16.0));
     return layouts;
@@ -424,69 +417,43 @@ class CharDetailPage extends StatelessWidget {
     );
   }
 
-  ///
-  /// ステージのドロップダウンリスト
-  ///
-  Widget _contentsStage() {
-    return Consumer<CharDetailViewModel>(
-      builder: (context, viewModel, child) {
-        final stages = viewModel.stages;
-
-        return Card(
-          elevation: 4.0,
-          color: Theme.of(context).backgroundColor,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 32.0),
-                  child: DirectSelectList<Stage>(
-                    values: stages,
-                    itemBuilder: (value) => _getDropDownItem(value),
-                    defaultItemIndex: stages.indexWhere((s) => s.name == viewModel.getSelectedStageName()),
-                    onItemSelectedListener: (item, index, context) {
-                      viewModel.onSelectStage(item);
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: 8),
-                child: Icon(
-                  Icons.unfold_more,
-                  color: Theme.of(context).buttonColor,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
+  Widget _contentsStage(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _stageDropDownList(),
+          Text(
+            '(${RSStrings.characterDetailStageSelectDescLabel})',
+            style: Theme.of(context).textTheme.caption,
+          )
+        ],
+      ),
     );
   }
 
-  DirectSelectItem<Stage> _getDropDownItem(Stage stage) {
-    return DirectSelectItem<Stage>(
-      itemHeight: 56,
-      value: stage,
-      itemBuilder: (context, value) {
-        final showLimit = (stage.limit > 0) ? '+${stage.limit}' : stage.limit.toString();
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              '${stage.name}',
-              style: Theme.of(context).textTheme.subhead,
-            ),
-            Text(
-              '${RSStrings.characterDetailSelectStageStatusLimitLabel} $showLimit',
-              style: Theme.of(context).textTheme.caption,
-            )
-          ],
-        );
-      },
-    );
+  ///
+  /// ステージのドロップダウンリスト
+  ///
+  Widget _stageDropDownList() {
+    return Consumer<CharDetailViewModel>(builder: (_, viewModel, child) {
+      final stages = viewModel.stages;
+
+      return DropdownButton<String>(
+        items: stages.map((stage) {
+          final showLimit = (stage.limit > 0) ? '+${stage.limit}' : stage.limit.toString();
+          return DropdownMenuItem<String>(
+            value: stage.name,
+            child: Text('${stage.name} ($showLimit)'),
+          );
+        }).toList(),
+        onChanged: (value) {
+          viewModel.onSelectStage(value);
+        },
+        value: viewModel.getSelectedStageName(),
+      );
+    });
   }
 
   ///
@@ -583,7 +550,7 @@ class CharDetailPage extends StatelessWidget {
       final style = vm.style(rank);
       final tableRow = TableRow(
         children: [
-          _tableRowIcon(vm.selectedIconFilePath),
+          _tableRowIcon(style.iconFilePath),
           _tableRowStatus(style.str, stageStatusLimit, maxStr),
           _tableRowStatus(style.vit, stageStatusLimit, maxVit),
           _tableRowStatus(style.agi, stageStatusLimit, maxAgi),

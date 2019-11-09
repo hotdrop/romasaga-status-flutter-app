@@ -24,41 +24,60 @@ class SettingTab extends StatelessWidget {
           centerTitle: true,
           title: const Text(RSStrings.accountTabTitle),
         ),
-        body: _widgetContents(),
+        body: _contentsBody(),
       ),
     );
   }
 
-  Widget _widgetContents() {
+  Widget _contentsBody() {
     return Consumer<SettingViewModel>(
       builder: (context, viewModel, child) {
         if (viewModel.nowLoading) {
-          return _loadingContents(context);
+          return _loadingView(context);
         } else if (viewModel.loggedIn) {
-          return _loggedInContents(context);
+          return _loadLoginView(context);
         } else {
-          return _noneLoginContents(context);
+          return _loadNotLoginView(context);
         }
       },
     );
   }
 
-  Widget _loadingContents(BuildContext context) {
+  Widget _loadingView(BuildContext context) {
     return Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  ///
-  /// 未ログインの画面コンテンツ
-  ///
-  Widget _noneLoginContents(BuildContext context) {
+  Widget _loadLoginView(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Center(
-          child: _googleSignInButton(),
-        ),
+        _rowAccountInfo(),
+        Divider(color: Theme.of(context).accentColor),
+        _rowDataUpdateLabel(context),
+        _rowCharacterReload(),
+        _rowStageReload(),
+        Divider(color: Theme.of(context).accentColor),
+        _rowBackUp(),
+        _rowRestore(),
+        Divider(color: Theme.of(context).accentColor),
+        _rowLogoutButton(),
+      ],
+    );
+  }
+
+  Widget _loadNotLoginView(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        _rowAccountInfo(),
+        Divider(color: Theme.of(context).accentColor),
+        _rowDataUpdateLabel(context),
+        _rowCharacterReload(),
+        _rowStageReload(),
+        Divider(color: Theme.of(context).accentColor),
+        _googleSignInButton(),
       ],
     );
   }
@@ -82,27 +101,6 @@ class SettingTab extends StatelessWidget {
     );
   }
 
-  ///
-  /// ログイン済みの画面コンテンツ
-  ///
-  Widget _loggedInContents(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        _rowAccountInfo(),
-        Divider(color: Theme.of(context).accentColor),
-        _rowDataUpdateLabel(context),
-        _rowCharacterReload(),
-        _rowStageReload(),
-        Divider(color: Theme.of(context).accentColor),
-        _rowBackUp(),
-        _rowRestore(),
-        Divider(color: Theme.of(context).accentColor),
-        _rowLogoutButton(),
-      ],
-    );
-  }
-
   Widget _rowAccountInfo() {
     return Consumer<SettingViewModel>(builder: (context, viewModel, child) {
       return Padding(
@@ -110,7 +108,7 @@ class SettingTab extends StatelessWidget {
         child: Row(
           children: <Widget>[
             CircleAvatar(
-              child: Text(viewModel.loginUserName[0].toUpperCase()),
+              child: Text(viewModel.getLoginUserName()[0].toUpperCase()),
               backgroundColor: Theme.of(context).accentColor,
               foregroundColor: Theme.of(context).primaryColor,
             ),
@@ -118,8 +116,8 @@ class SettingTab extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(viewModel.loginEmail),
-                Text(viewModel.loginUserName, style: Theme.of(context).textTheme.caption),
+                Text(viewModel.getLoginEmail()),
+                Text(viewModel.getLoginUserName(), style: Theme.of(context).textTheme.caption),
               ],
             ),
           ],

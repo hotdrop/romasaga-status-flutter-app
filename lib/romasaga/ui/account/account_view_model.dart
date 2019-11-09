@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 import '../../data/character_repository.dart';
 import '../../data/stage_repository.dart';
@@ -59,8 +60,21 @@ class SettingViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 
-  String get loginUserName => _accountRepository.getUserName();
-  String get loginEmail => _accountRepository.getEmail();
+  String getLoginUserName() {
+    if (_status == _Status.loggedIn) {
+      return _accountRepository.getUserName();
+    } else {
+      return RSStrings.accountNotLoginNameLabel;
+    }
+  }
+
+  String getLoginEmail() {
+    if (_status == _Status.loggedIn) {
+      return _accountRepository.getEmail();
+    } else {
+      return RSStrings.accountNotLoginEmailLabel;
+    }
+  }
 
   Future<void> loginWithGoogle() async {
     _status = _Status.loading;
