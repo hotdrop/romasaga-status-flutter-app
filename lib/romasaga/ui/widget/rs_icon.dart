@@ -23,6 +23,10 @@ class RSIcon {
     return _loadImage(iconFilePath, RSIcon.largeSize);
   }
 
+  static Widget characterSmallSize(String iconFilePath) {
+    return _loadImage(iconFilePath, RSIcon.smallSize);
+  }
+
   static Widget _loadImage(String iconFilePath, double size) {
     return CachedNetworkImage(
       imageUrl: iconFilePath,
@@ -71,11 +75,16 @@ class RSIcon {
   /// Ripple付きの武器アイコン
   /// 選択しているかしていないかの指定も可能
   ///
-  static Widget weaponWithRipple({@required WeaponType type, @required void Function() onTap, bool selected = false}) {
+  static Widget weaponWithRipple(
+    BuildContext context, {
+    @required WeaponType type,
+    @required void Function() onTap,
+    bool selected = false,
+  }) {
     String res = _getWeaponIconRes(type);
     return Material(
       shape: CircleBorder(),
-      color: selected ? RSColors.weaponIconSelectedBackground : RSColors.iconBackground,
+      color: selected ? RSColors.weaponIconSelectedBackground : Theme.of(context).disabledColor,
       child: Ink.image(
         image: AssetImage(res),
         fit: BoxFit.cover,

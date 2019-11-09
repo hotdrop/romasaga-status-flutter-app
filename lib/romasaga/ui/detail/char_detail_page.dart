@@ -5,8 +5,8 @@ import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
-import 'package:rsapp/romasaga/model/stage.dart';
 
+import '../../model/stage.dart';
 import '../../model/character.dart';
 import '../../model/status.dart';
 
@@ -31,17 +31,17 @@ class CharDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       builder: (_) => CharDetailViewModel(character)..load(),
-      child: _body(),
+      child: _body(context),
     );
   }
 
-  Widget _body() {
+  Widget _body(BuildContext context) {
     return Consumer<CharDetailViewModel>(
       builder: (context, viewModel, child) {
         if (viewModel.isLoading) {
           return _loadingView(viewModel.characterName);
         } else if (viewModel.isSuccess) {
-          return _loadSuccessView(viewModel.characterName);
+          return _loadSuccessView(viewModel.characterName, context);
         } else {
           return _loadErrorView(viewModel.characterName);
         }
@@ -67,14 +67,14 @@ class CharDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _loadSuccessView(String charName) {
+  Widget _loadSuccessView(String charName, BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(charName), centerTitle: true),
       body: DirectSelectContainer(
         child: Padding(
           padding: const EdgeInsets.only(top: 4.0, left: 16.0, right: 16.0, bottom: 16.0),
           child: ListView(
-            children: _contentLayout(),
+            children: _contentLayout(context),
           ),
         ),
       ),
@@ -87,7 +87,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// 詳細画面に表示する各レイアウトを束ねる
   ///
-  List<Widget> _contentLayout() {
+  List<Widget> _contentLayout(BuildContext context) {
     final layouts = <Widget>[];
     layouts.add(_contentCharacterOverview());
     layouts.add(SizedBox(height: 16.0));
@@ -95,7 +95,8 @@ class CharDetailPage extends StatelessWidget {
     layouts.add(SizedBox(height: 16.0));
     layouts.add(_contentsStage());
     layouts.add(SizedBox(height: 16.0));
-    layouts.add(_contentsEachStyleStatus());
+    layouts.add(_contentsEachStyleStatus(context));
+    layouts.add(SizedBox(height: 16.0));
     return layouts;
   }
 
@@ -155,14 +156,14 @@ class CharDetailPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 4.0),
           child: CircleAvatar(
             child: RSIcon.weapon(viewModel.weaponType),
-            backgroundColor: RSColors.iconBackground,
+            backgroundColor: Theme.of(context).disabledColor,
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4.0, left: 16.0),
           child: CircleAvatar(
             child: RSIcon.weaponCategory(category: viewModel.weaponCategory),
-            backgroundColor: RSColors.iconBackground,
+            backgroundColor: Theme.of(context).disabledColor,
           ),
         ),
       ],
@@ -454,7 +455,7 @@ class CharDetailPage extends StatelessWidget {
                 padding: EdgeInsets.only(right: 8),
                 child: Icon(
                   Icons.unfold_more,
-                  color: RSColors.characterDetailSelectStageArrow,
+                  color: Theme.of(context).buttonColor,
                 ),
               ),
             ],
@@ -491,74 +492,133 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// スタイル別ステータス表
   ///
-  Widget _contentsEachStyleStatus() {
+  Widget _contentsEachStyleStatus(BuildContext context) {
+    final BorderSide side = BorderSide(color: Theme.of(context).dividerColor, width: 1.0, style: BorderStyle.solid);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(RSStrings.characterDetailStatusTableLabel),
-        _styleStatusTable(),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Text(
+            RSStrings.characterDetailStatusTableLabel,
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Table(
+            border: TableBorder(bottom: side, horizontalInside: side),
+            defaultColumnWidth: FixedColumnWidth(40.0),
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            children: <TableRow>[]
+              ..add(_statusTableHeaderRow(context))
+              ..addAll(_statusTableContentsRow(context)),
+          ),
+        ),
       ],
     );
   }
 
-  Widget _styleStatusTable() {
-    return Consumer<CharDetailViewModel>(builder: (_, viewModel, child) {
-      return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columns: _statusTableColumns(viewModel),
-          rows: _statusTableRows(viewModel),
+  TableRow _statusTableHeaderRow(BuildContext context) {
+    return TableRow(
+      children: [
+        const SizedBox(),
+        _tableRowHeader(context, RSStrings.strName),
+        _tableRowHeader(context, RSStrings.vitName),
+        _tableRowHeader(context, RSStrings.agiName),
+        _tableRowHeader(context, RSStrings.dexName),
+        _tableRowHeader(context, RSStrings.intName),
+        _tableRowHeader(context, RSStrings.spiName),
+        _tableRowHeader(context, RSStrings.loveName),
+        _tableRowHeader(context, RSStrings.attrName),
+      ],
+    );
+  }
+
+  Widget _tableRowHeader(BuildContext context, String title) {
+    return Container(
+      padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+      child: Center(
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.caption,
         ),
-      );
-    });
+      ),
+    );
   }
 
-  List<DataColumn> _statusTableColumns(CharDetailViewModel vm) {
-    final results = <DataColumn>[];
-    results.add(DataColumn(label: Text('')));
-    results.addAll(vm.getAllRanks().map((rank) => DataColumn(label: Text(rank), numeric: true)));
-    return results;
-  }
+  List<TableRow> _statusTableContentsRow(BuildContext context) {
+    final vm = Provider.of<CharDetailViewModel>(context);
 
-  List<DataRow> _statusTableRows(CharDetailViewModel vm) {
-    final strRowData = <int>[];
-    final vitRowData = <int>[];
-    final agiRowData = <int>[];
-    final dexRowData = <int>[];
-    final intRowData = <int>[];
-    final spiRowData = <int>[];
-    final loveRowData = <int>[];
-    final attrRowData = <int>[];
+    int maxStr = 0;
+    int maxVit = 0;
+    int maxAgi = 0;
+    int maxDex = 0;
+    int maxInt = 0;
+    int maxSpi = 0;
+    int maxLove = 0;
+    int maxAttr = 0;
 
-    for (var rank in vm.getAllRanks()) {
+    // 最大ステータスが欲しいので、スタイル毎のステータスを全て取得してからwidgetを作る
+    final List<String> allRanks = vm.getAllRanks();
+    for (final rank in allRanks) {
       final style = vm.style(rank);
-      strRowData.add(vm.addUpperLimit(style.str));
-      vitRowData.add(vm.addUpperLimit(style.vit));
-      agiRowData.add(vm.addUpperLimit(style.agi));
-      dexRowData.add(vm.addUpperLimit(style.dex));
-      intRowData.add(vm.addUpperLimit(style.intelligence));
-      spiRowData.add(vm.addUpperLimit(style.spirit));
-      loveRowData.add(vm.addUpperLimit(style.love));
-      attrRowData.add(vm.addUpperLimit(style.attr));
+      maxStr = (style.str > maxStr) ? style.str : maxStr;
+      maxVit = (style.vit > maxVit) ? style.vit : maxVit;
+      maxAgi = (style.agi > maxAgi) ? style.agi : maxAgi;
+      maxDex = (style.dex > maxDex) ? style.dex : maxDex;
+      maxInt = (style.intelligence > maxInt) ? style.intelligence : maxInt;
+      maxSpi = (style.spirit > maxSpi) ? style.spirit : maxSpi;
+      maxLove = (style.love > maxLove) ? style.love : maxLove;
+      maxAttr = (style.attr > maxAttr) ? style.attr : maxAttr;
     }
 
-    return <DataRow>[
-      DataRow(cells: _createDataCells(RSStrings.strName, strRowData)),
-      DataRow(cells: _createDataCells(RSStrings.vitName, vitRowData)),
-      DataRow(cells: _createDataCells(RSStrings.agiName, agiRowData)),
-      DataRow(cells: _createDataCells(RSStrings.dexName, dexRowData)),
-      DataRow(cells: _createDataCells(RSStrings.intName, intRowData)),
-      DataRow(cells: _createDataCells(RSStrings.spiName, spiRowData)),
-      DataRow(cells: _createDataCells(RSStrings.loveName, loveRowData)),
-      DataRow(cells: _createDataCells(RSStrings.attrName, attrRowData)),
-    ];
+    final List<TableRow> tableRows = [];
+    final int stageStatusLimit = vm.getSelectedStageLimit();
+
+    for (final rank in allRanks) {
+      final style = vm.style(rank);
+      final tableRow = TableRow(
+        children: [
+          _tableRowIcon(vm.selectedIconFilePath),
+          _tableRowStatus(style.str, stageStatusLimit, maxStr),
+          _tableRowStatus(style.vit, stageStatusLimit, maxVit),
+          _tableRowStatus(style.agi, stageStatusLimit, maxAgi),
+          _tableRowStatus(style.dex, stageStatusLimit, maxDex),
+          _tableRowStatus(style.intelligence, stageStatusLimit, maxInt),
+          _tableRowStatus(style.spirit, stageStatusLimit, maxSpi),
+          _tableRowStatus(style.love, stageStatusLimit, maxLove),
+          _tableRowStatus(style.attr, stageStatusLimit, maxAttr),
+        ],
+      );
+      tableRows.add(tableRow);
+    }
+
+    return tableRows;
   }
 
-  List<DataCell> _createDataCells(String statusName, List<int> statusList) {
-    final r = <DataCell>[];
-    r.add(DataCell(Text(statusName)));
-    r.addAll(statusList.map((status) => DataCell(Text(status.toString()))));
-    return r;
+  Widget _tableRowIcon(String iconFilePath) {
+    return Container(
+      padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+      child: Center(
+        child: RSIcon.characterSmallSize(iconFilePath),
+      ),
+    );
+  }
+
+  Widget _tableRowStatus(int status, int stageStatusLimit, int maxStatus) {
+    final textStyle = (status >= maxStatus) ? TextStyle(color: RSColors.characterDetailStatusSufficient) : TextStyle();
+    return Container(
+      child: Center(
+        child: Text(
+          status.toString(),
+          style: textStyle,
+        ),
+      ),
+    );
   }
 
   ///

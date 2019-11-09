@@ -101,7 +101,7 @@ class RSStatusBar extends StatelessWidget {
       percent: percent,
       linearStrokeCap: LinearStrokeCap.roundAll,
       linearGradient: LinearGradient(colors: graphColors),
-      backgroundColor: RSColors.characterDetailStatusBackground,
+      backgroundColor: RSColors.characterDetailStatusIndicatorBackground,
     );
   }
 

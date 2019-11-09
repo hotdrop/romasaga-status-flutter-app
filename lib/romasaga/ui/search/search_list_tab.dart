@@ -147,7 +147,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(title, style: Theme.of(context).textTheme.subtitle),
-          Divider(color: RSColors.divider),
+          Divider(color: Theme.of(context).accentColor),
         ],
       ),
     );
@@ -182,13 +182,14 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
   }
 
   Widget _filterViewWeaponType() {
-    return Consumer<SearchListViewModel>(builder: (_, viewModel, child) {
+    return Consumer<SearchListViewModel>(builder: (context, viewModel, child) {
       return Wrap(
         spacing: 16.0,
         runSpacing: 16.0,
         children: WeaponType.types.map<Widget>((type) {
           bool selected = viewModel.isSelectWeaponType(type);
           return RSIcon.weaponWithRipple(
+            context,
             type: type,
             selected: selected,
             onTap: () {
