@@ -61,6 +61,8 @@ class RSStrings {
   static const String letterNovemberShortTitle = '11月 秋の温泉で一息';
 
   static const String accountTabTitle = 'アカウント';
+  static const String accountNotLoginEmailLabel = '未ログイン';
+  static const String accountNotLoginNameLabel = 'ー';
   static const String accountLoginWithGoogle = 'Googleアカウントでログイン';
   static const String accountDataUpdateTitle = 'サーバーからデータ取得';
   static const String accountDataUpdateDetail = 'キャラ情報はタップで新キャラのみ取得、ロングタップで全キャラ取得します。';
