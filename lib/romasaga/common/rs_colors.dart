@@ -29,6 +29,7 @@ class RSColors {
   static const Color characterDetailStatusLack = Color(0xFFFF5E6A);
   static const Color characterDetailStatusNormal = Color(0xFF74FF97);
   static const Color characterDetailStatusSufficient = Color(0xFF26BCFF);
+  static const Color characterDetailSelectStageArrow = Colors.white;
 
   // お便り画面
   static const Color thumbnailCardBackground = Color(0xFF4C4C4C);
