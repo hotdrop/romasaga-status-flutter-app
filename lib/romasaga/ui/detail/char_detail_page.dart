@@ -583,7 +583,7 @@ class CharDetailPage extends StatelessWidget {
       final style = vm.style(rank);
       final tableRow = TableRow(
         children: [
-          _tableRowIcon(vm.selectedIconFilePath),
+          _tableRowIcon(style.iconFilePath),
           _tableRowStatus(style.str, stageStatusLimit, maxStr),
           _tableRowStatus(style.vit, stageStatusLimit, maxVit),
           _tableRowStatus(style.agi, stageStatusLimit, maxAgi),
