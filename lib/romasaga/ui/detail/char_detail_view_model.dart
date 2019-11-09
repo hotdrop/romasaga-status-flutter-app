@@ -99,8 +99,8 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     return _selectedStyle.sum() + (8 * _selectedStage.limit);
   }
 
-  void onSelectStage(Stage stage) {
-    _selectedStage = stage;
+  void onSelectStage(String stageName) {
+    _selectedStage = _stages.firstWhere((s) => s.name == stageName);
     notifyListeners();
   }
 
