@@ -5,7 +5,6 @@ class RSColors {
   static const Color bottomNavigationBackground = Color(0x6A000000);
 
   // common
-  static const Color divider = Colors.white70;
   static const Color textAttention = Colors.yellowAccent;
   static const Color iconBackground = Colors.grey;
   static const Color fabBackground = Colors.white30;
@@ -25,11 +24,10 @@ class RSColors {
   static const Color characterDetailHpLabel = Color(0xFF87A0E5);
   static const Color characterDetailStylesLabel = Color(0xFFFFF987);
   static const Color characterDetailStatusNone = Colors.grey;
-  static const Color characterDetailStatusBackground = Colors.white;
+  static const Color characterDetailStatusIndicatorBackground = Colors.white;
   static const Color characterDetailStatusLack = Color(0xFFFF5E6A);
   static const Color characterDetailStatusNormal = Color(0xFF74FF97);
   static const Color characterDetailStatusSufficient = Color(0xFF26BCFF);
-  static const Color characterDetailSelectStageArrow = Colors.white;
 
   // お便り画面
   static const Color thumbnailCardBackground = Color(0xFF4C4C4C);

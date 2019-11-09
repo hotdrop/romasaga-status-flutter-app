@@ -90,14 +90,14 @@ class SettingTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         _rowAccountInfo(),
-        const Divider(color: RSColors.divider),
+        Divider(color: Theme.of(context).accentColor),
         _rowDataUpdateLabel(context),
         _rowCharacterReload(),
         _rowStageReload(),
-        const Divider(color: RSColors.divider),
+        Divider(color: Theme.of(context).accentColor),
         _rowBackUp(),
         _rowRestore(),
-        const Divider(color: RSColors.divider),
+        Divider(color: Theme.of(context).accentColor),
         _rowLogoutButton(),
       ],
     );
