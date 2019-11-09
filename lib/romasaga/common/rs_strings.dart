@@ -21,6 +21,7 @@ class RSStrings {
   static const String characterDetailTotalStatusCircleLabel = 'Total Status';
   static const String characterDetailTotalLimitStatusLabel = 'Total Limit Status';
   static const String characterDetailChangeStyleIconDialogContent = 'このアイコンを一覧表示用にしますか？';
+  static const String characterDetailSelectStageStatusLimitLabel = 'ステータス上限';
   static const String characterDetailStatusTableLabel = 'ステータス上限表';
   static const String characterDetailLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 

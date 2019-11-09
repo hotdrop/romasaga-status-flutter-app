@@ -1,6 +1,11 @@
+import 'package:direct_select_flutter/direct_select_container.dart';
+import 'package:direct_select_flutter/direct_select_item.dart';
+import 'package:direct_select_flutter/direct_select_list.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/model/stage.dart';
 
 import '../../model/character.dart';
 import '../../model/status.dart';
@@ -65,10 +70,12 @@ class CharDetailPage extends StatelessWidget {
   Widget _loadSuccessView(String charName) {
     return Scaffold(
       appBar: AppBar(title: Text(charName), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: _contentLayout(),
+      body: DirectSelectContainer(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 4.0, left: 16.0, right: 16.0, bottom: 16.0),
+          child: ListView(
+            children: _contentLayout(),
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -417,46 +424,76 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// ステージリストのレイアウトを作成
+  /// ステージのドロップダウンリスト
   ///
   Widget _contentsStage() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: _stageDropDownList(),
-        ),
-      ],
+    return Consumer<CharDetailViewModel>(
+      builder: (context, viewModel, child) {
+        final stages = viewModel.stages;
+
+        return Card(
+          elevation: 4.0,
+          color: Theme.of(context).backgroundColor,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 32.0),
+                  child: DirectSelectList<Stage>(
+                    values: stages,
+                    itemBuilder: (value) => _getDropDownItem(value),
+                    defaultItemIndex: stages.indexWhere((s) => s.name == viewModel.getSelectedStageName()),
+                    onItemSelectedListener: (item, index, context) {
+                      viewModel.onSelectStage(item);
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 8),
+                child: Icon(
+                  Icons.unfold_more,
+                  color: RSColors.characterDetailSelectStageArrow,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _stageDropDownList() {
-    return Consumer<CharDetailViewModel>(builder: (_, viewModel, child) {
-      final stages = viewModel.stages;
-
-      return DropdownButton<String>(
-        items: stages.map((stage) {
-          final showLimit = (stage.limit > 0) ? '+${stage.limit}' : stage.limit.toString();
-          return DropdownMenuItem<String>(
-            value: stage.name,
-            child: Text('${stage.name} ($showLimit)'),
-          );
-        }).toList(),
-        onChanged: (value) {
-          viewModel.onSelectStage(value);
-        },
-        value: viewModel.getSelectedStageName(),
-      );
-    });
+  DirectSelectItem<Stage> _getDropDownItem(Stage stage) {
+    return DirectSelectItem<Stage>(
+      itemHeight: 56,
+      value: stage,
+      itemBuilder: (context, value) {
+        final showLimit = (stage.limit > 0) ? '+${stage.limit}' : stage.limit.toString();
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              '${stage.name}',
+              style: Theme.of(context).textTheme.subhead,
+            ),
+            Text(
+              '${RSStrings.characterDetailSelectStageStatusLimitLabel} $showLimit',
+              style: Theme.of(context).textTheme.caption,
+            )
+          ],
+        );
+      },
+    );
   }
 
   ///
-  /// スタイル別ステータス
+  /// スタイル別ステータス表
   ///
   Widget _contentsEachStyleStatus() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(RSStrings.characterDetailStatusTableLabel),
         _styleStatusTable(),

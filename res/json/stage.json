@@ -6,9 +6,19 @@
       "order": 1
     },
     {
+      "name": "VH5",
+      "limit": -2,
+      "order": 2
+    },
+    {
       "name": "VH6",
       "limit": 0,
-      "order": 2
+      "order": 3
+    },
+    {
+      "name": "VH7",
+      "limit": 2,
+      "order": 4
     }
   ]
 }
