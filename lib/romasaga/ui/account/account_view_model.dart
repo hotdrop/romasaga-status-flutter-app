@@ -47,7 +47,6 @@ class SettingViewModel extends foundation.ChangeNotifier {
     final isLogIn = _accountRepository.isLogIn;
 
     if (!isLogIn) {
-      RSLogger.d('未ログインのためキャラデータとステージデータはロードしません。');
       _status = _Status.notLogin;
       notifyListeners();
       return;
