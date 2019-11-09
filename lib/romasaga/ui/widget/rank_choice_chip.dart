@@ -33,18 +33,18 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
       spacing: 4.0,
-      children: _rankChips(),
+      children: _rankChips(context),
     );
   }
 
-  List<Widget> _rankChips() {
+  List<Widget> _rankChips(BuildContext context) {
     return _ranks.map<Widget>((rank) {
       return Padding(
         padding: const EdgeInsets.only(right: 4.0),
         child: ChoiceChip(
           key: ValueKey(rank),
           selectedColor: _rankToColor(rank),
-          backgroundColor: RSColors.iconBackground,
+          backgroundColor: Theme.of(context).disabledColor,
           label: Text(rank),
           avatar: _rankToAvatar(rank),
           selected: _selectedRankChipName == rank,
