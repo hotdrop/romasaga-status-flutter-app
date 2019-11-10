@@ -580,10 +580,7 @@ class CharDetailPage extends StatelessWidget {
     final textStyle = (status >= maxStatus) ? TextStyle(color: RSColors.characterDetailStatusSufficient) : TextStyle();
     return Container(
       child: Center(
-        child: Text(
-          status.toString(),
-          style: textStyle,
-        ),
+        child: Text((status + stageStatusLimit).toString(), style: textStyle),
       ),
     );
   }
