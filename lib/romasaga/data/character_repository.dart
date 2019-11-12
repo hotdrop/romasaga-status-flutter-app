@@ -9,7 +9,7 @@ import '../common/rs_logger.dart';
 class CharacterRepository {
   CharacterRepository({CharacterDao local, CharacterApi remote})
       : _localDataSource = (local == null) ? CharacterDao.getInstance() : local,
-        _remoteDataSource = (remote == null) ? CharacterApi.getInstance() : remote;
+        _remoteDataSource = (remote == null) ? CharacterApi.create() : remote;
 
   final CharacterDao _localDataSource;
   final CharacterApi _remoteDataSource;

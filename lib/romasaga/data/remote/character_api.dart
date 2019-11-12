@@ -4,7 +4,15 @@ import '../../model/character.dart';
 import '../../common/rs_logger.dart';
 
 class CharacterApi {
-  CharacterApi({RSService rsService}) : _rsService = (rsService == null) ? RSService() : rsService;
+  const CharacterApi._(this._rsService);
+
+  factory CharacterApi.create() {
+    return CharacterApi._(RSService.getInstance());
+  }
+
+  factory CharacterApi.test(RSService rsService) {
+    return CharacterApi._(rsService);
+  }
 
   final RSService _rsService;
 
