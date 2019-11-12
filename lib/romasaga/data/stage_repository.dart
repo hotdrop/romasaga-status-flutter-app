@@ -7,8 +7,8 @@ import '../common/rs_logger.dart';
 
 class StageRepository {
   StageRepository({StageDao local, StageApi remote})
-      : _localDataSource = (local == null) ? StageDao() : local,
-        _remoteDataSource = (remote == null) ? StageApi() : remote;
+      : _localDataSource = (local == null) ? StageDao.getInstance() : local,
+        _remoteDataSource = (remote == null) ? StageApi.getInstance() : remote;
 
   final StageDao _localDataSource;
   final StageApi _remoteDataSource;

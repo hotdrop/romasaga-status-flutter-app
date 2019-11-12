@@ -9,8 +9,8 @@ import '../common/rs_logger.dart';
 
 class MyStatusRepository {
   MyStatusRepository({MyStatusDao local, MyStatusApi remote})
-      : _localDataSource = (local == null) ? MyStatusDao() : local,
-        _remoteDataSource = (remote == null) ? MyStatusApi() : remote;
+      : _localDataSource = (local == null) ? MyStatusDao.getInstance() : local,
+        _remoteDataSource = (remote == null) ? MyStatusApi.getInstance() : remote;
 
   final MyStatusDao _localDataSource;
   final MyStatusApi _remoteDataSource;
