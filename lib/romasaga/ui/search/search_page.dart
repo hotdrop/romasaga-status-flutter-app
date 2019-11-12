@@ -3,30 +3,68 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../characters/char_list_row_item.dart';
-import '../search/search_list_view_model.dart';
-
+import '../search/search_page_view_model.dart';
 import '../widget/rs_icon.dart';
-
-import '../../model/character.dart';
 import '../../model/weapon.dart';
-
-import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 
-class SearchListTab extends StatefulWidget {
-  SearchListTab(this._characters);
-
-  final List<Character> _characters;
-
+class SearchPage extends StatelessWidget {
   @override
-  _SearchListTabState createState() => _SearchListTabState(_characters);
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      builder: (context) => SearchPageViewModel.create()..load(),
+      child: _loadingBody(),
+    );
+  }
+
+  Widget _loadingBody() {
+    return Consumer<SearchPageViewModel>(
+      builder: (context, viewModel, child) {
+        if (viewModel.isLoading) {
+          return _loadingView();
+        } else if (viewModel.isSuccess) {
+          return _loadSuccessView();
+        } else {
+          return _loadErrorView();
+        }
+      },
+    );
+  }
+
+  Widget _loadingView() {
+    return Scaffold(
+      appBar: AppBar(title: Text(RSStrings.searchListTitle), centerTitle: true),
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _loadErrorView() {
+    return Scaffold(
+      appBar: AppBar(title: Text(RSStrings.searchListTitle), centerTitle: true),
+      body: Center(
+        child: Text(RSStrings.searchFilerLoadingErrorMessage),
+      ),
+    );
+  }
+
+  Widget _loadSuccessView() {
+    return _SearchPage();
+  }
 }
 
-class _SearchListTabState extends State<SearchListTab> with SingleTickerProviderStateMixin {
-  _SearchListTabState(this._characters);
+class _SearchPage extends StatefulWidget {
+  _SearchPage();
+
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<_SearchPage> with SingleTickerProviderStateMixin {
+  _SearchPageState();
 
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
-  final List<Character> _characters;
 
   AnimationController _controller;
   final TextEditingController _searchQuery = TextEditingController();
@@ -154,7 +192,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
   }
 
   Widget _filterViewOwnState() {
-    return Consumer<SearchListViewModel>(builder: (context, viewModel, child) {
+    return Consumer<SearchPageViewModel>(builder: (context, viewModel, child) {
       bool selectedHaveChar = viewModel.isFilterHave();
       bool selectedFavorite = viewModel.isFilterFavorite();
 
@@ -182,7 +220,7 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
   }
 
   Widget _filterViewWeaponType() {
-    return Consumer<SearchListViewModel>(builder: (context, viewModel, child) {
+    return Consumer<SearchPageViewModel>(builder: (context, viewModel, child) {
       return Wrap(
         spacing: 16.0,
         runSpacing: 16.0,
@@ -210,21 +248,18 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<SearchListViewModel>(
-      builder: (_) => SearchListViewModel(_characters),
-      child: Scaffold(
-        appBar: AppBar(
-          title: _headerTitle(),
-          centerTitle: true,
-          actions: <Widget>[_headerIconSearchWord()],
-        ),
-        body: LayoutBuilder(builder: _buildStack),
+    return Scaffold(
+      appBar: AppBar(
+        title: _headerTitle(),
+        centerTitle: true,
+        actions: <Widget>[_headerIconSearchWord()],
       ),
+      body: LayoutBuilder(builder: _buildStack),
     );
   }
 
   Widget _headerTitle() {
-    return Consumer<SearchListViewModel>(builder: (_, viewModel, child) {
+    return Consumer<SearchPageViewModel>(builder: (_, viewModel, child) {
       if (viewModel.isKeywordSearch) {
         return TextField(
           controller: _searchQuery,
@@ -237,13 +272,13 @@ class _SearchListTabState extends State<SearchListTab> with SingleTickerProvider
           },
         );
       } else {
-        return Text(RSStrings.searchListTabTitle);
+        return Text(RSStrings.searchListTitle);
       }
     });
   }
 
   Widget _headerIconSearchWord() {
-    return Consumer<SearchListViewModel>(builder: (_, viewModel, child) {
+    return Consumer<SearchPageViewModel>(builder: (_, viewModel, child) {
       Widget searchIcon;
       if (viewModel.isKeywordSearch) {
         searchIcon = Icon(Icons.close);
@@ -317,7 +352,7 @@ class _BackdropPanel extends StatelessWidget {
   }
 
   Widget _searchResultList() {
-    return Consumer<SearchListViewModel>(
+    return Consumer<SearchPageViewModel>(
       builder: (_, viewModel, child) {
         return ListView.builder(itemBuilder: (_, index) {
           final characters = viewModel.charactersWithFilter;

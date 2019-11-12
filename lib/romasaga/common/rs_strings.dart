@@ -28,11 +28,12 @@ class RSStrings {
   static const String statusEditTitle = 'ステータス編集';
   static const String statusEditSaveButtonLabel = '保存';
 
-  static const String searchListTabTitle = '検索';
+  static const String searchListTitle = '検索';
   static const String searchListQueryHint = 'キャラ名で検索';
   static const String searchBackDropTitle = 'キャラ一覧';
   static const String searchFilerTitleOwn = '所持とお気に入りフィルター';
   static const String searchFilerTitleWeapon = '武器種別';
+  static const String searchFilerLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 
   static const String letterTabTitle = '運営からのお便り一覧';
   static const String letterPageTitle = '運営からのお便り詳細';

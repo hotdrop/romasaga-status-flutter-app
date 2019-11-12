@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'characters/char_list_tab.dart';
 import 'characters/char_list_view_model.dart';
 
-import 'search/search_list_tab.dart';
+import 'search/search_page.dart';
 import 'letter/letter_tab.dart';
 import 'account/account_tab.dart';
 
@@ -48,9 +48,7 @@ class _TopPageState extends State<TopPage> {
       case 0:
         return CharListTab();
       case 1:
-        return Consumer<CharListViewModel>(builder: (_, viewModel, child) {
-          return SearchListTab(viewModel.findAll());
-        });
+        return SearchPage();
       case 2:
         return LetterTab();
       case 3:
