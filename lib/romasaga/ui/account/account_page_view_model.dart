@@ -8,16 +8,36 @@ import '../../data/account_repository.dart';
 
 import '../../common/rs_logger.dart';
 
-class SettingViewModel extends foundation.ChangeNotifier {
-  SettingViewModel({
+class AccountPageViewModel extends foundation.ChangeNotifier {
+  AccountPageViewModel._(
+    this._characterRepository,
+    this._stageRepository,
+    this._myStatusRepository,
+    this._accountRepository,
+  );
+
+  factory AccountPageViewModel.create() {
+    return AccountPageViewModel._(
+      CharacterRepository(),
+      StageRepository(),
+      MyStatusRepository(),
+      AccountRepository(),
+    );
+  }
+
+  factory AccountPageViewModel.test(
     CharacterRepository characterRepo,
     StageRepository stageRepo,
     MyStatusRepository myStatusRepo,
     AccountRepository accountRepo,
-  })  : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
-        _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
-        _myStatusRepository = (myStatusRepo == null) ? MyStatusRepository() : myStatusRepo,
-        _accountRepository = (accountRepo == null) ? AccountRepository() : accountRepo;
+  ) {
+    return AccountPageViewModel._(
+      characterRepo,
+      stageRepo,
+      myStatusRepo,
+      accountRepo,
+    );
+  }
 
   final CharacterRepository _characterRepository;
   final StageRepository _stageRepository;
@@ -208,15 +228,6 @@ class SettingViewModel extends foundation.ChangeNotifier {
   }
 }
 
-enum _Status {
-  loading,
-  notLogin,
-  loggedIn,
-}
+enum _Status { loading, notLogin, loggedIn }
 
-enum DataLoadingStatus {
-  none,
-  loading,
-  complete,
-  error,
-}
+enum DataLoadingStatus { none, loading, complete, error }

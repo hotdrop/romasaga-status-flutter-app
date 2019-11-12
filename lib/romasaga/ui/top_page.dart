@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import 'characters/char_list_tab.dart';
-import 'characters/char_list_view_model.dart';
+import 'characters/char_list_page.dart';
 
-import 'search/search_list_tab.dart';
-import 'letter/letter_tab.dart';
-import 'account/account_tab.dart';
+import 'search/search_page.dart';
+import 'letter/letter_page.dart';
+import 'account/account_page.dart';
 
 import '../common/rs_colors.dart';
 import '../common/rs_strings.dart';
@@ -46,17 +44,13 @@ class _TopPageState extends State<TopPage> {
   Widget _menuView(int index) {
     switch (index) {
       case 0:
-        return CharListTab();
+        return CharListPage();
       case 1:
-        return Consumer<CharListViewModel>(builder: (_, viewModel, child) {
-          return SearchListTab(viewModel.findAll());
-        });
+        return SearchPage();
       case 2:
-        return LetterTab();
+        return LetterPage();
       case 3:
-        return Consumer<CharListViewModel>(builder: (_, viewModel, child) {
-          return SettingTab(viewModel);
-        });
+        return AccountPage();
       default:
         return null;
     }

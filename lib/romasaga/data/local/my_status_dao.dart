@@ -8,11 +8,10 @@ import 'entity/my_status_entity.dart';
 import '../../common/rs_logger.dart';
 
 class MyStatusDao {
-  factory MyStatusDao() {
+  const MyStatusDao._();
+  factory MyStatusDao.getInstance() {
     return _instance;
   }
-
-  const MyStatusDao._();
 
   static final MyStatusDao _instance = MyStatusDao._();
 

@@ -6,9 +6,16 @@ import 'char_list_view_model.dart';
 
 import '../../common/rs_strings.dart';
 
-class CharListTab extends StatelessWidget {
+class CharListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      builder: (context) => CharListViewModel.create()..load(),
+      child: _loadingBody(),
+    );
+  }
+
+  Widget _loadingBody() {
     return Consumer<CharListViewModel>(
       builder: (context, viewModel, child) {
         if (viewModel.isLoading) {
@@ -24,7 +31,7 @@ class CharListTab extends StatelessWidget {
 
   Widget _loadingView() {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.characterListTabTitle)),
+      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.characterListPageTitle)),
       body: Center(
         child: CircularProgressIndicator(),
       ),
@@ -33,7 +40,7 @@ class CharListTab extends StatelessWidget {
 
   Widget _loadErrorView() {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.characterListTabTitle)),
+      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.characterListPageTitle)),
       body: Center(
         child: Text(RSStrings.characterListLoadingErrorMessage),
       ),
@@ -46,14 +53,14 @@ class CharListTab extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(RSStrings.characterListTabTitle),
+          title: const Text(RSStrings.characterListPageTitle),
           actions: <Widget>[
             _titlePopupMenu(),
           ],
           bottom: const TabBar(tabs: <Tab>[
-            Tab(text: RSStrings.characterListTabFavoriteTitle),
-            Tab(text: RSStrings.characterListTabPossessionTitle),
-            Tab(text: RSStrings.characterListTabUnownedTitle),
+            Tab(text: RSStrings.characterListFavoriteTabTitle),
+            Tab(text: RSStrings.characterListPossessionTabTitle),
+            Tab(text: RSStrings.characterListNotPossessionTabTitle),
           ]),
         ),
         body: TabBarView(

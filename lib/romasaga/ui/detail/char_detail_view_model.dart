@@ -14,10 +14,20 @@ import '../../common/rs_strings.dart';
 import '../../common/rs_logger.dart';
 
 class CharDetailViewModel extends foundation.ChangeNotifier {
-  CharDetailViewModel(this._character, {CharacterRepository characterRepo, StageRepository stageRepo, MyStatusRepository statusRepo})
-      : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
-        _stageRepository = (stageRepo == null) ? StageRepository() : stageRepo,
-        _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
+  CharDetailViewModel._(this._character, this._characterRepository, this._stageRepository, this._myStatusRepository);
+
+  factory CharDetailViewModel.create(Character character) {
+    return CharDetailViewModel._(character, CharacterRepository(), StageRepository(), MyStatusRepository());
+  }
+
+  factory CharDetailViewModel.test(
+    Character character,
+    CharacterRepository characterRepo,
+    StageRepository stageRepo,
+    MyStatusRepository statusRepo,
+  ) {
+    return CharDetailViewModel._(character, characterRepo, stageRepo, statusRepo);
+  }
 
   final CharacterRepository _characterRepository;
   final StageRepository _stageRepository;

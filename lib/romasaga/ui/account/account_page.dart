@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../characters/char_list_view_model.dart';
-import 'account_view_model.dart';
+import 'account_page_view_model.dart';
 
 import '../widget/rs_dialog.dart';
 
@@ -10,19 +9,17 @@ import '../../common/rs_colors.dart';
 import '../../common/rs_logger.dart';
 import '../../common/rs_strings.dart';
 
-class SettingTab extends StatelessWidget {
-  const SettingTab(this._charListViewModel);
-
-  final CharListViewModel _charListViewModel;
+class AccountPage extends StatelessWidget {
+  const AccountPage();
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<SettingViewModel>(
-      builder: (_) => SettingViewModel()..load(),
+    return ChangeNotifierProvider<AccountPageViewModel>(
+      builder: (_) => AccountPageViewModel.create()..load(),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(RSStrings.accountTabTitle),
+          title: const Text(RSStrings.accountPageTitle),
         ),
         body: _contentsBody(),
       ),
@@ -30,7 +27,7 @@ class SettingTab extends StatelessWidget {
   }
 
   Widget _contentsBody() {
-    return Consumer<SettingViewModel>(
+    return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
         if (viewModel.nowLoading) {
           return _loadingView(context);
@@ -83,7 +80,7 @@ class SettingTab extends StatelessWidget {
   }
 
   Widget _googleSignInButton() {
-    return Consumer<SettingViewModel>(
+    return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
         return RaisedButton(
           color: Theme.of(context).accentColor,
@@ -102,7 +99,7 @@ class SettingTab extends StatelessWidget {
   }
 
   Widget _rowAccountInfo() {
-    return Consumer<SettingViewModel>(builder: (context, viewModel, child) {
+    return Consumer<AccountPageViewModel>(builder: (context, viewModel, child) {
       return Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
@@ -143,7 +140,7 @@ class SettingTab extends StatelessWidget {
   }
 
   Widget _rowCharacterReload() {
-    return Consumer<SettingViewModel>(
+    return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
         return _rowItemViewWithCount(
           context,
@@ -157,7 +154,6 @@ class SettingTab extends StatelessWidget {
               message: RSStrings.accountCharacterOnlyNewUpdateDialogMessage,
               positiveListener: () async {
                 await viewModel.registerNewCharacters();
-                await _charListViewModel.refreshCharacters();
               },
             ).show();
           },
@@ -167,7 +163,6 @@ class SettingTab extends StatelessWidget {
               message: RSStrings.accountCharacterAllUpdateDialogMessage,
               positiveListener: () async {
                 await viewModel.updateAllCharacters();
-                await _charListViewModel.refreshCharacters();
               },
             ).show();
           },
@@ -177,7 +172,7 @@ class SettingTab extends StatelessWidget {
   }
 
   Widget _rowStageReload() {
-    return Consumer<SettingViewModel>(
+    return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
         return _rowItemViewWithCount(
           context,
@@ -200,7 +195,7 @@ class SettingTab extends StatelessWidget {
   }
 
   Widget _rowBackUp() {
-    return Consumer<SettingViewModel>(
+    return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
         final subTitleText = '${RSStrings.accountStatusBackupDateLabel} ${viewModel.previousBackupDateStr}';
         return _rowItemView(
@@ -224,7 +219,7 @@ class SettingTab extends StatelessWidget {
   }
 
   Widget _rowRestore() {
-    return Consumer<SettingViewModel>(
+    return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
         return _rowItemView(
           context,
@@ -238,7 +233,6 @@ class SettingTab extends StatelessWidget {
               message: RSStrings.accountStatusRestoreDialogMessage,
               positiveListener: () async {
                 await viewModel.restore();
-                await _charListViewModel.refreshMyStatuses();
               },
             ).show();
           },
@@ -248,7 +242,7 @@ class SettingTab extends StatelessWidget {
   }
 
   Widget _rowLogoutButton() {
-    return Consumer<SettingViewModel>(builder: (context, viewModel, child) {
+    return Consumer<AccountPageViewModel>(builder: (context, viewModel, child) {
       return Padding(
         padding: EdgeInsets.only(top: 16.0),
         child: OutlineButton(

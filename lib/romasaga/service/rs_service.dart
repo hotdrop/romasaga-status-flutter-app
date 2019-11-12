@@ -5,11 +5,10 @@ import 'mixin_firestore.dart';
 import '../model/status.dart' show MyStatus;
 
 class RSService with RSAuthMixin, RSStorageMixin, RSFirestoreMixin {
-  factory RSService() {
+  RSService._();
+  factory RSService.getInstance() {
     return _instance;
   }
-
-  RSService._();
 
   static final RSService _instance = RSService._();
 

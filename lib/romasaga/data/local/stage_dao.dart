@@ -12,11 +12,10 @@ import '../../model/stage.dart';
 import '../../common/rs_logger.dart';
 
 class StageDao {
-  factory StageDao() {
+  const StageDao._();
+  factory StageDao.getInstance() {
     return _instance;
   }
-
-  const StageDao._();
 
   static final StageDao _instance = StageDao._();
 

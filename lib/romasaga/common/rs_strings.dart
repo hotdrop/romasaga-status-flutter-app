@@ -6,10 +6,10 @@ class RSStrings {
   static const String bottomMenuLetter = 'お便り';
   static const String bottomMenuAccount = 'アカウント';
 
-  static const String characterListTabTitle = 'キャラクターリスト';
-  static const String characterListTabFavoriteTitle = 'お気に入り';
-  static const String characterListTabPossessionTitle = '所持';
-  static const String characterListTabUnownedTitle = '未所持';
+  static const String characterListPageTitle = 'キャラクターリスト';
+  static const String characterListFavoriteTabTitle = 'お気に入り';
+  static const String characterListPossessionTabTitle = '所持';
+  static const String characterListNotPossessionTabTitle = '未所持';
   static const String characterListOrderStatus = 'ステータス';
   static const String characterListOrderWeapon = '武器種別';
   static const String nothingCharacterFavoriteMessage = 'お気に入りキャラは設定されていません。';
@@ -28,14 +28,15 @@ class RSStrings {
   static const String statusEditTitle = 'ステータス編集';
   static const String statusEditSaveButtonLabel = '保存';
 
-  static const String searchListTabTitle = '検索';
+  static const String searchPageTitle = '検索';
   static const String searchListQueryHint = 'キャラ名で検索';
   static const String searchBackDropTitle = 'キャラ一覧';
   static const String searchFilerTitleOwn = '所持とお気に入りフィルター';
   static const String searchFilerTitleWeapon = '武器種別';
+  static const String searchFilerLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 
-  static const String letterTabTitle = '運営からのお便り一覧';
-  static const String letterPageTitle = '運営からのお便り詳細';
+  static const String letterPageTitle = '運営からのお便り一覧';
+  static const String letterDetailPageTitle = '運営からのお便り詳細';
 
   static const String letterJanuaryTitle = '1月 ブーケとモニカの羽根つき';
   static const String letterJanuaryShortTitle = '1月 羽根つき';
@@ -60,7 +61,7 @@ class RSStrings {
   static const String letterNovemberTitle = '11月 秋の温泉';
   static const String letterNovemberShortTitle = '11月 秋の温泉で一息';
 
-  static const String accountTabTitle = 'アカウント';
+  static const String accountPageTitle = 'アカウント';
   static const String accountNotLoginEmailLabel = '未ログイン';
   static const String accountNotLoginNameLabel = 'ー';
   static const String accountLoginWithGoogle = 'Googleアカウントでログイン';

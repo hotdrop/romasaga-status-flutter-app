@@ -15,7 +15,7 @@ class LetterMainPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(RSStrings.letterPageTitle),
+        title: const Text(RSStrings.letterDetailPageTitle),
       ),
       body: Center(
         child: _widgetContents(context),
