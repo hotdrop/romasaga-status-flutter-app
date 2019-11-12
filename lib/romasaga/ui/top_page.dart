@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'characters/char_list_tab.dart';
+import 'characters/char_list_page.dart';
 
 import 'search/search_page.dart';
 import 'letter/letter_page.dart';
@@ -44,7 +44,7 @@ class _TopPageState extends State<TopPage> {
   Widget _menuView(int index) {
     switch (index) {
       case 0:
-        return CharListTab();
+        return CharListPage();
       case 1:
         return SearchPage();
       case 2:

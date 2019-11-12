@@ -9,9 +9,15 @@ import '../../model/weapon.dart';
 import '../../common/rs_logger.dart';
 
 class CharListViewModel extends foundation.ChangeNotifier {
-  CharListViewModel({CharacterRepository characterRepo, MyStatusRepository statusRepo})
-      : _characterRepository = (characterRepo == null) ? CharacterRepository() : characterRepo,
-        _myStatusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
+  CharListViewModel._(this._characterRepository, this._myStatusRepository);
+
+  factory CharListViewModel.create() {
+    return CharListViewModel._(CharacterRepository(), MyStatusRepository());
+  }
+
+  factory CharListViewModel.test(CharacterRepository characterRepo, MyStatusRepository statusRepo) {
+    return CharListViewModel._(characterRepo, statusRepo);
+  }
 
   final CharacterRepository _characterRepository;
   final MyStatusRepository _myStatusRepository;

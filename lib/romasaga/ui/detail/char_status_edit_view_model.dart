@@ -6,7 +6,7 @@ import '../../data/my_status_repository.dart';
 import '../../common/rs_strings.dart';
 
 class CharStatusEditViewModel extends foundation.ChangeNotifier {
-  CharStatusEditViewModel(this.currentStatus, {MyStatusRepository statusRepo})
+  CharStatusEditViewModel._(this.currentStatus, this._statusRepository)
       : _newHp = currentStatus.hp,
         _newStr = currentStatus.str,
         _newVit = currentStatus.vit,
@@ -17,8 +17,15 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
         _newLove = currentStatus.love,
         _newAttr = currentStatus.attr,
         _have = currentStatus.have,
-        _favorite = currentStatus.favorite,
-        _statusRepository = (statusRepo == null) ? MyStatusRepository() : statusRepo;
+        _favorite = currentStatus.favorite;
+
+  factory CharStatusEditViewModel.create(MyStatus status) {
+    return CharStatusEditViewModel._(status, MyStatusRepository());
+  }
+
+  factory CharStatusEditViewModel.test(MyStatus status, MyStatusRepository statusRepo) {
+    return CharStatusEditViewModel._(status, statusRepo);
+  }
 
   final MyStatusRepository _statusRepository;
   final MyStatus currentStatus;

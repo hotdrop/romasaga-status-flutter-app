@@ -9,7 +9,7 @@ import '../../data/account_repository.dart';
 import '../../common/rs_logger.dart';
 
 class AccountPageViewModel extends foundation.ChangeNotifier {
-  AccountPageViewModel._internal(
+  AccountPageViewModel._(
     this._characterRepository,
     this._stageRepository,
     this._myStatusRepository,
@@ -17,7 +17,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   );
 
   factory AccountPageViewModel.create() {
-    return AccountPageViewModel._internal(
+    return AccountPageViewModel._(
       CharacterRepository(),
       StageRepository(),
       MyStatusRepository(),
@@ -31,7 +31,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
     MyStatusRepository myStatusRepo,
     AccountRepository accountRepo,
   ) {
-    return AccountPageViewModel._internal(
+    return AccountPageViewModel._(
       characterRepo,
       stageRepo,
       myStatusRepo,
