@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-import 'letter_main_page.dart';
+import 'letter_detail_page.dart';
 import '../widget/custom_page_route.dart';
 import '../../model/letter.dart';
 
 import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 
-class LetterTab extends StatelessWidget {
+class LetterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text(RSStrings.letterTabTitle),
+          child: Text(RSStrings.letterPageTitle),
         ),
       ),
       body: _widgetContents(context),

@@ -1,21 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'ui/characters/char_list_view_model.dart';
 import 'ui/top_page.dart';
 
 import 'common/rs_colors.dart';
 import 'common/rs_strings.dart';
 
-void main() {
-  return runApp(
-    ChangeNotifierProvider(
-      builder: (context) => CharListViewModel()..load(),
-      child: RomasagaApp(),
-    ),
-  );
-}
+void main() => runApp(RomasagaApp());
 
 class RomasagaApp extends StatelessWidget {
   @override

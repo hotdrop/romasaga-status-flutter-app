@@ -33,7 +33,7 @@ class SearchPage extends StatelessWidget {
 
   Widget _loadingView() {
     return Scaffold(
-      appBar: AppBar(title: Text(RSStrings.searchListTitle), centerTitle: true),
+      appBar: AppBar(title: Text(RSStrings.searchPageTitle), centerTitle: true),
       body: Center(
         child: CircularProgressIndicator(),
       ),
@@ -42,7 +42,7 @@ class SearchPage extends StatelessWidget {
 
   Widget _loadErrorView() {
     return Scaffold(
-      appBar: AppBar(title: Text(RSStrings.searchListTitle), centerTitle: true),
+      appBar: AppBar(title: Text(RSStrings.searchPageTitle), centerTitle: true),
       body: Center(
         child: Text(RSStrings.searchFilerLoadingErrorMessage),
       ),
@@ -272,7 +272,7 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
           },
         );
       } else {
-        return Text(RSStrings.searchListTitle);
+        return Text(RSStrings.searchPageTitle);
       }
     });
   }
