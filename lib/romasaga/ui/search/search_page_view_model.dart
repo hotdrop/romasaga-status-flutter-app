@@ -1,20 +1,73 @@
 import 'package:flutter/foundation.dart' as foundation;
 
+import '../../data/character_repository.dart';
+import '../../data/my_status_repository.dart';
+
 import '../../model/character.dart';
 import '../../model/search_condition.dart';
 import '../../model/weapon.dart';
 
 import '../../common/rs_logger.dart';
 
-class SearchListViewModel extends foundation.ChangeNotifier {
-  SearchListViewModel(this._originalCharacters) : charactersWithFilter = _originalCharacters;
+class SearchPageViewModel extends foundation.ChangeNotifier {
+  SearchPageViewModel._(this._characterRepository, this._myStatusRepository);
+
+  factory SearchPageViewModel.create() {
+    return SearchPageViewModel._(CharacterRepository(), MyStatusRepository());
+  }
+
+  factory SearchPageViewModel.test(CharacterRepository repo, MyStatusRepository statusRepo) {
+    return SearchPageViewModel._(repo, statusRepo);
+  }
+
+  CharacterRepository _characterRepository;
+  MyStatusRepository _myStatusRepository;
 
   List<Character> _originalCharacters;
   List<Character> charactersWithFilter;
 
   SearchCondition _condition = SearchCondition();
 
+  _PageState _pageState = _PageState.loading;
+  bool get isLoading => _pageState == _PageState.loading;
+  bool get isSuccess => _pageState == _PageState.success;
+  bool get isError => _pageState == _PageState.error;
+
   bool isKeywordSearch = false;
+
+  Future<void> load() async {
+    _pageState = _PageState.loading;
+    notifyListeners();
+
+    try {
+      final characters = await _characterRepository.load();
+      final charactersWithMyStatus = await _loadMyStatuses(characters);
+
+      _originalCharacters = charactersWithMyStatus;
+      charactersWithFilter = charactersWithMyStatus;
+
+      _pageState = _PageState.success;
+      notifyListeners();
+    } catch (e) {
+      RSLogger.e("キャラ情報ロード時にエラーが発生しました。", e);
+      _pageState = _PageState.error;
+      notifyListeners();
+    }
+  }
+
+  Future<List<Character>> _loadMyStatuses(List<Character> argCharacters) async {
+    final characters = argCharacters;
+    final myStatuses = await _myStatusRepository.findAll();
+
+    RSLogger.d("詳細なステータスをロードします。");
+    if (myStatuses.isNotEmpty) {
+      for (var status in myStatuses) {
+        characters.firstWhere((character) => character.id == status.id).myStatus = status;
+      }
+    }
+
+    return characters;
+  }
 
   void tapSearchIcon() {
     if (isKeywordSearch) {
@@ -79,3 +132,5 @@ class SearchListViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 }
+
+enum _PageState { loading, success, error }

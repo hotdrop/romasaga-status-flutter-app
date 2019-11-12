@@ -15,7 +15,7 @@ import '../../common/rs_logger.dart';
 
 class CharacterDao {
   const CharacterDao._();
-  factory CharacterDao.create() {
+  factory CharacterDao.getInstance() {
     return _instance;
   }
 
