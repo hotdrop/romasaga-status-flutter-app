@@ -75,7 +75,7 @@ class RSStatusBar extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
           child: Text(title, style: Theme.of(context).textTheme.subtitle),
         ),
-        _contentLinearPercentIndicator(context, currentStatusColor),
+        _contentLinearPercentIndicator(currentStatusColor),
         Padding(
           padding: const EdgeInsets.only(left: 8.0, top: 4.0, bottom: 8.0),
           child: Text(
@@ -87,7 +87,7 @@ class RSStatusBar extends StatelessWidget {
     );
   }
 
-  Widget _contentLinearPercentIndicator(BuildContext context, Color currentStatusColor) {
+  Widget _contentLinearPercentIndicator(Color currentStatusColor) {
     double percent = status / limit;
     percent = (percent > 1) ? 1 : percent;
 
