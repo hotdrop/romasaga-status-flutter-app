@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 
 import 'characters/char_list_page.dart';
 
@@ -23,20 +24,12 @@ class _TopPageState extends State<TopPage> {
       body: Container(
         child: Center(child: _menuView(_currentIndex)),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: _allDestinations.map((destination) {
-          return BottomNavigationBarItem(
-            title: Text(destination.title),
-            icon: Icon(destination.icon),
-            backgroundColor: RSColors.bottomNavigationBackground,
-          );
-        }).toList(),
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      bottomNavigationBar: BottomNavyBar(
+        selectedIndex: _currentIndex,
+        items: _bottomNavigationItems,
+        onItemSelected: (index) => setState(() {
+          _currentIndex = index;
+        }),
       ),
     );
   }
@@ -57,15 +50,25 @@ class _TopPageState extends State<TopPage> {
   }
 }
 
-class Destination {
-  const Destination(this.title, this.icon);
-  final String title;
-  final IconData icon;
-}
-
-const _allDestinations = <Destination>[
-  Destination(RSStrings.bottomMenuCharacter, Icons.view_list),
-  Destination(RSStrings.bottomMenuSearch, Icons.search),
-  Destination(RSStrings.bottomMenuLetter, Icons.mail),
-  Destination(RSStrings.bottomMenuAccount, Icons.person),
+List<BottomNavyBarItem> _bottomNavigationItems = [
+  BottomNavyBarItem(
+    title: Text(RSStrings.bottomMenuCharacter),
+    icon: Icon(Icons.view_list),
+    activeColor: RSColors.bottomNavyCharacter,
+  ),
+  BottomNavyBarItem(
+    title: Text(RSStrings.bottomMenuSearch),
+    icon: Icon(Icons.search),
+    activeColor: RSColors.bottomNavySearch,
+  ),
+  BottomNavyBarItem(
+    title: Text(RSStrings.bottomMenuLetter),
+    icon: Icon(Icons.mail),
+    activeColor: RSColors.bottomNavyLetter,
+  ),
+  BottomNavyBarItem(
+    title: Text(RSStrings.bottomMenuAccount),
+    icon: Icon(Icons.person),
+    activeColor: RSColors.bottomNavyAccount,
+  ),
 ];

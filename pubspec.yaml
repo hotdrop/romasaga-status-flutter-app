@@ -21,7 +21,7 @@ dependencies:
 
   # UI
   percent_indicator: ^2.1.1
-  cached_network_image: ^1.1.1
+  bottom_navy_bar: ^5.2.0
 
   # Design
   provider: ^3.0.0
@@ -33,6 +33,7 @@ dependencies:
 
   # network
   http: ^0.12.0+2
+  cached_network_image: ^1.1.1
 
   # other
   json_serializable: ^2.0.0
