@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:rsapp/romasaga/ui/widget/custom_page_route.dart';
 
 import '../detail/char_detail_page.dart';
 
 import '../widget/rs_icon.dart';
+import '../widget/custom_page_route.dart';
 
 import '../../model/character.dart';
 import '../../model/weapon.dart';
 
 import '../../common/rs_strings.dart';
+import '../../common/rs_colors.dart';
 
 class CharListRowItem extends StatelessWidget {
   const CharListRowItem(this.character, {this.index});
@@ -86,7 +87,12 @@ class CharListRowItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('${RSStrings.characterHp} ${character.myStatus.hp}'),
+        Text(
+          '${RSStrings.characterHp} ${character.myStatus.hp}',
+          style: TextStyle(
+            color: RSColors.characterDetailHpLabel,
+          ),
+        ),
         Text('${RSStrings.characterTotalStatus} ${character.myStatus.sumWithoutHp()}'),
       ],
     );

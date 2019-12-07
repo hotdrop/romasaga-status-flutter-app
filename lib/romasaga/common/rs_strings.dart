@@ -16,8 +16,8 @@ class RSStrings {
   static const String nothingCharacterPossessionMessage = '持っているキャラはいません。';
   static const String characterListLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 
-  static const String characterHp = 'ＨＰ:';
-  static const String characterTotalStatus = '合計:';
+  static const String characterHp = 'HP:';
+  static const String characterTotalStatus = '計: ';
 
   static const String characterDetailTotalStatusCircleLabel = 'Total Status';
   static const String characterDetailTotalLimitStatusLabel = 'Total Limit Status';
