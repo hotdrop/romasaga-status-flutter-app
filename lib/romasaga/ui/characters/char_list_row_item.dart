@@ -83,6 +83,12 @@ class CharListRowItem extends StatelessWidget {
   }
 
   Widget _labelStatus(Character character, BuildContext context) {
-    return Text('${RSStrings.characterTotalStatus} ${character.getTotalStatus()}');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('${RSStrings.characterHp} ${character.myStatus.hp}'),
+        Text('${RSStrings.characterTotalStatus} ${character.myStatus.sumWithoutHp()}'),
+      ],
+    );
   }
 }

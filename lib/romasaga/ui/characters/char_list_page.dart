@@ -85,8 +85,8 @@ class CharListPage extends StatelessWidget {
               child: Text(RSStrings.characterListOrderStatus),
             ),
             PopupMenuItem(
-              value: OrderType.weapon,
-              child: Text(RSStrings.characterListOrderWeapon),
+              value: OrderType.hp,
+              child: Text(RSStrings.characterListOrderHp),
             ),
           ],
           initialValue: viewModel.selectedOrderType,
