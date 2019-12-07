@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 class RSColors {
   static const Color accent = Colors.blueAccent;
   static const Color bottomNavigationBackground = Color(0x6A000000);
-  static const Color bottomNavyCharacter = Colors.green;
-  static const Color bottomNavySearch = Colors.blue;
-  static const Color bottomNavyLetter = Colors.purple;
-  static const Color bottomNavyAccount = Colors.orange;
 
   // common
   static const Color textAttention = Colors.yellowAccent;
