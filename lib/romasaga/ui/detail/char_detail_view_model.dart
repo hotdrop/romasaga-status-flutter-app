@@ -61,7 +61,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
         _character.addStyles(styles);
       }
 
-      _selectedStyle = _character.getSelectedStyle();
+      _selectedStyle = _character.selectedStyle;
 
       _pageState = _PageState.success;
       notifyListeners();

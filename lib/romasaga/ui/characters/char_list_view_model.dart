@@ -73,11 +73,11 @@ class CharListViewModel extends foundation.ChangeNotifier {
 
   void orderBy(OrderType order) {
     switch (order) {
-      case OrderType.weapon:
-        _characters.sort((c1, c2) => _compareWeapon(c1.weaponType, c2.weaponType));
+      case OrderType.hp:
+        _characters.sort((c1, c2) => c2.myStatus.hp.compareTo(c1.myStatus.hp));
         break;
       default:
-        _characters.sort((c1, c2) => c2.getTotalStatus().compareTo(c1.getTotalStatus()));
+        _characters.sort((c1, c2) => c2.myStatus.sumWithoutHp().compareTo(c1.myStatus.sumWithoutHp()));
         break;
     }
     selectedOrderType = order;
@@ -104,19 +104,7 @@ class CharListViewModel extends foundation.ChangeNotifier {
       }
     }
   }
-
-  int _compareWeapon(WeaponType c1, WeaponType c2) {
-    final c1SortNo = c1.sortOrder();
-    final c2SortNo = c2.sortOrder();
-    if (c1SortNo > c2SortNo) {
-      return 1;
-    } else if (c1SortNo == c2SortNo) {
-      return 0;
-    } else {
-      return -1;
-    }
-  }
 }
 
-enum OrderType { status, weapon }
+enum OrderType { status, hp }
 enum _PageState { loading, success, error }

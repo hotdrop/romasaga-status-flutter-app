@@ -26,6 +26,7 @@ class Character {
   MyStatus myStatus;
 
   WeaponCategory get weaponCategory => weaponType.category;
+  Style get selectedStyle => getStyle(selectedStyleRank);
 
   void addStyles(List<Style> styles) {
     for (var style in styles) {
@@ -37,15 +38,7 @@ class Character {
     styles.add(style);
   }
 
-  Style getSelectedStyle() {
-    return getStyle(selectedStyleRank);
-  }
-
   Style getStyle(String rank) {
     return styles.firstWhere((style) => style.rank == rank);
-  }
-
-  int getTotalStatus() {
-    return myStatus.sumWithoutHp();
   }
 }
