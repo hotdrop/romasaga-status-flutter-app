@@ -53,7 +53,7 @@ void main() {
     when(api.findIconUrl(any)).thenAnswer((s) => Future.value(dummyNetworkPath));
 
     // テスト実行
-    final repository = CharacterRepository(local: db, remote: api);
+    final repository = CharacterRepository.test(characterDao: db, characterApi: api);
     await repository.refresh();
 
     // 結果確認。単調すぎるので切り出したかったがexpectの仕様とどこに差分があるか一目で知りたかったので全部力技で書く
@@ -191,7 +191,7 @@ void main() {
     when(api.findIconUrl(any)).thenAnswer((s) => Future.value(dummyNetworkPath));
 
     // テスト実行
-    final repository = CharacterRepository(local: db, remote: api);
+    final repository = CharacterRepository.test(characterDao: db, characterApi: api);
     await repository.update();
 
     final resultCharacters = db.results;
@@ -296,17 +296,17 @@ class FakeCharacterSource extends Fake implements CharacterDao {
   List<Character> fakeSummaryData;
 
   @override
-  Future<void> refresh(List<Character> characters) {
+  Future<void> refresh(List<Character> characters) async {
     results = characters;
   }
 
   @override
-  Future<List<Character>> findAll() {
+  Future<List<Character>> findAll() async {
     return Future.value(fakeSummaryData);
   }
 
   @override
-  Future<List<Character>> findAllSummary() {
+  Future<List<Character>> findAllSummary() async {
     return Future.value(fakeSummaryData);
   }
 }

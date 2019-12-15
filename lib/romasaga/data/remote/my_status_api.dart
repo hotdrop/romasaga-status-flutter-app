@@ -10,10 +10,6 @@ class MyStatusApi {
     return MyStatusApi._(RSService.getInstance());
   }
 
-  factory MyStatusApi.test(RSService rsService) {
-    return MyStatusApi._(rsService);
-  }
-
   final RSService _rsService;
 
   Future<void> save(List<MyStatus> myStatuses) async {

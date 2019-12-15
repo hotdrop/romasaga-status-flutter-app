@@ -20,11 +20,10 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
         _favorite = currentStatus.favorite;
 
   factory CharStatusEditViewModel.create(MyStatus status) {
-    return CharStatusEditViewModel._(status, MyStatusRepository());
-  }
-
-  factory CharStatusEditViewModel.test(MyStatus status, MyStatusRepository statusRepo) {
-    return CharStatusEditViewModel._(status, statusRepo);
+    return CharStatusEditViewModel._(
+      status,
+      MyStatusRepository.create(),
+    );
   }
 
   final MyStatusRepository _statusRepository;

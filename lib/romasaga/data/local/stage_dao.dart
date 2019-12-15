@@ -12,12 +12,13 @@ import '../../model/stage.dart';
 import '../../common/rs_logger.dart';
 
 class StageDao {
-  const StageDao._();
-  factory StageDao.getInstance() {
-    return _instance;
+  const StageDao._(this._dbProvider);
+
+  factory StageDao.create() {
+    return StageDao._(DBProvider.instance);
   }
 
-  static final StageDao _instance = StageDao._();
+  final DBProvider _dbProvider;
 
   Future<List<Stage>> loadDummy({String localPath = 'res/json/stage.json'}) async {
     try {
@@ -31,7 +32,7 @@ class StageDao {
   }
 
   Future<List<Stage>> findAll() async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     final results = await db.query(StageEntity.tableName, orderBy: StageEntity.columnOrder);
 
     // ステージ情報は最新を先頭に持ってきたいのでorderの降順にしている。
@@ -40,14 +41,14 @@ class StageDao {
   }
 
   Future<int> count() async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM ${StageEntity.tableName}'));
 
     return count;
   }
 
   Future<void> refresh(List<Stage> stages) async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     await db.transaction((txn) async {
       await _delete(txn);
       await _insert(txn, stages);

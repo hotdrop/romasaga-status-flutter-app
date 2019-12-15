@@ -14,18 +14,19 @@ import '../../model/style.dart';
 import '../../common/rs_logger.dart';
 
 class CharacterDao {
-  const CharacterDao._();
-  factory CharacterDao.getInstance() {
-    return _instance;
+  const CharacterDao._(this._dbProvider);
+
+  factory CharacterDao.create() {
+    return CharacterDao._(DBProvider.instance);
   }
 
-  static final CharacterDao _instance = CharacterDao._();
+  final DBProvider _dbProvider;
 
   ///
   /// 全キャラクター情報を取得
   ///
   Future<List<Character>> findAll() async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
 
     final fromDb = await db.query(CharacterEntity.tableName);
     final fromDbStyle = await db.query(StyleEntity.tableName);
@@ -47,8 +48,7 @@ class CharacterDao {
   /// スタイル情報は取ってこないので注意
   ///
   Future<List<Character>> findAllSummary() async {
-    // TODO dbが密結合しているのでコンストラクタインジェクションで持ってきたい・・
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     final results = await db.query(CharacterEntity.tableName);
 
     if (results.isEmpty) {
@@ -62,14 +62,14 @@ class CharacterDao {
   /// 引数に指定したキャラクターIDのスタイル一式を取得
   ///
   Future<List<Style>> findStyles(int id) async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     final results = await db.query(StyleEntity.tableName, where: '${StyleEntity.columnCharacterId} = ?', whereArgs: <int>[id]);
 
     return results.map((result) => StyleEntity.fromMap(result)).map((entity) => Mapper.toStyle(entity)).toList();
   }
 
   Future<int> count() async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM ${CharacterEntity.tableName}'));
 
     return count;
@@ -87,7 +87,7 @@ class CharacterDao {
   }
 
   Future<void> refresh(List<Character> characters) async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     await db.transaction((txn) async {
       await _delete(txn);
       await _insert(txn, characters);
@@ -112,7 +112,7 @@ class CharacterDao {
   }
 
   Future<void> saveSelectedStyle(int id, String rank, String iconFilePath) async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     await db.rawUpdate("""
       UPDATE 
         ${CharacterEntity.tableName}

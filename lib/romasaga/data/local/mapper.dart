@@ -8,7 +8,7 @@ import 'entity/style_entity.dart';
 import 'entity/my_status_entity.dart';
 import 'entity/stage_entity.dart';
 
-// extensionでやってみたい。
+// TODO extensionでやってみたい。
 class Mapper {
   static StageEntity toStageEntity(Stage model) {
     return StageEntity(model.name, model.limit, model.order);

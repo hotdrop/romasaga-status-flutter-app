@@ -1,7 +1,11 @@
 import '../service/rs_service.dart';
 
 class AccountRepository {
-  AccountRepository({RSService service}) : _romancingService = (service == null) ? RSService.getInstance() : service;
+  const AccountRepository._(this._romancingService);
+
+  factory AccountRepository.create() {
+    return AccountRepository._(RSService.getInstance());
+  }
 
   final RSService _romancingService;
 

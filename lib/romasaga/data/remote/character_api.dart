@@ -10,10 +10,6 @@ class CharacterApi {
     return CharacterApi._(RSService.getInstance());
   }
 
-  factory CharacterApi.test(RSService rsService) {
-    return CharacterApi._(rsService);
-  }
-
   final RSService _rsService;
 
   Future<List<Character>> findAll() async {

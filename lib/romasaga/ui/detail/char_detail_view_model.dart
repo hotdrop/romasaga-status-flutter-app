@@ -17,16 +17,12 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   CharDetailViewModel._(this._character, this._characterRepository, this._stageRepository, this._myStatusRepository);
 
   factory CharDetailViewModel.create(Character character) {
-    return CharDetailViewModel._(character, CharacterRepository(), StageRepository(), MyStatusRepository());
-  }
-
-  factory CharDetailViewModel.test(
-    Character character,
-    CharacterRepository characterRepo,
-    StageRepository stageRepo,
-    MyStatusRepository statusRepo,
-  ) {
-    return CharDetailViewModel._(character, characterRepo, stageRepo, statusRepo);
+    return CharDetailViewModel._(
+      character,
+      CharacterRepository.create(),
+      StageRepository.create(),
+      MyStatusRepository.create(),
+    );
   }
 
   final CharacterRepository _characterRepository;
