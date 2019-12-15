@@ -8,26 +8,26 @@ import '../../model/style.dart';
 
 @JsonSerializable()
 class CharactersJsonObject {
-  const CharactersJsonObject({this.characters});
+  const CharactersJsonObject._(this._characters);
 
   factory CharactersJsonObject.fromJson(dynamic json) {
     if (json == null) {
       RSLogger.d('Character jsonがnullです。');
       return null;
     }
-    return CharactersJsonObject(
-      characters: (json['characters'] as List)?.map((dynamic o) {
+    return CharactersJsonObject._(
+      (json['characters'] as List)?.map((dynamic o) {
         return CharacterJsonObject.fromJson(o as Map<String, dynamic>);
       })?.toList(),
     );
   }
 
-  final List<CharacterJsonObject> characters;
+  final List<CharacterJsonObject> _characters;
 
   static List<Character> parse(String json) {
     final dynamic jsonMap = jsonDecode(json);
     final results = CharactersJsonObject.fromJson(jsonMap);
-    RSLogger.d('Characterをパースしました。 size=${results.characters.length}');
+    RSLogger.d('Characterをパースしました。 size=${results._characters.length}');
 
     return _parse(results);
   }
@@ -35,7 +35,7 @@ class CharactersJsonObject {
   static List<Character> _parse(CharactersJsonObject obj) {
     final characters = <Character>[];
 
-    for (var charObj in obj.characters) {
+    for (var charObj in obj._characters) {
       final character = _jsonObjectToCharacter(charObj);
       characters.add(character);
     }
