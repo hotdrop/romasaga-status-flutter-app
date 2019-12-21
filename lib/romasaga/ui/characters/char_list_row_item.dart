@@ -34,9 +34,7 @@ class CharListRowItem extends StatelessWidget {
         onTap: () {
           Navigator.push<void>(
             context,
-            RightSlidePageRoute<void>(
-              page: CharDetailPage(character: character),
-            ),
+            MaterialPageRoute(builder: (context) => CharDetailPage(character: character)),
           );
         },
       ),
