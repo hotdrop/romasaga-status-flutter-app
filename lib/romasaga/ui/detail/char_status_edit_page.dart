@@ -16,7 +16,7 @@ class CharStatusEditPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<CharStatusEditViewModel>(
-      builder: (_) => CharStatusEditViewModel.create(_myStatus),
+      create: (_) => CharStatusEditViewModel.create(_myStatus),
       child: Scaffold(
         appBar: AppBar(
           title: const Text(RSStrings.statusEditTitle),
