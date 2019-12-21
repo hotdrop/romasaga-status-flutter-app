@@ -18,24 +18,10 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
 
   factory AccountPageViewModel.create() {
     return AccountPageViewModel._(
-      CharacterRepository(),
-      StageRepository(),
-      MyStatusRepository(),
-      AccountRepository(),
-    );
-  }
-
-  factory AccountPageViewModel.test(
-    CharacterRepository characterRepo,
-    StageRepository stageRepo,
-    MyStatusRepository myStatusRepo,
-    AccountRepository accountRepo,
-  ) {
-    return AccountPageViewModel._(
-      characterRepo,
-      stageRepo,
-      myStatusRepo,
-      accountRepo,
+      CharacterRepository.create(),
+      StageRepository.create(),
+      MyStatusRepository.create(),
+      AccountRepository.create(),
     );
   }
 

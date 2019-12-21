@@ -4,7 +4,6 @@ import '../../data/character_repository.dart';
 import '../../data/my_status_repository.dart';
 
 import '../../model/character.dart';
-import '../../model/weapon.dart';
 
 import '../../common/rs_logger.dart';
 
@@ -12,11 +11,10 @@ class CharListViewModel extends foundation.ChangeNotifier {
   CharListViewModel._(this._characterRepository, this._myStatusRepository);
 
   factory CharListViewModel.create() {
-    return CharListViewModel._(CharacterRepository(), MyStatusRepository());
-  }
-
-  factory CharListViewModel.test(CharacterRepository characterRepo, MyStatusRepository statusRepo) {
-    return CharListViewModel._(characterRepo, statusRepo);
+    return CharListViewModel._(
+      CharacterRepository.create(),
+      MyStatusRepository.create(),
+    );
   }
 
   final CharacterRepository _characterRepository;

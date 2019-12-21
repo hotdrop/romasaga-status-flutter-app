@@ -25,7 +25,7 @@ class CharDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      builder: (_) => CharDetailViewModel.create(character)..load(),
+      create: (_) => CharDetailViewModel.create(character)..load(),
       child: _body(context),
     );
   }

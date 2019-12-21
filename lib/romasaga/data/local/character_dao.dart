@@ -3,7 +3,6 @@ import 'database.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'mapper.dart';
 import 'entity/character_entity.dart';
 import 'entity/style_entity.dart';
 
@@ -12,20 +11,22 @@ import '../../model/character.dart';
 import '../../model/style.dart';
 
 import '../../common/rs_logger.dart';
+import '../../extension/mapper.dart';
 
 class CharacterDao {
-  const CharacterDao._();
-  factory CharacterDao.getInstance() {
-    return _instance;
+  const CharacterDao._(this._dbProvider);
+
+  factory CharacterDao.create() {
+    return CharacterDao._(DBProvider.instance);
   }
 
-  static final CharacterDao _instance = CharacterDao._();
+  final DBProvider _dbProvider;
 
   ///
   /// 全キャラクター情報を取得
   ///
   Future<List<Character>> findAll() async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
 
     final fromDb = await db.query(CharacterEntity.tableName);
     final fromDbStyle = await db.query(StyleEntity.tableName);
@@ -34,9 +35,9 @@ class CharacterDao {
       return [];
     }
 
-    final styles = fromDbStyle.map((result) => StyleEntity.fromMap(result)).map((entity) => Mapper.toStyle(entity)).toList();
+    final styles = fromDbStyle.map((result) => StyleEntity.fromMap(result)).map((entity) => entity.toStyle()).toList();
 
-    return fromDb.map((result) => CharacterEntity.fromMap(result)).map((entity) => Mapper.toCharacter(entity)).map((character) {
+    return fromDb.map((result) => CharacterEntity.fromMap(result)).map((entity) => entity.toCharacter()).map((character) {
       styles.where((style) => style.characterId == character.id).forEach((style) => character.addStyle(style));
       return character;
     }).toList();
@@ -47,29 +48,28 @@ class CharacterDao {
   /// スタイル情報は取ってこないので注意
   ///
   Future<List<Character>> findAllSummary() async {
-    // TODO dbが密結合しているのでコンストラクタインジェクションで持ってきたい・・
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     final results = await db.query(CharacterEntity.tableName);
 
     if (results.isEmpty) {
       return [];
     }
 
-    return results.map((result) => CharacterEntity.fromMap(result)).map((entity) => Mapper.toCharacter(entity)).toList();
+    return results.map((result) => CharacterEntity.fromMap(result)).map((entity) => entity.toCharacter()).toList();
   }
 
   ///
   /// 引数に指定したキャラクターIDのスタイル一式を取得
   ///
   Future<List<Style>> findStyles(int id) async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     final results = await db.query(StyleEntity.tableName, where: '${StyleEntity.columnCharacterId} = ?', whereArgs: <int>[id]);
 
-    return results.map((result) => StyleEntity.fromMap(result)).map((entity) => Mapper.toStyle(entity)).toList();
+    return results.map((result) => StyleEntity.fromMap(result)).map((entity) => entity.toStyle()).toList();
   }
 
   Future<int> count() async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM ${CharacterEntity.tableName}'));
 
     return count;
@@ -87,7 +87,7 @@ class CharacterDao {
   }
 
   Future<void> refresh(List<Character> characters) async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     await db.transaction((txn) async {
       await _delete(txn);
       await _insert(txn, characters);
@@ -101,18 +101,18 @@ class CharacterDao {
 
   Future<void> _insert(Transaction txn, List<Character> characters) async {
     for (var character in characters) {
-      final entity = Mapper.toCharacterEntity(character);
+      final entity = character.toEntity();
       await txn.insert(CharacterEntity.tableName, entity.toMap());
 
       for (var style in character.styles) {
-        final entity = Mapper.toStyleEntity(style);
+        final entity = style.toEntity();
         await txn.insert(StyleEntity.tableName, entity.toMap());
       }
     }
   }
 
   Future<void> saveSelectedStyle(int id, String rank, String iconFilePath) async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     await db.rawUpdate("""
       UPDATE 
         ${CharacterEntity.tableName}

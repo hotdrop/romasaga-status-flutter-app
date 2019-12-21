@@ -7,30 +7,30 @@ import '../../common/rs_logger.dart';
 
 @JsonSerializable()
 class StagesJsonObject {
-  const StagesJsonObject({this.stages});
+  const StagesJsonObject._(this._stages);
 
   factory StagesJsonObject.fromJson(dynamic json) {
     if (json == null) {
       RSLogger.d("stage jsonがnullです。");
       return null;
     }
-    return StagesJsonObject(
-      stages: (json['stages'] as List)?.map((dynamic o) => StageJsonObject.fromJson(o as Map<String, dynamic>))?.toList(),
+    return StagesJsonObject._(
+      (json['stages'] as List)?.map((dynamic o) => StageJsonObject.fromJson(o as Map<String, dynamic>))?.toList(),
     );
   }
 
-  final List<StageJsonObject> stages;
+  final List<StageJsonObject> _stages;
 
   static List<Stage> parse(String json) {
     final dynamic jsonMap = jsonDecode(json);
     final results = StagesJsonObject.fromJson(jsonMap);
-    RSLogger.d('Stageをパースしました。 size=${results.stages.length}');
+    RSLogger.d('Stageをパースしました。 size=${results._stages.length}');
 
     return _toModel(results);
   }
 
   static List<Stage> _toModel(StagesJsonObject obj) {
-    return obj.stages.map((o) => Stage(o.name, o.limit, o.order)).toList();
+    return obj._stages.map((o) => Stage(o.name, o.limit, o.order)).toList();
   }
 }
 

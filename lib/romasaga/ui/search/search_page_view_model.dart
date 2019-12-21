@@ -13,11 +13,10 @@ class SearchPageViewModel extends foundation.ChangeNotifier {
   SearchPageViewModel._(this._characterRepository, this._myStatusRepository);
 
   factory SearchPageViewModel.create() {
-    return SearchPageViewModel._(CharacterRepository(), MyStatusRepository());
-  }
-
-  factory SearchPageViewModel.test(CharacterRepository repo, MyStatusRepository statusRepo) {
-    return SearchPageViewModel._(repo, statusRepo);
+    return SearchPageViewModel._(
+      CharacterRepository.create(),
+      MyStatusRepository.create(),
+    );
   }
 
   CharacterRepository _characterRepository;

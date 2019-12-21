@@ -15,7 +15,7 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AccountPageViewModel>(
-      builder: (_) => AccountPageViewModel.create()..load(),
+      create: (_) => AccountPageViewModel.create()..load(),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,

@@ -6,29 +6,28 @@ import '../../data/my_status_repository.dart';
 import '../../common/rs_strings.dart';
 
 class CharStatusEditViewModel extends foundation.ChangeNotifier {
-  CharStatusEditViewModel._(this.currentStatus, this._statusRepository)
-      : _newHp = currentStatus.hp,
-        _newStr = currentStatus.str,
-        _newVit = currentStatus.vit,
-        _newDex = currentStatus.dex,
-        _newAgi = currentStatus.agi,
-        _newInt = currentStatus.intelligence,
-        _newSpi = currentStatus.spirit,
-        _newLove = currentStatus.love,
-        _newAttr = currentStatus.attr,
-        _have = currentStatus.have,
-        _favorite = currentStatus.favorite;
+  CharStatusEditViewModel._(this._currentStatus, this._statusRepository)
+      : _newHp = _currentStatus.hp,
+        _newStr = _currentStatus.str,
+        _newVit = _currentStatus.vit,
+        _newDex = _currentStatus.dex,
+        _newAgi = _currentStatus.agi,
+        _newInt = _currentStatus.intelligence,
+        _newSpi = _currentStatus.spirit,
+        _newLove = _currentStatus.love,
+        _newAttr = _currentStatus.attr,
+        _have = _currentStatus.have,
+        _favorite = _currentStatus.favorite;
 
   factory CharStatusEditViewModel.create(MyStatus status) {
-    return CharStatusEditViewModel._(status, MyStatusRepository());
-  }
-
-  factory CharStatusEditViewModel.test(MyStatus status, MyStatusRepository statusRepo) {
-    return CharStatusEditViewModel._(status, statusRepo);
+    return CharStatusEditViewModel._(
+      status,
+      MyStatusRepository.create(),
+    );
   }
 
   final MyStatusRepository _statusRepository;
-  final MyStatus currentStatus;
+  final MyStatus _currentStatus;
 
   int _newHp;
   int _newStr;
@@ -77,7 +76,7 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
 
   Future<void> saveNewStatus() async {
     final newStatus = MyStatus(
-      currentStatus.id,
+      _currentStatus.id,
       _newHp,
       _newStr,
       _newVit,

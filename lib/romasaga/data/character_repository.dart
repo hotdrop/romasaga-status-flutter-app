@@ -7,28 +7,36 @@ import '../model/style.dart';
 import '../common/rs_logger.dart';
 
 class CharacterRepository {
-  CharacterRepository({CharacterDao local, CharacterApi remote})
-      : _localDataSource = (local == null) ? CharacterDao.getInstance() : local,
-        _remoteDataSource = (remote == null) ? CharacterApi.create() : remote;
+  const CharacterRepository._(this._dao, this._api);
 
-  final CharacterDao _localDataSource;
-  final CharacterApi _remoteDataSource;
+  factory CharacterRepository.create() {
+    final dao = CharacterDao.create();
+    final api = CharacterApi.create();
+    return CharacterRepository._(dao, api);
+  }
+
+  factory CharacterRepository.test({CharacterDao characterDao, CharacterApi characterApi}) {
+    return CharacterRepository._(characterDao, characterApi);
+  }
+
+  final CharacterDao _dao;
+  final CharacterApi _api;
 
   ///
   /// キャラデータのロード
   ///
   Future<List<Character>> load() async {
-    var characters = await _localDataSource.findAllSummary();
+    var characters = await _dao.findAllSummary();
 
     if (characters.isEmpty) {
       RSLogger.d('保持しているデータが0件のためローカルファイルを読み込みます。');
-      final tmp = await _localDataSource.loadDummy();
+      final tmp = await _dao.loadDummy();
       RSLogger.d('  ${tmp.length}件のデータを取得しました。キャッシュします。');
       final tmpWithStyle = _updateDummyStyles(tmp);
-      await _localDataSource.refresh(tmpWithStyle);
+      await _dao.refresh(tmpWithStyle);
 
       RSLogger.d('再度キャッシュからデータを取得します。');
-      characters = await _localDataSource.findAllSummary();
+      characters = await _dao.findAllSummary();
     }
 
     RSLogger.d('データ取得完了 件数=${characters.length}');
@@ -61,15 +69,15 @@ class CharacterRepository {
   /// なので、すでにアイコンURLを取得しているものはそのままにして新規データのみ取得するようなメソッドを作成した
   ///
   Future<void> update() async {
-    final remoteCharacters = await _remoteDataSource.findAll();
+    final remoteCharacters = await _api.findAll();
     RSLogger.d('リモートからデータ取得 件数=${remoteCharacters.length}');
 
-    final localCharacters = await _localDataSource.findAll();
+    final localCharacters = await _dao.findAll();
     RSLogger.d('ローカルからデータ取得 件数=${localCharacters.length}');
 
     final newCharacters = await _updateStyles(remoteCharacters, localCharacters);
 
-    await _localDataSource.refresh(newCharacters);
+    await _dao.refresh(newCharacters);
   }
 
   Future<List<Character>> _updateStyles(List<Character> remoteCharacters, List<Character> localCharacters) async {
@@ -94,7 +102,7 @@ class CharacterRepository {
           style.iconFilePath = localStyle.iconFilePath;
         } else {
           RSLogger.d('${latest.name}のスタイル${style.rank} はアイコン未取得なのでリモートから取得');
-          style.iconFilePath = await _remoteDataSource.findIconUrl(style.iconFileName);
+          style.iconFilePath = await _api.findIconUrl(style.iconFileName);
         }
 
         if (latest.selectedStyleRank == style.rank) {
@@ -111,11 +119,11 @@ class CharacterRepository {
   /// リモートから全キャラデータを取得しローカルに保存する
   ///
   Future<void> refresh() async {
-    final remoteCharacters = await _remoteDataSource.findAll();
+    final remoteCharacters = await _api.findAll();
     RSLogger.d('リモートからデータ取得 件数=${remoteCharacters.length}');
 
     final newCharacters = await _refreshStyles(remoteCharacters);
-    await _localDataSource.refresh(newCharacters);
+    await _dao.refresh(newCharacters);
   }
 
   ///
@@ -125,7 +133,7 @@ class CharacterRepository {
     final result = <Character>[];
     for (var character in characters) {
       for (var style in character.styles) {
-        style.iconFilePath = await _remoteDataSource.findIconUrl(style.iconFileName);
+        style.iconFilePath = await _api.findIconUrl(style.iconFileName);
 
         if (character.selectedStyleRank == style.rank) {
           character.selectedIconFilePath = style.iconFilePath;
@@ -138,14 +146,14 @@ class CharacterRepository {
   }
 
   Future<int> count() async {
-    return await _localDataSource.count();
+    return await _dao.count();
   }
 
   Future<List<Style>> findStyles(int id) async {
-    return _localDataSource.findStyles(id);
+    return _dao.findStyles(id);
   }
 
   Future<void> saveSelectedRank(int id, String rank, String iconFilePath) async {
-    return await _localDataSource.saveSelectedStyle(id, rank, iconFilePath);
+    return await _dao.saveSelectedStyle(id, rank, iconFilePath);
   }
 }

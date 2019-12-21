@@ -40,7 +40,7 @@ class Letter {
           thumbnail: 'res/letters/201903_hinamaturi_static.jpg',
           title: RSStrings.letterMarchTitle,
           shortTitle: RSStrings.letterMarchShortTitle,
-          themeColor: RSColors.winter,
+          themeColor: RSColors.spring,
         );
       case LetterType.april:
         return Letter._(
@@ -67,7 +67,7 @@ class Letter {
           thumbnail: 'res/letters/201906_halfAniver_static.jpg',
           title: RSStrings.letterJuneTitle,
           shortTitle: RSStrings.letterJuneShortTitle,
-          themeColor: RSColors.spring,
+          themeColor: RSColors.summer,
         );
       case LetterType.july:
         return Letter._(
@@ -114,6 +114,15 @@ class Letter {
           shortTitle: RSStrings.letterNovemberShortTitle,
           themeColor: RSColors.fall,
         );
+      case LetterType.december:
+        return Letter._(
+          type: type,
+          gifResource: 'res/letters/201912_christmas.gif',
+          thumbnail: 'res/letters/201912_christmas_static.jpg',
+          title: RSStrings.letterDecemberTitle,
+          shortTitle: RSStrings.letterDecemberShortTitle,
+          themeColor: RSColors.winter,
+        );
       default:
         return null;
     }
@@ -139,4 +148,5 @@ enum LetterType {
   september,
   october,
   november,
+  december,
 }

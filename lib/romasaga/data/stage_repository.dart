@@ -6,27 +6,31 @@ import '../model/stage.dart';
 import '../common/rs_logger.dart';
 
 class StageRepository {
-  StageRepository({StageDao local, StageApi remote})
-      : _localDataSource = (local == null) ? StageDao.getInstance() : local,
-        _remoteDataSource = (remote == null) ? StageApi.create() : remote;
+  const StageRepository._(this._dao, this._api);
 
-  final StageDao _localDataSource;
-  final StageApi _remoteDataSource;
+  factory StageRepository.create() {
+    final dao = StageDao.create();
+    final api = StageApi.create();
+    return StageRepository._(dao, api);
+  }
+
+  final StageDao _dao;
+  final StageApi _api;
 
   ///
   /// ステージデータのロード
   ///
   Future<List<Stage>> load() async {
-    var stages = await _localDataSource.findAll();
+    var stages = await _dao.findAll();
 
     if (stages.isEmpty) {
       RSLogger.d('キャッシュにデータがないのでローカルファイルを読み込みます。');
-      final tmp = await _localDataSource.loadDummy();
+      final tmp = await _dao.loadDummy();
       RSLogger.d('  ${tmp.length}件のデータを取得しました。キャッシュします。');
-      await _localDataSource.refresh(tmp);
+      await _dao.refresh(tmp);
 
       RSLogger.d('再度キャッシュからデータを取得します。');
-      stages = await _localDataSource.findAll();
+      stages = await _dao.findAll();
     }
 
     RSLogger.d('データ取得完了 件数=${stages.length}');
@@ -34,13 +38,13 @@ class StageRepository {
   }
 
   Future<void> refresh() async {
-    final stages = await _remoteDataSource.findAll();
+    final stages = await _api.findAll();
     RSLogger.d('リモートから${stages.length}件のデータを取得しました。');
 
-    await _localDataSource.refresh(stages);
+    await _dao.refresh(stages);
   }
 
   Future<int> count() async {
-    return await _localDataSource.count();
+    return await _dao.count();
   }
 }

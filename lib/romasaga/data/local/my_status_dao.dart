@@ -1,29 +1,29 @@
 import 'database.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'mapper.dart';
-
-import '../../model/status.dart' show MyStatus;
 import 'entity/my_status_entity.dart';
+import '../../model/status.dart' show MyStatus;
 import '../../common/rs_logger.dart';
+import '../../extension/mapper.dart';
 
 class MyStatusDao {
-  const MyStatusDao._();
-  factory MyStatusDao.getInstance() {
-    return _instance;
+  const MyStatusDao._(this._dbProvider);
+
+  factory MyStatusDao.create() {
+    return MyStatusDao._(DBProvider.instance);
   }
 
-  static final MyStatusDao _instance = MyStatusDao._();
+  final DBProvider _dbProvider;
 
   ///
   /// 登録されているステータス情報を全て取得
   ///
   Future<List<MyStatus>> findAll() async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     final results = await db.query(MyStatusEntity.tableName);
     final List<MyStatusEntity> entities = results.isNotEmpty ? results.map((it) => MyStatusEntity.fromMap(it)).toList() : [];
 
-    return entities.map((entity) => Mapper.toMyStatus(entity)).toList();
+    return entities.map((entity) => entity.toMyStatus()).toList();
   }
 
   ///
@@ -32,7 +32,7 @@ class MyStatusDao {
   Future<MyStatus> find(int id) async {
     RSLogger.d('ID=$idのキャラクターのステータスを取得します');
 
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: <int>[id]);
 
     if (result.isEmpty) {
@@ -43,7 +43,7 @@ class MyStatusDao {
     RSLogger.d('statusを取得しました。');
 
     final entity = MyStatusEntity.fromMap(result.first);
-    return Mapper.toMyStatus(entity);
+    return entity.toMyStatus();
   }
 
   ///
@@ -51,8 +51,8 @@ class MyStatusDao {
   ///
   Future<void> save(MyStatus myStatus) async {
     RSLogger.d('ID=${myStatus.id}のキャラクターのステータスを保存します');
-    final entity = Mapper.toMyStatusEntity(myStatus);
-    final db = await DBProvider.instance.database;
+    final entity = myStatus.toEntity();
+    final db = await _dbProvider.database;
 
     final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: <int>[myStatus.id]);
     if (result.isEmpty) {
@@ -65,7 +65,7 @@ class MyStatusDao {
   }
 
   Future<void> refresh(List<MyStatus> myStatues) async {
-    final db = await DBProvider.instance.database;
+    final db = await _dbProvider.database;
     await db.transaction((txn) async {
       await _delete(txn);
       await _insert(txn, myStatues);
@@ -78,7 +78,7 @@ class MyStatusDao {
 
   Future<void> _insert(Transaction txn, List<MyStatus> myStatuses) async {
     for (var myStatus in myStatuses) {
-      final entity = Mapper.toMyStatusEntity(myStatus);
+      final entity = myStatus.toEntity();
       await txn.insert(MyStatusEntity.tableName, entity.toMap());
     }
   }
