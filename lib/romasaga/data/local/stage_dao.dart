@@ -3,13 +3,12 @@ import 'database.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'mapper.dart';
 import 'entity/stage_entity.dart';
-
 import '../json/stage_object.dart';
-import '../../model/stage.dart';
 
+import '../../model/stage.dart';
 import '../../common/rs_logger.dart';
+import '../../extension/mapper.dart';
 
 class StageDao {
   const StageDao._(this._dbProvider);
@@ -37,7 +36,7 @@ class StageDao {
 
     // ステージ情報は最新を先頭に持ってきたいのでorderの降順にしている。
     final List<StageEntity> entities = results.isNotEmpty ? results.reversed.map((it) => StageEntity.fromMap(it)).toList() : [];
-    return entities.map((entity) => Mapper.toStage(entity)).toList();
+    return entities.map((entity) => entity.toStage()).toList();
   }
 
   Future<int> count() async {
@@ -60,7 +59,7 @@ class StageDao {
   }
 
   Future<void> _insert(Transaction txn, List<Stage> stages) async {
-    final entities = stages.map((b) => Mapper.toStageEntity(b));
+    final entities = stages.map((stage) => stage.toEntity());
     for (var entity in entities) {
       await txn.insert(StageEntity.tableName, entity.toMap());
     }

@@ -3,7 +3,6 @@ import 'database.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'mapper.dart';
 import 'entity/character_entity.dart';
 import 'entity/style_entity.dart';
 
@@ -12,6 +11,7 @@ import '../../model/character.dart';
 import '../../model/style.dart';
 
 import '../../common/rs_logger.dart';
+import '../../extension/mapper.dart';
 
 class CharacterDao {
   const CharacterDao._(this._dbProvider);
@@ -35,9 +35,9 @@ class CharacterDao {
       return [];
     }
 
-    final styles = fromDbStyle.map((result) => StyleEntity.fromMap(result)).map((entity) => Mapper.toStyle(entity)).toList();
+    final styles = fromDbStyle.map((result) => StyleEntity.fromMap(result)).map((entity) => entity.toStyle()).toList();
 
-    return fromDb.map((result) => CharacterEntity.fromMap(result)).map((entity) => Mapper.toCharacter(entity)).map((character) {
+    return fromDb.map((result) => CharacterEntity.fromMap(result)).map((entity) => entity.toCharacter()).map((character) {
       styles.where((style) => style.characterId == character.id).forEach((style) => character.addStyle(style));
       return character;
     }).toList();
@@ -55,7 +55,7 @@ class CharacterDao {
       return [];
     }
 
-    return results.map((result) => CharacterEntity.fromMap(result)).map((entity) => Mapper.toCharacter(entity)).toList();
+    return results.map((result) => CharacterEntity.fromMap(result)).map((entity) => entity.toCharacter()).toList();
   }
 
   ///
@@ -65,7 +65,7 @@ class CharacterDao {
     final db = await _dbProvider.database;
     final results = await db.query(StyleEntity.tableName, where: '${StyleEntity.columnCharacterId} = ?', whereArgs: <int>[id]);
 
-    return results.map((result) => StyleEntity.fromMap(result)).map((entity) => Mapper.toStyle(entity)).toList();
+    return results.map((result) => StyleEntity.fromMap(result)).map((entity) => entity.toStyle()).toList();
   }
 
   Future<int> count() async {
@@ -101,11 +101,11 @@ class CharacterDao {
 
   Future<void> _insert(Transaction txn, List<Character> characters) async {
     for (var character in characters) {
-      final entity = Mapper.toCharacterEntity(character);
+      final entity = character.toEntity();
       await txn.insert(CharacterEntity.tableName, entity.toMap());
 
       for (var style in character.styles) {
-        final entity = Mapper.toStyleEntity(style);
+        final entity = style.toEntity();
         await txn.insert(StyleEntity.tableName, entity.toMap());
       }
     }

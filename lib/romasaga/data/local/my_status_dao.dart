@@ -1,11 +1,10 @@
 import 'database.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'mapper.dart';
-
-import '../../model/status.dart' show MyStatus;
 import 'entity/my_status_entity.dart';
+import '../../model/status.dart' show MyStatus;
 import '../../common/rs_logger.dart';
+import '../../extension/mapper.dart';
 
 class MyStatusDao {
   const MyStatusDao._(this._dbProvider);
@@ -24,7 +23,7 @@ class MyStatusDao {
     final results = await db.query(MyStatusEntity.tableName);
     final List<MyStatusEntity> entities = results.isNotEmpty ? results.map((it) => MyStatusEntity.fromMap(it)).toList() : [];
 
-    return entities.map((entity) => Mapper.toMyStatus(entity)).toList();
+    return entities.map((entity) => entity.toMyStatus()).toList();
   }
 
   ///
@@ -44,7 +43,7 @@ class MyStatusDao {
     RSLogger.d('statusを取得しました。');
 
     final entity = MyStatusEntity.fromMap(result.first);
-    return Mapper.toMyStatus(entity);
+    return entity.toMyStatus();
   }
 
   ///
@@ -52,7 +51,7 @@ class MyStatusDao {
   ///
   Future<void> save(MyStatus myStatus) async {
     RSLogger.d('ID=${myStatus.id}のキャラクターのステータスを保存します');
-    final entity = Mapper.toMyStatusEntity(myStatus);
+    final entity = myStatus.toEntity();
     final db = await _dbProvider.database;
 
     final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: <int>[myStatus.id]);
@@ -79,7 +78,7 @@ class MyStatusDao {
 
   Future<void> _insert(Transaction txn, List<MyStatus> myStatuses) async {
     for (var myStatus in myStatuses) {
-      final entity = Mapper.toMyStatusEntity(myStatus);
+      final entity = myStatus.toEntity();
       await txn.insert(MyStatusEntity.tableName, entity.toMap());
     }
   }
