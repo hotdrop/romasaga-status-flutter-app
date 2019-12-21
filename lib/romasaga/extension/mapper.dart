@@ -15,6 +15,8 @@ extension CharacterEntityMapper on CharacterEntity {
       this.name,
       this.production,
       this.weaponType,
+      selectedStyleRank: this.selectedStyleRank,
+      selectedIconFilePath: this.selectedIconFilePath,
     );
   }
 }
@@ -85,7 +87,7 @@ extension StyleEntityMapper on StyleEntity {
       this.spirit,
       this.love,
       this.attr,
-    );
+    )..iconFilePath = this.iconFilePath;
   }
 }
 
