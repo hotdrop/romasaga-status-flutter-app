@@ -7,6 +7,7 @@ import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 import '../../common/rs_logger.dart';
 
+/// このFlutter初学の頃に書いたアホみたいなstatic実装なんとかしたほうがいい・・
 class RSIcon {
   static final double smallSize = 30.0;
   static final double normalSize = 50.0;
@@ -220,3 +221,48 @@ class RSIcon {
 }
 
 enum IconSize { small, normal, large }
+
+///
+/// ステータスアイコン
+///
+class StatusIcon extends StatelessWidget {
+  const StatusIcon._(this._res);
+
+  factory StatusIcon.str() {
+    return StatusIcon._('res/icons/icon_status_str.png');
+  }
+
+  factory StatusIcon.vit() {
+    return StatusIcon._('res/icons/icon_status_vit.png');
+  }
+
+  factory StatusIcon.dex() {
+    return StatusIcon._('res/icons/icon_status_dex.png');
+  }
+  factory StatusIcon.agi() {
+    return StatusIcon._('res/icons/icon_status_agi.png');
+  }
+  factory StatusIcon.int() {
+    return StatusIcon._('res/icons/icon_status_int.png');
+  }
+  factory StatusIcon.spi() {
+    return StatusIcon._('res/icons/icon_status_spi.png');
+  }
+  factory StatusIcon.love() {
+    return StatusIcon._('res/icons/icon_status_love.png');
+  }
+  factory StatusIcon.attr() {
+    return StatusIcon._('res/icons/icon_status_attr.png');
+  }
+
+  final String _res;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      _res,
+      width: 48.0,
+      height: 48.0,
+    );
+  }
+}

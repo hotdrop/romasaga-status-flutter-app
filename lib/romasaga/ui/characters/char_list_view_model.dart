@@ -93,10 +93,13 @@ class CharListViewModel extends foundation.ChangeNotifier {
   }
 
   Future<void> _loadMyStatuses() async {
+    RSLogger.d("登録ステータスをロードします。");
     final myStatuses = await _myStatusRepository.findAll();
 
+    RSLogger.d("登録ステータスが完了しました。");
     if (myStatuses.isNotEmpty) {
       for (var status in myStatuses) {
+        RSLogger.d("ステのid=${status.id}");
         final targetStatus = _characters.firstWhere((character) => character.id == status.id);
         targetStatus.myStatus = status;
       }

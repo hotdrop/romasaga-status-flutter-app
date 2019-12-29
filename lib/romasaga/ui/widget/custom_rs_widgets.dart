@@ -7,7 +7,9 @@ import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 
 ///
-/// キャラクター詳細画面で使う合計ステータス表示用のサークルグラフ
+/// 合計ステータスサークルグラフ
+///
+/// キャラクター詳細画面で使う
 ///
 class TotalStatusCircularIndicator extends StatelessWidget {
   TotalStatusCircularIndicator({this.totalStatus, this.limitStatus});
@@ -119,6 +121,9 @@ class RSStatusBar extends StatelessWidget {
   }
 }
 
+///
+/// 横線
+///
 class VerticalColorBorder extends StatelessWidget {
   VerticalColorBorder({this.color});
 
@@ -323,6 +328,52 @@ class _TextFormFieldWithChanged extends State<TextFormFieldWithChanged> {
       scrollPadding: widget.scrollPadding,
       enableInteractiveSelection: widget.enableInteractiveSelection,
       buildCounter: widget.buildCounter,
+    );
+  }
+}
+
+class IncrementCounter extends StatelessWidget {
+  IncrementCounter({this.onTap});
+
+  final void Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.blue)),
+      child: InkWell(
+        splashColor: Colors.blue,
+        customBorder: CircleBorder(),
+        child: Icon(
+          Icons.add,
+          color: Colors.blue,
+          size: 36.0,
+        ),
+        onTap: () => onTap,
+      ),
+    );
+  }
+}
+
+class DecrementCounter extends StatelessWidget {
+  DecrementCounter({this.onTap});
+
+  final void Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.red)),
+      child: InkWell(
+        splashColor: Colors.red,
+        customBorder: CircleBorder(),
+        child: Icon(
+          Icons.remove,
+          color: Colors.red,
+          size: 36.0,
+        ),
+        onTap: () => onTap,
+      ),
     );
   }
 }

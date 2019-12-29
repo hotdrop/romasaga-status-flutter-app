@@ -2,7 +2,7 @@ import 'database.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'entity/my_status_entity.dart';
-import '../../model/status.dart' show MyStatus;
+import '../../model/status.dart';
 import '../../common/rs_logger.dart';
 import '../../extension/mapper.dart';
 
@@ -19,10 +19,12 @@ class MyStatusDao {
   /// 登録されているステータス情報を全て取得
   ///
   Future<List<MyStatus>> findAll() async {
+    RSLogger.d('登録されているステータス情報を全て取得します');
     final db = await _dbProvider.database;
     final results = await db.query(MyStatusEntity.tableName);
     final List<MyStatusEntity> entities = results.isNotEmpty ? results.map((it) => MyStatusEntity.fromMap(it)).toList() : [];
 
+    RSLogger.d('登録されているステータス件数=${entities.length} id=${entities[0].id}');
     return entities.map((entity) => entity.toMyStatus()).toList();
   }
 
