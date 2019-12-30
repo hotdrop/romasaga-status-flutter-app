@@ -199,16 +199,14 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          RSIcon.haveCharacterWithRipple(
-            context: context,
+          HaveCharacterIcon(
             selected: selectedHaveChar,
             onTap: () {
               viewModel.filterHaveChar(!selectedHaveChar);
             },
           ),
           const SizedBox(width: 16.0),
-          RSIcon.favoriteWithRipple(
-            context: context,
+          FavoriteIcon(
             selected: selectedFavorite,
             onTap: () {
               viewModel.filterFavorite(!selectedFavorite);
@@ -226,9 +224,8 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
         runSpacing: 16.0,
         children: WeaponType.types.map<Widget>((type) {
           bool selected = viewModel.isSelectWeaponType(type);
-          return RSIcon.weaponWithRipple(
-            context,
-            type: type,
+          return WeaponIcon.normal(
+            type,
             selected: selected,
             onTap: () {
               viewModel.findByWeaponType(type);

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../detail/char_detail_page.dart';
 
 import '../widget/rs_icon.dart';
-import '../widget/custom_page_route.dart';
 
 import '../../model/character.dart';
 import '../../model/weapon.dart';
@@ -44,7 +43,7 @@ class CharListRowItem extends StatelessWidget {
   Container _imageIcon(Character character) {
     return Container(
       margin: const EdgeInsets.only(right: 16.0),
-      child: RSIcon.character(character.selectedIconFilePath),
+      child: CharacterIcon.normal(character.selectedIconFilePath),
     );
   }
 
@@ -78,7 +77,7 @@ class CharListRowItem extends StatelessWidget {
   }
 
   Widget _convertWeaponIcon(WeaponType type) {
-    return RSIcon.weaponSmall(type);
+    return WeaponIcon.small(type);
   }
 
   Widget _labelStatus(Character character, BuildContext context) {

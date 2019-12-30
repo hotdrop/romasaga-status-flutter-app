@@ -27,7 +27,6 @@ class RSStrings {
   static const String characterDetailLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 
   static const String statusEditTitle = 'ステータス編集';
-  static const String statusEditSaveButtonLabel = '保存';
 
   static const String searchPageTitle = '検索';
   static const String searchListQueryHint = 'キャラ名で検索';
@@ -61,8 +60,8 @@ class RSStrings {
   static const String letterOctoberShortTitle = '10月 ハロウィン';
   static const String letterNovemberTitle = '11月 秋の温泉';
   static const String letterNovemberShortTitle = '11月 秋の温泉で一息';
-  static const String letterDecemberTitle = '12月 クリスマス';
-  static const String letterDecemberShortTitle = '12月 ナイツ家でクリスマス';
+  static const String letterDecemberTitle = '12月 ナイツ家でクリスマス';
+  static const String letterDecemberShortTitle = '12月 クリスマス';
 
   static const String accountPageTitle = 'アカウント';
   static const String accountNotLoginEmailLabel = '未ログイン';

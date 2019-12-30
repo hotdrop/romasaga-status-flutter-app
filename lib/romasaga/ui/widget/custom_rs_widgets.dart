@@ -7,7 +7,9 @@ import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 
 ///
-/// キャラクター詳細画面で使う合計ステータス表示用のサークルグラフ
+/// 合計ステータスサークルグラフ
+///
+/// キャラクター詳細画面で使う
 ///
 class TotalStatusCircularIndicator extends StatelessWidget {
   TotalStatusCircularIndicator({this.totalStatus, this.limitStatus});
@@ -119,6 +121,9 @@ class RSStatusBar extends StatelessWidget {
   }
 }
 
+///
+/// 横線
+///
 class VerticalColorBorder extends StatelessWidget {
   VerticalColorBorder({this.color});
 
@@ -159,7 +164,7 @@ class StatusTextField extends StatelessWidget {
       textCapitalization: TextCapitalization.words,
       keyboardType: TextInputType.number,
       style: const TextStyle(fontSize: 20.0),
-      maxLength: 3,
+      maxLength: 4,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         labelText: _statusName,
@@ -323,6 +328,52 @@ class _TextFormFieldWithChanged extends State<TextFormFieldWithChanged> {
       scrollPadding: widget.scrollPadding,
       enableInteractiveSelection: widget.enableInteractiveSelection,
       buildCounter: widget.buildCounter,
+    );
+  }
+}
+
+class IncrementCounter extends StatelessWidget {
+  IncrementCounter({this.onTap});
+
+  final void Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: RSColors.statusPlus)),
+      child: InkWell(
+        splashColor: RSColors.statusPlus,
+        customBorder: CircleBorder(),
+        child: const Icon(
+          Icons.add,
+          color: RSColors.statusPlus,
+          size: 36.0,
+        ),
+        onTap: () => onTap(),
+      ),
+    );
+  }
+}
+
+class DecrementCounter extends StatelessWidget {
+  DecrementCounter({this.onTap});
+
+  final void Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: RSColors.statusMinus)),
+      child: InkWell(
+        splashColor: RSColors.statusMinus,
+        customBorder: CircleBorder(),
+        child: const Icon(
+          Icons.remove,
+          color: RSColors.statusMinus,
+          size: 36.0,
+        ),
+        onTap: () => onTap(),
+      ),
     );
   }
 }
