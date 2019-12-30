@@ -58,7 +58,7 @@ class CharStatusEditPage extends StatelessWidget {
         _rowSpi(context),
         _rowLove(context),
         _rowAttr(context),
-        const SizedBox(height: 28.0)
+        const SizedBox(height: 16.0)
       ],
     );
   }
@@ -70,7 +70,7 @@ class CharStatusEditPage extends StatelessWidget {
     rowContents.add(const SizedBox(width: 8.0));
     rowContents.add(Text(
       RSStrings.hpName,
-      style: TextStyle(fontSize: 28.0, color: Colors.yellowAccent),
+      style: TextStyle(fontSize: 30.0, color: Colors.yellowAccent),
     ));
     rowContents.add(const SizedBox(width: 32.0));
     rowContents.add(IncrementCounter(onTap: () => viewModel.incrementHP()));
