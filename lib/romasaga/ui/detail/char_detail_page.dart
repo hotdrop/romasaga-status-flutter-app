@@ -123,7 +123,7 @@ class CharDetailPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 24.0, top: 16.0, bottom: 8.0, right: 16.0),
           child: GestureDetector(
-            child: RSIcon.characterLargeSize(viewModel.selectedIconFilePath),
+            child: CharacterIcon.large(viewModel.selectedIconFilePath),
             onTap: () async {
               _showDialog(context, viewModel);
             },
@@ -148,14 +148,14 @@ class CharDetailPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 4.0),
           child: CircleAvatar(
-            child: RSIcon.weapon(viewModel.weaponType),
+            child: WeaponIcon.normal(viewModel.weaponType),
             backgroundColor: Theme.of(context).disabledColor,
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4.0, left: 16.0),
           child: CircleAvatar(
-            child: RSIcon.weaponCategory(category: viewModel.weaponCategory),
+            child: WeaponCategoryIcon(viewModel.weaponCategory),
             backgroundColor: Theme.of(context).disabledColor,
           ),
         ),
@@ -571,7 +571,7 @@ class CharDetailPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
       child: Center(
-        child: RSIcon.characterSmallSize(iconFilePath),
+        child: CharacterIcon.small(iconFilePath),
       ),
     );
   }
