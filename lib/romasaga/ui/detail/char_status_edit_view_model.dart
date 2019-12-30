@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 import '../../model/status.dart';
 import '../../data/my_status_repository.dart';
@@ -6,9 +7,9 @@ import '../../data/my_status_repository.dart';
 class CharStatusEditViewModel extends foundation.ChangeNotifier {
   CharStatusEditViewModel._(this._currentStatus, this._statusRepository, this._editMode);
 
-  factory CharStatusEditViewModel.create(MyStatus status) {
+  factory CharStatusEditViewModel.create(MyStatusForEdit status) {
     EditMode currentMode;
-    if (status.hp == 0 && status.sumWithoutHp() == 0) {
+    if (status.isEmpty()) {
       currentMode = EditMode.manual;
     } else {
       currentMode = EditMode.each;
@@ -19,7 +20,7 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
 
   final MyStatusRepository _statusRepository;
 
-  MyStatus _currentStatus;
+  MyStatusForEdit _currentStatus;
   EditMode _editMode;
   bool get isEditEach => _editMode == EditMode.each;
 
@@ -54,12 +55,16 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
   /// Str
   ///
   void incrementStr() {
+    RSLogger.d('strを＋1します');
     _currentStatus.incrementStr();
+    RSLogger.d('str=${_currentStatus.str}');
     notifyListeners();
   }
 
   void decrementStr() {
+    RSLogger.d('strを-1します');
     _currentStatus.decrementStr();
+    RSLogger.d('str=${_currentStatus.str}');
     notifyListeners();
   }
 
@@ -116,6 +121,19 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
 
   void updateStatusAgi(int newVal) {
     _currentStatus.agi = newVal;
+  }
+
+  ///
+  /// Int
+  ///
+  void incrementInt() {
+    _currentStatus.incrementInt();
+    notifyListeners();
+  }
+
+  void decrementInt() {
+    _currentStatus.incrementInt();
+    notifyListeners();
   }
 
   void updateStatusInt(int newVal) {
@@ -183,7 +201,7 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
   }
 
   Future<void> saveNewStatus() async {
-    await _statusRepository.save(_currentStatus);
+    await _statusRepository.save(_currentStatus.toMyStatus());
   }
 }
 

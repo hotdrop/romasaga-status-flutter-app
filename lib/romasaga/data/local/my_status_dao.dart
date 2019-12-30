@@ -24,7 +24,7 @@ class MyStatusDao {
     final results = await db.query(MyStatusEntity.tableName);
     final List<MyStatusEntity> entities = results.isNotEmpty ? results.map((it) => MyStatusEntity.fromMap(it)).toList() : [];
 
-    RSLogger.d('登録されているステータス件数=${entities.length} id=${entities[0].id}');
+    RSLogger.d('登録されているステータス件数=${entities.length}');
     return entities.map((entity) => entity.toMyStatus()).toList();
   }
 

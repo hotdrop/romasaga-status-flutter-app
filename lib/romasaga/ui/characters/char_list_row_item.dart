@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../detail/char_detail_page.dart';
 
 import '../widget/rs_icon.dart';
-import '../widget/custom_page_route.dart';
 
 import '../../model/character.dart';
 import '../../model/weapon.dart';

@@ -164,7 +164,7 @@ class StatusTextField extends StatelessWidget {
       textCapitalization: TextCapitalization.words,
       keyboardType: TextInputType.number,
       style: const TextStyle(fontSize: 20.0),
-      maxLength: 3,
+      maxLength: 4,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         labelText: _statusName,
@@ -340,16 +340,16 @@ class IncrementCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.blue)),
+      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: RSColors.statusPlus)),
       child: InkWell(
-        splashColor: Colors.blue,
+        splashColor: RSColors.statusPlus,
         customBorder: CircleBorder(),
-        child: Icon(
+        child: const Icon(
           Icons.add,
-          color: Colors.blue,
+          color: RSColors.statusPlus,
           size: 36.0,
         ),
-        onTap: () => onTap,
+        onTap: () => onTap(),
       ),
     );
   }
@@ -363,16 +363,16 @@ class DecrementCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.red)),
+      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: RSColors.statusMinus)),
       child: InkWell(
-        splashColor: Colors.red,
+        splashColor: RSColors.statusMinus,
         customBorder: CircleBorder(),
-        child: Icon(
+        child: const Icon(
           Icons.remove,
-          color: Colors.red,
+          color: RSColors.statusMinus,
           size: 36.0,
         ),
-        onTap: () => onTap,
+        onTap: () => onTap(),
       ),
     );
   }
