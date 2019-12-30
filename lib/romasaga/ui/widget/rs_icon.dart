@@ -5,138 +5,122 @@ import '../../model/weapon.dart';
 
 import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
-import '../../common/rs_logger.dart';
 
-class RSIcon {
-  static final double smallSize = 30.0;
-  static final double normalSize = 50.0;
-  static final double largeSize = 80.0;
+///
+/// キャラクターアイコン
+///
+class CharacterIcon extends StatelessWidget {
+  const CharacterIcon._(this._res, this._size);
 
-  ///
-  /// キャラアイコン
-  ///
-  static Widget character(String iconFilePath) {
-    return _loadImage(iconFilePath, RSIcon.normalSize);
+  factory CharacterIcon.small(String path) {
+    return CharacterIcon._(path, 30.0);
   }
 
-  static Widget characterLargeSize(String iconFilePath) {
-    return _loadImage(iconFilePath, RSIcon.largeSize);
+  factory CharacterIcon.normal(String path) {
+    return CharacterIcon._(path, 50.0);
   }
 
-  static Widget characterSmallSize(String iconFilePath) {
-    return _loadImage(iconFilePath, RSIcon.smallSize);
+  factory CharacterIcon.large(String path) {
+    return CharacterIcon._(path, 80.0);
   }
 
-  static Widget _loadImage(String iconFilePath, double size) {
+  final String _res;
+  final double _size;
+
+  @override
+  Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: iconFilePath,
-      width: size,
-      height: size,
+      imageUrl: _res,
+      width: _size,
+      height: _size,
       placeholder: (context, url) => CircularProgressIndicator(),
       errorWidget: (context, url, error) {
-        return _defaultIcon(size);
+        return Image.asset(
+          'res/charIcons/default.jpg',
+          width: _size,
+          height: _size,
+        );
       },
     );
   }
+}
 
-  static Widget _defaultIcon(double size) {
-    return Image.asset(
-      'res/charIcons/default.jpg',
-      width: size,
-      height: size,
-    );
-  }
+///
+/// スタイルランクアイコン
+///
+class StyleRankIcon extends StatelessWidget {
+  const StyleRankIcon._(this._res);
 
-  ///
-  /// スタイルランクアイコン
-  ///
-  static Widget rank(String rank) {
+  factory StyleRankIcon.create(String rank) {
     if (rank.contains(RSStrings.rankSS)) {
-      return _imageIcon('res/icons/icon_rank_SS.png', IconSize.small);
+      return StyleRankIcon._('res/icons/icon_rank_SS.png');
     } else if (rank.contains(RSStrings.rankS)) {
-      return _imageIcon('res/icons/icon_rank_S.png', IconSize.small);
+      return StyleRankIcon._('res/icons/icon_rank_S.png');
     } else {
-      return _imageIcon('res/icons/icon_rank_A.png', IconSize.small);
+      return StyleRankIcon._('res/icons/icon_rank_A.png');
     }
   }
 
-  ///
-  /// 武器アイコン
-  ///
-  static Widget weaponSmall(WeaponType type) {
-    return _convertWeaponIcon(type, IconSize.small);
+  final String _res;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      _res,
+      width: 30.0,
+      height: 30.0,
+    );
+  }
+}
+
+///
+/// 武器アイコン
+///
+class WeaponIcon extends StatelessWidget {
+  const WeaponIcon._(this._type, this._size, this._selected, this._onTap);
+
+  factory WeaponIcon.small(WeaponType type, {bool selected, void Function() onTap}) {
+    return WeaponIcon._(type, 30.0, selected, onTap);
   }
 
-  static Widget weapon(WeaponType type) {
-    return _convertWeaponIcon(type, IconSize.normal);
+  factory WeaponIcon.normal(WeaponType type, {bool selected, void Function() onTap}) {
+    return WeaponIcon._(type, 50.0, selected, onTap);
   }
 
-  ///
-  /// Ripple付きの武器アイコン
-  /// 選択しているかしていないかの指定も可能
-  ///
-  static Widget weaponWithRipple(
-    BuildContext context, {
-    @required WeaponType type,
-    @required void Function() onTap,
-    bool selected = false,
-  }) {
-    String res = _getWeaponIconRes(type);
-    return Material(
-      shape: CircleBorder(),
-      color: selected ? RSColors.weaponIconSelectedBackground : Theme.of(context).disabledColor,
-      child: Ink.image(
-        image: AssetImage(res),
-        fit: BoxFit.cover,
-        width: normalSize,
-        height: normalSize,
-        child: InkWell(
-          onTap: onTap,
-          child: null,
+  final WeaponType _type;
+  final double _size;
+  final void Function() _onTap;
+  final bool _selected;
+
+  @override
+  Widget build(BuildContext context) {
+    String res = _getWeaponIconRes();
+    if (_onTap == null) {
+      return Image.asset(
+        res,
+        width: _size,
+        height: _size,
+      );
+    } else {
+      return Material(
+        shape: CircleBorder(),
+        color: _selected ? RSColors.weaponIconSelectedBackground : Theme.of(context).disabledColor,
+        child: Ink.image(
+          image: AssetImage(res),
+          fit: BoxFit.cover,
+          width: _size,
+          height: _size,
+          child: InkWell(
+            onTap: () => _onTap(),
+            child: null,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
-  ///
-  /// チェックアイコン
-  ///
-  static Widget haveCharacterWithRipple({@required BuildContext context, @required void Function() onTap, @required bool selected}) {
-    return _createIconWithRipple(context, onTap, selected, Icons.check);
-  }
-
-  ///
-  /// お気に入りアイコン
-  ///
-  static Widget favoriteWithRipple({@required BuildContext context, @required void Function() onTap, @required bool selected}) {
-    return _createIconWithRipple(context, onTap, selected, Icons.favorite);
-  }
-
-  static Widget _createIconWithRipple(BuildContext context, void Function() onTap, bool selected, IconData icon) {
-    final iconColor = selected ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
-    return RawMaterialButton(
-      shape: CircleBorder(),
-      constraints: BoxConstraints(
-        minWidth: normalSize,
-        minHeight: normalSize,
-      ),
-      fillColor: Theme.of(context).disabledColor,
-      child: Icon(
-        icon,
-        color: iconColor,
-        size: 30.0,
-      ),
-      onPressed: onTap,
-    );
-  }
-
-  static Widget _convertWeaponIcon(WeaponType weaponType, IconSize iconSize) {
-    String res = _getWeaponIconRes(weaponType);
-    return _imageIcon(res, iconSize);
-  }
-
-  static String _getWeaponIconRes(WeaponType weaponType) {
-    switch (weaponType.name) {
+  String _getWeaponIconRes() {
+    switch (_type.name) {
       case RSStrings.sword:
         return 'res/icons/icon_weap_sword.png';
       case RSStrings.largeSword:
@@ -163,60 +147,152 @@ class RSIcon {
       case RSStrings.magicShine:
         return 'res/icons/icon_weap_rod.png';
       default:
-        RSLogger.d("不正なWeaponTypeです。weaponType=${weaponType.name}");
-        throw FormatException("不正なWeaponTypeです。weaponType=${weaponType.name}");
+        throw FormatException("不正なWeaponTypeです。weaponType=${_type.name}");
     }
   }
+}
 
-  ///
-  /// 属性アイコン
-  ///
-  static Widget weaponCategory({@required WeaponCategory category}) {
+///
+/// 武器カテゴリーアイコン
+///
+class WeaponCategoryIcon extends StatelessWidget {
+  const WeaponCategoryIcon(this.category);
+
+  final WeaponCategory category;
+
+  @override
+  Widget build(BuildContext context) {
+    String res = _weaponCategory();
+    return Image.asset(
+      res,
+      width: 50.0,
+      height: 50.0,
+    );
+  }
+
+  String _weaponCategory() {
     switch (category) {
       case WeaponCategory.slash:
-        return _imageIcon('res/icons/icon_type_slash.png', IconSize.normal);
+        return 'res/icons/icon_type_slash.png';
       case WeaponCategory.strike:
-        return _imageIcon('res/icons/icon_type_strike.png', IconSize.normal);
+        return 'res/icons/icon_type_strike.png';
       case WeaponCategory.poke:
-        return _imageIcon('res/icons/icon_type_poke.png', IconSize.normal);
+        return 'res/icons/icon_type_poke.png';
       case WeaponCategory.heat:
-        return _imageIcon('res/icons/icon_type_heat.png', IconSize.normal);
+        return 'res/icons/icon_type_heat.png';
       case WeaponCategory.cold:
-        return _imageIcon('res/icons/icon_type_cold.png', IconSize.normal);
+        return 'res/icons/icon_type_cold.png';
       case WeaponCategory.thunder:
-        return _imageIcon('res/icons/icon_type_thunder.png', IconSize.normal);
+        return 'res/icons/icon_type_thunder.png';
       case WeaponCategory.dark:
-        return _imageIcon('res/icons/icon_type_dark.png', IconSize.normal);
+        return 'res/icons/icon_type_dark.png';
       case WeaponCategory.light:
-        return _imageIcon('res/icons/icon_type_light.png', IconSize.normal);
+        return 'res/icons/icon_type_light.png';
       default:
-        RSLogger.d("不正なWeaponCategoryです。category=$category");
         throw FormatException("不正なWeaponCategoryです。category=$category");
     }
   }
+}
 
-  static Widget _imageIcon(String res, IconSize iconSize) {
-    double size;
-    switch (iconSize) {
-      case IconSize.small:
-        size = smallSize;
-        break;
-      case IconSize.normal:
-        size = normalSize;
-        break;
-      case IconSize.large:
-        size = largeSize;
-        break;
-      default:
-        size = 0;
-    }
+///
+/// ステータスアイコン
+///
+class StatusIcon extends StatelessWidget {
+  const StatusIcon._(this._res);
 
+  factory StatusIcon.str() {
+    return StatusIcon._('res/icons/icon_status_str.png');
+  }
+
+  factory StatusIcon.vit() {
+    return StatusIcon._('res/icons/icon_status_vit.png');
+  }
+
+  factory StatusIcon.dex() {
+    return StatusIcon._('res/icons/icon_status_dex.png');
+  }
+  factory StatusIcon.agi() {
+    return StatusIcon._('res/icons/icon_status_agi.png');
+  }
+  factory StatusIcon.int() {
+    return StatusIcon._('res/icons/icon_status_int.png');
+  }
+  factory StatusIcon.spi() {
+    return StatusIcon._('res/icons/icon_status_spi.png');
+  }
+  factory StatusIcon.love() {
+    return StatusIcon._('res/icons/icon_status_love.png');
+  }
+  factory StatusIcon.attr() {
+    return StatusIcon._('res/icons/icon_status_attr.png');
+  }
+
+  final String _res;
+
+  @override
+  Widget build(BuildContext context) {
     return Image.asset(
-      res,
-      width: size,
-      height: size,
+      _res,
+      width: 48.0,
+      height: 48.0,
     );
   }
 }
 
-enum IconSize { small, normal, large }
+///
+/// キャラクター所持アイコン
+///
+class HaveCharacterIcon extends StatelessWidget {
+  const HaveCharacterIcon({@required this.selected, @required this.onTap});
+
+  final void Function() onTap;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    final iconColor = selected ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+    return RawMaterialButton(
+      shape: CircleBorder(),
+      constraints: BoxConstraints(
+        minWidth: 50.0,
+        minHeight: 50.0,
+      ),
+      fillColor: Theme.of(context).disabledColor,
+      child: Icon(
+        Icons.check,
+        color: iconColor,
+        size: 30.0,
+      ),
+      onPressed: onTap,
+    );
+  }
+}
+
+///
+/// キャラクターお気に入りアイコン
+///
+class FavoriteIcon extends StatelessWidget {
+  const FavoriteIcon({@required this.selected, @required this.onTap});
+
+  final void Function() onTap;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    final iconColor = selected ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+    return RawMaterialButton(
+      shape: CircleBorder(),
+      constraints: BoxConstraints(
+        minWidth: 50.0,
+        minHeight: 50.0,
+      ),
+      fillColor: Theme.of(context).disabledColor,
+      child: Icon(
+        Icons.favorite,
+        color: iconColor,
+        size: 30.0,
+      ),
+      onPressed: onTap,
+    );
+  }
+}

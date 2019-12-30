@@ -1,16 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../model/status.dart' show MyStatus;
+import '../model/status.dart';
 
 class RSFirestoreMixin {
   Future<void> setMyStatuses(List<MyStatus> myStatuses, String uid) async {
     for (var myStatus in myStatuses) {
-      await Firestore()
-          .collection(_rootCollectionName)
-          .document(uid)
-          .collection(_statusCollectionName)
-          .document(myStatus.id.toString())
-          .setData(_toMap(myStatus));
+      await Firestore().collection(_rootCollectionName).document(uid).collection(_statusCollectionName).document(myStatus.id.toString()).setData(_toMap(myStatus));
     }
   }
 
