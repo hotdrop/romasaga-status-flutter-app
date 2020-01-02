@@ -10,7 +10,7 @@ class RankChoiceChip extends StatefulWidget {
 
   final List<String> ranks;
   final String initSelectedRank;
-  final Function(String) onSelectedListener;
+  final void Function(String) onSelectedListener;
 
   @override
   _RankChoiceChipState createState() => _RankChoiceChipState(ranks, initSelectedRank, onSelectedListener);
@@ -23,7 +23,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
 
   final List<String> _ranks;
   final String _initSelectedRank;
-  final Function(String) _listener;
+  final void Function(String) _listener;
 
   String _selectedRankChipName;
 
@@ -43,10 +43,10 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
         padding: const EdgeInsets.only(right: 4.0),
         child: ChoiceChip(
           key: ValueKey(rank),
-          selectedColor: _rankToColor(rank),
+          selectedColor: _rankColor(rank),
           backgroundColor: Theme.of(context).disabledColor,
           label: Text(rank),
-          avatar: _rankToAvatar(rank),
+          avatar: _rankIcon(rank),
           selected: _selectedRankChipName == rank,
           onSelected: (value) {
             setState(() {
@@ -59,7 +59,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
     }).toList();
   }
 
-  Color _rankToColor(String rank) {
+  Color _rankColor(String rank) {
     if (rank.contains(RSStrings.rankSS)) {
       return RSColors.chipRankSS;
     } else if (rank.contains(RSStrings.rankS)) {
@@ -69,7 +69,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
     }
   }
 
-  CircleAvatar _rankToAvatar(String rank) {
+  CircleAvatar _rankIcon(String rank) {
     return CircleAvatar(
       backgroundColor: RSColors.chipAvatarBackground,
       child: StyleRankIcon.create(rank),
