@@ -66,7 +66,7 @@ class CharacterRepository {
   /// キャラデータはネットワーク経由で取得しても秒速なのだがアイコンのURL取得処理が異常に重い。
   /// アイコン画像をstorageに置いており、いちいちアイコン名からURLを取得するので仕方ないのだが新ガチャのたびにキャラ追加が行われるので
   /// これを頻繁にやってたら面倒になった。
-  /// なので、すでにアイコンURLを取得しているものはそのままにして新規データのみ取得するようなメソッドを作成した
+  /// なので、すでにアイコンURLを取得しているものはアイコンURLのみそのままにしてデータ更新だけするメソッドを作成した。
   ///
   Future<void> update() async {
     final remoteCharacters = await _api.findAll();
@@ -92,13 +92,13 @@ class CharacterRepository {
 
       RSLogger.d('キャラ ${latest.name} ローカルには $localCharacter} ');
       for (var style in latest.styles) {
-        // ここはスタイル自体がせいぜい数個程度なのでfirstWhereを使う
+        // スタイル自体がせいぜい数個程度なのでいちいちfirstWhereでスタイルを取得する
         RSLogger.d('取得したスタイル ${style.rank} ');
         final localStyle = localCharacter?.styles?.firstWhere((ls) => ls.rank == style.rank, orElse: () => null);
 
         RSLogger.d('DBから取得したstyle = $localStyle');
         if (localStyle != null && localStyle.iconFilePath.isNotEmpty) {
-          RSLogger.d('${latest.name}のスタイル${localStyle.rank} はアイコン取得済みなのでスキップ');
+          RSLogger.d('${latest.name}のスタイル${localStyle.rank} はアイコン取得済みなので既存のアイコンパスを使用');
           style.iconFilePath = localStyle.iconFilePath;
         } else {
           RSLogger.d('${latest.name}のスタイル${style.rank} はアイコン未取得なのでリモートから取得');
