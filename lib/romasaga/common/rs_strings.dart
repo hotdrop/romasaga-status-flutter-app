@@ -62,6 +62,10 @@ class RSStrings {
   static const String letterNovemberShortTitle = '11月 秋の温泉で一息';
   static const String letterDecemberTitle = '12月 ナイツ家でクリスマス';
   static const String letterDecemberShortTitle = '12月 クリスマス';
+  static const String letter2020JanuaryTitle = '1月 謹賀新年 魔界塔士Sa・Ga';
+  static const String letter2020JanuaryShortTitle = '1月 神とのコマ戦';
+  static const String letter2020FebruaryTitle = '2月 節分 魔界塔士Sa・Ga';
+  static const String letter2020FebruaryShortTitle = '2月 豆まきバトル';
 
   static const String accountPageTitle = 'アカウント';
   static const String accountNotLoginEmailLabel = '未ログイン';
@@ -77,8 +81,7 @@ class RSStrings {
   static const String accountStatusRestoreLabel = '復元';
   static const String accountLogoutButton = 'Log out';
   static const String accountCharacterOnlyNewUpdateDialogMessage = '新しくサーバーに登録されたキャラクター情報を取得します。\nよろしいですか？';
-  static const String accountCharacterAllUpdateDialogMessage =
-      '注意！！\n現在アプリ内に保存されているキャラクター情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
+  static const String accountCharacterAllUpdateDialogMessage = '注意！！\n現在アプリ内に保存されているキャラクター情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
   static const String accountStageUpdateDialogMessage = '現在のステージ情報を全て削除してサーバーから再取得します。\nよろしいですか？';
   static const String accountStatusBackupDialogMessage = '現在のキャラクターステータスをサーバーへバックアップします。\nよろしいですか？';
   static const String accountStatusRestoreDescriptionLabel = 'アプリ内のデータを上書きします。';

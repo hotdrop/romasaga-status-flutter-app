@@ -68,29 +68,22 @@ class CharDetailPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.only(top: 4.0, left: 16.0, right: 16.0, bottom: 16.0),
         child: ListView(
-          children: _contentLayout(context),
+          children: <Widget>[
+            _contentCharacterOverview(),
+            SizedBox(height: 16.0),
+            _contentStatus(),
+            SizedBox(height: 16.0),
+            _contentsStage(context),
+            SizedBox(height: 24.0),
+            _contentsEachStyleStatus(context),
+            SizedBox(height: 16.0),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: _editStatusFab(),
       bottomNavigationBar: _appBarContent(),
     );
-  }
-
-  ///
-  /// 詳細画面に表示する各レイアウトを束ねる
-  ///
-  List<Widget> _contentLayout(BuildContext context) {
-    final layouts = <Widget>[];
-    layouts.add(_contentCharacterOverview());
-    layouts.add(SizedBox(height: 16.0));
-    layouts.add(_contentStatus());
-    layouts.add(SizedBox(height: 16.0));
-    layouts.add(_contentsStage(context));
-    layouts.add(SizedBox(height: 24.0));
-    layouts.add(_contentsEachStyleStatus(context));
-    layouts.add(SizedBox(height: 16.0));
-    return layouts;
   }
 
   ///
