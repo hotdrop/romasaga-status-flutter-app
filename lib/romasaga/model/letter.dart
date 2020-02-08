@@ -132,6 +132,15 @@ class Letter {
           shortTitle: RSStrings.letter2020JanuaryShortTitle,
           themeColor: RSColors.winter,
         );
+      case LetterType.february2020:
+        return Letter._(
+          type: type,
+          gifResource: 'res/letters/202002_setubun.gif',
+          thumbnail: 'res/letters/202002_setubun_static.jpg',
+          title: RSStrings.letter2020FebruaryTitle,
+          shortTitle: RSStrings.letter2020FebruaryShortTitle,
+          themeColor: RSColors.winter,
+        );
       default:
         return null;
     }
@@ -159,4 +168,5 @@ enum LetterType {
   november,
   december,
   january2020,
+  february2020,
 }
