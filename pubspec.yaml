@@ -21,6 +21,7 @@ dependencies:
 
   # UI
   percent_indicator: ^2.1.1
+  side_header_list_view: ^0.0.4
 
   # Design
   provider: ^3.0.0
