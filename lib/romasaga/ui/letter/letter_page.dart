@@ -25,7 +25,7 @@ class LetterPage extends StatelessWidget {
     final List<Letter> items = LetterType.values.map((type) => Letter.fromType(type)).toList();
     return SideHeaderListView(
       itemCount: items.length,
-      itemExtend: 430.0,
+      itemExtend: 330.0,
       headerBuilder: (context, index) => _createHeader(items[index]),
       itemBuilder: (context, index) => _createCardLetter(context, items[index]),
       hasSameHeader: (headerIndex, itemIndex) => items[headerIndex].year == items[itemIndex].year,
@@ -45,7 +45,8 @@ class LetterPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 400,
+              height: 300,
+              width: 200,
               child: Stack(
                 children: <Widget>[
                   Positioned.fill(
