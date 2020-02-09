@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:side_header_list_view/side_header_list_view.dart';
 
 import 'letter_detail_page.dart';
 import '../widget/custom_page_route.dart';
@@ -21,32 +22,30 @@ class LetterPage extends StatelessWidget {
   }
 
   Widget _widgetContents(BuildContext context) {
-    // GridViewはアスペクト比が1:1になってしまうため個別指定している。
-    return GridView.count(
-      crossAxisCount: 2,
-      childAspectRatio: 7 / 10,
-      scrollDirection: Axis.vertical,
-      children: _widgetLetters(context),
+    final List<Letter> items = LetterType.values.map((type) => Letter.fromType(type)).toList();
+    return SideHeaderListView(
+      itemCount: items.length,
+      itemExtend: 430.0,
+      headerBuilder: (context, index) => _createHeader(items[index]),
+      itemBuilder: (context, index) => _createCardLetter(context, items[index]),
+      hasSameHeader: (headerIndex, itemIndex) => items[headerIndex].year == items[itemIndex].year,
     );
   }
 
-  List<Widget> _widgetLetters(BuildContext context) {
-    final letterButtons = <Widget>[];
-    for (final type in LetterType.values) {
-      final letter = Letter.fromType(type);
-      letterButtons.add(_cardLetter(context, letter));
-    }
-    return letterButtons;
+  Widget _createHeader(Letter letter) {
+    return Center(
+      child: Text("${letter.year}年"),
+    );
   }
 
-  Widget _cardLetter(BuildContext context, Letter letter) {
+  Widget _createCardLetter(BuildContext context, Letter letter) {
     return Card(
       color: RSColors.thumbnailCardBackground,
       child: InkWell(
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 250,
+              height: 400,
               child: Stack(
                 children: <Widget>[
                   Positioned.fill(

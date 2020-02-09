@@ -62,6 +62,7 @@ class RSStrings {
   static const String letterNovemberShortTitle = '11月 秋の温泉で一息';
   static const String letterDecemberTitle = '12月 ナイツ家でクリスマス';
   static const String letterDecemberShortTitle = '12月 クリスマス';
+
   static const String letter2020JanuaryTitle = '1月 謹賀新年 魔界塔士Sa・Ga';
   static const String letter2020JanuaryShortTitle = '1月 神とのコマ戦';
   static const String letter2020FebruaryTitle = '2月 節分 魔界塔士Sa・Ga';

@@ -11,6 +11,7 @@ class Letter {
     @required this.title,
     @required this.shortTitle,
     @required this.themeColor,
+    @required this.year,
   });
 
   factory Letter.fromType(LetterType type) {
@@ -23,6 +24,7 @@ class Letter {
           title: RSStrings.letterJanuaryTitle,
           shortTitle: RSStrings.letterJanuaryShortTitle,
           themeColor: RSColors.winter,
+          year: 2019,
         );
       case LetterType.february:
         return Letter._(
@@ -32,6 +34,7 @@ class Letter {
           title: RSStrings.letterFebruaryTitle,
           shortTitle: RSStrings.letterFebruaryShortTitle,
           themeColor: RSColors.winter,
+          year: 2019,
         );
       case LetterType.march:
         return Letter._(
@@ -41,6 +44,7 @@ class Letter {
           title: RSStrings.letterMarchTitle,
           shortTitle: RSStrings.letterMarchShortTitle,
           themeColor: RSColors.spring,
+          year: 2019,
         );
       case LetterType.april:
         return Letter._(
@@ -50,6 +54,7 @@ class Letter {
           title: RSStrings.letterAprilTitle,
           shortTitle: RSStrings.letterAprilShortTitle,
           themeColor: RSColors.spring,
+          year: 2019,
         );
       case LetterType.may:
         return Letter._(
@@ -59,6 +64,7 @@ class Letter {
           title: RSStrings.letterMayTitle,
           shortTitle: RSStrings.letterMayShortTitle,
           themeColor: RSColors.spring,
+          year: 2019,
         );
       case LetterType.june:
         return Letter._(
@@ -68,6 +74,7 @@ class Letter {
           title: RSStrings.letterJuneTitle,
           shortTitle: RSStrings.letterJuneShortTitle,
           themeColor: RSColors.summer,
+          year: 2019,
         );
       case LetterType.july:
         return Letter._(
@@ -77,6 +84,7 @@ class Letter {
           title: RSStrings.letterJulyTitle,
           shortTitle: RSStrings.letterJulyShortTitle,
           themeColor: RSColors.summer,
+          year: 2019,
         );
       case LetterType.august:
         return Letter._(
@@ -86,6 +94,7 @@ class Letter {
           title: RSStrings.letterAugustTitle,
           shortTitle: RSStrings.letterAugustShortTitle,
           themeColor: RSColors.summer,
+          year: 2019,
         );
       case LetterType.september:
         return Letter._(
@@ -95,6 +104,7 @@ class Letter {
           title: RSStrings.letterSeptemberTitle,
           shortTitle: RSStrings.letterSeptemberShortTitle,
           themeColor: RSColors.fall,
+          year: 2019,
         );
       case LetterType.october:
         return Letter._(
@@ -104,6 +114,7 @@ class Letter {
           title: RSStrings.letterOctoberTitle,
           shortTitle: RSStrings.letterOctoberShortTitle,
           themeColor: RSColors.fall,
+          year: 2019,
         );
       case LetterType.november:
         return Letter._(
@@ -113,6 +124,7 @@ class Letter {
           title: RSStrings.letterNovemberTitle,
           shortTitle: RSStrings.letterNovemberShortTitle,
           themeColor: RSColors.fall,
+          year: 2019,
         );
       case LetterType.december:
         return Letter._(
@@ -122,6 +134,7 @@ class Letter {
           title: RSStrings.letterDecemberTitle,
           shortTitle: RSStrings.letterDecemberShortTitle,
           themeColor: RSColors.winter,
+          year: 2019,
         );
       case LetterType.january2020:
         return Letter._(
@@ -131,6 +144,7 @@ class Letter {
           title: RSStrings.letter2020JanuaryTitle,
           shortTitle: RSStrings.letter2020JanuaryShortTitle,
           themeColor: RSColors.winter,
+          year: 2020,
         );
       case LetterType.february2020:
         return Letter._(
@@ -140,6 +154,7 @@ class Letter {
           title: RSStrings.letter2020FebruaryTitle,
           shortTitle: RSStrings.letter2020FebruaryShortTitle,
           themeColor: RSColors.winter,
+          year: 2020,
         );
       default:
         return null;
@@ -152,6 +167,7 @@ class Letter {
   final String title;
   final String shortTitle;
   final Color themeColor;
+  final int year;
 }
 
 enum LetterType {
