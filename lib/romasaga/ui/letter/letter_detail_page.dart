@@ -6,9 +6,10 @@ import '../../common/rs_strings.dart';
 import '../../common/rs_colors.dart';
 
 class LetterMainPage extends StatelessWidget {
-  const LetterMainPage({@required this.firstSelectLetterType});
+  const LetterMainPage({@required this.selectedIndex, @required this.letters});
 
-  final LetterType firstSelectLetterType;
+  final int selectedIndex;
+  final List<Letter> letters;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +25,13 @@ class LetterMainPage extends StatelessWidget {
   }
 
   Widget _widgetContents(BuildContext context) {
-    final controller = PageController(initialPage: firstSelectLetterType.index, keepPage: false);
+    final controller = PageController(initialPage: selectedIndex, keepPage: false);
+
     return PageView.builder(
         controller: controller,
-        itemCount: LetterType.values.length,
+        itemCount: letters.length,
         itemBuilder: (context, index) {
-          final selectedType = LetterType.values[index];
-          return _LetterDetailPage(Letter.fromType(selectedType));
+          return _LetterDetailPage(letters[index]);
         });
   }
 }
@@ -61,7 +62,7 @@ class _LetterDetailPage extends StatelessWidget {
 
   Widget _widgetTitle() {
     return Text(
-      letter.title,
+      '${letter.month}${RSStrings.letterMonthLabel} ${letter.title}',
       style: TextStyle(fontSize: 24.0, color: letter.themeColor, shadows: [
         Shadow(
           color: RSColors.titleShadow,
@@ -73,6 +74,6 @@ class _LetterDetailPage extends StatelessWidget {
   }
 
   Widget _widgetImageGif() {
-    return Image.asset(letter.gifResource);
+    return Image.asset(letter.imagePath);
   }
 }
