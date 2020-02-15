@@ -39,7 +39,7 @@ class SearchPageViewModel extends foundation.ChangeNotifier {
     notifyListeners();
 
     try {
-      final characters = await _characterRepository.load();
+      final characters = await _characterRepository.findAll();
       final charactersWithMyStatus = await _loadMyStatuses(characters);
 
       _originalCharacters = charactersWithMyStatus;

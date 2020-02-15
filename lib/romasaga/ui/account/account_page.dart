@@ -55,6 +55,7 @@ class AccountPage extends StatelessWidget {
         _rowDataUpdateLabel(context),
         _rowCharacterReload(),
         _rowStageReload(),
+        // TODO ここにお便りのデータ更新を入れる
         Divider(color: Theme.of(context).accentColor),
         _rowBackUp(),
         _rowRestore(),
@@ -73,6 +74,7 @@ class AccountPage extends StatelessWidget {
         _rowDataUpdateLabel(context),
         _rowCharacterReload(),
         _rowStageReload(),
+        // TODO ここにお便りのデータ更新を入れる
         Divider(color: Theme.of(context).accentColor),
         _googleSignInButton(),
       ],

@@ -35,38 +35,12 @@ class RSStrings {
   static const String searchFilerTitleWeapon = '武器種別';
   static const String searchFilerLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 
-  static const String letterPageTitle = '運営からのお便り一覧';
+  static const String letterPageTitle = '運営からのお便り';
   static const String letterDetailPageTitle = '運営からのお便り詳細';
-
-  static const String letterJanuaryTitle = '1月 ブーケとモニカの羽根つき';
-  static const String letterJanuaryShortTitle = '1月 羽根つき';
-  static const String letterFebruaryTitle = '2月 ハッピーバレンタイン';
-  static const String letterFebruaryShortTitle = '2月 バレンタイン';
-  static const String letterMarchTitle = '3月 皆で楽しいひな祭り段';
-  static const String letterMarchShortTitle = '3月 ひな祭り';
-  static const String letterAprilTitle = '4月 サガフロ勢でお花見';
-  static const String letterAprilShortTitle = '4月 お花見';
-  static const String letterMayTitle = '5月 初春の詩人と最終皇帝女';
-  static const String letterMayShortTitle = '5月 初春';
-  static const String letterJuneTitle = '6月 ハーフアニバーサリー';
-  static const String letterJuneShortTitle = '6月 アニバ';
-  static const String letterJulyTitle = '7月 アザミvsディープワン';
-  static const String letterJulyShortTitle = '7月 アザミとタコ';
-  static const String letterAugustTitle = '8月 砂浜でサガフロ勢競争';
-  static const String letterAugustShortTitle = '8月 砂浜リレー';
-  static const String letterSeptemberTitle = '9月 エレンとモニカの夜祭り';
-  static const String letterSeptemberShortTitle = '9月 夜祭り';
-  static const String letterOctoberTitle = '10月 家出娘と伯爵演出ハロウィン';
-  static const String letterOctoberShortTitle = '10月 ハロウィン';
-  static const String letterNovemberTitle = '11月 秋の温泉';
-  static const String letterNovemberShortTitle = '11月 秋の温泉で一息';
-  static const String letterDecemberTitle = '12月 ナイツ家でクリスマス';
-  static const String letterDecemberShortTitle = '12月 クリスマス';
-
-  static const String letter2020JanuaryTitle = '1月 謹賀新年 魔界塔士Sa・Ga';
-  static const String letter2020JanuaryShortTitle = '1月 神とのコマ戦';
-  static const String letter2020FebruaryTitle = '2月 節分 魔界塔士Sa・Ga';
-  static const String letter2020FebruaryShortTitle = '2月 豆まきバトル';
+  static const String letterNothingMessage = '運営からのお便りデータが0件でした。';
+  static const String letterLoadingErrorMessage = '運営からのお便りデータ取得時にエラーが発生しました。';
+  static const String letterYearLabel = '年';
+  static const String letterMonthLabel = '月';
 
   static const String accountPageTitle = 'アカウント';
   static const String accountNotLoginEmailLabel = '未ログイン';

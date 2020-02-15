@@ -38,7 +38,7 @@ class CharListViewModel extends foundation.ChangeNotifier {
     notifyListeners();
 
     try {
-      _characters = await _characterRepository.load();
+      _characters = await _characterRepository.findAll();
       await _loadMyStatuses();
       _pageState = _PageState.success;
 
