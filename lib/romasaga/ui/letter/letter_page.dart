@@ -111,7 +111,7 @@ class LetterPage extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: letter.staticImagePath,
                       fit: BoxFit.fill,
-                      // TODO ここなんかいい感じのplaceholderにしたい・・
+                      // TODO ここなんかいい感じのplaceholderにしたい・・errorのイメージも同様
                       placeholder: (context, url) => CircularProgressIndicator(),
                       errorWidget: (context, url, error) => Image.asset('res/charIcons/default.jpg', fit: BoxFit.fill),
                     ),

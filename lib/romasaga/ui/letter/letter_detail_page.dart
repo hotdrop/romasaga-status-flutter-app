@@ -77,7 +77,7 @@ class _LetterDetailPage extends StatelessWidget {
   Widget _widgetImageGif() {
     return CachedNetworkImage(
       imageUrl: letter.gifFilePath,
-      // TODO ここなんかいい感じのplaceholderにしたい・・
+      // TODO ここなんかいい感じのplaceholderにしたい・・errorのイメージも同様
       placeholder: (context, url) => CircularProgressIndicator(),
       errorWidget: (context, url, error) => Image.asset('res/charIcons/default.jpg', fit: BoxFit.fill),
     );
