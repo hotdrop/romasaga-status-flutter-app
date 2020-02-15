@@ -48,7 +48,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     notifyListeners();
 
     try {
-      _stages = await _stageRepository.load();
+      _stages = await _stageRepository.findAll();
       _selectedStage = _stages.first;
 
       if (_character.styles.isEmpty) {

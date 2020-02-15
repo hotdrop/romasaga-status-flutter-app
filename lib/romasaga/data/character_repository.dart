@@ -25,7 +25,7 @@ class CharacterRepository {
   ///
   /// キャラデータのロード
   ///
-  Future<List<Character>> load() async {
+  Future<List<Character>> findAll() async {
     var characters = await _dao.findAllSummary();
 
     if (characters.isEmpty) {
