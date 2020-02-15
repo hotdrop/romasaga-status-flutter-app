@@ -12,6 +12,10 @@ mixin RSStorageMixin {
     return await _readJson(path: 'characters.json');
   }
 
+  Future<String> readLettersJson() async {
+    return await _readJson(path: 'letters.json');
+  }
+
   Future<String> _readJson({String path}) async {
     final StorageReference ref = FirebaseStorage().ref().child(path);
     final String url = await ref.getDownloadURL() as String;
@@ -20,7 +24,15 @@ mixin RSStorageMixin {
   }
 
   Future<String> getCharacterIconUrl(String fileName) async {
-    final StorageReference ref = FirebaseStorage().ref().child('icons/$fileName');
+    return await _getDownloadUrl('icons/$fileName');
+  }
+
+  Future<String> getLetterImageUrl(String fileName) async {
+    return await _getDownloadUrl('letters/$fileName');
+  }
+
+  Future<String> _getDownloadUrl(String refPath) async {
+    final StorageReference ref = FirebaseStorage().ref().child(refPath);
     return await ref.getDownloadURL() as String;
   }
 }

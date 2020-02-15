@@ -77,7 +77,6 @@ build/
 ## add new
 /res/icons
 /res/launcher
-/res/letters
 
 /keystore
 **/android/app/google-services.json

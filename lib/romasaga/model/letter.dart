@@ -1,188 +1,40 @@
 import 'package:flutter/material.dart';
 
 import '../common/rs_colors.dart';
-import '../common/rs_strings.dart';
 
 class Letter {
-  Letter._({
-    @required this.type,
-    @required this.gifResource,
-    @required this.thumbnail,
+  const Letter({
+    @required this.year,
+    @required this.month,
     @required this.title,
     @required this.shortTitle,
-    @required this.themeColor,
-    @required this.year,
-  });
+    @required this.gifFilePath,
+    @required this.staticImagePath,
+  })  : assert(year != null),
+        assert(month != null),
+        assert(title != null),
+        assert(shortTitle != null),
+        assert(gifFilePath != null, 'A non-null gifFilePath'),
+        assert(staticImagePath != null, 'A non-null staticImagePath');
 
-  factory Letter.fromType(LetterType type) {
-    switch (type) {
-      case LetterType.january:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201901_hane.gif',
-          thumbnail: 'res/letters/201901_hane_static.jpg',
-          title: RSStrings.letterJanuaryTitle,
-          shortTitle: RSStrings.letterJanuaryShortTitle,
-          themeColor: RSColors.winter,
-          year: 2019,
-        );
-      case LetterType.february:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201902_valentine.gif',
-          thumbnail: 'res/letters/201902_valentine_static.jpg',
-          title: RSStrings.letterFebruaryTitle,
-          shortTitle: RSStrings.letterFebruaryShortTitle,
-          themeColor: RSColors.winter,
-          year: 2019,
-        );
-      case LetterType.march:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201903_hinamaturi.gif',
-          thumbnail: 'res/letters/201903_hinamaturi_static.jpg',
-          title: RSStrings.letterMarchTitle,
-          shortTitle: RSStrings.letterMarchShortTitle,
-          themeColor: RSColors.spring,
-          year: 2019,
-        );
-      case LetterType.april:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201904_hanami.gif',
-          thumbnail: 'res/letters/201904_hanami_static.jpg',
-          title: RSStrings.letterAprilTitle,
-          shortTitle: RSStrings.letterAprilShortTitle,
-          themeColor: RSColors.spring,
-          year: 2019,
-        );
-      case LetterType.may:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201905_hiyori.gif',
-          thumbnail: 'res/letters/201905_hiyori_static.jpg',
-          title: RSStrings.letterMayTitle,
-          shortTitle: RSStrings.letterMayShortTitle,
-          themeColor: RSColors.spring,
-          year: 2019,
-        );
-      case LetterType.june:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201906_halfAniver.gif',
-          thumbnail: 'res/letters/201906_halfAniver_static.jpg',
-          title: RSStrings.letterJuneTitle,
-          shortTitle: RSStrings.letterJuneShortTitle,
-          themeColor: RSColors.summer,
-          year: 2019,
-        );
-      case LetterType.july:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201907_asami.gif',
-          thumbnail: 'res/letters/201907_asami_static.jpg',
-          title: RSStrings.letterJulyTitle,
-          shortTitle: RSStrings.letterJulyShortTitle,
-          themeColor: RSColors.summer,
-          year: 2019,
-        );
-      case LetterType.august:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201908_summer.gif',
-          thumbnail: 'res/letters/201908_summer_static.jpg',
-          title: RSStrings.letterAugustTitle,
-          shortTitle: RSStrings.letterAugustShortTitle,
-          themeColor: RSColors.summer,
-          year: 2019,
-        );
-      case LetterType.september:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201909_award.gif',
-          thumbnail: 'res/letters/201909_award_static.jpg',
-          title: RSStrings.letterSeptemberTitle,
-          shortTitle: RSStrings.letterSeptemberShortTitle,
-          themeColor: RSColors.fall,
-          year: 2019,
-        );
-      case LetterType.october:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201910_halloween.gif',
-          thumbnail: 'res/letters/201910_halloween_static.jpg',
-          title: RSStrings.letterOctoberTitle,
-          shortTitle: RSStrings.letterOctoberShortTitle,
-          themeColor: RSColors.fall,
-          year: 2019,
-        );
-      case LetterType.november:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201911_onsen.gif',
-          thumbnail: 'res/letters/201911_onsen_static.jpg',
-          title: RSStrings.letterNovemberTitle,
-          shortTitle: RSStrings.letterNovemberShortTitle,
-          themeColor: RSColors.fall,
-          year: 2019,
-        );
-      case LetterType.december:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/201912_christmas.gif',
-          thumbnail: 'res/letters/201912_christmas_static.jpg',
-          title: RSStrings.letterDecemberTitle,
-          shortTitle: RSStrings.letterDecemberShortTitle,
-          themeColor: RSColors.winter,
-          year: 2019,
-        );
-      case LetterType.january2020:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/202001_happyNewYear.gif',
-          thumbnail: 'res/letters/202001_happyNewYear_static.jpg',
-          title: RSStrings.letter2020JanuaryTitle,
-          shortTitle: RSStrings.letter2020JanuaryShortTitle,
-          themeColor: RSColors.winter,
-          year: 2020,
-        );
-      case LetterType.february2020:
-        return Letter._(
-          type: type,
-          gifResource: 'res/letters/202002_setubun.gif',
-          thumbnail: 'res/letters/202002_setubun_static.jpg',
-          title: RSStrings.letter2020FebruaryTitle,
-          shortTitle: RSStrings.letter2020FebruaryShortTitle,
-          themeColor: RSColors.winter,
-          year: 2020,
-        );
-      default:
-        return null;
-    }
-  }
+  final int year;
+  final int month;
 
-  final LetterType type;
-  final String gifResource;
-  final String thumbnail;
   final String title;
   final String shortTitle;
-  final Color themeColor;
-  final int year;
-}
 
-enum LetterType {
-  january,
-  february,
-  march,
-  april,
-  may,
-  june,
-  july,
-  august,
-  september,
-  october,
-  november,
-  december,
-  january2020,
-  february2020,
+  final String gifFilePath;
+  final String staticImagePath;
+
+  Color get themeColor {
+    if (3 <= month && month <= 5) {
+      return RSColors.spring;
+    } else if (6 <= month && month <= 8) {
+      return RSColors.summer;
+    } else if (9 <= month && month <= 11) {
+      return RSColors.fall;
+    } else {
+      return RSColors.winter;
+    }
+  }
 }

@@ -26,10 +26,10 @@ class StagesJsonObject {
     final results = StagesJsonObject.fromJson(jsonMap);
     RSLogger.d('Stageをパースしました。 size=${results._stages.length}');
 
-    return _toModel(results);
+    return _toModels(results);
   }
 
-  static List<Stage> _toModel(StagesJsonObject obj) {
+  static List<Stage> _toModels(StagesJsonObject obj) {
     return obj._stages.map((o) => Stage(o.name, o.limit, o.order)).toList();
   }
 }

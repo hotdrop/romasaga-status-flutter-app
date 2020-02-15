@@ -1,6 +1,7 @@
 import '../json/character_object.dart';
-import '../../service/rs_service.dart';
 import '../../model/character.dart';
+
+import '../../service/rs_service.dart';
 import '../../common/rs_logger.dart';
 
 class CharacterApi {

@@ -18,9 +18,9 @@ class StageRepository {
   final StageApi _api;
 
   ///
-  /// ステージデータのロード
+  /// ステージデータを全て取得します
   ///
-  Future<List<Stage>> load() async {
+  Future<List<Stage>> findAll() async {
     var stages = await _dao.findAll();
 
     if (stages.isEmpty) {

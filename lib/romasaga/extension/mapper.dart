@@ -2,11 +2,13 @@ import '../model/stage.dart';
 import '../model/character.dart';
 import '../model/style.dart';
 import '../model/status.dart';
+import '../model/letter.dart';
 
 import '../data/local/entity/stage_entity.dart';
 import '../data/local/entity/character_entity.dart';
 import '../data/local/entity/style_entity.dart';
 import '../data/local/entity/my_status_entity.dart';
+import '../data/local/entity/letter_entity.dart';
 
 extension CharacterEntityMapper on CharacterEntity {
   Character toCharacter() {
@@ -120,5 +122,24 @@ extension StageEntityMapper on StageEntity {
 extension StageMapper on Stage {
   StageEntity toEntity() {
     return StageEntity(this.name, this.limit, this.order);
+  }
+}
+
+extension LetterEntityMapper on LetterEntity {
+  Letter toLetter() {
+    return Letter(
+      year: this.year,
+      month: this.month,
+      title: this.title,
+      shortTitle: this.shortTitle,
+      gifFilePath: this.gifFilePath,
+      staticImagePath: this.staticImagePath,
+    );
+  }
+}
+
+extension LetterMapper on Letter {
+  LetterEntity toEntity() {
+    return LetterEntity(this.year, this.month, this.title, this.shortTitle, this.gifFilePath, this.staticImagePath);
   }
 }

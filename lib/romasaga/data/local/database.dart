@@ -6,6 +6,7 @@ import 'entity/character_entity.dart';
 import 'entity/style_entity.dart';
 import 'entity/stage_entity.dart';
 import 'entity/my_status_entity.dart';
+import 'entity/letter_entity.dart';
 
 class DBProvider {
   const DBProvider._();
@@ -27,11 +28,37 @@ class DBProvider {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, 'romasaga.db');
 
-    return await openDatabase(path, version: 1, onCreate: (db, version) async {
-      await db.execute(CharacterEntity.createTableSql);
-      await db.execute(StyleEntity.createTableSql);
-      await db.execute(StageEntity.createTableSql);
-      await db.execute(MyStatusEntity.createTableSql);
-    });
+    return await openDatabase(
+      path,
+      version: 2,
+      onCreate: (db, version) async {
+        var batch = db.batch();
+        _createTableV1(batch);
+        _upgradeV2(batch);
+        await batch.commit();
+        await db.execute(CharacterEntity.createTableSql);
+        await db.execute(StyleEntity.createTableSql);
+        await db.execute(StageEntity.createTableSql);
+        await db.execute(MyStatusEntity.createTableSql);
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        var batch = db.batch();
+        if (oldVersion == 1) {
+          _upgradeV2(batch);
+        }
+        await batch.commit();
+      },
+    );
+  }
+
+  void _createTableV1(Batch batch) {
+    batch.execute(CharacterEntity.createTableSql);
+    batch.execute(StyleEntity.createTableSql);
+    batch.execute(StageEntity.createTableSql);
+    batch.execute(MyStatusEntity.createTableSql);
+  }
+
+  void _upgradeV2(Batch batch) {
+    batch.execute(LetterEntity.createTableSql);
   }
 }
