@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/letter.dart';
@@ -74,6 +75,11 @@ class _LetterDetailPage extends StatelessWidget {
   }
 
   Widget _widgetImageGif() {
-    return Image.asset(letter.imagePath);
+    return CachedNetworkImage(
+      imageUrl: letter.gifFilePath,
+      // TODO ここなんかいい感じのplaceholderにしたい・・
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Image.asset('res/charIcons/default.jpg', fit: BoxFit.fill),
+    );
   }
 }

@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import '../common/rs_colors.dart';
 
 class Letter {
-  Letter({
+  const Letter({
     @required this.year,
     @required this.month,
     @required this.title,
     @required this.shortTitle,
-    @required this.imagePath,
+    @required this.gifFilePath,
     @required this.staticImagePath,
-  });
+  })  : assert(year != null),
+        assert(month != null),
+        assert(title != null),
+        assert(shortTitle != null),
+        assert(gifFilePath != null, 'A non-null gifFilePath'),
+        assert(staticImagePath != null, 'A non-null staticImagePath');
 
   final int year;
   final int month;
@@ -18,7 +23,7 @@ class Letter {
   final String title;
   final String shortTitle;
 
-  final String imagePath;
+  final String gifFilePath;
   final String staticImagePath;
 
   Color get themeColor {

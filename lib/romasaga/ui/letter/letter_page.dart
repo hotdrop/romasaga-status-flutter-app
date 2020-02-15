@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsapp/romasaga/ui/letter/letter_view_model.dart';
@@ -24,6 +25,8 @@ class LetterPage extends StatelessWidget {
       builder: (context, viewModel, child) {
         if (viewModel.isLoading) {
           return _loadingView();
+        } else if (viewModel.isError) {
+          return _errorView();
         } else {
           return _loadedView();
         }
@@ -43,6 +46,18 @@ class LetterPage extends StatelessWidget {
     );
   }
 
+  Widget _errorView() {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(RSStrings.letterPageTitle),
+      ),
+      body: Center(
+        child: Text(RSStrings.letterLoadingErrorMessage),
+      ),
+    );
+  }
+
   Widget _loadedView() {
     return Scaffold(
       appBar: AppBar(
@@ -57,13 +72,19 @@ class LetterPage extends StatelessWidget {
     return Consumer<LetterViewModel>(
       builder: (context, viewModel, child) {
         final items = viewModel.letters;
-        return SideHeaderListView(
-          itemCount: items.length,
-          itemExtend: 330.0,
-          headerBuilder: (context, index) => _createHeader(items[index]),
-          itemBuilder: (context, index) => _createCardLetter(context, items, index),
-          hasSameHeader: (headerIndex, itemIndex) => items[headerIndex].year == items[itemIndex].year,
-        );
+        if (items.isEmpty) {
+          return Center(
+            child: Text(RSStrings.letterNothingMessage),
+          );
+        } else {
+          return SideHeaderListView(
+            itemCount: items.length,
+            itemExtend: 330.0,
+            headerBuilder: (context, index) => _createHeader(items[index]),
+            itemBuilder: (context, index) => _createCardLetter(context, items, index),
+            hasSameHeader: (headerIndex, itemIndex) => items[headerIndex].year == items[itemIndex].year,
+          );
+        }
       },
     );
   }
@@ -87,7 +108,13 @@ class LetterPage extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   Positioned.fill(
-                    child: Image.asset(letter.staticImagePath, fit: BoxFit.fill),
+                    child: CachedNetworkImage(
+                      imageUrl: letter.staticImagePath,
+                      fit: BoxFit.fill,
+                      // TODO ここなんかいい感じのplaceholderにしたい・・
+                      placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Image.asset('res/charIcons/default.jpg', fit: BoxFit.fill),
+                    ),
                   ),
                 ],
               ),

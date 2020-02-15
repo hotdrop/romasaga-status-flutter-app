@@ -27,12 +27,12 @@ class CharactersJsonObject {
   static List<Character> parse(String json) {
     final dynamic jsonMap = jsonDecode(json);
     final results = CharactersJsonObject.fromJson(jsonMap);
-    RSLogger.d('Characterをパースしました。 size=${results._characters.length}');
+    RSLogger.d('リモートから取得したjsonをパースしました。 size=${results._characters.length}');
 
-    return _parse(results);
+    return _toModels(results);
   }
 
-  static List<Character> _parse(CharactersJsonObject obj) {
+  static List<Character> _toModels(CharactersJsonObject obj) {
     final characters = <Character>[];
 
     for (var charObj in obj._characters) {

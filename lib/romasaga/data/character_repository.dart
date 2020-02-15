@@ -29,13 +29,10 @@ class CharacterRepository {
     var characters = await _dao.findAllSummary();
 
     if (characters.isEmpty) {
-      RSLogger.d('保持しているデータが0件のためローカルファイルを読み込みます。');
+      RSLogger.d('保持しているデータが0件のためローカルダミーファイルを読み込みます。');
       final tmp = await _dao.loadDummy();
-      RSLogger.d('  ${tmp.length}件のデータを取得しました。キャッシュします。');
       final tmpWithStyle = _updateDummyStyles(tmp);
       await _dao.refresh(tmpWithStyle);
-
-      RSLogger.d('再度キャッシュからデータを取得します。');
       characters = await _dao.findAllSummary();
     }
 

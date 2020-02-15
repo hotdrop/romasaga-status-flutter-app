@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:rsapp/romasaga/data/letter_repository.dart';
-import 'package:rsapp/romasaga/model/letter.dart';
+
+import '../../data/letter_repository.dart';
+import '../../model/letter.dart';
 
 class LetterViewModel extends foundation.ChangeNotifier {
   LetterViewModel._(this._repository);
@@ -15,16 +16,23 @@ class LetterViewModel extends foundation.ChangeNotifier {
 
   bool get isLoading => _pageState == _PageState.loading;
   bool get isLoaded => _pageState == _PageState.loaded;
+  bool get isError => _pageState == _PageState.error;
 
   Future<void> load() async {
     _pageState = _PageState.loading;
     notifyListeners();
 
-    letters = await _repository.findAll();
+    try {
+      letters = await _repository.findAll();
+    } catch (e) {
+      _pageState = _PageState.error;
+      notifyListeners();
+      return;
+    }
 
     _pageState = _PageState.loaded;
     notifyListeners();
   }
 }
 
-enum _PageState { loading, loaded }
+enum _PageState { loading, loaded, error }
