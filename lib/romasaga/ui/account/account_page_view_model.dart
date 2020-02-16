@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/data/letter_repository.dart';
 
 import '../../data/character_repository.dart';
 import '../../data/stage_repository.dart';
@@ -12,6 +13,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   AccountPageViewModel._(
     this._characterRepository,
     this._stageRepository,
+    this._letterRepository,
     this._myStatusRepository,
     this._accountRepository,
   );
@@ -20,6 +22,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
     return AccountPageViewModel._(
       CharacterRepository.create(),
       StageRepository.create(),
+      LetterRepository.create(),
       MyStatusRepository.create(),
       AccountRepository.create(),
     );
@@ -27,6 +30,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
 
   final CharacterRepository _characterRepository;
   final StageRepository _stageRepository;
+  final LetterRepository _letterRepository;
   final MyStatusRepository _myStatusRepository;
   final AccountRepository _accountRepository;
 
@@ -39,6 +43,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   // 個別のステータス
   DataLoadingStatus loadingCharacter = DataLoadingStatus.none;
   DataLoadingStatus loadingStage = DataLoadingStatus.none;
+  DataLoadingStatus loadingLetter = DataLoadingStatus.none;
   DataLoadingStatus loadingBackup = DataLoadingStatus.none;
   DataLoadingStatus loadingRestore = DataLoadingStatus.none;
 
@@ -47,12 +52,14 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
 
   int characterCount;
   int stageCount;
+  int letterCount;
 
   Future<void> load() async {
     await _accountRepository.load();
     final isLogIn = _accountRepository.isLogIn;
 
     if (!isLogIn) {
+      await _loadDataCount();
       _status = _Status.notLogin;
       notifyListeners();
       return;
@@ -100,6 +107,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   Future<void> _loadDataCount() async {
     characterCount = await _characterRepository.count();
     stageCount = await _stageRepository.count();
+    letterCount = await _letterRepository.count();
   }
 
   Future<void> logout() async {
@@ -169,6 +177,26 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
     } catch (e) {
       RSLogger.e('ステージデータ更新処理でエラーが発生しました', e);
       loadingStage = DataLoadingStatus.error;
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> refreshLetter() async {
+    if (loadingLetter == DataLoadingStatus.loading) {
+      return;
+    }
+
+    loadingLetter = DataLoadingStatus.loading;
+    notifyListeners();
+
+    try {
+      await _letterRepository.update();
+      letterCount = await _letterRepository.count();
+      loadingLetter = DataLoadingStatus.complete;
+    } catch (e) {
+      RSLogger.e('お便りデータ更新処理でエラーが発生しました', e);
+      loadingLetter = DataLoadingStatus.error;
     }
 
     notifyListeners();

@@ -55,7 +55,7 @@ class AccountPage extends StatelessWidget {
         _rowDataUpdateLabel(context),
         _rowCharacterReload(),
         _rowStageReload(),
-        // TODO ここにお便りのデータ更新を入れる
+        _rowLetterReload(),
         Divider(color: Theme.of(context).accentColor),
         _rowBackUp(),
         _rowRestore(),
@@ -74,7 +74,7 @@ class AccountPage extends StatelessWidget {
         _rowDataUpdateLabel(context),
         _rowCharacterReload(),
         _rowStageReload(),
-        // TODO ここにお便りのデータ更新を入れる
+        _rowLetterReload(),
         Divider(color: Theme.of(context).accentColor),
         _googleSignInButton(),
       ],
@@ -188,6 +188,29 @@ class AccountPage extends StatelessWidget {
               message: RSStrings.accountStageUpdateDialogMessage,
               positiveListener: () {
                 viewModel.refreshStage();
+              },
+            ).show();
+          },
+        );
+      },
+    );
+  }
+
+  Widget _rowLetterReload() {
+    return Consumer<AccountPageViewModel>(
+      builder: (context, viewModel, child) {
+        return _rowItemViewWithCount(
+          context,
+          icon: const Icon(Icons.mail),
+          title: RSStrings.accountLetterUpdateLabel,
+          registerCount: viewModel.letterCount ?? 0,
+          loadingStatus: viewModel.loadingLetter,
+          onTapListener: () async {
+            RSDialog(
+              context,
+              message: RSStrings.accountLetterUpdateDialogMessage,
+              positiveListener: () {
+                viewModel.refreshLetter();
               },
             ).show();
           },
@@ -346,14 +369,6 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  ///
-  /// ステータスは以下のようにしたい
-  /// Firestoreからステータス取得して更新があるかみる
-  /// 　なければ「最新」と表示する。タップしても何も起きない
-  /// 　あれば「更新あり」と表示する
-  /// 　　タップしたら更新しに行く。その間はロード中にする
-  /// 　　ロード終了したら「最新」と表示する
-  ///
   Widget _rowStatus(DataLoadingStatus loadingStatus) {
     Color statusColor;
     String statusTitle;

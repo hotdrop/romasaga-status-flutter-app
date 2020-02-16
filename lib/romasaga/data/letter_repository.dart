@@ -40,4 +40,8 @@ class LetterRepository {
 
     await _dao.refresh(newLetters);
   }
+
+  Future<int> count() async {
+    return await _dao.count();
+  }
 }
