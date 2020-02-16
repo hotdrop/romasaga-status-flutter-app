@@ -29,6 +29,13 @@ class LetterDao {
     return entities.map((entity) => entity.toLetter()).toList();
   }
 
+  Future<int> count() async {
+    final db = await _dbProvider.database;
+    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM ${LetterEntity.tableName}'));
+
+    return count;
+  }
+
   Future<void> refresh(List<Letter> letters) async {
     final db = await _dbProvider.database;
     await db.transaction((txn) async {

@@ -39,6 +39,8 @@ class RSStrings {
   static const String letterDetailPageTitle = '運営からのお便り詳細';
   static const String letterNothingMessage = '運営からのお便りデータが0件でした。';
   static const String letterLoadingErrorMessage = '運営からのお便りデータ取得時にエラーが発生しました。';
+  static const String letterNowLoading = 'Now Loading...';
+  static const String letterLoadingFailure = '画像取得エラー！';
   static const String letterYearLabel = '年';
   static const String letterMonthLabel = '月';
 
@@ -50,6 +52,7 @@ class RSStrings {
   static const String accountDataUpdateDetail = 'キャラ情報はタップで新キャラのみ取得、ロングタップで全キャラ取得します。';
   static const String accountCharacterUpdateLabel = 'キャラクター';
   static const String accountStageUpdateLabel = 'ステージ';
+  static const String accountLetterUpdateLabel = 'お便り';
   static const String accountRegisterCountLabel = '現在の登録数:';
   static const String accountStatusBackupLabel = 'バックアップ';
   static const String accountStatusBackupDateLabel = '前回実行日:';
@@ -58,6 +61,7 @@ class RSStrings {
   static const String accountCharacterOnlyNewUpdateDialogMessage = '新しくサーバーに登録されたキャラクター情報を取得します。\nよろしいですか？';
   static const String accountCharacterAllUpdateDialogMessage = '注意！！\n現在アプリ内に保存されているキャラクター情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
   static const String accountStageUpdateDialogMessage = '現在のステージ情報を全て削除してサーバーから再取得します。\nよろしいですか？';
+  static const String accountLetterUpdateDialogMessage = '新しくサーバーに登録されたお便り情報を取得します。\nよろしいですか？';
   static const String accountStatusBackupDialogMessage = '現在のキャラクターステータスをサーバーへバックアップします。\nよろしいですか？';
   static const String accountStatusRestoreDescriptionLabel = 'アプリ内のデータを上書きします。';
   static const String accountStatusRestoreDialogMessage = 'サーバーにバックアップしたキャラクターステータスを復元します。\n現在のステータスは全て消えますがよろしいですか？';

@@ -36,10 +36,6 @@ class DBProvider {
         _createTableV1(batch);
         _upgradeV2(batch);
         await batch.commit();
-        await db.execute(CharacterEntity.createTableSql);
-        await db.execute(StyleEntity.createTableSql);
-        await db.execute(StageEntity.createTableSql);
-        await db.execute(MyStatusEntity.createTableSql);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         var batch = db.batch();

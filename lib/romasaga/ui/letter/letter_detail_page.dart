@@ -77,9 +77,39 @@ class _LetterDetailPage extends StatelessWidget {
   Widget _widgetImageGif() {
     return CachedNetworkImage(
       imageUrl: letter.gifFilePath,
-      // TODO ここなんかいい感じのplaceholderにしたい・・errorのイメージも同様
-      placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Image.asset('res/charIcons/default.jpg', fit: BoxFit.fill),
+      placeholder: (context, url) => _loadingIcon(letter.loadingIcon),
+      errorWidget: (context, url, error) => _errorIcon(letter.loadingIcon),
+    );
+  }
+
+  Widget _loadingIcon(String res) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(height: 108),
+        Image.asset(res),
+        Padding(
+          padding: EdgeInsets.only(top: 8),
+          child: Text(RSStrings.letterNowLoading),
+        ),
+      ],
+    );
+  }
+
+  Widget _errorIcon(String res) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(height: 108),
+        Image.asset(res),
+        Padding(
+          padding: EdgeInsets.only(top: 8),
+          child: Text(
+            RSStrings.letterLoadingFailure,
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      ],
     );
   }
 }
