@@ -37,4 +37,16 @@ class Letter {
       return RSColors.winter;
     }
   }
+
+  String get loadingIcon {
+    if (3 <= month && month <= 5) {
+      return 'res/icons/loading_spring.gif';
+    } else if (6 <= month && month <= 8) {
+      return 'res/icons/loading_summer.gif';
+    } else if (9 <= month && month <= 11) {
+      return 'res/icons/loading_fall.gif';
+    } else {
+      return 'res/icons/loading_winter.gif';
+    }
+  }
 }
