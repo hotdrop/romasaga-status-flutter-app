@@ -39,6 +39,8 @@ class RSStrings {
   static const String letterDetailPageTitle = '運営からのお便り詳細';
   static const String letterNothingMessage = '運営からのお便りデータが0件でした。';
   static const String letterLoadingErrorMessage = '運営からのお便りデータ取得時にエラーが発生しました。';
+  static const String letterNowLoading = 'Now Loading...';
+  static const String letterLoadingFailure = '画像取得エラー！';
   static const String letterYearLabel = '年';
   static const String letterMonthLabel = '月';
 

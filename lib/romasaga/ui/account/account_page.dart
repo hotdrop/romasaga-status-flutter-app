@@ -199,6 +199,7 @@ class AccountPage extends StatelessWidget {
   Widget _rowLetterReload() {
     return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
+        // TODO お便りは登録数より最新の年月を表示した方がいい
         return _rowItemViewWithCount(
           context,
           icon: const Icon(Icons.mail),
