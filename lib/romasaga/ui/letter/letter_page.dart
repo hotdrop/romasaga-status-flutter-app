@@ -79,7 +79,7 @@ class LetterPage extends StatelessWidget {
         } else {
           return SideHeaderListView(
             itemCount: items.length,
-            itemExtend: 330.0,
+            itemExtend: 340.0,
             headerBuilder: (context, index) => _createHeader(items[index]),
             itemBuilder: (context, index) => _createCardLetter(context, items, index),
             hasSameHeader: (headerIndex, itemIndex) => items[headerIndex].year == items[itemIndex].year,

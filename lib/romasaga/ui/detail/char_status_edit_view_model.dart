@@ -115,7 +115,7 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
   }
 
   void decrementAgi() {
-    _currentStatus.incrementAgi();
+    _currentStatus.decrementAgi();
     notifyListeners();
   }
 
@@ -132,7 +132,7 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
   }
 
   void decrementInt() {
-    _currentStatus.incrementInt();
+    _currentStatus.decrementInt();
     notifyListeners();
   }
 
@@ -149,7 +149,7 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
   }
 
   void decrementSpirit() {
-    _currentStatus.incrementSpirit();
+    _currentStatus.decrementSpirit();
     notifyListeners();
   }
 
@@ -166,7 +166,7 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
   }
 
   void decrementLove() {
-    _currentStatus.incrementLove();
+    _currentStatus.decrementLove();
     notifyListeners();
   }
 
@@ -183,7 +183,7 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
   }
 
   void decrementAttr() {
-    _currentStatus.incrementAttr();
+    _currentStatus.decrementAttr();
     notifyListeners();
   }
 
