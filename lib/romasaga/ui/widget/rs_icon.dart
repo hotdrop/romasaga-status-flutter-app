@@ -178,10 +178,12 @@ class WeaponCategoryIcon extends StatelessWidget {
         return 'res/icons/icon_type_cold.png';
       case WeaponCategory.thunder:
         return 'res/icons/icon_type_thunder.png';
+      case WeaponCategory.wind:
+        return 'res/icons/icon_type_wind.png';
       case WeaponCategory.dark:
         return 'res/icons/icon_type_dark.png';
-      case WeaponCategory.light:
-        return 'res/icons/icon_type_light.png';
+      case WeaponCategory.shine:
+        return 'res/icons/icon_type_shine.png';
       default:
         throw FormatException("不正なWeaponCategoryです。category=$category");
     }

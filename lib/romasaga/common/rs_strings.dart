@@ -102,5 +102,5 @@ class RSStrings {
   static const String magicWater = '水術';
   static const String magicWind = '風術';
   static const String magicYin = '陰術';
-  static const String magicShine = '光術';
+  static const String magicShine = '陽術';
 }

@@ -25,11 +25,11 @@ class WeaponType {
       case RSStrings.magicWater:
         return WeaponCategory.cold;
       case RSStrings.magicWind:
-        return WeaponCategory.thunder;
+        return WeaponCategory.wind;
       case RSStrings.magicYin:
         return WeaponCategory.dark;
       case RSStrings.magicShine:
-        return WeaponCategory.light;
+        return WeaponCategory.shine;
       default:
         return null;
     }
@@ -107,6 +107,7 @@ enum WeaponCategory {
   heat, // 熱
   cold, // 冷
   thunder, // 雷
+  wind, // 風
   dark, // 陰
-  light, // 陽
+  shine, // 陽
 }
