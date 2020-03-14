@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 import '../characters/char_list_row_item.dart';
 import '../search/search_page_view_model.dart';
@@ -266,6 +267,9 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
           ),
           onChanged: (query) {
             viewModel.findByKeyword(query);
+          },
+          onSubmitted: (v) {
+            _showBackDropPanel();
           },
         );
       } else {

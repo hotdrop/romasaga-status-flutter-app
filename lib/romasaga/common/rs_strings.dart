@@ -12,6 +12,7 @@ class RSStrings {
   static const String characterListNotPossessionTabTitle = '未所持';
   static const String characterListOrderStatus = 'ステータス';
   static const String characterListOrderHp = 'HP';
+  static const String characterListOrderProduction = '作品';
   static const String nothingCharacterFavoriteMessage = 'お気に入りキャラは設定されていません。';
   static const String nothingCharacterPossessionMessage = '持っているキャラはいません。';
   static const String characterListLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';

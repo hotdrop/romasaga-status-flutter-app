@@ -88,6 +88,10 @@ class CharListPage extends StatelessWidget {
               value: OrderType.hp,
               child: const Text(RSStrings.characterListOrderHp),
             ),
+            PopupMenuItem(
+              value: OrderType.production,
+              child: const Text(RSStrings.characterListOrderProduction),
+            ),
           ],
           initialValue: viewModel.selectedOrderType,
           onSelected: (value) {

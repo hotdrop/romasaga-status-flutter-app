@@ -122,7 +122,7 @@ class SearchPageViewModel extends foundation.ChangeNotifier {
 
   void _search() {
     charactersWithFilter = _originalCharacters
-        .where((c) => _condition.filterWord(c.name))
+        .where((c) => _condition.filterWord(targetName: c.name, targetProduction: c.production))
         .where((c) => _condition.filterHave(c.myStatus.have))
         .where((c) => _condition.filterFavorite(c.myStatus.favorite))
         .where((c) => _condition.filterWeaponType(c.weaponType))
