@@ -89,7 +89,7 @@ class _LetterDetailPage extends StatelessWidget {
         SizedBox(height: 108),
         Image.asset(res),
         Padding(
-          padding: EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 8),
           child: Text(RSStrings.letterNowLoading),
         ),
       ],
@@ -103,7 +103,7 @@ class _LetterDetailPage extends StatelessWidget {
         SizedBox(height: 108),
         Image.asset(res),
         Padding(
-          padding: EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 8),
           child: Text(
             RSStrings.letterLoadingFailure,
             style: TextStyle(color: Colors.red),
