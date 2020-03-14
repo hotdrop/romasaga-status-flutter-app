@@ -74,6 +74,9 @@ class CharListViewModel extends foundation.ChangeNotifier {
       case OrderType.hp:
         _characters.sort((c1, c2) => c2.myStatus.hp.compareTo(c1.myStatus.hp));
         break;
+      case OrderType.production:
+        _characters.sort((c1, c2) => c1.id.compareTo(c2.id));
+        break;
       default:
         _characters.sort((c1, c2) => c2.myStatus.sumWithoutHp().compareTo(c1.myStatus.sumWithoutHp()));
         break;
@@ -107,5 +110,5 @@ class CharListViewModel extends foundation.ChangeNotifier {
   }
 }
 
-enum OrderType { status, hp }
+enum OrderType { status, hp, production }
 enum _PageState { loading, success, error }
