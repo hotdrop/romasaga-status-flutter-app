@@ -82,11 +82,11 @@ class CharListPage extends StatelessWidget {
           itemBuilder: (_) => [
             PopupMenuItem(
               value: OrderType.status,
-              child: Text(RSStrings.characterListOrderStatus),
+              child: const Text(RSStrings.characterListOrderStatus),
             ),
             PopupMenuItem(
               value: OrderType.hp,
-              child: Text(RSStrings.characterListOrderHp),
+              child: const Text(RSStrings.characterListOrderHp),
             ),
           ],
           initialValue: viewModel.selectedOrderType,
@@ -104,7 +104,9 @@ class CharListPage extends StatelessWidget {
     if (characters.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text(RSStrings.nothingCharacterFavoriteMessage)],
+        children: <Widget>[
+          const Text(RSStrings.nothingCharacterFavoriteMessage),
+        ],
       );
     }
 
@@ -122,7 +124,9 @@ class CharListPage extends StatelessWidget {
     if (characters.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text(RSStrings.nothingCharacterPossessionMessage)],
+        children: <Widget>[
+          const Text(RSStrings.nothingCharacterPossessionMessage),
+        ],
       );
     }
 

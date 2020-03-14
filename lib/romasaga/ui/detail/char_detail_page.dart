@@ -220,7 +220,7 @@ class CharDetailPage extends StatelessWidget {
   Widget _contentStatus() {
     return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
       return Container(
-        margin: EdgeInsets.only(left: 4.0, right: 4.0),
+        margin: const EdgeInsets.only(left: 4.0, right: 4.0),
         decoration: BoxDecoration(
           color: Theme.of(context).backgroundColor,
           borderRadius: BorderRadius.only(

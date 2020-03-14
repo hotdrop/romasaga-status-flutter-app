@@ -137,7 +137,7 @@ class LetterPage extends StatelessWidget {
       children: <Widget>[
         Image.asset(res),
         Padding(
-          padding: EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 8),
           child: Text(RSStrings.letterNowLoading),
         ),
       ],
@@ -150,7 +150,7 @@ class LetterPage extends StatelessWidget {
       children: <Widget>[
         Image.asset(res),
         Padding(
-          padding: EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 8),
           child: Text(
             RSStrings.letterLoadingFailure,
             style: TextStyle(color: Colors.red),

@@ -130,11 +130,11 @@ class AccountPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(left: 16.0, top: 16.0),
+          padding: const EdgeInsets.only(left: 16.0, top: 16.0),
           child: Text(RSStrings.accountDataUpdateTitle),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 16.0, right: 16.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
           child: Text(RSStrings.accountDataUpdateDetail, style: TextStyle(fontSize: 12.0, color: RSColors.textAttention)),
         )
       ],
@@ -270,7 +270,7 @@ class AccountPage extends StatelessWidget {
   Widget _rowLogoutButton() {
     return Consumer<AccountPageViewModel>(builder: (context, viewModel, child) {
       return Padding(
-        padding: EdgeInsets.only(top: 16.0),
+        padding: const EdgeInsets.only(top: 16.0),
         child: OutlineButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           child: Text(RSStrings.accountLogoutButton),

@@ -180,7 +180,7 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
 
   Widget _filterViewSubTitle(BuildContext context, String title) {
     return Padding(
-      padding: EdgeInsets.only(left: 4.0, top: 32.0, right: 4.0, bottom: 16.0),
+      padding: const EdgeInsets.only(left: 4.0, top: 32.0, right: 4.0, bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
