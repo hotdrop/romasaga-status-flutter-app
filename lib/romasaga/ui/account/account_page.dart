@@ -144,11 +144,11 @@ class AccountPage extends StatelessWidget {
   Widget _rowCharacterReload() {
     return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
-        return _rowItemViewWithCount(
+        return _rowItemView(
           context,
           icon: const Icon(Icons.people),
           title: RSStrings.accountCharacterUpdateLabel,
-          registerCount: viewModel.characterCount ?? 0,
+          subTitle: '${RSStrings.accountRegisterCountLabel} ${viewModel.characterCount ?? 0}',
           loadingStatus: viewModel.loadingCharacter,
           onTapListener: () {
             RSDialog(
@@ -176,11 +176,11 @@ class AccountPage extends StatelessWidget {
   Widget _rowStageReload() {
     return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
-        return _rowItemViewWithCount(
+        return _rowItemView(
           context,
           icon: const Icon(Icons.map),
           title: RSStrings.accountStageUpdateLabel,
-          registerCount: viewModel.stageCount ?? 0,
+          subTitle: '${RSStrings.accountLatestStageLabel} ${viewModel.latestStageName ?? 'ー'}',
           loadingStatus: viewModel.loadingStage,
           onTapListener: () async {
             RSDialog(
@@ -199,12 +199,11 @@ class AccountPage extends StatelessWidget {
   Widget _rowLetterReload() {
     return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
-        // TODO お便りは登録数より最新の年月を表示した方がいい
-        return _rowItemViewWithCount(
+        return _rowItemView(
           context,
           icon: const Icon(Icons.mail),
           title: RSStrings.accountLetterUpdateLabel,
-          registerCount: viewModel.letterCount ?? 0,
+          subTitle: '${RSStrings.accountLatestLetterLabel} ${viewModel.latestLetterName ?? 'ー'}',
           loadingStatus: viewModel.loadingLetter,
           onTapListener: () async {
             RSDialog(
@@ -293,6 +292,7 @@ class AccountPage extends StatelessWidget {
     @required String subTitle,
     @required DataLoadingStatus loadingStatus,
     @required Function onTapListener,
+    Function onLongTapListener,
   }) {
     return InkWell(
       child: Padding(
@@ -307,6 +307,11 @@ class AccountPage extends StatelessWidget {
       ),
       onTap: () {
         onTapListener();
+      },
+      onLongPress: () {
+        if (onLongTapListener != null) {
+          onLongTapListener();
+        }
       },
     );
   }
@@ -324,48 +329,6 @@ class AccountPage extends StatelessWidget {
       children: <Widget>[
         Text(title),
         Text(subTitle, style: Theme.of(context).textTheme.caption),
-      ],
-    );
-  }
-
-  Widget _rowItemViewWithCount(
-    BuildContext context, {
-    @required Icon icon,
-    @required String title,
-    @required int registerCount,
-    @required DataLoadingStatus loadingStatus,
-    @required Function onTapListener,
-    Function onLongTapListener,
-  }) {
-    return InkWell(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: <Widget>[
-            Expanded(child: _rowIcon(icon), flex: 1),
-            Expanded(child: _rowTitleWithCount(context, title, registerCount), flex: 8),
-            Expanded(child: _rowStatus(loadingStatus), flex: 2),
-          ],
-        ),
-      ),
-      onTap: () {
-        onTapListener();
-      },
-      onLongPress: () {
-        if (onLongTapListener != null) {
-          onLongTapListener();
-        }
-      },
-    );
-  }
-
-  Widget _rowTitleWithCount(BuildContext context, String title, int registerCount) {
-    final str = '${RSStrings.accountRegisterCountLabel} ${registerCount ?? 0}';
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(title),
-        Text(str, style: Theme.of(context).textTheme.caption),
       ],
     );
   }

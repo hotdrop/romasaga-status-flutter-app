@@ -1,3 +1,5 @@
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+
 import 'local/letter_dao.dart';
 import 'remote/letter_api.dart';
 
@@ -41,7 +43,9 @@ class LetterRepository {
     await _dao.refresh(newLetters);
   }
 
-  Future<int> count() async {
-    return await _dao.count();
+  Future<String> getLatestLetterName() async {
+    final letters = await _dao.findAll();
+    final latestLetter = letters.last;
+    return '${latestLetter.year}${RSStrings.letterYearLabel}${latestLetter.month}${RSStrings.letterMonthLabel} ${latestLetter.shortTitle}';
   }
 }

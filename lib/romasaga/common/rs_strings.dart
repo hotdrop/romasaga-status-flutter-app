@@ -54,6 +54,8 @@ class RSStrings {
   static const String accountStageUpdateLabel = 'ステージ';
   static const String accountLetterUpdateLabel = 'お便り';
   static const String accountRegisterCountLabel = '現在の登録数:';
+  static const String accountLatestStageLabel = '最新:';
+  static const String accountLatestLetterLabel = '最新:';
   static const String accountStatusBackupLabel = 'バックアップ';
   static const String accountStatusBackupDateLabel = '前回実行日:';
   static const String accountStatusRestoreLabel = '復元';

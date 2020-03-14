@@ -44,7 +44,8 @@ class StageRepository {
     await _dao.refresh(stages);
   }
 
-  Future<int> count() async {
-    return await _dao.count();
+  Future<String> getLatestStageName() async {
+    final stages = await _dao.findAll();
+    return stages.first.name;
   }
 }

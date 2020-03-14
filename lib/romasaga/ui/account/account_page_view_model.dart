@@ -47,12 +47,12 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   DataLoadingStatus loadingBackup = DataLoadingStatus.none;
   DataLoadingStatus loadingRestore = DataLoadingStatus.none;
 
-  String _previousBackupDateStr = "-";
+  String _previousBackupDateStr = 'ー';
   String get previousBackupDateStr => _previousBackupDateStr;
 
   int characterCount;
-  int stageCount;
-  int letterCount;
+  String latestStageName;
+  String latestLetterName;
 
   Future<void> load() async {
     await _accountRepository.load();
@@ -106,8 +106,8 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
 
   Future<void> _loadDataCount() async {
     characterCount = await _characterRepository.count();
-    stageCount = await _stageRepository.count();
-    letterCount = await _letterRepository.count();
+    latestStageName = await _stageRepository.getLatestStageName();
+    latestLetterName = await _letterRepository.getLatestLetterName();
   }
 
   Future<void> logout() async {
@@ -172,7 +172,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
 
     try {
       await _stageRepository.refresh();
-      stageCount = await _stageRepository.count();
+      latestStageName = await _stageRepository.getLatestStageName();
       loadingStage = DataLoadingStatus.complete;
     } catch (e) {
       RSLogger.e('ステージデータ更新処理でエラーが発生しました', e);
@@ -192,7 +192,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
 
     try {
       await _letterRepository.update();
-      letterCount = await _letterRepository.count();
+      latestLetterName = await _letterRepository.getLatestLetterName();
       loadingLetter = DataLoadingStatus.complete;
     } catch (e) {
       RSLogger.e('お便りデータ更新処理でエラーが発生しました', e);
