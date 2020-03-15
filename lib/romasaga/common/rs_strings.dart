@@ -44,30 +44,42 @@ class RSStrings {
   static const String letterYearLabel = '年';
   static const String letterMonthLabel = '月';
 
+  // アカウント画面
   static const String accountPageTitle = 'アカウント';
   static const String accountNotLoginEmailLabel = '未ログイン';
   static const String accountNotLoginNameLabel = 'ー';
   static const String accountLoginWithGoogle = 'Googleアカウントでログイン';
+  static const String accountLogoutButton = 'Log out';
+
   static const String accountDataUpdateTitle = 'サーバーからデータ取得';
   static const String accountDataUpdateDetail = 'キャラ情報はタップで新キャラのみ取得、ロングタップで全キャラ取得します。';
   static const String accountCharacterUpdateLabel = 'キャラクター';
   static const String accountStageUpdateLabel = 'ステージ';
   static const String accountLetterUpdateLabel = 'お便り';
+
   static const String accountRegisterCountLabel = '現在の登録数:';
   static const String accountLatestStageLabel = '最新:';
   static const String accountLatestLetterLabel = '最新:';
   static const String accountStatusBackupLabel = 'バックアップ';
   static const String accountStatusBackupDateLabel = '前回実行日:';
   static const String accountStatusRestoreLabel = '復元';
-  static const String accountLogoutButton = 'Log out';
+
+  static const String accountDialogTitleSuccess = '成功';
+  static const String accountDialogTitleError = 'エラー';
+
   static const String accountCharacterOnlyNewUpdateDialogMessage = '新しくサーバーに登録されたキャラクター情報を取得します。\nよろしいですか？';
   static const String accountCharacterAllUpdateDialogMessage = '注意！！\n現在アプリ内に保存されているキャラクター情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
+
   static const String accountStageUpdateDialogMessage = '現在のステージ情報を全て削除してサーバーから再取得します。\nよろしいですか？';
+  static const String accountStageUpdateDialogSuccessMessage = '最新のステージ情報を取得しました。';
+
   static const String accountLetterUpdateDialogMessage = '新しくサーバーに登録されたお便り情報を取得します。\nよろしいですか？';
+
   static const String accountStatusBackupDialogMessage = '現在のキャラクターステータスをサーバーへバックアップします。\nよろしいですか？';
   static const String accountStatusRestoreDescriptionLabel = 'アプリ内のデータを上書きします。';
   static const String accountStatusRestoreDialogMessage = 'サーバーにバックアップしたキャラクターステータスを復元します。\n現在のステータスは全て消えますがよろしいですか？';
   static const String accountLogoutDialogMessage = 'ログアウトしてもよろしいですか？';
+
   static const String updateStatusNone = 'ー';
   static const String updateStatusUpdate = '更新中';
   static const String updateStatusComplete = '完了';

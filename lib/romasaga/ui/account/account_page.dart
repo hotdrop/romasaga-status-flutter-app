@@ -1,4 +1,6 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
 import 'account_page_view_model.dart';
@@ -176,24 +178,61 @@ class AccountPage extends StatelessWidget {
   Widget _rowStageReload() {
     return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
-        return _rowItemView(
-          context,
-          icon: const Icon(Icons.map),
-          title: RSStrings.accountStageUpdateLabel,
-          subTitle: '${RSStrings.accountLatestStageLabel} ${viewModel.latestStageName ?? 'ー'}',
-          loadingStatus: viewModel.loadingStage,
-          onTapListener: () async {
-            RSDialog(
-              context,
-              message: RSStrings.accountStageUpdateDialogMessage,
-              positiveListener: () {
-                viewModel.refreshStage();
+        return InkWell(
+          child: ListTile(
+            leading: const Icon(Icons.map),
+            title: const Text(RSStrings.accountStageUpdateLabel),
+            subtitle: Text('${RSStrings.accountLatestStageLabel} ${viewModel.latestStageName ?? 'ー'}'),
+          ),
+          onTap: () async {
+            await AwesomeDialog(
+              context: context,
+              dialogType: DialogType.INFO,
+              tittle: RSStrings.accountStageUpdateLabel,
+              desc: RSStrings.accountStageUpdateDialogMessage,
+              btnCancelOnPress: () {},
+              btnOkOnPress: () async {
+                await _executeWithStateDialog(
+                  context,
+                  execFunc: viewModel.refreshStage(),
+                  successMessage: RSStrings.accountStageUpdateDialogSuccessMessage,
+                  errorMessage: viewModel.errorMessage,
+                );
               },
             ).show();
           },
         );
       },
     );
+  }
+
+  Future<void> _executeWithStateDialog(
+    BuildContext context, {
+    @required Future<bool> execFunc,
+    @required String successMessage,
+    @required String errorMessage,
+  }) async {
+    final progressDialog = ProgressDialog(context, type: ProgressDialogType.Normal);
+    await progressDialog.show();
+    final isSuccess = await execFunc;
+    await progressDialog.hide();
+    if (isSuccess) {
+      await AwesomeDialog(
+        context: context,
+        dialogType: DialogType.SUCCES,
+        tittle: RSStrings.accountDialogTitleSuccess,
+        desc: successMessage,
+        btnOkOnPress: () {},
+      ).show();
+    } else {
+      await AwesomeDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        tittle: RSStrings.accountDialogTitleError,
+        desc: errorMessage,
+        btnOkOnPress: () {},
+      ).show();
+    }
   }
 
   Widget _rowLetterReload() {
@@ -222,7 +261,7 @@ class AccountPage extends StatelessWidget {
   Widget _rowBackUp() {
     return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
-        final subTitleText = '${RSStrings.accountStatusBackupDateLabel} ${viewModel.previousBackupDateStr}';
+        final subTitleText = '${RSStrings.accountStatusBackupDateLabel} ${viewModel.backupDateLabel}';
         return _rowItemView(
           context,
           icon: const Icon(Icons.backup),

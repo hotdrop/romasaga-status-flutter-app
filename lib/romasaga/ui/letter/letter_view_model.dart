@@ -18,6 +18,9 @@ class LetterViewModel extends foundation.ChangeNotifier {
   bool get isLoaded => _pageState == _PageState.loaded;
   bool get isError => _pageState == _PageState.error;
 
+  ///
+  /// このViewModelを使うときに必ず呼ぶ
+  ///
   Future<void> load() async {
     _pageState = _PageState.loading;
     notifyListeners();

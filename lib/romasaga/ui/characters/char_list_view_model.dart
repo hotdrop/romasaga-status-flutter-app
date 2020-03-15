@@ -29,6 +29,9 @@ class CharListViewModel extends foundation.ChangeNotifier {
   bool get isSuccess => _pageState == _PageState.success;
   bool get isError => _pageState == _PageState.error;
 
+  ///
+  /// このViewModelを使うときに必ず呼ぶ
+  ///
   Future<void> load() async {
     await refreshCharacters();
   }
