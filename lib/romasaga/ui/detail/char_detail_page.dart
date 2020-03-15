@@ -304,7 +304,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// 合計ステータス欄を一緒に表示する現スタイルの最大値
+  /// 現スタイルの最大値
   ///
   Widget _contentUpperTotalLimitStatus(BuildContext context, int totalLimit) {
     return Row(

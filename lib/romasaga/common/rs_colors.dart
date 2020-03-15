@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 class RSColors {
   static const Color accent = Colors.blueAccent;
   static const Color bottomNavigationBackground = Color(0x6A000000);
-
-  // common
-  static const Color textAttention = Colors.yellowAccent;
-  static const Color iconBackground = Colors.grey;
   static const Color fabBackground = Colors.white30;
 
   // Chip
@@ -39,10 +35,4 @@ class RSColors {
   static const Color spring = Colors.pinkAccent;
   static const Color summer = Colors.blueAccent;
   static const Color fall = Color(0xFFF2E100);
-
-  // アカウント画面
-  static const Color dataLoadStatusNone = Colors.grey;
-  static const Color dataLoadStatusLoading = Colors.green;
-  static const Color dataLoadStatusComplete = Colors.blueAccent;
-  static const Color dataLoadStatusError = Colors.redAccent;
 }

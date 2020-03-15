@@ -34,6 +34,9 @@ class SearchPageViewModel extends foundation.ChangeNotifier {
 
   bool isKeywordSearch = false;
 
+  ///
+  /// このViewModelを使うときに必ず呼ぶ
+  ///
   Future<void> load() async {
     _pageState = _PageState.loading;
     notifyListeners();

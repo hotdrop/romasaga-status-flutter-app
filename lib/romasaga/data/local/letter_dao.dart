@@ -23,7 +23,6 @@ class LetterDao {
     if (results.isEmpty) {
       return [];
     }
-    RSLogger.d('DBから取得した件数 = ${results.length}');
 
     final List<LetterEntity> entities = results.map((it) => LetterEntity.fromMap(it)).toList();
     return entities.map((entity) => entity.toLetter()).toList();
