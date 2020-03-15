@@ -148,7 +148,10 @@ class AccountPage extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: Text(RSStrings.accountDataUpdateDetail, style: TextStyle(fontSize: 12.0, color: RSColors.textAttention)),
+          child: Text(
+            RSStrings.accountDataUpdateDetail,
+            style: Theme.of(context).textTheme.caption,
+          ),
         )
       ],
     );
