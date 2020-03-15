@@ -34,19 +34,13 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   final MyStatusRepository _myStatusRepository;
   final AccountRepository _accountRepository;
 
-  // 全体のステータス
+  // ステータス
   _Status _status = _Status.nowLoading;
   bool get nowLoading => _status == _Status.nowLoading;
   bool get loggedIn => _status == _Status.loggedIn;
 
-  // 個別のステータス
   String _errorMessage = '';
   String get errorMessage => _errorMessage;
-
-  DataLoadingStatus loadingCharacter = DataLoadingStatus.none;
-  DataLoadingStatus loadingLetter = DataLoadingStatus.none;
-  DataLoadingStatus loadingBackup = DataLoadingStatus.none;
-  DataLoadingStatus loadingRestore = DataLoadingStatus.none;
 
   int characterCount;
   String latestStageName;
@@ -103,6 +97,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
     } catch (e) {
       RSLogger.e('ログイン中にエラーが発生しました。', e);
       _status = _Status.notLogin;
+      notifyListeners();
     }
   }
 
@@ -112,57 +107,42 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
     latestLetterName = await _letterRepository.getLatestLetterName();
   }
 
-  Future<void> logout() async {
-    _status = _Status.nowLoading;
-    notifyListeners();
-
+  Future<bool> logout() async {
     try {
       await _accountRepository.logout();
       _status = _Status.notLogin;
       notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('ログアウト中にエラーが発生しました。', e);
-      _status = _Status.loggedIn;
+      _errorMessage = '$e';
+      return false;
     }
   }
 
-  Future<void> registerNewCharacters() async {
-    if (loadingCharacter == DataLoadingStatus.loading) {
-      return;
-    }
-
-    loadingCharacter = DataLoadingStatus.loading;
-    notifyListeners();
-
+  Future<bool> registerNewCharacters() async {
     try {
       await _characterRepository.update();
-      loadingCharacter = DataLoadingStatus.complete;
+      notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('新キャラのデータ登録処理でエラーが発生しました', e);
-      loadingCharacter = DataLoadingStatus.error;
+      _errorMessage = '$e';
+      return false;
     }
-
-    notifyListeners();
   }
 
-  Future<void> updateAllCharacters() async {
-    if (loadingCharacter == DataLoadingStatus.loading) {
-      return;
-    }
-
-    loadingCharacter = DataLoadingStatus.loading;
-    notifyListeners();
-
+  Future<bool> updateAllCharacters() async {
     try {
       await _characterRepository.refresh();
       characterCount = await _characterRepository.count();
-      loadingCharacter = DataLoadingStatus.complete;
+      notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('キャラデータ全更新処理でエラーが発生しました', e);
-      loadingCharacter = DataLoadingStatus.error;
+      _errorMessage = '$e';
+      return false;
     }
-
-    notifyListeners();
   }
 
   Future<bool> refreshStage() async {
@@ -204,10 +184,11 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
     }
   }
 
-  Future<void> restore() async {
+  Future<bool> restore() async {
     try {
       await _myStatusRepository.restore();
       notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('ステータス復元処理でエラーが発生しました', e);
       _errorMessage = '$e';
@@ -217,5 +198,3 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
 }
 
 enum _Status { nowLoading, notLogin, loggedIn }
-
-enum DataLoadingStatus { none, loading, complete, error }
