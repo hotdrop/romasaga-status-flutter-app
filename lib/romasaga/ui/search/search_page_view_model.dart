@@ -34,6 +34,9 @@ class SearchPageViewModel extends foundation.ChangeNotifier {
 
   bool isKeywordSearch = false;
 
+  ///
+  /// このViewModelを使うときに必ず呼ぶ
+  ///
   Future<void> load() async {
     _pageState = _PageState.loading;
     notifyListeners();
@@ -122,7 +125,7 @@ class SearchPageViewModel extends foundation.ChangeNotifier {
 
   void _search() {
     charactersWithFilter = _originalCharacters
-        .where((c) => _condition.filterWord(c.name))
+        .where((c) => _condition.filterWord(targetName: c.name, targetProduction: c.production))
         .where((c) => _condition.filterHave(c.myStatus.have))
         .where((c) => _condition.filterFavorite(c.myStatus.favorite))
         .where((c) => _condition.filterWeaponType(c.weaponType))

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'weapon.dart';
 
 class SearchCondition {
@@ -6,11 +8,11 @@ class SearchCondition {
   bool isFavorite = false;
   bool haveChar = false;
 
-  bool filterWord(String name) {
+  bool filterWord({@required String targetName, @required String targetProduction}) {
     if (keyword == null) {
       return true;
     }
-    return name.contains(keyword);
+    return targetName.contains(keyword) || targetProduction.contains(keyword);
   }
 
   ///

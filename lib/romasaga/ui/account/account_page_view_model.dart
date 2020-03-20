@@ -34,39 +34,35 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   final MyStatusRepository _myStatusRepository;
   final AccountRepository _accountRepository;
 
-  // 全体のステータス
-  _Status _status = _Status.loading;
-
-  bool get nowLoading => _status == _Status.loading;
+  // ステータス
+  _Status _status = _Status.nowLoading;
+  bool get nowLoading => _status == _Status.nowLoading;
   bool get loggedIn => _status == _Status.loggedIn;
 
-  // 個別のステータス
-  DataLoadingStatus loadingCharacter = DataLoadingStatus.none;
-  DataLoadingStatus loadingStage = DataLoadingStatus.none;
-  DataLoadingStatus loadingLetter = DataLoadingStatus.none;
-  DataLoadingStatus loadingBackup = DataLoadingStatus.none;
-  DataLoadingStatus loadingRestore = DataLoadingStatus.none;
-
-  String _previousBackupDateStr = "-";
-  String get previousBackupDateStr => _previousBackupDateStr;
+  String _errorMessage = '';
+  String get errorMessage => _errorMessage;
 
   int characterCount;
-  int stageCount;
-  int letterCount;
+  String latestStageName;
+  String latestLetterName;
+  String backupDateLabel = 'ー';
 
+  ///
+  /// このViewModelを使うときに必ず呼ぶ
+  ///
   Future<void> load() async {
     await _accountRepository.load();
     final isLogIn = _accountRepository.isLogIn;
 
     if (!isLogIn) {
-      await _loadDataCount();
+      await _loadRowSubTitleData();
       _status = _Status.notLogin;
       notifyListeners();
       return;
     }
 
-    _previousBackupDateStr = await _myStatusRepository.getPreviousBackupDateStr();
-    await _loadDataCount();
+    backupDateLabel = await _myStatusRepository.getPreviousBackupDateStr();
+    await _loadRowSubTitleData();
 
     _status = _Status.loggedIn;
     notifyListeners();
@@ -89,159 +85,116 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   }
 
   Future<void> loginWithGoogle() async {
-    _status = _Status.loading;
-    try {
-      notifyListeners();
+    _status = _Status.nowLoading;
+    notifyListeners();
 
+    try {
       await _accountRepository.login();
-      await _loadDataCount();
+      await _loadRowSubTitleData();
 
       _status = _Status.loggedIn;
       notifyListeners();
     } catch (e) {
       RSLogger.e('ログイン中にエラーが発生しました。', e);
       _status = _Status.notLogin;
+      notifyListeners();
     }
   }
 
-  Future<void> _loadDataCount() async {
+  Future<void> _loadRowSubTitleData() async {
     characterCount = await _characterRepository.count();
-    stageCount = await _stageRepository.count();
-    letterCount = await _letterRepository.count();
+    latestStageName = await _stageRepository.getLatestStageName();
+    latestLetterName = await _letterRepository.getLatestLetterName();
   }
 
-  Future<void> logout() async {
-    _status = _Status.loading;
+  Future<bool> logout() async {
     try {
       await _accountRepository.logout();
-
       _status = _Status.notLogin;
       notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('ログアウト中にエラーが発生しました。', e);
-      _status = _Status.loggedIn;
+      _errorMessage = '$e';
+      return false;
     }
   }
 
-  Future<void> registerNewCharacters() async {
-    if (loadingCharacter == DataLoadingStatus.loading) {
-      return;
-    }
-
-    loadingCharacter = DataLoadingStatus.loading;
-    notifyListeners();
-
+  Future<bool> registerNewCharacters() async {
     try {
       await _characterRepository.update();
-      loadingCharacter = DataLoadingStatus.complete;
+      notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('新キャラのデータ登録処理でエラーが発生しました', e);
-      loadingCharacter = DataLoadingStatus.error;
+      _errorMessage = '$e';
+      return false;
     }
-
-    notifyListeners();
   }
 
-  Future<void> updateAllCharacters() async {
-    if (loadingCharacter == DataLoadingStatus.loading) {
-      return;
-    }
-
-    loadingCharacter = DataLoadingStatus.loading;
-    notifyListeners();
-
+  Future<bool> updateAllCharacters() async {
     try {
       await _characterRepository.refresh();
       characterCount = await _characterRepository.count();
-      loadingCharacter = DataLoadingStatus.complete;
+      notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('キャラデータ全更新処理でエラーが発生しました', e);
-      loadingCharacter = DataLoadingStatus.error;
+      _errorMessage = '$e';
+      return false;
     }
-
-    notifyListeners();
   }
 
-  Future<void> refreshStage() async {
-    if (loadingStage == DataLoadingStatus.loading) {
-      return;
-    }
-
-    loadingStage = DataLoadingStatus.loading;
-    notifyListeners();
-
+  Future<bool> refreshStage() async {
     try {
       await _stageRepository.refresh();
-      stageCount = await _stageRepository.count();
-      loadingStage = DataLoadingStatus.complete;
+      latestStageName = await _stageRepository.getLatestStageName();
+      notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('ステージデータ更新処理でエラーが発生しました', e);
-      loadingStage = DataLoadingStatus.error;
+      _errorMessage = '$e';
+      return false;
     }
-
-    notifyListeners();
   }
 
-  Future<void> refreshLetter() async {
-    if (loadingLetter == DataLoadingStatus.loading) {
-      return;
-    }
-
-    loadingLetter = DataLoadingStatus.loading;
-    notifyListeners();
-
+  Future<bool> refreshLetter() async {
     try {
       await _letterRepository.update();
-      letterCount = await _letterRepository.count();
-      loadingLetter = DataLoadingStatus.complete;
+      latestLetterName = await _letterRepository.getLatestLetterName();
+      notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('お便りデータ更新処理でエラーが発生しました', e);
-      loadingLetter = DataLoadingStatus.error;
+      _errorMessage = '$e';
+      return false;
     }
-
-    notifyListeners();
   }
 
-  Future<void> backup() async {
-    if (loadingBackup == DataLoadingStatus.loading) {
-      return;
-    }
-
-    loadingBackup = DataLoadingStatus.loading;
-    notifyListeners();
-
+  Future<bool> backup() async {
     try {
       await _myStatusRepository.backup();
-      _previousBackupDateStr = await _myStatusRepository.getPreviousBackupDateStr();
-      loadingBackup = DataLoadingStatus.complete;
+      backupDateLabel = await _myStatusRepository.getPreviousBackupDateStr();
+      notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('ステータスバックアップ処理でエラーが発生しました', e);
-      loadingBackup = DataLoadingStatus.error;
+      _errorMessage = '$e';
+      return false;
     }
-
-    notifyListeners();
   }
 
-  Future<void> restore() async {
-    if (loadingRestore == DataLoadingStatus.loading) {
-      return;
-    }
-
-    loadingRestore = DataLoadingStatus.loading;
-    notifyListeners();
-
+  Future<bool> restore() async {
     try {
       await _myStatusRepository.restore();
-      loadingRestore = DataLoadingStatus.complete;
+      notifyListeners();
+      return true;
     } catch (e) {
       RSLogger.e('ステータス復元処理でエラーが発生しました', e);
-      loadingRestore = DataLoadingStatus.error;
+      _errorMessage = '$e';
+      return false;
     }
-
-    notifyListeners();
   }
 }
 
-enum _Status { loading, notLogin, loggedIn }
-
-enum DataLoadingStatus { none, loading, complete, error }
+enum _Status { nowLoading, notLogin, loggedIn }

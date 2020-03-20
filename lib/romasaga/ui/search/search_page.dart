@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 import '../characters/char_list_row_item.dart';
 import '../search/search_page_view_model.dart';
@@ -180,7 +181,7 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
 
   Widget _filterViewSubTitle(BuildContext context, String title) {
     return Padding(
-      padding: EdgeInsets.only(left: 4.0, top: 32.0, right: 4.0, bottom: 16.0),
+      padding: const EdgeInsets.only(left: 4.0, top: 32.0, right: 4.0, bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -266,6 +267,9 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
           ),
           onChanged: (query) {
             viewModel.findByKeyword(query);
+          },
+          onSubmitted: (v) {
+            _showBackDropPanel();
           },
         );
       } else {

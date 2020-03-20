@@ -85,7 +85,7 @@ class CharListRowItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          '${RSStrings.characterHp} ${character.myStatus.hp}',
+          '${RSStrings.hpName} ${character.myStatus.hp}',
           style: TextStyle(
             color: RSColors.characterDetailHpLabel,
           ),
