@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import 'account_page_view_model.dart';
 
-import '../../common/rs_colors.dart';
 import '../../common/rs_strings.dart';
 
 class AccountPage extends StatelessWidget {
@@ -44,8 +43,7 @@ class AccountPage extends StatelessWidget {
   }
 
   Widget _loadLoginView(BuildContext context, bool loggedIn) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return ListView(
       children: <Widget>[
         _rowAccountInfo(),
         Divider(color: Theme.of(context).accentColor),
@@ -98,10 +96,11 @@ class AccountPage extends StatelessWidget {
     return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
         return Padding(
-          padding: const EdgeInsets.only(top: 32.0),
+          padding: const EdgeInsets.all(32.0),
           child: RaisedButton(
+            padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
             color: Theme.of(context).accentColor,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
             child: Text(RSStrings.accountLoginWithGoogle),
             onPressed: () {
               if (viewModel.nowLoading) return;

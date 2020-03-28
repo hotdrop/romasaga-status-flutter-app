@@ -1,3 +1,5 @@
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+
 import 'local/stage_dao.dart';
 import 'remote/stage_api.dart';
 
@@ -46,6 +48,10 @@ class StageRepository {
 
   Future<String> getLatestStageName() async {
     final stages = await _dao.findAll();
-    return stages.first.name;
+    if (stages.isEmpty) {
+      return RSStrings.accountStageEmptyLabel;
+    } else {
+      return stages?.first?.name;
+    }
   }
 }
