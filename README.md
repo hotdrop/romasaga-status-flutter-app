@@ -16,3 +16,7 @@ Flutterの学習用で作成したロマサガRSのステータス管理用ア�
 # 設計
 最近AACでのMVVM構成に慣れてしまったのでこのアプリも`View-ViewModel-Repository`で作成しました。  
 BLoCパターンは利用しておらず、状態管理はProvdierのChangeNotifierProviderで行なっています。
+
+# 環境
+実際に使っているアプリとデバッグ用アプリが混在するのを避けるためAndroidだけProductFlavorの設定をしています。
+AndroidStudioのmain.dart実行時のConfiguration設定で「Build flavor:」に"develop"を指定します。

@@ -45,7 +45,11 @@ class LetterRepository {
 
   Future<String> getLatestLetterName() async {
     final letters = await _dao.findAll();
-    final latestLetter = letters.last;
-    return '${latestLetter.year}${RSStrings.letterYearLabel}${latestLetter.month}${RSStrings.letterMonthLabel} ${latestLetter.shortTitle}';
+    if (letters.isEmpty) {
+      return RSStrings.accountLetterEmptyLabel;
+    } else {
+      final latestLetter = letters.last;
+      return '${latestLetter.year}${RSStrings.letterYearLabel}${latestLetter.month}${RSStrings.letterMonthLabel} ${latestLetter.shortTitle}';
+    }
   }
 }

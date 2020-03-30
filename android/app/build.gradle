@@ -80,6 +80,27 @@ android {
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }
+
+    flavorDimensions("default")
+
+    productFlavors {
+        develop {
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+        product {
+        }
+    }
+
+    variantFilter { variant ->
+        variant.flavors*.name.each { flavorName ->
+            if ((flavorName.contains("product") && (variant.buildType.name == "develop")) ||
+                    (flavorName.contains("develop") && (variant.buildType.name == "product"))
+            ) {
+                setIgnore(true)
+            }
+        }
+    }
 }
 
 flutter {

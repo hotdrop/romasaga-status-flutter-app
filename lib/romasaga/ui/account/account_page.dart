@@ -299,7 +299,7 @@ class AccountPage extends StatelessWidget {
           onTap: () async {
             await AwesomeDialog(
               context: context,
-              dialogType: DialogType.INFO,
+              dialogType: DialogType.WARNING,
               tittle: RSStrings.accountStatusRestoreLabel,
               desc: RSStrings.accountStatusRestoreDialogMessage,
               btnCancelOnPress: () {},
