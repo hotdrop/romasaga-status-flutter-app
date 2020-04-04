@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 import '../characters/char_list_row_item.dart';
 import '../search/search_page_view_model.dart';
@@ -223,7 +222,7 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
       return Wrap(
         spacing: 16.0,
         runSpacing: 16.0,
-        children: WeaponType.types.map<Widget>((type) {
+        children: WeaponType.values.map<Widget>((type) {
           bool selected = viewModel.isSelectWeaponType(type);
           return WeaponIcon.normal(
             type,

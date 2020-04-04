@@ -1,3 +1,5 @@
+import 'package:rsapp/romasaga/model/weapon.dart';
+
 import '../model/stage.dart';
 import '../model/character.dart';
 import '../model/style.dart';
@@ -16,7 +18,7 @@ extension CharacterEntityMapper on CharacterEntity {
       this.id,
       this.name,
       this.production,
-      this.weaponType,
+      Weapon(type: this.weaponType),
       selectedStyleRank: this.selectedStyleRank,
       selectedIconFilePath: this.selectedIconFilePath,
     );
@@ -29,7 +31,7 @@ extension CharacterMapper on Character {
       this.id,
       this.name,
       this.production,
-      this.weaponType.name,
+      this.weapon.type.index,
       this.selectedStyleRank,
       this.selectedIconFilePath,
     );

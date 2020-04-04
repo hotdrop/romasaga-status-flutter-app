@@ -108,7 +108,6 @@ class SearchPageViewModel extends foundation.ChangeNotifier {
   }
 
   void findByWeaponType(WeaponType type) {
-    RSLogger.d("${type.name} をフィルター指定します。");
     _condition.weaponType = type;
     _search();
   }
@@ -128,7 +127,7 @@ class SearchPageViewModel extends foundation.ChangeNotifier {
         .where((c) => _condition.filterWord(targetName: c.name, targetProduction: c.production))
         .where((c) => _condition.filterHave(c.myStatus.have))
         .where((c) => _condition.filterFavorite(c.myStatus.favorite))
-        .where((c) => _condition.filterWeaponType(c.weaponType))
+        .where((c) => _condition.filterWeaponType(c.weapon))
         .toList();
     RSLogger.d("フィルター後のキャラ数=${charactersWithFilter.length}");
     notifyListeners();

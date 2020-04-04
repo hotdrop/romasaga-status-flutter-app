@@ -114,34 +114,29 @@ class WeaponIcon extends StatelessWidget {
   }
 
   String _getWeaponIconRes() {
-    switch (_type.name) {
-      case RSStrings.sword:
-        return 'res/icons/icon_weap_sword.png';
-      case RSStrings.largeSword:
-        return 'res/icons/icon_weap_large_sword.png';
-      case RSStrings.axe:
-        return 'res/icons/icon_weap_axe.png';
-      case RSStrings.hummer:
-        return 'res/icons/icon_weap_hummer.png';
-      case RSStrings.knuckle:
-        return 'res/icons/icon_weap_knuckle.png';
-      case RSStrings.gun:
-        return 'res/icons/icon_weap_gun.png';
-      case RSStrings.rapier:
-        return 'res/icons/icon_weap_rapier.png';
-      case RSStrings.bow:
-        return 'res/icons/icon_weap_bow.png';
-      case RSStrings.spear:
-        return 'res/icons/icon_weap_spear.png';
-      case RSStrings.rod:
-      case RSStrings.magicFire:
-      case RSStrings.magicWater:
-      case RSStrings.magicWind:
-      case RSStrings.magicYin:
-      case RSStrings.magicShine:
-        return 'res/icons/icon_weap_rod.png';
+    switch (_type) {
+      case WeaponType.sword:
+        return 'res/icons/icon_weapon_sword.png';
+      case WeaponType.largeSword:
+        return 'res/icons/icon_weapon_large_sword.png';
+      case WeaponType.axe:
+        return 'res/icons/icon_weapon_axe.png';
+      case WeaponType.hummer:
+        return 'res/icons/icon_weapon_hummer.png';
+      case WeaponType.knuckle:
+        return 'res/icons/icon_weapon_knuckle.png';
+      case WeaponType.gun:
+        return 'res/icons/icon_weapon_gun.png';
+      case WeaponType.rapier:
+        return 'res/icons/icon_weapon_rapier.png';
+      case WeaponType.bow:
+        return 'res/icons/icon_weapon_bow.png';
+      case WeaponType.spear:
+        return 'res/icons/icon_weapon_spear.png';
+      case WeaponType.rod:
+        return 'res/icons/icon_weapon_rod.png';
       default:
-        throw FormatException("不正なWeaponTypeです。weaponType=${_type.name}");
+        throw FormatException("不正なWeaponTypeです。weaponType=$_type");
     }
   }
 }
@@ -167,25 +162,14 @@ class WeaponCategoryIcon extends StatelessWidget {
   String _weaponCategory() {
     switch (category) {
       case WeaponCategory.slash:
-        return 'res/icons/icon_type_slash.png';
+        return 'res/icons/icon_weapon_type_slash.png';
       case WeaponCategory.strike:
-        return 'res/icons/icon_type_strike.png';
+      case WeaponCategory.rod:
+        return 'res/icons/icon_weapon_type_strike.png';
       case WeaponCategory.poke:
-        return 'res/icons/icon_type_poke.png';
-      case WeaponCategory.heat:
-        return 'res/icons/icon_type_heat.png';
-      case WeaponCategory.cold:
-        return 'res/icons/icon_type_cold.png';
-      case WeaponCategory.thunder:
-        return 'res/icons/icon_type_thunder.png';
-      case WeaponCategory.wind:
-        return 'res/icons/icon_type_wind.png';
-      case WeaponCategory.dark:
-        return 'res/icons/icon_type_dark.png';
-      case WeaponCategory.shine:
-        return 'res/icons/icon_type_shine.png';
+        return 'res/icons/icon_weapon_type_poke.png';
       default:
-        throw FormatException("不正なWeaponCategoryです。category=$category");
+        return null;
     }
   }
 }

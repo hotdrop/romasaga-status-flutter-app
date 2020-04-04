@@ -69,15 +69,15 @@ class CharListRowItem extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _convertWeaponIcon(character.weaponType),
+            _convertWeaponIcon(character.weapon),
           ],
         )
       ],
     );
   }
 
-  Widget _convertWeaponIcon(WeaponType type) {
-    return WeaponIcon.small(type);
+  Widget _convertWeaponIcon(Weapon weapon) {
+    return WeaponIcon.small(weapon.type);
   }
 
   Widget _labelStatus(Character character, BuildContext context) {

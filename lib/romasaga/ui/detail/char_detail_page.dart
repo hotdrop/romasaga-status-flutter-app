@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
 
 import '../../model/character.dart';
 import '../../model/status.dart';
@@ -145,13 +146,14 @@ class CharDetailPage extends StatelessWidget {
             backgroundColor: Theme.of(context).disabledColor,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 4.0, left: 16.0),
-          child: CircleAvatar(
-            child: WeaponCategoryIcon(viewModel.weaponCategory),
-            backgroundColor: Theme.of(context).disabledColor,
+        if (viewModel.weaponCategory != WeaponCategory.rod)
+          Padding(
+            padding: const EdgeInsets.only(top: 4.0, left: 16.0),
+            child: CircleAvatar(
+              child: WeaponCategoryIcon(viewModel.weaponCategory),
+              backgroundColor: Theme.of(context).disabledColor,
+            ),
           ),
-        ),
       ],
     );
   }

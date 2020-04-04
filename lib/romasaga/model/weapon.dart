@@ -1,11 +1,57 @@
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+
 import '../common/rs_strings.dart';
 
-class WeaponType {
-  const WeaponType(this.name);
+class Weapon {
+  Weapon({String name, int type}) {
+    if (name != null) {
+      _type = _convertType(name);
+      _category = _convertCategory(name);
+    }
+    if (type != null) {
+      _type = WeaponType.values.firstWhere((v) => v.index == type, orElse: () => null);
+      _category = _convertCategoryByType(_type);
+    }
+    if (_type == null || _category == null) {
+      RSLogger.d('typeまたはcategoryがnullです');
+      throw FormatException('typeまたはcategoryがnullです');
+    }
+  }
 
-  final String name;
+  WeaponType _type;
+  WeaponType get type => _type;
 
-  WeaponCategory get category {
+  WeaponCategory _category;
+  WeaponCategory get category => _category;
+
+  WeaponType _convertType(String name) {
+    switch (name) {
+      case RSStrings.sword:
+        return WeaponType.sword;
+      case RSStrings.largeSword:
+        return WeaponType.largeSword;
+      case RSStrings.axe:
+        return WeaponType.axe;
+      case RSStrings.hummer:
+        return WeaponType.hummer;
+      case RSStrings.knuckle:
+        return WeaponType.knuckle;
+      case RSStrings.gun:
+        return WeaponType.gun;
+      case RSStrings.rapier:
+        return WeaponType.rapier;
+      case RSStrings.spear:
+        return WeaponType.spear;
+      case RSStrings.bow:
+        return WeaponType.bow;
+      case RSStrings.rod:
+        return WeaponType.rod;
+      default:
+        return null;
+    }
+  }
+
+  WeaponCategory _convertCategory(String name) {
     switch (name) {
       case RSStrings.sword:
       case RSStrings.largeSword:
@@ -14,100 +60,56 @@ class WeaponType {
       case RSStrings.hummer:
       case RSStrings.knuckle:
       case RSStrings.gun:
-      case RSStrings.rod:
         return WeaponCategory.strike;
       case RSStrings.rapier:
       case RSStrings.spear:
       case RSStrings.bow:
         return WeaponCategory.poke;
-      case RSStrings.magicFire:
-        return WeaponCategory.heat;
-      case RSStrings.magicWater:
-        return WeaponCategory.cold;
-      case RSStrings.magicWind:
-        return WeaponCategory.wind;
-      case RSStrings.magicYin:
-        return WeaponCategory.dark;
-      case RSStrings.magicShine:
-        return WeaponCategory.shine;
+      case RSStrings.rod:
+        return WeaponCategory.rod;
       default:
         return null;
     }
   }
 
-  bool isRod() => name == RSStrings.rod;
-
-  bool isMagic() {
-    switch (name) {
-      case RSStrings.magicFire:
-      case RSStrings.magicWater:
-      case RSStrings.magicWind:
-      case RSStrings.magicYin:
-      case RSStrings.magicShine:
-        return true;
+  WeaponCategory _convertCategoryByType(WeaponType type) {
+    switch (type) {
+      case WeaponType.sword:
+      case WeaponType.largeSword:
+      case WeaponType.axe:
+        return WeaponCategory.slash;
+      case WeaponType.hummer:
+      case WeaponType.knuckle:
+      case WeaponType.gun:
+        return WeaponCategory.strike;
+      case WeaponType.rapier:
+      case WeaponType.spear:
+      case WeaponType.bow:
+        return WeaponCategory.poke;
+      case WeaponType.rod:
+        return WeaponCategory.rod;
       default:
-        return false;
+        return null;
     }
   }
+}
 
-  int sortOrder() {
-    switch (name) {
-      case RSStrings.sword:
-        return 1;
-      case RSStrings.largeSword:
-        return 2;
-      case RSStrings.axe:
-        return 3;
-      case RSStrings.hummer:
-        return 4;
-      case RSStrings.knuckle:
-        return 5;
-      case RSStrings.gun:
-        return 6;
-      case RSStrings.rapier:
-        return 7;
-      case RSStrings.spear:
-        return 9;
-      case RSStrings.bow:
-        return 10;
-      case RSStrings.rod:
-      case RSStrings.magicFire:
-      case RSStrings.magicWater:
-      case RSStrings.magicWind:
-      case RSStrings.magicYin:
-      case RSStrings.magicShine:
-        return 11;
-      default:
-        return 12;
-    }
-  }
-
-  static List<WeaponType> get types => [
-        WeaponType(RSStrings.sword),
-        WeaponType(RSStrings.largeSword),
-        WeaponType(RSStrings.axe),
-        WeaponType(RSStrings.hummer),
-        WeaponType(RSStrings.knuckle),
-        WeaponType(RSStrings.gun),
-        WeaponType(RSStrings.rapier),
-        WeaponType(RSStrings.spear),
-        WeaponType(RSStrings.bow),
-        WeaponType(RSStrings.rod),
-      ];
-
-  bool operator ==(dynamic o) => o is WeaponType && o.name == name;
-
-  int get hashCode => name.hashCode;
+enum WeaponType {
+  sword,
+  largeSword,
+  axe,
+  hummer,
+  knuckle,
+  gun,
+  rapier,
+  spear,
+  bow,
+  rod,
 }
 
 enum WeaponCategory {
   slash, // 斬
   strike, // 打
   poke, // 突
-  heat, // 熱
-  cold, // 冷
-  thunder, // 雷
-  wind, // 風
-  dark, // 陰
-  shine, // 陽
+  rod, // 杖
 }

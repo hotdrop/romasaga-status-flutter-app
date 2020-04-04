@@ -12,7 +12,7 @@ class CharacterEntity {
       : id = map[columnId] as int,
         name = map[columnName] as String,
         production = map[columnProduction] as String,
-        weaponType = map[columnWeaponType] as String,
+        weaponType = map[columnWeaponType] as int,
         selectedStyleRank = map[columnSelectedStyleRank] as String,
         selectedIconFilePath = map[columnSelectedIconFilePath] as String;
 
@@ -22,7 +22,7 @@ class CharacterEntity {
         $columnId INTEGER,
         $columnName TEXT,
         $columnProduction TEXT,
-        $columnWeaponType TEXT,
+        $columnWeaponType INTEGER,
         $columnSelectedStyleRank TEXT,
         $columnSelectedIconFilePath TEXT
       )
@@ -38,7 +38,7 @@ class CharacterEntity {
   final String production;
 
   static const String columnWeaponType = 'weapon_type';
-  final String weaponType;
+  final int weaponType;
 
   static const String columnSelectedStyleRank = 'selected_style_rank';
   final String selectedStyleRank;
