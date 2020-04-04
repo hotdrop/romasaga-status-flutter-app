@@ -65,7 +65,7 @@ void main() {
     expect(resultCharacters[0].id, expectCharacters[0].id);
     expect(resultCharacters[0].name, expectCharacters[0].name);
     expect(resultCharacters[0].production, expectCharacters[0].production);
-    expect(resultCharacters[0].weapon, expectCharacters[0].weapon);
+    expect(resultCharacters[0].weapon.type, expectCharacters[0].weapon.type);
     expect(resultCharacters[0].selectedStyleRank, expectCharacters[0].selectedStyleRank);
     expect(resultCharacters[0].selectedIconFilePath, expectCharacters[0].selectedIconFilePath);
 
@@ -86,7 +86,7 @@ void main() {
     expect(resultCharacters[1].id, expectCharacters[1].id);
     expect(resultCharacters[1].name, expectCharacters[1].name);
     expect(resultCharacters[1].production, expectCharacters[1].production);
-    expect(resultCharacters[1].weapon, expectCharacters[1].weapon);
+    expect(resultCharacters[1].weapon.type, expectCharacters[1].weapon.type);
     expect(resultCharacters[1].selectedStyleRank, expectCharacters[1].selectedStyleRank);
     expect(resultCharacters[1].selectedIconFilePath, expectCharacters[1].selectedIconFilePath);
 
@@ -202,7 +202,7 @@ void main() {
     expect(resultCharacters[0].id, expectCharacters[0].id);
     expect(resultCharacters[0].name, expectCharacters[0].name);
     expect(resultCharacters[0].production, expectCharacters[0].production);
-    expect(resultCharacters[0].weapon, expectCharacters[0].weapon);
+    expect(resultCharacters[0].weapon.type, expectCharacters[0].weapon.type);
     expect(resultCharacters[0].selectedStyleRank, expectCharacters[0].selectedStyleRank);
     expect(resultCharacters[0].selectedIconFilePath, expectCharacters[0].selectedIconFilePath);
 
@@ -223,7 +223,7 @@ void main() {
     expect(resultCharacters[1].id, expectCharacters[1].id);
     expect(resultCharacters[1].name, expectCharacters[1].name);
     expect(resultCharacters[1].production, expectCharacters[1].production);
-    expect(resultCharacters[1].weapon, expectCharacters[1].weapon);
+    expect(resultCharacters[1].weapon.type, expectCharacters[1].weapon.type);
     expect(resultCharacters[1].selectedStyleRank, expectCharacters[1].selectedStyleRank);
     expect(resultCharacters[1].selectedIconFilePath, expectCharacters[1].selectedIconFilePath);
 
@@ -258,7 +258,7 @@ void main() {
     expect(resultCharacters[2].id, expectCharacters[2].id);
     expect(resultCharacters[2].name, expectCharacters[2].name);
     expect(resultCharacters[2].production, expectCharacters[2].production);
-    expect(resultCharacters[2].weapon, expectCharacters[2].weapon);
+    expect(resultCharacters[2].weapon.type, expectCharacters[2].weapon.type);
     expect(resultCharacters[2].selectedStyleRank, expectCharacters[2].selectedStyleRank);
     expect(resultCharacters[2].selectedIconFilePath, expectCharacters[2].selectedIconFilePath);
 
