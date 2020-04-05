@@ -49,8 +49,7 @@ class RSStrings {
   static const String accountNotLoginEmailLabel = '未ログイン';
   static const String accountNotLoginNameLabel = 'ー';
   static const String accountLoginWithGoogle = 'Googleアカウントでログイン';
-
-  static const String accountLogoutTitle = 'ログアウト';
+  static const String accountLogoutTitle = 'Googleアカウントからログアウト';
   static const String accountLogoutDialogMessage = 'ログアウトしてもよろしいですか？';
   static const String accountLogoutSuccessMessage = 'ログアウトが完了しました。';
 
