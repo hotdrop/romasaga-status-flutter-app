@@ -118,6 +118,6 @@ class RSStrings {
   static const String attributeWind = '風';
   static const String attributeSoil = '土';
   static const String attributeThunder = '雷';
-  static const String attributeDark = '陰';
-  static const String attributeShine = '陽';
+  static const String attributeDark = '闇';
+  static const String attributeShine = '光';
 }
