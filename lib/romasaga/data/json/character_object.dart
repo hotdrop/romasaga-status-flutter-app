@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:rsapp/romasaga/model/attribute.dart';
 
 import '../../common/rs_logger.dart';
 
 import '../../model/character.dart';
+import '../../model/weapon.dart';
 import '../../model/style.dart';
 
 @JsonSerializable()
@@ -43,7 +45,19 @@ class CharactersJsonObject {
   }
 
   static Character _jsonObjectToCharacter(CharacterJsonObject obj) {
-    final character = Character(obj.id, obj.name, obj.production, obj.weaponType);
+    Character character;
+    bool haveAttribute = obj.attributeNames?.isNotEmpty ?? false;
+    if (haveAttribute) {
+      character = Character(
+        obj.id,
+        obj.name,
+        obj.production,
+        Weapon(name: obj.weaponTypeName),
+        attributes: obj.attributeNames.map((v) => Attribute(name: v)).toList(),
+      );
+    } else {
+      character = Character(obj.id, obj.name, obj.production, Weapon(name: obj.weaponTypeName));
+    }
 
     for (var styleObj in obj.styles) {
       final style = _jsonObjectToStyle(character.id, styleObj);
@@ -77,18 +91,18 @@ class CharactersJsonObject {
 
 @JsonSerializable()
 class CharacterJsonObject {
-  const CharacterJsonObject(this.id, this.name, this.weaponType, this.production, this.styles);
-
   CharacterJsonObject.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int,
         name = json['name'] as String,
-        weaponType = json['weapon_type'] as String,
+        weaponTypeName = json['weapon_type'] as String,
+        attributeNames = (json['attributes'] as List)?.map((dynamic o) => o as String)?.toList(),
         production = json['production'] as String,
         styles = (json['styles'] as List)?.map((dynamic o) => StyleJsonObject.fromJson(o as Map<String, dynamic>))?.toList();
 
   final int id;
   final String name;
-  final String weaponType;
+  final String weaponTypeName;
+  final List<String> attributeNames;
   final String production;
   final List<StyleJsonObject> styles;
 }

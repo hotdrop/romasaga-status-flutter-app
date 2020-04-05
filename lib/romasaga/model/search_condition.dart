@@ -16,7 +16,7 @@ class SearchCondition {
   }
 
   ///
-  /// お気に入りのみにするか？のみフィルター可能
+  /// お気に入りフィルター可能
   /// お気に入りでないものはフィルターする価値ないのでしない。
   ///
   bool filterFavorite(bool fav) {
@@ -27,7 +27,7 @@ class SearchCondition {
   }
 
   ///
-  /// お気に入りと同様
+  /// 手持ちキャラのフィルター
   ///
   bool filterHave(bool hav) {
     if (!haveChar) {
@@ -36,16 +36,13 @@ class SearchCondition {
     return hav;
   }
 
-  bool filterWeaponType(WeaponType type) {
+  ///
+  /// 武器種別でのフィルタ
+  ///
+  bool filterWeaponType(Weapon weapon) {
     if (weaponType == null) {
       return true;
     }
-    // 杖を使用するキャラに設定されている武器種別は系統別の術となっている。
-    // 術は水や火など複数あるが武器種別としては「杖」1つのためフィルターは術なら術のもの全部を引っ掛ける
-    if (weaponType.isRod()) {
-      return type.isMagic();
-    } else {
-      return type == weaponType;
-    }
+    return weapon.type == weaponType;
   }
 }

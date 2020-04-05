@@ -1,3 +1,5 @@
+import 'package:rsapp/romasaga/model/attribute.dart';
+
 import 'weapon.dart';
 import 'status.dart';
 import 'style.dart';
@@ -7,16 +9,17 @@ class Character {
     this.id,
     this.name,
     this.production,
-    String weaponType, {
+    this.weapon, {
+    this.attributes,
     this.selectedStyleRank,
     this.selectedIconFilePath,
-  })  : this.weaponType = WeaponType(weaponType),
-        this.myStatus = MyStatus.empty(id);
+  }) : this.myStatus = MyStatus.empty(id);
 
   final int id;
   final String name;
   final String production; // 登場作品
-  final WeaponType weaponType;
+  final Weapon weapon;
+  final List<Attribute> attributes;
 
   String selectedStyleRank;
   String selectedIconFilePath;
@@ -25,7 +28,8 @@ class Character {
 
   MyStatus myStatus;
 
-  WeaponCategory get weaponCategory => weaponType.category;
+  WeaponType get weaponType => weapon.type;
+  WeaponCategory get weaponCategory => weapon.category;
   Style get selectedStyle => getStyle(selectedStyleRank);
 
   void addStyles(List<Style> styles) {
