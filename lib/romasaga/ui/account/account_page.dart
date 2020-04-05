@@ -66,9 +66,11 @@ class AccountPage extends StatelessWidget {
   Widget _rowLogoutButton() {
     return Consumer<AccountPageViewModel>(builder: (context, viewModel, child) {
       return Padding(
-        padding: const EdgeInsets.only(top: 32.0),
+        padding: const EdgeInsets.all(32.0),
         child: OutlineButton(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+          color: Theme.of(context).accentColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
           child: Text(RSStrings.accountLogoutTitle),
           onPressed: () async {
             await AwesomeDialog(
