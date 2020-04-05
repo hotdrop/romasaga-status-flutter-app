@@ -49,8 +49,7 @@ class RSStrings {
   static const String accountNotLoginEmailLabel = '未ログイン';
   static const String accountNotLoginNameLabel = 'ー';
   static const String accountLoginWithGoogle = 'Googleアカウントでログイン';
-
-  static const String accountLogoutTitle = 'ログアウト';
+  static const String accountLogoutTitle = 'Googleアカウントからログアウト';
   static const String accountLogoutDialogMessage = 'ログアウトしてもよろしいですか？';
   static const String accountLogoutSuccessMessage = 'ログアウトが完了しました。';
 
@@ -105,19 +104,19 @@ class RSStrings {
   static const String sword = '剣';
   static const String largeSword = '大剣';
   static const String axe = '斧';
-
   static const String hummer = '棍棒';
   static const String knuckle = '体術';
   static const String gun = '銃';
-  static const String rod = '杖';
-
   static const String rapier = '小剣';
   static const String spear = '槍';
   static const String bow = '弓';
+  static const String rod = '杖';
 
-  static const String magicFire = '火術';
-  static const String magicWater = '水術';
-  static const String magicWind = '風術';
-  static const String magicYin = '陰術';
-  static const String magicShine = '陽術';
+  static const String attributeFire = '火';
+  static const String attributeCold = '水';
+  static const String attributeWind = '風';
+  static const String attributeSoil = '土';
+  static const String attributeThunder = '雷';
+  static const String attributeDark = '闇';
+  static const String attributeShine = '光';
 }

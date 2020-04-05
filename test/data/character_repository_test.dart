@@ -1,10 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/local/character_dao.dart';
 import 'package:rsapp/romasaga/data/remote/character_api.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/style.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
 
 void main() {
   final String dummyNetworkPath = '/dummy/net/icon.jpg';
@@ -12,10 +14,9 @@ void main() {
   List<Character> createCase1TestData() {
     final testCharacters = <Character>[];
 
-    final c1 = Character(1001, 'single style', 'prd', 'weapon', selectedStyleRank: 's')
-      ..addStyle(Style(1001, 's', 't', 'iconName1', 1, 2, 3, 4, 5, 6, 7, 8));
+    final c1 = Character(1001, 'single style', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 's')..addStyle(Style(1001, 's', 't', 'iconName1', 1, 2, 3, 4, 5, 6, 7, 8));
 
-    final c2 = Character(1002, 'multi style', 'prd', 'weapon', selectedStyleRank: 's')
+    final c2 = Character(1002, 'multi style', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 's')
       ..addStyle(Style(1002, 's', 't', 'iconName2', 10, 11, 12, 13, 14, 15, 16, 17))
       ..addStyle(Style(1002, 'a', 't', 'iconName3', 21, 22, 23, 24, 25, 26, 27, 28));
 
@@ -28,10 +29,10 @@ void main() {
   List<Character> createCase1ResultData() {
     final testCharacters = <Character>[];
 
-    final c1 = Character(1001, 'single style', 'prd', 'weapon', selectedStyleRank: 's', selectedIconFilePath: dummyNetworkPath)
+    final c1 = Character(1001, 'single style', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 's', selectedIconFilePath: dummyNetworkPath)
       ..addStyle(Style(1001, 's', 't', 'iconName1', 1, 2, 3, 4, 5, 6, 7, 8)..iconFilePath = dummyNetworkPath);
 
-    final c2 = Character(1002, 'multi style', 'prd', 'weapon', selectedStyleRank: 's', selectedIconFilePath: dummyNetworkPath)
+    final c2 = Character(1002, 'multi style', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 's', selectedIconFilePath: dummyNetworkPath)
       ..addStyle(Style(1002, 's', 't', 'iconName2', 10, 11, 12, 13, 14, 15, 16, 17)..iconFilePath = dummyNetworkPath)
       ..addStyle(Style(1002, 'a', 't', 'iconName3', 21, 22, 23, 24, 25, 26, 27, 28)..iconFilePath = dummyNetworkPath);
 
@@ -64,7 +65,7 @@ void main() {
     expect(resultCharacters[0].id, expectCharacters[0].id);
     expect(resultCharacters[0].name, expectCharacters[0].name);
     expect(resultCharacters[0].production, expectCharacters[0].production);
-    expect(resultCharacters[0].weaponType, expectCharacters[0].weaponType);
+    expect(resultCharacters[0].weapon.type, expectCharacters[0].weapon.type);
     expect(resultCharacters[0].selectedStyleRank, expectCharacters[0].selectedStyleRank);
     expect(resultCharacters[0].selectedIconFilePath, expectCharacters[0].selectedIconFilePath);
 
@@ -85,7 +86,7 @@ void main() {
     expect(resultCharacters[1].id, expectCharacters[1].id);
     expect(resultCharacters[1].name, expectCharacters[1].name);
     expect(resultCharacters[1].production, expectCharacters[1].production);
-    expect(resultCharacters[1].weaponType, expectCharacters[1].weaponType);
+    expect(resultCharacters[1].weapon.type, expectCharacters[1].weapon.type);
     expect(resultCharacters[1].selectedStyleRank, expectCharacters[1].selectedStyleRank);
     expect(resultCharacters[1].selectedIconFilePath, expectCharacters[1].selectedIconFilePath);
 
@@ -123,10 +124,10 @@ void main() {
   List<Character> createCase2LocalTestData() {
     final testCharacters = <Character>[];
 
-    final c1 = Character(1001, 'local single', 'prd', 'weapon', selectedStyleRank: 's', selectedIconFilePath: dummyLocalPath)
+    final c1 = Character(1001, 'local single', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 's', selectedIconFilePath: dummyLocalPath)
       ..addStyle(Style(1001, 's', 'local', 'localIconName1', 1, 2, 3, 4, 5, 6, 7, 8)..iconFilePath = dummyLocalPath);
 
-    final c2 = Character(1002, 'local one style', 'prd', 'weapon', selectedStyleRank: 's', selectedIconFilePath: dummyLocalPath)
+    final c2 = Character(1002, 'local one style', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 's', selectedIconFilePath: dummyLocalPath)
       ..addStyle(Style(1002, 's', 'local', 'localIconName2', 10, 11, 12, 13, 14, 15, 16, 17)..iconFilePath = dummyLocalPath);
 
     testCharacters.add(c1);
@@ -138,14 +139,14 @@ void main() {
   List<Character> createCase2RemoteTestData() {
     final testCharacters = <Character>[];
 
-    final c1 = Character(1001, 'remote style1', 'prd', 'weapon', selectedStyleRank: 's')
+    final c1 = Character(1001, 'remote style1', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 's')
       ..addStyle(Style(1001, 's', 'remote', 'remoteName1', 91, 92, 93, 94, 95, 96, 97, 98));
 
-    final c2 = Character(1002, 'remote style2', 'prd', 'weapon', selectedStyleRank: 's')
+    final c2 = Character(1002, 'remote style2', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 's')
       ..addStyle(Style(1002, 's', 'remote', 'remoteName2', 100, 101, 102, 103, 104, 105, 106, 107))
       ..addStyle(Style(1002, 'a', 'remote', 'remoteName3', 21, 22, 23, 24, 25, 26, 27, 28));
 
-    final c3 = Character(1003, 'remote style3', 'prd', 'weapon', selectedStyleRank: 'ss')
+    final c3 = Character(1003, 'remote style3', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 'ss')
       ..addStyle(Style(1003, 'ss', 'remote', 'remoteName2', 31, 32, 33, 34, 35, 36, 37, 38))
       ..addStyle(Style(1003, 's', 'remote', 'remoteName3', 41, 42, 43, 44, 45, 46, 47, 48));
 
@@ -159,14 +160,14 @@ void main() {
   List<Character> createCase2ResultData() {
     final testCharacters = <Character>[];
 
-    final c1 = Character(1001, 'remote style1', 'prd', 'weapon', selectedStyleRank: 's', selectedIconFilePath: dummyLocalPath)
+    final c1 = Character(1001, 'remote style1', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 's', selectedIconFilePath: dummyLocalPath)
       ..addStyle(Style(1001, 's', 'remote', 'remoteName1', 91, 92, 93, 94, 95, 96, 97, 98)..iconFilePath = dummyLocalPath);
 
-    final c2 = Character(1002, 'remote style2', 'prd', 'weapon', selectedStyleRank: 's', selectedIconFilePath: dummyLocalPath)
+    final c2 = Character(1002, 'remote style2', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 's', selectedIconFilePath: dummyLocalPath)
       ..addStyle(Style(1002, 's', 'remote', 'remoteName2', 100, 101, 102, 103, 104, 105, 106, 107)..iconFilePath = dummyLocalPath)
       ..addStyle(Style(1002, 'a', 'remote', 'remoteName3', 21, 22, 23, 24, 25, 26, 27, 28)..iconFilePath = dummyNetworkPath);
 
-    final c3 = Character(1003, 'remote style3', 'prd', 'weapon', selectedStyleRank: 'ss', selectedIconFilePath: dummyNetworkPath)
+    final c3 = Character(1003, 'remote style3', 'prd', Weapon(name: RSStrings.sword), selectedStyleRank: 'ss', selectedIconFilePath: dummyNetworkPath)
       ..addStyle(Style(1003, 'ss', 'remote', 'remoteName2', 31, 32, 33, 34, 35, 36, 37, 38)..iconFilePath = dummyNetworkPath)
       ..addStyle(Style(1003, 's', 'remote', 'remoteName3', 41, 42, 43, 44, 45, 46, 47, 48)..iconFilePath = dummyNetworkPath);
 
@@ -201,7 +202,7 @@ void main() {
     expect(resultCharacters[0].id, expectCharacters[0].id);
     expect(resultCharacters[0].name, expectCharacters[0].name);
     expect(resultCharacters[0].production, expectCharacters[0].production);
-    expect(resultCharacters[0].weaponType, expectCharacters[0].weaponType);
+    expect(resultCharacters[0].weapon.type, expectCharacters[0].weapon.type);
     expect(resultCharacters[0].selectedStyleRank, expectCharacters[0].selectedStyleRank);
     expect(resultCharacters[0].selectedIconFilePath, expectCharacters[0].selectedIconFilePath);
 
@@ -222,7 +223,7 @@ void main() {
     expect(resultCharacters[1].id, expectCharacters[1].id);
     expect(resultCharacters[1].name, expectCharacters[1].name);
     expect(resultCharacters[1].production, expectCharacters[1].production);
-    expect(resultCharacters[1].weaponType, expectCharacters[1].weaponType);
+    expect(resultCharacters[1].weapon.type, expectCharacters[1].weapon.type);
     expect(resultCharacters[1].selectedStyleRank, expectCharacters[1].selectedStyleRank);
     expect(resultCharacters[1].selectedIconFilePath, expectCharacters[1].selectedIconFilePath);
 
@@ -257,7 +258,7 @@ void main() {
     expect(resultCharacters[2].id, expectCharacters[2].id);
     expect(resultCharacters[2].name, expectCharacters[2].name);
     expect(resultCharacters[2].production, expectCharacters[2].production);
-    expect(resultCharacters[2].weaponType, expectCharacters[2].weaponType);
+    expect(resultCharacters[2].weapon.type, expectCharacters[2].weapon.type);
     expect(resultCharacters[2].selectedStyleRank, expectCharacters[2].selectedStyleRank);
     expect(resultCharacters[2].selectedIconFilePath, expectCharacters[2].selectedIconFilePath);
 

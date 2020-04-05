@@ -1,8 +1,12 @@
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+
 import '../model/stage.dart';
 import '../model/character.dart';
 import '../model/style.dart';
 import '../model/status.dart';
 import '../model/letter.dart';
+import '../model/attribute.dart';
+import '../model/weapon.dart';
 
 import '../data/local/entity/stage_entity.dart';
 import '../data/local/entity/character_entity.dart';
@@ -12,11 +16,17 @@ import '../data/local/entity/letter_entity.dart';
 
 extension CharacterEntityMapper on CharacterEntity {
   Character toCharacter() {
+    final attributeTypes = this.attributeTypes;
+    List<Attribute> attributes;
+    if (attributeTypes.trim().isNotEmpty) {
+      attributes = attributeTypes.split(',').map((s) => int.parse(s)).map((t) => Attribute(type: t)).toList();
+    }
     return Character(
       this.id,
       this.name,
       this.production,
-      this.weaponType,
+      Weapon(type: this.weaponType),
+      attributes: attributes,
       selectedStyleRank: this.selectedStyleRank,
       selectedIconFilePath: this.selectedIconFilePath,
     );
@@ -29,7 +39,8 @@ extension CharacterMapper on Character {
       this.id,
       this.name,
       this.production,
-      this.weaponType.name,
+      this.weapon.type.index,
+      this.attributes?.map((a) => a.type.index)?.join(',') ?? '',
       this.selectedStyleRank,
       this.selectedIconFilePath,
     );
