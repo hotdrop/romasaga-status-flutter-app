@@ -1,5 +1,3 @@
-import 'package:rsapp/romasaga/common/rs_logger.dart';
-
 import '../model/stage.dart';
 import '../model/character.dart';
 import '../model/style.dart';
@@ -29,6 +27,7 @@ extension CharacterEntityMapper on CharacterEntity {
       attributes: attributes,
       selectedStyleRank: this.selectedStyleRank,
       selectedIconFilePath: this.selectedIconFilePath,
+      statusUpEvent: this.statusUpEvent == CharacterEntity.nowStatusUpEvent ? true : false,
     );
   }
 }
@@ -43,6 +42,7 @@ extension CharacterMapper on Character {
       this.attributes?.map((a) => a.type.index)?.join(',') ?? '',
       this.selectedStyleRank,
       this.selectedIconFilePath,
+      this.statusUpEvent ? CharacterEntity.nowStatusUpEvent : CharacterEntity.notStatusUpEvent,
     );
   }
 }

@@ -7,13 +7,15 @@ class RSStrings {
   static const String bottomMenuAccount = 'アカウント';
 
   static const String characterListPageTitle = 'キャラクターリスト';
-  static const String characterListFavoriteTabTitle = 'お気に入り';
+  static const String characterListFavoriteTabTitle = 'メイン';
+  static const String characterListEventTabTitle = 'ステUP';
   static const String characterListPossessionTabTitle = '所持';
   static const String characterListNotPossessionTabTitle = '未所持';
   static const String characterListOrderStatus = 'ステータス';
   static const String characterListOrderHp = 'HP';
   static const String characterListOrderProduction = '作品';
   static const String nothingCharacterFavoriteMessage = 'お気に入りキャラは設定されていません。';
+  static const String nothingStatusUpEventCharacterMessage = '現在、ステータスアップ育成イベント中のキャラはいません。';
   static const String nothingCharacterPossessionMessage = '持っているキャラはいません。';
   static const String characterListLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
 

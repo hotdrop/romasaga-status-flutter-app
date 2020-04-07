@@ -58,18 +58,23 @@ class CharListViewModel extends foundation.ChangeNotifier {
   }
 
   List<Character> findFavorite() {
-    final favoriteCharacters = _characters.where((character) => character.myStatus.favorite).toList();
-    return favoriteCharacters.isEmpty ? [] : favoriteCharacters;
+    final characters = _characters.where((c) => c.myStatus.favorite).toList();
+    return characters.isEmpty ? [] : characters;
+  }
+
+  List<Character> findStatusUpEvent() {
+    final characters = _characters.where((c) => c.statusUpEvent).toList();
+    return characters.isEmpty ? [] : characters;
   }
 
   List<Character> findHaveCharacter() {
-    final haveCharacters = _characters.where((character) => character.myStatus.have).toList();
-    return haveCharacters.isEmpty ? [] : haveCharacters;
+    final characters = _characters.where((c) => c.myStatus.have).toList();
+    return characters.isEmpty ? [] : characters;
   }
 
   List<Character> findNotHaveCharacter() {
-    final haveCharacters = _characters.where((character) => !character.myStatus.have).toList();
-    return haveCharacters.isEmpty ? [] : haveCharacters;
+    final characters = _characters.where((c) => !c.myStatus.have).toList();
+    return characters.isEmpty ? [] : characters;
   }
 
   void orderBy(OrderType order) {
