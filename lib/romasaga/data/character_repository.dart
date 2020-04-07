@@ -151,6 +151,10 @@ class CharacterRepository {
   }
 
   Future<void> saveSelectedRank(int id, String rank, String iconFilePath) async {
-    return await _dao.saveSelectedStyle(id, rank, iconFilePath);
+    await _dao.saveSelectedStyle(id, rank, iconFilePath);
+  }
+
+  Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
+    await _dao.saveStatusUpEvent(id, statusUpEvent);
   }
 }

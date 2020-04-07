@@ -7,6 +7,7 @@ class CharacterEntity {
     this.attributeTypes,
     this.selectedStyleRank,
     this.selectedIconFilePath,
+    this.statusUpEvent,
   );
 
   CharacterEntity.fromMap(Map<String, dynamic> map)
@@ -16,7 +17,8 @@ class CharacterEntity {
         weaponType = map[columnWeaponType] as int,
         attributeTypes = map[columnAttributeTypes] as String,
         selectedStyleRank = map[columnSelectedStyleRank] as String,
-        selectedIconFilePath = map[columnSelectedIconFilePath] as String;
+        selectedIconFilePath = map[columnSelectedIconFilePath] as String,
+        statusUpEvent = map[columnStatusUpEvent] as int;
 
   static const String tableName = 'Character';
   static const String createTableSql = '''
@@ -27,7 +29,8 @@ class CharacterEntity {
         $columnWeaponType INTEGER,
         $columnAttributeTypes TEXT,
         $columnSelectedStyleRank TEXT,
-        $columnSelectedIconFilePath TEXT
+        $columnSelectedIconFilePath TEXT,
+        $columnStatusUpEvent INTEGER
       )
       ''';
 
@@ -52,6 +55,11 @@ class CharacterEntity {
   static const String columnSelectedIconFilePath = 'selected_icon_file_path';
   final String selectedIconFilePath;
 
+  static const String columnStatusUpEvent = 'status_up_event';
+  static const int nowStatusUpEvent = 1;
+  static const int notStatusUpEvent = 0;
+  final int statusUpEvent;
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       columnId: id,
@@ -61,6 +69,7 @@ class CharacterEntity {
       columnAttributeTypes: attributeTypes,
       columnSelectedStyleRank: selectedStyleRank,
       columnSelectedIconFilePath: selectedIconFilePath,
+      columnStatusUpEvent: statusUpEvent,
     };
   }
 }

@@ -30,7 +30,7 @@ class DBProvider {
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: (db, version) async {
         var batch = db.batch();
         _createTableV1(batch);
@@ -41,6 +41,8 @@ class DBProvider {
         var batch = db.batch();
         if (oldVersion == 1) {
           _upgradeV2(batch);
+        } else if (oldVersion == 2) {
+          _upgradeV3(batch);
         }
         await batch.commit();
       },
@@ -56,5 +58,9 @@ class DBProvider {
 
   void _upgradeV2(Batch batch) {
     batch.execute(LetterEntity.createTableSql);
+  }
+
+  void _upgradeV3(Batch batch) {
+    batch.execute(CharacterEntity.createTableSql);
   }
 }

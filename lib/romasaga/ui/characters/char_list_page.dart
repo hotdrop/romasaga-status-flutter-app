@@ -49,7 +49,7 @@ class CharListPage extends StatelessWidget {
 
   Widget _loadSuccessView(CharListViewModel viewModel) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -59,6 +59,7 @@ class CharListPage extends StatelessWidget {
           ],
           bottom: const TabBar(tabs: <Tab>[
             Tab(text: RSStrings.characterListFavoriteTabTitle),
+            Tab(text: RSStrings.characterListEventTabTitle),
             Tab(text: RSStrings.characterListPossessionTabTitle),
             Tab(text: RSStrings.characterListNotPossessionTabTitle),
           ]),
@@ -66,6 +67,7 @@ class CharListPage extends StatelessWidget {
         body: TabBarView(
           children: <Widget>[
             _favoriteTab(viewModel),
+            _statusUpEventTab(viewModel),
             _haveCharTab(viewModel),
             _notHaveCharTab(viewModel),
           ],
@@ -109,7 +111,33 @@ class CharListPage extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text(RSStrings.nothingCharacterFavoriteMessage),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: const Text(RSStrings.nothingCharacterFavoriteMessage),
+          ),
+        ],
+      );
+    }
+
+    return ListView.builder(itemBuilder: (context, index) {
+      if (index < characters.length) {
+        return CharListRowItem(characters[index]);
+      }
+      return null;
+    });
+  }
+
+  Widget _statusUpEventTab(CharListViewModel viewModel) {
+    final characters = viewModel.findStatusUpEvent();
+
+    if (characters.isEmpty) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: const Text(RSStrings.nothingStatusUpEventCharacterMessage),
+          ),
         ],
       );
     }
@@ -129,7 +157,10 @@ class CharListPage extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text(RSStrings.nothingCharacterPossessionMessage),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: const Text(RSStrings.nothingCharacterPossessionMessage),
+          ),
         ],
       );
     }

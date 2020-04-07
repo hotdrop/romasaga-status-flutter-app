@@ -123,4 +123,17 @@ class CharacterDao {
         ${CharacterEntity.columnId} = $id
       """);
   }
+
+  Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
+    final db = await _dbProvider.database;
+    final value = statusUpEvent ? CharacterEntity.nowStatusUpEvent : CharacterEntity.notStatusUpEvent;
+    await db.rawUpdate("""
+      UPDATE 
+        ${CharacterEntity.tableName}
+      SET 
+        ${CharacterEntity.columnStatusUpEvent} = '$value'
+      WHERE 
+        ${CharacterEntity.columnId} = $id
+      """);
+  }
 }
