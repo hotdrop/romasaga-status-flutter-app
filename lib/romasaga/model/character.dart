@@ -13,6 +13,7 @@ class Character {
     this.attributes,
     this.selectedStyleRank,
     this.selectedIconFilePath,
+    this.statusUpEvent = false,
   }) : this.myStatus = MyStatus.empty(id);
 
   final int id;
@@ -23,6 +24,7 @@ class Character {
 
   String selectedStyleRank;
   String selectedIconFilePath;
+  bool statusUpEvent;
 
   final styles = <Style>[];
 

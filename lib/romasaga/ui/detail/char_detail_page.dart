@@ -646,47 +646,68 @@ class CharDetailPage extends StatelessWidget {
   /// ボトムメニュー
   ///
   Widget _appBarContent() {
+    return BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      notchMargin: 4.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Padding(padding: const EdgeInsets.only(left: 16.0)),
+          _favoriteIcon(),
+          Padding(padding: const EdgeInsets.only(left: 16.0)),
+          _statusUpEventIcon(),
+          Padding(padding: const EdgeInsets.only(left: 16.0)),
+          _haveCharacterIcon(),
+        ],
+      ),
+    );
+  }
+
+  Widget _favoriteIcon() {
+    return Consumer<CharDetailViewModel>(
+      builder: (context, viewModel, child) {
+        final myStatus = viewModel.character.myStatus;
+        final color = myStatus.favorite ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+        final icon = myStatus.favorite ? Icons.favorite : Icons.favorite_border;
+
+        return IconButton(
+          icon: Icon(icon, color: color),
+          iconSize: 28.0,
+          onPressed: () {
+            viewModel.saveFavorite(!myStatus.favorite);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _statusUpEventIcon() {
     return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
-      return BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 4.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Padding(padding: const EdgeInsets.only(left: 16.0)),
-            _haveCharacterIcon(context, viewModel),
-            Padding(padding: const EdgeInsets.only(left: 16.0)),
-            _favoriteIcon(context, viewModel),
-          ],
-        ),
+      final statusUpEvent = viewModel.character.statusUpEvent;
+      final color = statusUpEvent ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+
+      return IconButton(
+        icon: Icon(Icons.trending_up, color: color),
+        iconSize: 28.0,
+        onPressed: () {
+          viewModel.saveStatusUpEvent(viewModel.character.id, !statusUpEvent);
+        },
       );
     });
   }
 
-  Widget _haveCharacterIcon(BuildContext context, CharDetailViewModel viewModel) {
-    final myStatus = viewModel.character.myStatus;
-    final color = myStatus.have ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+  Widget _haveCharacterIcon() {
+    return Consumer<CharDetailViewModel>(builder: (context, viewModel, child) {
+      final myStatus = viewModel.character.myStatus;
+      final color = myStatus.have ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
 
-    return IconButton(
-      icon: Icon(Icons.check, color: color),
-      iconSize: 28.0,
-      onPressed: () {
-        viewModel.saveHaveCharacter(!myStatus.have);
-      },
-    );
-  }
-
-  Widget _favoriteIcon(BuildContext context, CharDetailViewModel viewModel) {
-    final myStatus = viewModel.character.myStatus;
-    final color = myStatus.favorite ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
-    final icon = myStatus.favorite ? Icons.favorite : Icons.favorite_border;
-
-    return IconButton(
-      icon: Icon(icon, color: color),
-      iconSize: 28.0,
-      onPressed: () {
-        viewModel.saveFavorite(!myStatus.favorite);
-      },
-    );
+      return IconButton(
+        icon: Icon(Icons.check, color: color),
+        iconSize: 28.0,
+        onPressed: () {
+          viewModel.saveHaveCharacter(!myStatus.have);
+        },
+      );
+    });
   }
 }

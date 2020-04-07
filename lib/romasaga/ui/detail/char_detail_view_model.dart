@@ -150,16 +150,20 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     await _characterRepository.saveSelectedRank(character.id, _selectedStyle.rank, _selectedStyle.iconFilePath);
   }
 
-  Future<void> saveHaveCharacter(bool haveChar) async {
-    RSLogger.d('このキャラの保持を $haveChar にします。');
-    character.myStatus.have = haveChar;
+  Future<void> saveFavorite(bool favorite) async {
+    character.myStatus.favorite = favorite;
     await _myStatusRepository.save(character.myStatus);
     notifyListeners();
   }
 
-  Future<void> saveFavorite(bool favorite) async {
-    RSLogger.d('お気に入りを $favorite にします。');
-    character.myStatus.favorite = favorite;
+  Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
+    character.statusUpEvent = statusUpEvent;
+    await _characterRepository.saveStatusUpEvent(id, statusUpEvent);
+    notifyListeners();
+  }
+
+  Future<void> saveHaveCharacter(bool haveChar) async {
+    character.myStatus.have = haveChar;
     await _myStatusRepository.save(character.myStatus);
     notifyListeners();
   }
