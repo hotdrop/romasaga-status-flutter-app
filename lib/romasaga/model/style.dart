@@ -14,7 +14,17 @@ class Style {
     this.spirit,
     this.love,
     this.attr,
-  );
+  )   : assert(rank != null, 'id=$characterId のrankがnullです'),
+        assert(title != null, 'id=$characterId のtitleがnullです'),
+        assert(str != null, 'id=$characterId のstrがnullです'),
+        assert(vit != null, 'id=$characterId のvitがnullです'),
+        assert(dex != null, 'id=$characterId のdexがnullです'),
+        assert(agi != null, 'id=$characterId のaigがnullです'),
+        assert(intelligence != null, 'id=$characterId のintがnullです'),
+        assert(spirit != null, 'id=$characterId のspiritがnullです'),
+        assert(love != null, 'id=$characterId のloveがnullです'),
+        assert(attr != null, 'id=$characterId のattrがnullです'),
+        assert(iconFileName != null, 'id=$characterId のiconFileNameがnullです');
 
   final int characterId;
   final String rank;

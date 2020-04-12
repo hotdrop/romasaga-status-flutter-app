@@ -1,5 +1,3 @@
-import 'package:rsapp/romasaga/common/rs_logger.dart';
-
 import '../common/rs_strings.dart';
 
 class Weapon {
@@ -7,14 +5,11 @@ class Weapon {
     if (name != null) {
       _type = _convertType(name);
       _category = _convertCategory(name);
-    }
-    if (type != null) {
+    } else if (type != null) {
       _type = WeaponType.values.firstWhere((v) => v.index == type, orElse: () => null);
       _category = _convertCategoryByType(_type);
-    }
-    if (_type == null || _category == null) {
-      RSLogger.d('typeまたはcategoryがnullです');
-      throw FormatException('typeまたはcategoryがnullです');
+    } else {
+      throw FormatException('nameまたはtypeが両方nullです。どちらか片方は必ず指定してください');
     }
   }
 
@@ -47,7 +42,7 @@ class Weapon {
       case RSStrings.rod:
         return WeaponType.rod;
       default:
-        return null;
+        throw FormatException('weapon_typeが規定値以外なので武器種別（剣、斧、槍など）を決定できません。 value=$name');
     }
   }
 
@@ -68,7 +63,7 @@ class Weapon {
       case RSStrings.rod:
         return WeaponCategory.rod;
       default:
-        return null;
+        throw FormatException('weapon_typeが規定値以外なのでカテゴリー（斬、打、突など）を決定できません。 value=$name');
     }
   }
 
@@ -89,7 +84,7 @@ class Weapon {
       case WeaponType.rod:
         return WeaponCategory.rod;
       default:
-        return null;
+        throw FormatException('weapon_typeが規定値以外なのでカテゴリー（斬、打、突など）を決定できません。 value=$type');
     }
   }
 }
