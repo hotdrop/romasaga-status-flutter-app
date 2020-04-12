@@ -57,8 +57,9 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
       _selectedStage = _stages.first;
 
       if (character.styles.isEmpty) {
-        RSLogger.d('キャラクターのスタイルが未取得なので取得します。');
+        RSLogger.d('キャラクターのスタイルが未取得なので取得します。id=${character.id}');
         final styles = await _characterRepository.findStyles(character.id);
+        RSLogger.d('キャラクターのスタイルを取得しました。件数=${styles.length}');
         character.addStyles(styles);
       }
 

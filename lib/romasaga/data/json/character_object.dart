@@ -10,38 +10,36 @@ import '../../model/style.dart';
 
 @JsonSerializable()
 class CharactersJsonObject {
-  const CharactersJsonObject._(this._characters);
+  const CharactersJsonObject._(this._jsonObjects);
 
   factory CharactersJsonObject.fromJson(dynamic json) {
     if (json == null) {
       RSLogger.d('Character jsonがnullです。');
       return null;
     }
-    return CharactersJsonObject._(
-      (json['characters'] as List)?.map((dynamic o) {
-        return CharacterJsonObject.fromJson(o as Map<String, dynamic>);
-      })?.toList(),
-    );
+
+    final characters = (json['characters'] as List);
+    final jsonObjects = characters.map((dynamic o) => CharacterJsonObject.fromJson(o as Map<String, dynamic>))?.toList();
+
+    return CharactersJsonObject._(jsonObjects);
   }
 
-  final List<CharacterJsonObject> _characters;
+  final List<CharacterJsonObject> _jsonObjects;
 
   static List<Character> parse(String json) {
     final dynamic jsonMap = jsonDecode(json);
-    final results = CharactersJsonObject.fromJson(jsonMap);
-    RSLogger.d('リモートから取得したjsonをパースしました。 size=${results._characters.length}');
+    final characterJsonObject = CharactersJsonObject.fromJson(jsonMap);
+    RSLogger.d('リモートから取得したjsonをパースしました。 size=${characterJsonObject._jsonObjects.length}');
 
-    return _toModels(results);
-  }
-
-  static List<Character> _toModels(CharactersJsonObject obj) {
-    final characters = <Character>[];
-
-    for (var charObj in obj._characters) {
-      final character = _jsonObjectToCharacter(charObj);
-      characters.add(character);
+    final results = <Character>[];
+    for (var charObj in characterJsonObject._jsonObjects) {
+      final c = _jsonObjectToCharacter(charObj);
+      if (results.any((result) => result.id == c.id)) {
+        throw FormatException('キャラ${c.name}のidが重複しています。jsonを見直してください。id=${c.id}');
+      }
+      results.add(c);
     }
-    return characters;
+    return results;
   }
 
   static Character _jsonObjectToCharacter(CharacterJsonObject obj) {
@@ -89,6 +87,9 @@ class CharactersJsonObject {
   }
 }
 
+///
+/// キャラクターのJsonオブジェクト
+///
 @JsonSerializable()
 class CharacterJsonObject {
   CharacterJsonObject.fromJson(Map<String, dynamic> json)
@@ -107,6 +108,9 @@ class CharacterJsonObject {
   final List<StyleJsonObject> styles;
 }
 
+///
+/// キャラクタースタイルのJsonオブジェクト
+///
 @JsonSerializable()
 class StyleJsonObject {
   const StyleJsonObject(
@@ -147,4 +151,6 @@ class StyleJsonObject {
   final int love;
   final int attr;
   final String iconFileName;
+
+  static const int itemLength = 11;
 }
