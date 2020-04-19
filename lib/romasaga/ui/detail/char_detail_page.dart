@@ -625,8 +625,7 @@ class CharDetailPage extends StatelessWidget {
         final myStatus = viewModel.character.myStatus;
 
         return FloatingActionButton(
-          child: Icon(Icons.edit, color: Theme.of(context).accentColor),
-          backgroundColor: RSColors.fabBackground,
+          child: const Icon(Icons.edit, color: RSColors.floatingActionButtonIcon),
           onPressed: () async {
             final bool isSaved = await Navigator.of(context).push(
                   RightSlidePageRoute<bool>(page: CharStatusEditPage(myStatus)),

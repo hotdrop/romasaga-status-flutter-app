@@ -25,11 +25,12 @@ class _TopPageState extends State<TopPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
+        elevation: 16.0,
+        type: BottomNavigationBarType.fixed,
         items: _allDestinations.map((destination) {
           return BottomNavigationBarItem(
             title: Text(destination.title),
             icon: Icon(destination.icon),
-            backgroundColor: RSColors.bottomNavigationBackground,
           );
         }).toList(),
         onTap: (index) {

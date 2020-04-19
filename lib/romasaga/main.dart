@@ -21,7 +21,22 @@ class RomasagaApp extends StatelessWidget {
         Locale('ja', ''),
       ],
       title: RSStrings.appTitle,
-      theme: ThemeData.dark().copyWith(accentColor: RSColors.accent),
+//      theme: ThemeData.light().copyWith(
+//        primaryColor: Colors.indigo,
+//        accentColor: Colors.indigo,
+//        floatingActionButtonTheme: FloatingActionButtonThemeData(
+//          backgroundColor: Colors.indigo,
+//        ),
+//        backgroundColor: Colors.white,
+//      ),
+      theme: ThemeData.dark().copyWith(
+        accentColor: Colors.blueAccent,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.white30,
+        ),
+        scaffoldBackgroundColor: Color(0xFF232323),
+        applyElevationOverlayColor: true,
+      ),
       home: TopPage(),
     );
   }

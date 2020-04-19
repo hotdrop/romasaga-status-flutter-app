@@ -280,8 +280,7 @@ class CharStatusEditPage extends StatelessWidget {
     return Consumer<CharStatusEditViewModel>(
       builder: (context, viewModel, child) {
         return FloatingActionButton(
-          child: Icon(Icons.save, color: Theme.of(context).accentColor),
-          backgroundColor: RSColors.fabBackground,
+          child: Icon(Icons.save, color: RSColors.floatingActionButtonIcon),
           onPressed: () async {
             await viewModel.saveNewStatus();
             Navigator.pop(context, true);
