@@ -22,7 +22,7 @@ class StageDao {
   Future<List<Stage>> loadDummy({String localPath = 'res/json/stage.json'}) async {
     try {
       return await rootBundle.loadStructuredData(localPath, (json) async {
-        return StagesJsonObject.parse(json);
+        return StagesJsonObject.parseToObjects(json);
       });
     } on IOException catch (e) {
       RSLogger.e('ステージデータの取得時にエラーが発生しました。', e);

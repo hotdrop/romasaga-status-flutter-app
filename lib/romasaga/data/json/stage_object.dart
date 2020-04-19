@@ -9,7 +9,7 @@ import '../../common/rs_logger.dart';
 class StagesJsonObject {
   const StagesJsonObject._(this._stages);
 
-  factory StagesJsonObject.fromJson(dynamic json) {
+  factory StagesJsonObject._fromJson(dynamic json) {
     if (json == null) {
       RSLogger.d("stage jsonがnullです。");
       return null;
@@ -21,16 +21,12 @@ class StagesJsonObject {
 
   final List<StageJsonObject> _stages;
 
-  static List<Stage> parse(String json) {
+  static List<Stage> parseToObjects(String json) {
     final dynamic jsonMap = jsonDecode(json);
-    final results = StagesJsonObject.fromJson(jsonMap);
+    final results = StagesJsonObject._fromJson(jsonMap);
     RSLogger.d('Stageをパースしました。 size=${results._stages.length}');
 
-    return _toModels(results);
-  }
-
-  static List<Stage> _toModels(StagesJsonObject obj) {
-    return obj._stages.map((o) => Stage(o.name, o.limit, o.order)).toList();
+    return results._stages.map((o) => Stage(o.name, o.limit, o.order)).toList();
   }
 }
 

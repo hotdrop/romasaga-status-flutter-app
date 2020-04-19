@@ -12,7 +12,7 @@ import '../../model/style.dart';
 class CharactersJsonObject {
   const CharactersJsonObject._(this._jsonObjects);
 
-  factory CharactersJsonObject.fromJson(dynamic json) {
+  factory CharactersJsonObject._fromJson(dynamic json) {
     if (json == null) {
       RSLogger.d('Character jsonがnullです。');
       return null;
@@ -26,9 +26,9 @@ class CharactersJsonObject {
 
   final List<CharacterJsonObject> _jsonObjects;
 
-  static List<Character> parse(String json) {
+  static List<Character> parseToObjects(String json) {
     final dynamic jsonMap = jsonDecode(json);
-    final characterJsonObject = CharactersJsonObject.fromJson(jsonMap);
+    final characterJsonObject = CharactersJsonObject._fromJson(jsonMap);
     RSLogger.d('リモートから取得したjsonをパースしました。 size=${characterJsonObject._jsonObjects.length}');
 
     final results = <Character>[];

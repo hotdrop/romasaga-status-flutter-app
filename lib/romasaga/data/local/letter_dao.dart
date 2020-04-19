@@ -4,7 +4,6 @@ import 'package:sqflite/sqflite.dart';
 import 'entity/letter_entity.dart';
 
 import '../../model/letter.dart';
-import '../../common/rs_logger.dart';
 import '../../extension/mapper.dart';
 
 class LetterDao {

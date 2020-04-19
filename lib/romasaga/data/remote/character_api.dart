@@ -16,7 +16,7 @@ class CharacterApi {
   Future<List<Character>> findAll() async {
     try {
       String json = await _rsService.readCharactersJson();
-      return CharactersJsonObject.parse(json);
+      return CharactersJsonObject.parseToObjects(json);
     } catch (e) {
       RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
       rethrow;
