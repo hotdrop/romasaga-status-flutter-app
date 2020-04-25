@@ -1,8 +1,7 @@
-import '../json/character_object.dart';
-import '../../model/character.dart';
-
-import '../../service/rs_service.dart';
-import '../../common/rs_logger.dart';
+import 'package:rsapp/romasaga/data/json/character_object.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/service/rs_service.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class CharacterApi {
   const CharacterApi._(this._rsService);

@@ -1,12 +1,11 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
-
-import 'entity/character_entity.dart';
-import 'entity/style_entity.dart';
-import 'entity/stage_entity.dart';
-import 'entity/my_status_entity.dart';
-import 'entity/letter_entity.dart';
+import 'package:rsapp/romasaga/data/local/entity/character_entity.dart';
+import 'package:rsapp/romasaga/data/local/entity/style_entity.dart';
+import 'package:rsapp/romasaga/data/local/entity/stage_entity.dart';
+import 'package:rsapp/romasaga/data/local/entity/my_status_entity.dart';
+import 'package:rsapp/romasaga/data/local/entity/letter_entity.dart';
 
 class DBProvider {
   const DBProvider._();

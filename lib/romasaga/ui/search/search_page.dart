@@ -1,12 +1,11 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../characters/char_list_row_item.dart';
-import '../search/search_page_view_model.dart';
-import '../widget/rs_icon.dart';
-import '../../model/weapon.dart';
-import '../../common/rs_strings.dart';
+import 'package:rsapp/romasaga/ui/characters/char_list_row_item.dart';
+import 'package:rsapp/romasaga/ui/search/search_page_view_model.dart';
+import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class SearchPage extends StatelessWidget {
   @override

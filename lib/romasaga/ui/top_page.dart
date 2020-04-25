@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'characters/char_list_page.dart';
-
-import 'search/search_page.dart';
-import 'letter/letter_page.dart';
-import 'account/account_page.dart';
-
-import '../common/rs_colors.dart';
-import '../common/rs_strings.dart';
+import 'package:rsapp/romasaga/ui/characters/char_list_page.dart';
+import 'package:rsapp/romasaga/ui/search/search_page.dart';
+import 'package:rsapp/romasaga/ui/letter/letter_page.dart';
+import 'package:rsapp/romasaga/ui/account/account_page.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class TopPage extends StatefulWidget {
   @override

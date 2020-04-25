@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/model/attribute.dart';
-
-import '../../common/rs_logger.dart';
-
-import '../../model/character.dart';
-import '../../model/weapon.dart';
-import '../../model/style.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/style.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
 
 @JsonSerializable()
 class CharactersJsonObject {
