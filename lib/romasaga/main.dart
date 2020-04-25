@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
-import 'ui/top_page.dart';
+import 'package:rsapp/romasaga/common/rs_theme.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
-import 'common/rs_colors.dart';
-import 'common/rs_strings.dart';
+import 'package:rsapp/romasaga/model/app_settings.dart';
+import 'package:rsapp/romasaga/ui/top_page.dart';
 
 void main() => runApp(RomasagaApp());
 
 class RomasagaApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<AppSettings>(
+      create: (_) => AppSettings.create()..load(),
+      child: _RomasagaApp(),
+    );
+  }
+}
+
+class _RomasagaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,22 +33,7 @@ class RomasagaApp extends StatelessWidget {
         Locale('ja', ''),
       ],
       title: RSStrings.appTitle,
-//      theme: ThemeData.light().copyWith(
-//        primaryColor: Colors.indigo,
-//        accentColor: Colors.indigo,
-//        floatingActionButtonTheme: FloatingActionButtonThemeData(
-//          backgroundColor: Colors.indigo,
-//        ),
-//        backgroundColor: Colors.white,
-//      ),
-      theme: ThemeData.dark().copyWith(
-        accentColor: Colors.blueAccent,
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Colors.white30,
-        ),
-        scaffoldBackgroundColor: Color(0xFF232323),
-        applyElevationOverlayColor: true,
-      ),
+      theme: Provider.of<AppSettings>(context).isDarkMode ? RSTheme.dark : RSTheme.light,
       home: TopPage(),
     );
   }
