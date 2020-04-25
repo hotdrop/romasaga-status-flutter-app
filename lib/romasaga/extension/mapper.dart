@@ -1,16 +1,15 @@
-import '../model/stage.dart';
-import '../model/character.dart';
-import '../model/style.dart';
-import '../model/status.dart';
-import '../model/letter.dart';
-import '../model/attribute.dart';
-import '../model/weapon.dart';
-
-import '../data/local/entity/stage_entity.dart';
-import '../data/local/entity/character_entity.dart';
-import '../data/local/entity/style_entity.dart';
-import '../data/local/entity/my_status_entity.dart';
-import '../data/local/entity/letter_entity.dart';
+import 'package:rsapp/romasaga/model/stage.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/style.dart';
+import 'package:rsapp/romasaga/model/status.dart';
+import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/romasaga/model/attribute.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/romasaga/data/local/entity/stage_entity.dart';
+import 'package:rsapp/romasaga/data/local/entity/character_entity.dart';
+import 'package:rsapp/romasaga/data/local/entity/style_entity.dart';
+import 'package:rsapp/romasaga/data/local/entity/my_status_entity.dart';
+import 'package:rsapp/romasaga/data/local/entity/letter_entity.dart';
 
 extension CharacterEntityMapper on CharacterEntity {
   Character toCharacter() {

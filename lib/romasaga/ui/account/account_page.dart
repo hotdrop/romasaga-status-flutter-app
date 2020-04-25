@@ -2,11 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-
-import '../../model/app_settings.dart';
-import 'account_page_view_model.dart';
-
-import '../../common/rs_strings.dart';
+import 'package:rsapp/romasaga/model/app_settings.dart';
+import 'package:rsapp/romasaga/ui/account/account_page_view_model.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage();

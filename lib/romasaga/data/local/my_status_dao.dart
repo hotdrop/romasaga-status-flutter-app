@@ -1,10 +1,9 @@
-import 'database.dart';
 import 'package:sqflite/sqflite.dart';
-
-import 'entity/my_status_entity.dart';
-import '../../model/status.dart';
-import '../../common/rs_logger.dart';
-import '../../extension/mapper.dart';
+import 'package:rsapp/romasaga/data/local/database.dart';
+import 'package:rsapp/romasaga/data/local/entity/my_status_entity.dart';
+import 'package:rsapp/romasaga/model/status.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/extension/mapper.dart';
 
 class MyStatusDao {
   const MyStatusDao._(this._dbProvider);

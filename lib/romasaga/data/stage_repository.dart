@@ -1,11 +1,8 @@
 import 'package:rsapp/romasaga/common/rs_strings.dart';
-
-import 'local/stage_dao.dart';
-import 'remote/stage_api.dart';
-
-import '../model/stage.dart';
-
-import '../common/rs_logger.dart';
+import 'package:rsapp/romasaga/data/local/stage_dao.dart';
+import 'package:rsapp/romasaga/data/remote/stage_api.dart';
+import 'package:rsapp/romasaga/model/stage.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class StageRepository {
   const StageRepository._(this._dao, this._api);

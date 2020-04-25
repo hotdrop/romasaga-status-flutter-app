@@ -1,8 +1,7 @@
 import 'package:rsapp/romasaga/model/attribute.dart';
-
-import 'weapon.dart';
-import 'status.dart';
-import 'style.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/romasaga/model/status.dart';
+import 'package:rsapp/romasaga/model/style.dart';
 
 class Character {
   Character(

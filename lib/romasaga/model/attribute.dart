@@ -1,5 +1,5 @@
-import '../common/rs_logger.dart';
-import '../common/rs_strings.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class Attribute {
   Attribute({String name, int type}) {

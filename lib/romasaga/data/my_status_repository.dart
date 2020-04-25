@@ -1,11 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'local/my_status_dao.dart';
-import 'remote/my_status_api.dart';
-
-import '../model/status.dart' show MyStatus;
-
-import '../common/rs_logger.dart';
+import 'package:rsapp/romasaga/data/local/my_status_dao.dart';
+import 'package:rsapp/romasaga/data/remote/my_status_api.dart';
+import 'package:rsapp/romasaga/model/status.dart' show MyStatus;
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class MyStatusRepository {
   const MyStatusRepository._(this._dao, this._api);

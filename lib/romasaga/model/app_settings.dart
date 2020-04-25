@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart' as foundation;
-
 import 'package:rsapp/romasaga/data/app_setting_repository.dart';
 
 class AppSettings extends foundation.ChangeNotifier {

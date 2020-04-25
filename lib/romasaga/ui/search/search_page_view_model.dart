@@ -1,13 +1,10 @@
 import 'package:flutter/foundation.dart' as foundation;
-
-import '../../data/character_repository.dart';
-import '../../data/my_status_repository.dart';
-
-import '../../model/character.dart';
-import '../../model/search_condition.dart';
-import '../../model/weapon.dart';
-
-import '../../common/rs_logger.dart';
+import 'package:rsapp/romasaga/data/character_repository.dart';
+import 'package:rsapp/romasaga/data/my_status_repository.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/search_condition.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class SearchPageViewModel extends foundation.ChangeNotifier {
   SearchPageViewModel._(this._characterRepository, this._myStatusRepository);

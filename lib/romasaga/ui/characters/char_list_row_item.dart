@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../detail/char_detail_page.dart';
-
-import '../widget/rs_icon.dart';
-
-import '../../model/character.dart';
-import '../../model/weapon.dart';
-
-import '../../common/rs_strings.dart';
-import '../../common/rs_colors.dart';
+import 'package:rsapp/romasaga/ui/detail/char_detail_page.dart';
+import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/common/rs_colors.dart';
 
 class CharListRowItem extends StatelessWidget {
   const CharListRowItem(this.character, {this.index});

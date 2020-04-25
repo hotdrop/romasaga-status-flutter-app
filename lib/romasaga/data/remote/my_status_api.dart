@@ -1,7 +1,6 @@
-import '../../model/status.dart' show MyStatus;
-
-import '../../service/rs_service.dart';
-import '../../common/rs_logger.dart';
+import 'package:rsapp/romasaga/model/status.dart' show MyStatus;
+import 'package:rsapp/romasaga/service/rs_service.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class MyStatusApi {
   const MyStatusApi._(this._rsService);

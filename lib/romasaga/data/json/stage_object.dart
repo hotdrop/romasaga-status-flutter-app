@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
-
-import '../../model/stage.dart';
-
-import '../../common/rs_logger.dart';
+import 'package:rsapp/romasaga/model/stage.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 @JsonSerializable()
 class StagesJsonObject {

@@ -1,4 +1,4 @@
-import '../common/rs_strings.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class Weapon {
   Weapon({String name, int type}) {
