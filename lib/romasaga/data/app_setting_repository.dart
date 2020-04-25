@@ -1,19 +1,31 @@
 import 'package:rsapp/romasaga/data/local/app_settings_dao.dart';
 
 class AppSettingRepository {
-  const AppSettingRepository._(this._dao);
+  AppSettingRepository._();
 
-  factory AppSettingRepository.create() {
-    return AppSettingRepository._(AppSettingsDao.create());
+  static Future<AppSettingRepository> getInstance() async {
+    if (_instance == null) {
+      _instance = AppSettingRepository._();
+      await _instance.init();
+    }
+    return _instance;
   }
 
-  final AppSettingsDao _dao;
+  static AppSettingRepository _instance;
+  static AppSettingsDao _dao;
 
-  Future<void> load() async {
+  Future<void> init() async {
+    _dao = AppSettingsDao.create();
     await _dao.init();
   }
 
-  bool isDarkMode() => _dao.isDarkMode();
+  bool isDarkMode() {
+    if (_dao == null) {
+      return false;
+    } else {
+      return _dao.isDarkMode();
+    }
+  }
 
   Future<void> changeDarkMode() async {
     await _dao.saveDarkMode();
