@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/app_settings.dart';
 import 'account_page_view_model.dart';
 
 import '../../common/rs_strings.dart';
@@ -46,6 +47,7 @@ class AccountPage extends StatelessWidget {
     return ListView(
       children: <Widget>[
         _rowAccountInfo(),
+        _rowLightDarkSwitch(),
         Divider(color: Theme.of(context).accentColor),
         _rowDataUpdateLabel(context),
         _rowCharacterReload(),
@@ -115,28 +117,30 @@ class AccountPage extends StatelessWidget {
   }
 
   Widget _rowAccountInfo() {
-    return Consumer<AccountPageViewModel>(builder: (context, viewModel, child) {
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: <Widget>[
-            CircleAvatar(
-              child: Text(viewModel.getLoginUserName()[0].toUpperCase()),
-              backgroundColor: Theme.of(context).accentColor,
-              foregroundColor: Theme.of(context).primaryColor,
-            ),
-            SizedBox(width: 16.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(viewModel.getLoginEmail()),
-                Text(viewModel.getLoginUserName(), style: Theme.of(context).textTheme.caption),
-              ],
-            ),
-          ],
-        ),
-      );
-    });
+    return Consumer<AccountPageViewModel>(
+      builder: (context, viewModel, child) {
+        return ListTile(
+          leading: Icon(Icons.account_circle, size: 40.0),
+          title: Text(viewModel.getLoginEmail()),
+          subtitle: Text(viewModel.getLoginUserName()),
+        );
+      },
+    );
+  }
+
+  Widget _rowLightDarkSwitch() {
+    return Consumer<AppSettings>(
+      builder: (context, appSettings, child) {
+        return ListTile(
+          leading: Icon(appSettings.isDarkMode ? Icons.brightness_7 : Icons.brightness_4),
+          title: Text('テーマの切り替え'),
+          trailing: Switch(
+            onChanged: (isDark) => appSettings.setDarkMode(isDark),
+            value: appSettings.isDarkMode,
+          ),
+        );
+      },
+    );
   }
 
   Widget _rowDataUpdateLabel(BuildContext context) {

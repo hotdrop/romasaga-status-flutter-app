@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+
 import 'package:rsapp/romasaga/data/letter_repository.dart';
+import 'package:rsapp/romasaga/data/character_repository.dart';
+import 'package:rsapp/romasaga/data/stage_repository.dart';
+import 'package:rsapp/romasaga/data/my_status_repository.dart';
+import 'package:rsapp/romasaga/data/account_repository.dart';
 
-import '../../data/character_repository.dart';
-import '../../data/stage_repository.dart';
-import '../../data/my_status_repository.dart';
-import '../../data/account_repository.dart';
-
-import '../../common/rs_logger.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class AccountPageViewModel extends foundation.ChangeNotifier {
   AccountPageViewModel._(
@@ -52,6 +52,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   ///
   Future<void> load() async {
     await _accountRepository.load();
+
     final isLogIn = _accountRepository.isLogIn;
 
     if (!isLogIn) {
