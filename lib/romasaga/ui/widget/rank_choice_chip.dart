@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../../common/rs_colors.dart';
-import '../../common/rs_strings.dart';
-
-import 'rs_icon.dart';
+import 'package:rsapp/romasaga/common/rs_colors.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
 
 class RankChoiceChip extends StatefulWidget {
   const RankChoiceChip({this.ranks, this.initSelectedRank, this.onSelectedListener});

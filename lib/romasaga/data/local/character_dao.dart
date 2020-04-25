@@ -1,17 +1,14 @@
 import 'dart:io';
-import 'database.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
-
-import 'entity/character_entity.dart';
-import 'entity/style_entity.dart';
-
-import '../json/character_object.dart';
-import '../../model/character.dart';
-import '../../model/style.dart';
-
-import '../../common/rs_logger.dart';
-import '../../extension/mapper.dart';
+import 'package:rsapp/romasaga/data/local/database.dart';
+import 'package:rsapp/romasaga/data/local/entity/character_entity.dart';
+import 'package:rsapp/romasaga/data/local/entity/style_entity.dart';
+import 'package:rsapp/romasaga/data/json/character_object.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/style.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/extension/mapper.dart';
 
 class CharacterDao {
   const CharacterDao._(this._dbProvider);
@@ -78,7 +75,7 @@ class CharacterDao {
   Future<List<Character>> loadDummy({String localPath = 'res/json/characters.json'}) async {
     try {
       return await rootBundle.loadStructuredData(localPath, (json) async {
-        return CharactersJsonObject.parse(json);
+        return CharactersJsonObject.parseToObjects(json);
       });
     } on IOException catch (e) {
       RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);

@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
-
-import 'char_status_edit_view_model.dart';
-
-import '../widget/custom_rs_widgets.dart';
-
-import '../../model/status.dart';
-import '../../common/rs_strings.dart';
-import '../../common/rs_colors.dart';
+import 'package:rsapp/romasaga/ui/detail/char_status_edit_view_model.dart';
+import 'package:rsapp/romasaga/ui/widget/custom_rs_widgets.dart';
+import 'package:rsapp/romasaga/model/status.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/common/rs_colors.dart';
 
 class CharStatusEditPage extends StatelessWidget {
   const CharStatusEditPage(this._nowStatus);
@@ -280,8 +277,7 @@ class CharStatusEditPage extends StatelessWidget {
     return Consumer<CharStatusEditViewModel>(
       builder: (context, viewModel, child) {
         return FloatingActionButton(
-          child: Icon(Icons.save, color: Theme.of(context).accentColor),
-          backgroundColor: RSColors.fabBackground,
+          child: Icon(Icons.save, color: RSColors.floatingActionButtonIcon),
           onPressed: () async {
             await viewModel.saveNewStatus();
             Navigator.pop(context, true);

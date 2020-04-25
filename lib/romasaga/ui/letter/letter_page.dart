@@ -1,15 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rsapp/romasaga/ui/letter/letter_view_model.dart';
 import 'package:side_header_list_view/side_header_list_view.dart';
-
-import 'letter_detail_page.dart';
-import '../widget/custom_page_route.dart';
-import '../../model/letter.dart';
-
-import '../../common/rs_colors.dart';
-import '../../common/rs_strings.dart';
+import 'package:rsapp/romasaga/ui/letter/letter_view_model.dart';
+import 'package:rsapp/romasaga/ui/letter/letter_detail_page.dart';
+import 'package:rsapp/romasaga/ui/widget/custom_page_route.dart';
+import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/romasaga/common/rs_colors.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class LetterPage extends StatelessWidget {
   @override

@@ -1,5 +1,5 @@
-import '../common/rs_logger.dart';
-import '../common/rs_strings.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class Attribute {
   Attribute({String name, int type}) {
@@ -35,7 +35,7 @@ class Attribute {
       case RSStrings.attributeShine:
         return AttributeType.shine;
       default:
-        throw FormatException('属性におかしい名前がついています。 name=$name');
+        throw FormatException('属性名が誤っています。（火、水, 風, 土, 雷, 闇, 光のいずれか） name=$name');
     }
   }
 }

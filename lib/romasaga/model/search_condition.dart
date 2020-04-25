@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'weapon.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
 
 class SearchCondition {
   String keyword;

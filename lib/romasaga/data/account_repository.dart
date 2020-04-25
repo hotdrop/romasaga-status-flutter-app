@@ -1,4 +1,4 @@
-import '../service/rs_service.dart';
+import 'package:rsapp/romasaga/service/rs_service.dart';
 
 class AccountRepository {
   const AccountRepository._(this._romancingService);

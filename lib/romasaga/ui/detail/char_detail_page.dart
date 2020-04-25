@@ -3,21 +3,17 @@ import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:rsapp/romasaga/model/attribute.dart';
 import 'package:rsapp/romasaga/model/weapon.dart';
-
-import '../../model/character.dart';
-import '../../model/status.dart';
-
-import 'char_detail_view_model.dart';
-import 'char_status_edit_page.dart';
-
-import '../widget/custom_rs_widgets.dart';
-import '../widget/rs_icon.dart';
-import '../widget/rank_choice_chip.dart';
-import '../widget/custom_page_route.dart';
-
-import '../../common/rs_colors.dart';
-import '../../common/rs_logger.dart';
-import '../../common/rs_strings.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/status.dart';
+import 'package:rsapp/romasaga/ui/detail/char_detail_view_model.dart';
+import 'package:rsapp/romasaga/ui/detail/char_status_edit_page.dart';
+import 'package:rsapp/romasaga/ui/widget/custom_rs_widgets.dart';
+import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
+import 'package:rsapp/romasaga/ui/widget/rank_choice_chip.dart';
+import 'package:rsapp/romasaga/ui/widget/custom_page_route.dart';
+import 'package:rsapp/romasaga/common/rs_colors.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class CharDetailPage extends StatelessWidget {
   const CharDetailPage({@required this.character});
@@ -625,8 +621,7 @@ class CharDetailPage extends StatelessWidget {
         final myStatus = viewModel.character.myStatus;
 
         return FloatingActionButton(
-          child: Icon(Icons.edit, color: Theme.of(context).accentColor),
-          backgroundColor: RSColors.fabBackground,
+          child: const Icon(Icons.edit, color: RSColors.floatingActionButtonIcon),
           onPressed: () async {
             final bool isSaved = await Navigator.of(context).push(
                   RightSlidePageRoute<bool>(page: CharStatusEditPage(myStatus)),

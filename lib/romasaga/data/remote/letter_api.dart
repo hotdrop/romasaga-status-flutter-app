@@ -1,8 +1,7 @@
-import '../json/letter_json_object.dart';
-import '../../model/letter.dart';
-
-import '../../service/rs_service.dart';
-import '../../common/rs_logger.dart';
+import 'package:rsapp/romasaga/data/json/letter_json_object.dart';
+import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/romasaga/service/rs_service.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class LetterApi {
   const LetterApi._(this._rsService);

@@ -1,14 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'ui/top_page.dart';
-
-import 'common/rs_colors.dart';
-import 'common/rs_strings.dart';
+import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/common/rs_theme.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/data/app_setting_repository.dart';
+import 'package:rsapp/romasaga/model/app_settings.dart';
+import 'package:rsapp/romasaga/ui/top_page.dart';
 
 void main() => runApp(RomasagaApp());
 
 class RomasagaApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<AppSettingRepository>(
+      future: AppSettingRepository.getInstance(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          RSLogger.d('初期化が終わっていません。');
+          return _SplashScreen();
+        } else {
+          RSLogger.d('初期化完了です！');
+          return ChangeNotifierProvider<AppSettings>(
+            create: (_) => AppSettings(snapshot.data),
+            child: _RomasagaApp(),
+          );
+        }
+      },
+    );
+  }
+}
+
+class _SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+}
+
+class _RomasagaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,7 +53,7 @@ class RomasagaApp extends StatelessWidget {
         Locale('ja', ''),
       ],
       title: RSStrings.appTitle,
-      theme: ThemeData.dark().copyWith(accentColor: RSColors.accent),
+      theme: Provider.of<AppSettings>(context).isDarkMode ? RSTheme.dark : RSTheme.light,
       home: TopPage(),
     );
   }

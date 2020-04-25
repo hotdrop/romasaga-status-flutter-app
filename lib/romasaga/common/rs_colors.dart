@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RSColors {
-  static const Color accent = Colors.blueAccent;
-  static const Color bottomNavigationBackground = Color(0x6A000000);
-  static const Color fabBackground = Colors.white30;
-
+  static const Color floatingActionButtonIcon = Colors.white;
   // Chip
   static final Color chipAvatarBackground = Colors.grey.shade300;
   static const Color chipRankA = Color.fromARGB(255, 239, 201, 191);

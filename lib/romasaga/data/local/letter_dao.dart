@@ -1,11 +1,8 @@
-import 'database.dart';
 import 'package:sqflite/sqflite.dart';
-
-import 'entity/letter_entity.dart';
-
-import '../../model/letter.dart';
-import '../../common/rs_logger.dart';
-import '../../extension/mapper.dart';
+import 'package:rsapp/romasaga/data/local/database.dart';
+import 'package:rsapp/romasaga/data/local/entity/letter_entity.dart';
+import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/romasaga/extension/mapper.dart';
 
 class LetterDao {
   const LetterDao._(this._dbProvider);

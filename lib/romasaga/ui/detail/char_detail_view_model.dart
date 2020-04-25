@@ -1,15 +1,12 @@
 import 'package:flutter/foundation.dart' as foundation;
-
-import '../../model/character.dart';
-import '../../model/style.dart';
-import '../../model/stage.dart';
-
-import '../../data/character_repository.dart';
-import '../../data/my_status_repository.dart';
-import '../../data/stage_repository.dart';
-
-import '../../common/rs_strings.dart';
-import '../../common/rs_logger.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/style.dart';
+import 'package:rsapp/romasaga/model/stage.dart';
+import 'package:rsapp/romasaga/data/character_repository.dart';
+import 'package:rsapp/romasaga/data/my_status_repository.dart';
+import 'package:rsapp/romasaga/data/stage_repository.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class CharDetailViewModel extends foundation.ChangeNotifier {
   CharDetailViewModel._(this.character, this._characterRepository, this._stageRepository, this._myStatusRepository);
@@ -57,8 +54,9 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
       _selectedStage = _stages.first;
 
       if (character.styles.isEmpty) {
-        RSLogger.d('キャラクターのスタイルが未取得なので取得します。');
+        RSLogger.d('キャラクターのスタイルが未取得なので取得します。id=${character.id}');
         final styles = await _characterRepository.findStyles(character.id);
+        RSLogger.d('キャラクターのスタイルを取得しました。件数=${styles.length}');
         character.addStyles(styles);
       }
 

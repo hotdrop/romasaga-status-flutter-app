@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-
-import '../../common/rs_colors.dart';
-import '../../common/rs_strings.dart';
+import 'package:rsapp/romasaga/common/rs_colors.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 ///
 /// 合計ステータスサークルグラフ

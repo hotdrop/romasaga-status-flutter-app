@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
-import '../../model/letter.dart';
-
-import '../../common/rs_strings.dart';
-import '../../common/rs_colors.dart';
+import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/common/rs_colors.dart';
 
 class LetterMainPage extends StatelessWidget {
   const LetterMainPage({@required this.selectedIndex, @required this.letters});

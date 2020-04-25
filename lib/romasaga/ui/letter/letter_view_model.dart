@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart' as foundation;
-
-import '../../data/letter_repository.dart';
-import '../../model/letter.dart';
+import 'package:rsapp/romasaga/data/letter_repository.dart';
+import 'package:rsapp/romasaga/model/letter.dart';
 
 class LetterViewModel extends foundation.ChangeNotifier {
   LetterViewModel._(this._repository);

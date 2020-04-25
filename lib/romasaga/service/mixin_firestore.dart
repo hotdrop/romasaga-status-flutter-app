@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../model/status.dart';
+import 'package:rsapp/romasaga/model/status.dart';
 
 class RSFirestoreMixin {
   Future<void> setMyStatuses(List<MyStatus> myStatuses, String uid) async {
