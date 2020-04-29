@@ -16,16 +16,8 @@ mixin RSStorageMixin {
   }
 
   Future<String> _readJson({String path}) async {
-    StorageReference ref = FirebaseStorage().ref().child(path);
-
-    // invokeMethodでOSネイティブの処理を実行しているがエラーをキャッチできないので
-    // concurrent.ExecutionException〜FirebaseNoSignedInUserExceptionが発生し続ける。。
-    // しばらくで続けるエラーを止めたいのだが、なんともできないのでとりあえず呼び元にエラーは返したいのでthrowする。
-    dynamic downloadUrl = await ref.getDownloadURL().catchError((Error e) {
-      throw e;
-    });
-
-    String url = downloadUrl as String;
+    final StorageReference ref = FirebaseStorage().ref().child(path);
+    final String url = await ref.getDownloadURL() as String;
     final http.Response response = await http.get(url);
     return utf8.decode(response.bodyBytes);
   }
