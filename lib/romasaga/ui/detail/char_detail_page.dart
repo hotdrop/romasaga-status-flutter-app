@@ -123,7 +123,7 @@ class CharDetailPage extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(viewModel.character.name, style: Theme.of(context).textTheme.subhead),
+            Text(viewModel.character.name, style: Theme.of(context).textTheme.subtitle1),
             Text(viewModel.selectedStyleTitle, style: Theme.of(context).textTheme.caption),
             _contentCharacterWeaponAttribute(context),
           ],
@@ -312,7 +312,7 @@ class CharDetailPage extends StatelessWidget {
             children: <Widget>[
               Text(RSStrings.hpName, style: Theme.of(context).textTheme.caption),
               SizedBox(height: 8.0),
-              Text(hp.toString(), style: Theme.of(context).textTheme.title),
+              Text(hp.toString(), style: Theme.of(context).textTheme.subtitle1),
             ],
           ),
         )
@@ -334,7 +334,7 @@ class CharDetailPage extends StatelessWidget {
             children: <Widget>[
               Text(RSStrings.characterDetailTotalLimitStatusLabel, style: Theme.of(context).textTheme.caption),
               SizedBox(height: 8.0),
-              Text(totalLimit.toString(), style: Theme.of(context).textTheme.title),
+              Text(totalLimit.toString(), style: Theme.of(context).textTheme.headline6),
             ],
           ),
         )

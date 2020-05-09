@@ -43,7 +43,7 @@ class TotalStatusCircularIndicator extends StatelessWidget {
         Text(
           currentTotal.toString(),
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline,
+          style: Theme.of(context).textTheme.headline5,
         ),
         Text(
           RSStrings.characterDetailTotalStatusCircleLabel,
@@ -74,7 +74,7 @@ class RSStatusBar extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-          child: Text(title, style: Theme.of(context).textTheme.subtitle),
+          child: Text(title, style: Theme.of(context).textTheme.subtitle1),
         ),
         _contentLinearPercentIndicator(currentStatusColor),
         Padding(

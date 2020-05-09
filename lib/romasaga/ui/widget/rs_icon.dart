@@ -33,7 +33,7 @@ class CharacterIcon extends StatelessWidget {
       width: _size,
       height: _size,
       placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Image.asset('res/charIcons/default.jpg', width: _size, height: _size),
+      errorWidget: (context, url, dynamic error) => Image.asset('res/charIcons/default.jpg', width: _size, height: _size),
     );
   }
 }
