@@ -110,7 +110,7 @@ class LetterPage extends StatelessWidget {
                       imageUrl: letter.staticImagePath,
                       fit: BoxFit.fill,
                       placeholder: (context, url) => _loadingIcon(letter.loadingIcon),
-                      errorWidget: (context, url, error) => _errorIcon(letter.loadingIcon),
+                      errorWidget: (context, url, dynamic error) => _errorIcon(letter.loadingIcon),
                     ),
                   ),
                 ],

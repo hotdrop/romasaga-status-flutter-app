@@ -3,8 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
 class LetterJsonObject {
-  const LetterJsonObject._(this.year, this.month, this.title, this.shortTitle, this._imageName);
-
   LetterJsonObject._fromJson(Map<String, dynamic> json)
       : year = json['year'] as int,
         month = json['month'] as int,

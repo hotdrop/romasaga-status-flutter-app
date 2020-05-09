@@ -49,7 +49,7 @@ class CharListRowItem extends StatelessWidget {
       children: <Widget>[
         Text(
           character.name,
-          style: Theme.of(context).textTheme.subhead,
+          style: Theme.of(context).textTheme.subtitle1,
         ),
         Text(
           character.production,
