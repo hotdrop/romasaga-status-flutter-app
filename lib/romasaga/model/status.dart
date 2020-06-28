@@ -72,47 +72,109 @@ class MyStatusForEdit {
   bool have;
   bool favorite;
 
+  void increment(StatusType type) {
+    switch (type) {
+      case StatusType.hp:
+        hp++;
+        break;
+      case StatusType.str:
+        str++;
+        break;
+      case StatusType.vit:
+        vit++;
+        break;
+      case StatusType.dex:
+        dex++;
+        break;
+      case StatusType.agi:
+        agi++;
+        break;
+      case StatusType.intelligence:
+        intelligence++;
+        break;
+      case StatusType.spirit:
+        spirit++;
+        break;
+      case StatusType.love:
+        love++;
+        break;
+      case StatusType.attr:
+        attr++;
+        break;
+    }
+  }
+
+  void decrement(StatusType type) {
+    switch (type) {
+      case StatusType.hp:
+        (hp > 0) ? hp-- : hp = 0;
+        break;
+      case StatusType.str:
+        (str > 0) ? str-- : str = 0;
+        break;
+      case StatusType.vit:
+        (vit > 0) ? vit-- : vit = 0;
+        break;
+      case StatusType.dex:
+        (dex > 0) ? dex-- : dex = 0;
+        break;
+      case StatusType.agi:
+        (agi > 0) ? agi-- : agi = 0;
+        break;
+      case StatusType.intelligence:
+        (intelligence > 0) ? intelligence-- : intelligence = 0;
+        break;
+      case StatusType.spirit:
+        (spirit > 0) ? spirit-- : spirit = 0;
+        break;
+      case StatusType.love:
+        (love > 0) ? love-- : love = 0;
+        break;
+      case StatusType.attr:
+        (attr > 0) ? attr-- : attr = 0;
+        break;
+    }
+  }
+
+  void update(StatusType type, int newVal) {
+    switch (type) {
+      case StatusType.hp:
+        hp = newVal;
+        break;
+      case StatusType.str:
+        str = newVal;
+        break;
+      case StatusType.vit:
+        vit = newVal;
+        break;
+      case StatusType.dex:
+        dex = newVal;
+        break;
+      case StatusType.agi:
+        agi = newVal;
+        break;
+      case StatusType.intelligence:
+        intelligence = newVal;
+        break;
+      case StatusType.spirit:
+        spirit = newVal;
+        break;
+      case StatusType.love:
+        love = newVal;
+        break;
+      case StatusType.attr:
+        attr = newVal;
+        break;
+    }
+  }
+
   bool isEmpty() {
     return (hp + str + vit + dex + agi + intelligence + spirit + love + attr) == 0;
   }
-
-  void incrementHP() => hp++;
-
-  void decrementHP() => (hp > 0) ? hp-- : hp = 0;
-
-  void incrementStr() => str++;
-
-  void decrementStr() => (str > 0) ? str-- : str = 0;
-
-  void incrementVit() => vit++;
-
-  void decrementVit() => (vit > 0) ? vit-- : vit = 0;
-
-  void incrementDex() => dex++;
-
-  void decrementDex() => (dex > 0) ? dex-- : dex = 0;
-
-  void incrementAgi() => agi++;
-
-  void decrementAgi() => (agi > 0) ? agi-- : agi = 0;
-
-  void incrementInt() => intelligence++;
-
-  void decrementInt() => (intelligence > 0) ? intelligence-- : intelligence = 0;
-
-  void incrementSpirit() => spirit++;
-
-  void decrementSpirit() => (spirit > 0) ? spirit-- : spirit = 0;
-
-  void incrementLove() => love++;
-
-  void decrementLove() => (love > 0) ? love-- : love = 0;
-
-  void incrementAttr() => attr++;
-
-  void decrementAttr() => (attr > 0) ? attr-- : attr = 0;
 
   MyStatus toMyStatus() {
     return MyStatus(id, hp, str, vit, dex, agi, intelligence, spirit, love, attr, have, favorite);
   }
 }
+
+enum StatusType { hp, str, vit, dex, agi, intelligence, spirit, love, attr }
