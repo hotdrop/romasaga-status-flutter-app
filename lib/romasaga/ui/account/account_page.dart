@@ -44,17 +44,18 @@ class AccountPage extends StatelessWidget {
   Widget _loadLoginView(BuildContext context, bool loggedIn) {
     return ListView(
       children: <Widget>[
-        _rowAccountInfo(),
-        _rowLightDarkSwitch(),
+        _rowAccountInfo(context),
+        _rowAppVersion(context),
+        _rowLightDarkSwitch(context),
         Divider(color: Theme.of(context).accentColor),
         _rowDataUpdateLabel(context),
-        _rowCharacterReload(),
-        _rowStageReload(),
-        _rowLetterReload(),
+        _rowCharacterReload(context),
+        _rowStageReload(context),
+        _rowLetterReload(context),
         Divider(color: Theme.of(context).accentColor),
         if (loggedIn) ...[
-          _rowBackUp(),
-          _rowRestore(),
+          _rowBackUp(context),
+          _rowRestore(context),
           Divider(color: Theme.of(context).accentColor),
           _rowLogoutButton(),
         ],
@@ -114,30 +115,33 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Widget _rowAccountInfo() {
-    return Consumer<AccountPageViewModel>(
-      builder: (context, viewModel, child) {
-        return ListTile(
-          leading: Icon(Icons.account_circle, size: 40.0),
-          title: Text(viewModel.getLoginEmail()),
-          subtitle: Text(viewModel.getLoginUserName()),
-        );
-      },
+  Widget _rowAccountInfo(BuildContext context) {
+    final viewModel = Provider.of<AccountPageViewModel>(context);
+    return ListTile(
+      leading: Icon(Icons.account_circle, size: 40.0),
+      title: Text(viewModel.getLoginEmail()),
+      subtitle: Text(viewModel.getLoginUserName()),
     );
   }
 
-  Widget _rowLightDarkSwitch() {
-    return Consumer<AppSettings>(
-      builder: (context, appSettings, child) {
-        return ListTile(
-          leading: Icon(appSettings.isDarkMode ? Icons.brightness_7 : Icons.brightness_4),
-          title: Text('テーマの切り替え'),
-          trailing: Switch(
-            onChanged: (isDark) => appSettings.setDarkMode(isDark),
-            value: appSettings.isDarkMode,
-          ),
-        );
-      },
+  Widget _rowLightDarkSwitch(BuildContext context) {
+    final appSettings = Provider.of<AppSettings>(context);
+    return ListTile(
+      leading: Icon(appSettings.isDarkMode ? Icons.brightness_7 : Icons.brightness_4),
+      title: Text(RSStrings.accountChangeApplicationThemeLabel),
+      trailing: Switch(
+        onChanged: (isDark) => appSettings.setDarkMode(isDark),
+        value: appSettings.isDarkMode,
+      ),
+    );
+  }
+
+  Widget _rowAppVersion(BuildContext context) {
+    final viewModel = Provider.of<AccountPageViewModel>(context);
+    return ListTile(
+      leading: Icon(Icons.info),
+      title: Text(RSStrings.accountAppVersionLabel),
+      trailing: Text(viewModel.appVersion),
     );
   }
 
@@ -160,164 +164,150 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Widget _rowCharacterReload() {
-    return Consumer<AccountPageViewModel>(
-      builder: (context, viewModel, child) {
-        return ListTile(
-          leading: const Icon(Icons.people),
-          title: const Text(RSStrings.accountCharacterUpdateLabel),
-          subtitle: Text('${RSStrings.accountCharacterRegisterCountLabel} ${viewModel.characterCount ?? 0}'),
-          onTap: () async {
-            await AwesomeDialog(
-              context: context,
-              dialogType: DialogType.INFO,
-              tittle: RSStrings.accountCharacterUpdateLabel,
-              desc: RSStrings.accountCharacterOnlyNewUpdateDialogMessage,
-              btnCancelOnPress: () {},
-              btnOkOnPress: () async {
-                await _executeWithStateDialog(
-                  context,
-                  execFunc: viewModel.registerNewCharacters(),
-                  successMessage: RSStrings.accountCharacterUpdateDialogSuccessMessage,
-                  errorMessage: viewModel.errorMessage,
-                );
-              },
-            ).show();
+  Widget _rowCharacterReload(BuildContext context) {
+    final viewModel = Provider.of<AccountPageViewModel>(context);
+
+    return ListTile(
+      leading: const Icon(Icons.people),
+      title: const Text(RSStrings.accountCharacterUpdateLabel),
+      subtitle: Text('${RSStrings.accountCharacterRegisterCountLabel} ${viewModel.characterCount ?? 0}'),
+      onTap: () async {
+        await AwesomeDialog(
+          context: context,
+          dialogType: DialogType.INFO,
+          tittle: RSStrings.accountCharacterUpdateLabel,
+          desc: RSStrings.accountCharacterOnlyNewUpdateDialogMessage,
+          btnCancelOnPress: () {},
+          btnOkOnPress: () async {
+            await _executeWithStateDialog(
+              context,
+              execFunc: viewModel.registerNewCharacters(),
+              successMessage: RSStrings.accountCharacterUpdateDialogSuccessMessage,
+              errorMessage: viewModel.errorMessage,
+            );
           },
-          onLongPress: () async {
-            await AwesomeDialog(
-              context: context,
-              dialogType: DialogType.WARNING,
-              tittle: RSStrings.accountCharacterUpdateLabel,
-              desc: RSStrings.accountCharacterAllUpdateDialogMessage,
-              btnCancelOnPress: () {},
-              btnOkOnPress: () async {
-                await _executeWithStateDialog(
-                  context,
-                  execFunc: viewModel.updateAllCharacters(),
-                  successMessage: RSStrings.accountCharacterUpdateDialogSuccessMessage,
-                  errorMessage: viewModel.errorMessage,
-                );
-              },
-            ).show();
+        ).show();
+      },
+      onLongPress: () async {
+        await AwesomeDialog(
+          context: context,
+          dialogType: DialogType.WARNING,
+          tittle: RSStrings.accountCharacterUpdateLabel,
+          desc: RSStrings.accountCharacterAllUpdateDialogMessage,
+          btnCancelOnPress: () {},
+          btnOkOnPress: () async {
+            await _executeWithStateDialog(
+              context,
+              execFunc: viewModel.updateAllCharacters(),
+              successMessage: RSStrings.accountCharacterUpdateDialogSuccessMessage,
+              errorMessage: viewModel.errorMessage,
+            );
           },
-        );
+        ).show();
       },
     );
   }
 
-  Widget _rowStageReload() {
-    return Consumer<AccountPageViewModel>(
-      builder: (context, viewModel, child) {
-        return ListTile(
-          leading: const Icon(Icons.map),
-          title: const Text(RSStrings.accountStageUpdateLabel),
-          subtitle: Text('${RSStrings.accountStageLatestLabel} ${viewModel.latestStageName ?? 'ー'}'),
-          onTap: () async {
-            await AwesomeDialog(
-              context: context,
-              dialogType: DialogType.INFO,
-              tittle: RSStrings.accountStageUpdateLabel,
-              desc: RSStrings.accountStageUpdateDialogMessage,
-              btnCancelOnPress: () {},
-              btnOkOnPress: () async {
-                await _executeWithStateDialog(
-                  context,
-                  execFunc: viewModel.refreshStage(),
-                  successMessage: RSStrings.accountStageUpdateDialogSuccessMessage,
-                  errorMessage: viewModel.errorMessage,
-                );
-              },
-            ).show();
+  Widget _rowStageReload(BuildContext context) {
+    final viewModel = Provider.of<AccountPageViewModel>(context);
+    return ListTile(
+      leading: const Icon(Icons.map),
+      title: const Text(RSStrings.accountStageUpdateLabel),
+      subtitle: Text('${RSStrings.accountStageLatestLabel} ${viewModel.latestStageName ?? 'ー'}'),
+      onTap: () async {
+        await AwesomeDialog(
+          context: context,
+          dialogType: DialogType.INFO,
+          tittle: RSStrings.accountStageUpdateLabel,
+          desc: RSStrings.accountStageUpdateDialogMessage,
+          btnCancelOnPress: () {},
+          btnOkOnPress: () async {
+            await _executeWithStateDialog(
+              context,
+              execFunc: viewModel.refreshStage(),
+              successMessage: RSStrings.accountStageUpdateDialogSuccessMessage,
+              errorMessage: viewModel.errorMessage,
+            );
           },
-        );
+        ).show();
       },
     );
   }
 
-  Widget _rowLetterReload() {
-    return Consumer<AccountPageViewModel>(
-      builder: (context, viewModel, child) {
-        return ListTile(
-          leading: const Icon(Icons.mail),
-          title: const Text(RSStrings.accountLetterUpdateLabel),
-          subtitle: Text('${RSStrings.accountLetterLatestLabel} ${viewModel.latestLetterName ?? 'ー'}'),
-          onTap: () async {
-            await AwesomeDialog(
-              context: context,
-              dialogType: DialogType.INFO,
-              tittle: RSStrings.accountLetterUpdateLabel,
-              desc: RSStrings.accountLetterUpdateDialogMessage,
-              btnCancelOnPress: () {},
-              btnOkOnPress: () async {
-                await _executeWithStateDialog(
-                  context,
-                  execFunc: viewModel.refreshLetter(),
-                  successMessage: RSStrings.accountLetterUpdateDialogSuccessMessage,
-                  errorMessage: viewModel.errorMessage,
-                );
-              },
-            ).show();
+  Widget _rowLetterReload(BuildContext context) {
+    final viewModel = Provider.of<AccountPageViewModel>(context);
+    return ListTile(
+      leading: const Icon(Icons.mail),
+      title: const Text(RSStrings.accountLetterUpdateLabel),
+      subtitle: Text('${RSStrings.accountLetterLatestLabel} ${viewModel.latestLetterName ?? 'ー'}'),
+      onTap: () async {
+        await AwesomeDialog(
+          context: context,
+          dialogType: DialogType.INFO,
+          tittle: RSStrings.accountLetterUpdateLabel,
+          desc: RSStrings.accountLetterUpdateDialogMessage,
+          btnCancelOnPress: () {},
+          btnOkOnPress: () async {
+            await _executeWithStateDialog(
+              context,
+              execFunc: viewModel.refreshLetter(),
+              successMessage: RSStrings.accountLetterUpdateDialogSuccessMessage,
+              errorMessage: viewModel.errorMessage,
+            );
           },
-        );
+        ).show();
       },
     );
   }
 
-  Widget _rowBackUp() {
-    return Consumer<AccountPageViewModel>(
-      builder: (context, viewModel, child) {
-        return ListTile(
-          leading: const Icon(Icons.backup),
-          title: const Text(RSStrings.accountStatusBackupLabel),
-          subtitle: Text('${RSStrings.accountStatusBackupDateLabel} ${viewModel.backupDateLabel}'),
-          onTap: () async {
-            await AwesomeDialog(
-              context: context,
-              dialogType: DialogType.INFO,
-              tittle: RSStrings.accountStatusBackupLabel,
-              desc: RSStrings.accountStatusBackupDialogMessage,
-              btnCancelOnPress: () {},
-              btnOkOnPress: () async {
-                await _executeWithStateDialog(
-                  context,
-                  execFunc: viewModel.backup(),
-                  successMessage: RSStrings.accountStatusBackupDialogSuccessMessage,
-                  errorMessage: viewModel.errorMessage,
-                );
-              },
-            ).show();
+  Widget _rowBackUp(BuildContext context) {
+    final viewModel = Provider.of<AccountPageViewModel>(context);
+    return ListTile(
+      leading: const Icon(Icons.backup),
+      title: const Text(RSStrings.accountStatusBackupLabel),
+      subtitle: Text('${RSStrings.accountStatusBackupDateLabel} ${viewModel.backupDateLabel}'),
+      onTap: () async {
+        await AwesomeDialog(
+          context: context,
+          dialogType: DialogType.INFO,
+          tittle: RSStrings.accountStatusBackupLabel,
+          desc: RSStrings.accountStatusBackupDialogMessage,
+          btnCancelOnPress: () {},
+          btnOkOnPress: () async {
+            await _executeWithStateDialog(
+              context,
+              execFunc: viewModel.backup(),
+              successMessage: RSStrings.accountStatusBackupDialogSuccessMessage,
+              errorMessage: viewModel.errorMessage,
+            );
           },
-        );
+        ).show();
       },
     );
   }
 
-  Widget _rowRestore() {
-    return Consumer<AccountPageViewModel>(
-      builder: (context, viewModel, child) {
-        return ListTile(
-          leading: const Icon(Icons.settings_backup_restore),
-          title: const Text(RSStrings.accountStatusRestoreLabel),
-          subtitle: Text(RSStrings.accountStatusRestoreDescriptionLabel),
-          onTap: () async {
-            await AwesomeDialog(
-              context: context,
-              dialogType: DialogType.WARNING,
-              tittle: RSStrings.accountStatusRestoreLabel,
-              desc: RSStrings.accountStatusRestoreDialogMessage,
-              btnCancelOnPress: () {},
-              btnOkOnPress: () async {
-                await _executeWithStateDialog(
-                  context,
-                  execFunc: viewModel.restore(),
-                  successMessage: RSStrings.accountStatusBackupDialogSuccessMessage,
-                  errorMessage: viewModel.errorMessage,
-                );
-              },
-            ).show();
+  Widget _rowRestore(BuildContext context) {
+    final viewModel = Provider.of<AccountPageViewModel>(context);
+    return ListTile(
+      leading: const Icon(Icons.settings_backup_restore),
+      title: const Text(RSStrings.accountStatusRestoreLabel),
+      subtitle: Text(RSStrings.accountStatusRestoreDescriptionLabel),
+      onTap: () async {
+        await AwesomeDialog(
+          context: context,
+          dialogType: DialogType.WARNING,
+          tittle: RSStrings.accountStatusRestoreLabel,
+          desc: RSStrings.accountStatusRestoreDialogMessage,
+          btnCancelOnPress: () {},
+          btnOkOnPress: () async {
+            await _executeWithStateDialog(
+              context,
+              execFunc: viewModel.restore(),
+              successMessage: RSStrings.accountStatusBackupDialogSuccessMessage,
+              errorMessage: viewModel.errorMessage,
+            );
           },
-        );
+        ).show();
       },
     );
   }

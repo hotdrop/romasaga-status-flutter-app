@@ -183,7 +183,7 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(title, style: Theme.of(context).textTheme.subtitle),
+          Text(title, style: Theme.of(context).textTheme.subtitle2),
           Divider(color: Theme.of(context).accentColor),
         ],
       ),
@@ -336,7 +336,7 @@ class _BackdropPanel extends StatelessWidget {
                 children: <Widget>[
                   const SizedBox(width: 16.0),
                   const SizedBox(width: 16.0),
-                  Text(RSStrings.searchBackDropTitle, style: Theme.of(context).textTheme.subhead),
+                  Text(RSStrings.searchBackDropTitle, style: Theme.of(context).textTheme.subtitle1),
                   const SizedBox(width: 16.0),
                   visibleBackdropPanel ? Icon(Icons.expand_more) : Icon(Icons.expand_less),
                 ],

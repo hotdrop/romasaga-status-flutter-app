@@ -76,7 +76,7 @@ class _LetterDetailPage extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: letter.gifFilePath,
       placeholder: (context, url) => _loadingIcon(letter.loadingIcon),
-      errorWidget: (context, url, error) => _errorIcon(letter.loadingIcon),
+      errorWidget: (context, url, dynamic error) => _errorIcon(letter.loadingIcon),
     );
   }
 

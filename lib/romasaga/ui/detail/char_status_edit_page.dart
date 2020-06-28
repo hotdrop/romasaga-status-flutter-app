@@ -45,152 +45,88 @@ class CharStatusEditPage extends StatelessWidget {
   Widget _contentEachLayout(BuildContext context) {
     return ListView(
       children: <Widget>[
-        _rowHP(context),
+        _createRow(context, StatusType.hp),
         const Divider(color: Colors.grey),
-        _rowStr(context),
-        _rowVit(context),
-        _rowDex(context),
-        _rowAgi(context),
-        _rowInt(context),
-        _rowSpi(context),
-        _rowLove(context),
-        _rowAttr(context),
+        _createRow(context, StatusType.str),
+        _createRow(context, StatusType.vit),
+        _createRow(context, StatusType.dex),
+        _createRow(context, StatusType.agi),
+        _createRow(context, StatusType.intelligence),
+        _createRow(context, StatusType.spirit),
+        _createRow(context, StatusType.love),
+        _createRow(context, StatusType.attr),
         const SizedBox(height: 16.0)
       ],
     );
   }
 
-  Widget _rowHP(BuildContext context) {
-    List<Widget> rowContents = [];
+  Widget _createRow(BuildContext context, StatusType type) {
     final viewModel = Provider.of<CharStatusEditViewModel>(context);
 
-    rowContents.add(const SizedBox(width: 8.0));
-    rowContents.add(Text(
-      RSStrings.hpName,
-      style: TextStyle(fontSize: 30.0, color: Colors.yellowAccent),
-    ));
-    rowContents.add(const SizedBox(width: 32.0));
-    rowContents.add(IncrementCounter(onTap: () => viewModel.incrementHP()));
-    rowContents.add(_statusLabel(viewModel.hp));
-    rowContents.add(DecrementCounter(onTap: () => viewModel.decrementHP()));
-    rowContents.add(_diffLabel(nowStatus: _nowStatus.hp, newStatus: viewModel.hp));
+    Widget statusSymbol;
+    int nowStatus;
+    int updateStatus;
 
-    return _rowLayout(rowContents);
-  }
+    switch (type) {
+      case StatusType.hp:
+        statusSymbol = Text(RSStrings.hpName, style: TextStyle(fontSize: 30.0, color: Colors.yellowAccent));
+        nowStatus = _nowStatus.hp;
+        updateStatus = viewModel.hp;
+        break;
+      case StatusType.str:
+        statusSymbol = StatusIcon.str();
+        nowStatus = _nowStatus.str;
+        updateStatus = viewModel.str;
+        break;
+      case StatusType.vit:
+        statusSymbol = StatusIcon.vit();
+        nowStatus = _nowStatus.vit;
+        updateStatus = viewModel.vit;
+        break;
+      case StatusType.dex:
+        statusSymbol = StatusIcon.dex();
+        nowStatus = _nowStatus.dex;
+        updateStatus = viewModel.dex;
+        break;
+      case StatusType.agi:
+        statusSymbol = StatusIcon.agi();
+        nowStatus = _nowStatus.agi;
+        updateStatus = viewModel.agi;
+        break;
+      case StatusType.intelligence:
+        statusSymbol = StatusIcon.int();
+        nowStatus = _nowStatus.intelligence;
+        updateStatus = viewModel.intelligence;
+        break;
+      case StatusType.spirit:
+        statusSymbol = StatusIcon.spirit();
+        nowStatus = _nowStatus.spirit;
+        updateStatus = viewModel.spirit;
+        break;
+      case StatusType.love:
+        statusSymbol = StatusIcon.love();
+        nowStatus = _nowStatus.love;
+        updateStatus = viewModel.love;
+        break;
+      case StatusType.attr:
+        statusSymbol = StatusIcon.attr();
+        nowStatus = _nowStatus.attr;
+        updateStatus = viewModel.attr;
+        break;
+    }
 
-  Widget _rowStr(BuildContext context) {
     List<Widget> rowContents = [];
-    final viewModel = Provider.of<CharStatusEditViewModel>(context);
+    if (type == StatusType.hp) {
+      rowContents.add(const SizedBox(width: 8.0));
+    }
+    rowContents.add(statusSymbol);
+    rowContents.add(const SizedBox(width: 16.0));
+    rowContents.add(_statusLabel(updateStatus));
+    rowContents.add(_diffLabel(nowStatus: nowStatus, newStatus: updateStatus));
+    rowContents.add(DecrementCounter(onTap: () => viewModel.decrement(type)));
+    rowContents.add(const SizedBox(width: 24.0));
+    rowContents.add(IncrementCounter(onTap: () => viewModel.increment(type)));
 
-    rowContents.add(StatusIcon.str());
-    rowContents.add(const SizedBox(width: 32.0));
-    rowContents.add(IncrementCounter(onTap: () => viewModel.incrementStr()));
-    rowContents.add(_statusLabel(viewModel.str));
-    rowContents.add(DecrementCounter(onTap: () => viewModel.decrementStr()));
-    rowContents.add(_diffLabel(nowStatus: _nowStatus.str, newStatus: viewModel.str));
-
-    return _rowLayout(rowContents);
-  }
-
-  Widget _rowVit(BuildContext context) {
-    List<Widget> rowContents = [];
-    final viewModel = Provider.of<CharStatusEditViewModel>(context);
-
-    rowContents.add(StatusIcon.vit());
-    rowContents.add(const SizedBox(width: 32.0));
-    rowContents.add(IncrementCounter(onTap: () => viewModel.incrementVit()));
-    rowContents.add(_statusLabel(viewModel.vit));
-    rowContents.add(DecrementCounter(onTap: () => viewModel.decrementVit()));
-    rowContents.add(_diffLabel(nowStatus: _nowStatus.vit, newStatus: viewModel.vit));
-
-    return _rowLayout(rowContents);
-  }
-
-  Widget _rowDex(BuildContext context) {
-    List<Widget> rowContents = [];
-    final viewModel = Provider.of<CharStatusEditViewModel>(context);
-
-    rowContents.add(StatusIcon.dex());
-    rowContents.add(const SizedBox(width: 32.0));
-    rowContents.add(IncrementCounter(onTap: () => viewModel.incrementDex()));
-    rowContents.add(_statusLabel(viewModel.dex));
-    rowContents.add(DecrementCounter(onTap: () => viewModel.decrementDex()));
-    rowContents.add(_diffLabel(nowStatus: _nowStatus.dex, newStatus: viewModel.dex));
-
-    return _rowLayout(rowContents);
-  }
-
-  Widget _rowAgi(BuildContext context) {
-    List<Widget> rowContents = [];
-    final viewModel = Provider.of<CharStatusEditViewModel>(context);
-
-    rowContents.add(StatusIcon.agi());
-    rowContents.add(const SizedBox(width: 32.0));
-    rowContents.add(IncrementCounter(onTap: () => viewModel.incrementAgi()));
-    rowContents.add(_statusLabel(viewModel.agi));
-    rowContents.add(DecrementCounter(onTap: () => viewModel.decrementAgi()));
-    rowContents.add(_diffLabel(nowStatus: _nowStatus.agi, newStatus: viewModel.agi));
-
-    return _rowLayout(rowContents);
-  }
-
-  Widget _rowInt(BuildContext context) {
-    List<Widget> rowContents = [];
-    final viewModel = Provider.of<CharStatusEditViewModel>(context);
-
-    rowContents.add(StatusIcon.int());
-    rowContents.add(const SizedBox(width: 32.0));
-    rowContents.add(IncrementCounter(onTap: () => viewModel.incrementInt()));
-    rowContents.add(_statusLabel(viewModel.intelligence));
-    rowContents.add(DecrementCounter(onTap: () => viewModel.decrementInt()));
-    rowContents.add(_diffLabel(nowStatus: _nowStatus.intelligence, newStatus: viewModel.intelligence));
-
-    return _rowLayout(rowContents);
-  }
-
-  Widget _rowSpi(BuildContext context) {
-    List<Widget> rowContents = [];
-    final viewModel = Provider.of<CharStatusEditViewModel>(context);
-
-    rowContents.add(StatusIcon.spi());
-    rowContents.add(const SizedBox(width: 32.0));
-    rowContents.add(IncrementCounter(onTap: () => viewModel.incrementSpirit()));
-    rowContents.add(_statusLabel(viewModel.spirit));
-    rowContents.add(DecrementCounter(onTap: () => viewModel.decrementSpirit()));
-    rowContents.add(_diffLabel(nowStatus: _nowStatus.spirit, newStatus: viewModel.spirit));
-
-    return _rowLayout(rowContents);
-  }
-
-  Widget _rowLove(BuildContext context) {
-    List<Widget> rowContents = [];
-    final viewModel = Provider.of<CharStatusEditViewModel>(context);
-
-    rowContents.add(StatusIcon.love());
-    rowContents.add(const SizedBox(width: 32.0));
-    rowContents.add(IncrementCounter(onTap: () => viewModel.incrementLove()));
-    rowContents.add(_statusLabel(viewModel.love));
-    rowContents.add(DecrementCounter(onTap: () => viewModel.decrementLove()));
-    rowContents.add(_diffLabel(nowStatus: _nowStatus.love, newStatus: viewModel.love));
-
-    return _rowLayout(rowContents);
-  }
-
-  Widget _rowAttr(BuildContext context) {
-    List<Widget> rowContents = [];
-    final viewModel = Provider.of<CharStatusEditViewModel>(context);
-
-    rowContents.add(StatusIcon.attr());
-    rowContents.add(const SizedBox(width: 32.0));
-    rowContents.add(IncrementCounter(onTap: () => viewModel.incrementAttr()));
-    rowContents.add(_statusLabel(viewModel.attr));
-    rowContents.add(DecrementCounter(onTap: () => viewModel.decrementAttr()));
-    rowContents.add(_diffLabel(nowStatus: _nowStatus.attr, newStatus: viewModel.attr));
-
-    return _rowLayout(rowContents);
-  }
-
-  Widget _rowLayout(List<Widget> rowContents) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 8.0),
       child: Row(
@@ -202,8 +138,8 @@ class CharStatusEditPage extends StatelessWidget {
 
   Widget _statusLabel(int value) {
     return Container(
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-      width: 100.0,
+      padding: const EdgeInsets.only(left: 8.0),
+      width: 80.0,
       child: Center(
         child: Text(
           '$value',
@@ -224,8 +160,9 @@ class CharStatusEditPage extends StatelessWidget {
     } else if (diff < 0) {
       textColor = RSColors.statusMinus;
     }
-    return Padding(
-      padding: const EdgeInsets.only(left: 28.0),
+    return Container(
+      padding: const EdgeInsets.only(right: 16.0),
+      width: 80.0,
       child: Center(
         child: Text(diffStr, style: TextStyle(fontSize: 28.0, color: textColor)),
       ),
@@ -239,15 +176,15 @@ class CharStatusEditPage extends StatelessWidget {
     return Consumer<CharStatusEditViewModel>(
       builder: (context, viewModel, child) {
         // フォーカスが必要なので末尾のステータスから順に作成していく
-        final attrField = StatusTextField(RSStrings.attrName, _nowStatus.attr, (v) => viewModel.updateAttr(v));
-        final loveField = StatusTextField(RSStrings.loveName, _nowStatus.love, (v) => viewModel.updateLove(v), nextFocusNode: attrField.focusNode);
-        final spiField = StatusTextField(RSStrings.spiName, _nowStatus.spirit, (v) => viewModel.updateStatusSpi(v), nextFocusNode: loveField.focusNode);
-        final intField = StatusTextField(RSStrings.intName, _nowStatus.intelligence, (v) => viewModel.updateStatusInt(v), nextFocusNode: spiField.focusNode);
-        final agiField = StatusTextField(RSStrings.agiName, _nowStatus.agi, (v) => viewModel.updateStatusAgi(v), nextFocusNode: intField.focusNode);
-        final dexField = StatusTextField(RSStrings.dexName, _nowStatus.dex, (v) => viewModel.updateStatusDex(v), nextFocusNode: agiField.focusNode);
-        final vitField = StatusTextField(RSStrings.vitName, _nowStatus.vit, (v) => viewModel.updateStatusVit(v), nextFocusNode: dexField.focusNode);
-        final strField = StatusTextField(RSStrings.strName, _nowStatus.str, (v) => viewModel.updateStr(v), nextFocusNode: vitField.focusNode);
-        final hpField = StatusTextField(RSStrings.hpName, _nowStatus.hp, (v) => viewModel.updateHP(v), nextFocusNode: strField.focusNode);
+        final attrField = StatusTextField(RSStrings.attrName, _nowStatus.attr, (v) => viewModel.update(StatusType.attr, v));
+        final loveField = StatusTextField(RSStrings.loveName, _nowStatus.love, (v) => viewModel.update(StatusType.love, v), nextFocusNode: attrField.focusNode);
+        final spiField = StatusTextField(RSStrings.spiName, _nowStatus.spirit, (v) => viewModel.update(StatusType.spirit, v), nextFocusNode: loveField.focusNode);
+        final intField = StatusTextField(RSStrings.intName, _nowStatus.intelligence, (v) => viewModel.update(StatusType.intelligence, v), nextFocusNode: spiField.focusNode);
+        final agiField = StatusTextField(RSStrings.agiName, _nowStatus.agi, (v) => viewModel.update(StatusType.agi, v), nextFocusNode: intField.focusNode);
+        final dexField = StatusTextField(RSStrings.dexName, _nowStatus.dex, (v) => viewModel.update(StatusType.dex, v), nextFocusNode: agiField.focusNode);
+        final vitField = StatusTextField(RSStrings.vitName, _nowStatus.vit, (v) => viewModel.update(StatusType.vit, v), nextFocusNode: dexField.focusNode);
+        final strField = StatusTextField(RSStrings.strName, _nowStatus.str, (v) => viewModel.update(StatusType.str, v), nextFocusNode: vitField.focusNode);
+        final hpField = StatusTextField(RSStrings.hpName, _nowStatus.hp, (v) => viewModel.update(StatusType.hp, v), nextFocusNode: strField.focusNode);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,

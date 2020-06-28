@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/model/status.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
 
@@ -33,161 +32,18 @@ class CharStatusEditViewModel extends foundation.ChangeNotifier {
   int get love => _currentStatus.love;
   int get attr => _currentStatus.attr;
 
-  ///
-  /// HP
-  ///
-  void incrementHP() {
-    _currentStatus.incrementHP();
+  void increment(StatusType type) {
+    _currentStatus.increment(type);
     notifyListeners();
   }
 
-  void decrementHP() {
-    _currentStatus.decrementHP();
+  void decrement(StatusType type) {
+    _currentStatus.decrement(type);
     notifyListeners();
   }
 
-  void updateHP(int newVal) {
-    _currentStatus.hp = newVal;
-  }
-
-  ///
-  /// Str
-  ///
-  void incrementStr() {
-    RSLogger.d('strを＋1します');
-    _currentStatus.incrementStr();
-    RSLogger.d('str=${_currentStatus.str}');
-    notifyListeners();
-  }
-
-  void decrementStr() {
-    RSLogger.d('strを-1します');
-    _currentStatus.decrementStr();
-    RSLogger.d('str=${_currentStatus.str}');
-    notifyListeners();
-  }
-
-  void updateStr(int newVal) {
-    _currentStatus.str = newVal;
-  }
-
-  ///
-  /// Vit
-  ///
-  void incrementVit() {
-    _currentStatus.incrementVit();
-    notifyListeners();
-  }
-
-  void decrementVit() {
-    _currentStatus.decrementVit();
-    notifyListeners();
-  }
-
-  void updateStatusVit(int newVal) {
-    _currentStatus.vit = newVal;
-  }
-
-  ///
-  /// Dex
-  ///
-  void incrementDex() {
-    _currentStatus.incrementDex();
-    notifyListeners();
-  }
-
-  void decrementDex() {
-    _currentStatus.decrementDex();
-    notifyListeners();
-  }
-
-  void updateStatusDex(int newVal) {
-    _currentStatus.dex = newVal;
-  }
-
-  ///
-  /// Agi
-  ///
-  void incrementAgi() {
-    _currentStatus.incrementAgi();
-    notifyListeners();
-  }
-
-  void decrementAgi() {
-    _currentStatus.decrementAgi();
-    notifyListeners();
-  }
-
-  void updateStatusAgi(int newVal) {
-    _currentStatus.agi = newVal;
-  }
-
-  ///
-  /// Int
-  ///
-  void incrementInt() {
-    _currentStatus.incrementInt();
-    notifyListeners();
-  }
-
-  void decrementInt() {
-    _currentStatus.decrementInt();
-    notifyListeners();
-  }
-
-  void updateStatusInt(int newVal) {
-    _currentStatus.intelligence = newVal;
-  }
-
-  ///
-  /// Spirit
-  ///
-  void incrementSpirit() {
-    _currentStatus.incrementSpirit();
-    notifyListeners();
-  }
-
-  void decrementSpirit() {
-    _currentStatus.decrementSpirit();
-    notifyListeners();
-  }
-
-  void updateStatusSpi(int newVal) {
-    _currentStatus.spirit = newVal;
-  }
-
-  ///
-  /// Love
-  ///
-  void incrementLove() {
-    _currentStatus.incrementLove();
-    notifyListeners();
-  }
-
-  void decrementLove() {
-    _currentStatus.decrementLove();
-    notifyListeners();
-  }
-
-  void updateLove(int newVal) {
-    _currentStatus.love = newVal;
-  }
-
-  ///
-  /// Attr
-  ///
-  void incrementAttr() {
-    _currentStatus.incrementAttr();
-    notifyListeners();
-  }
-
-  void decrementAttr() {
-    _currentStatus.decrementAttr();
-    notifyListeners();
-  }
-
-  void updateAttr(int newVal) {
-    _currentStatus.attr = newVal;
+  void update(StatusType type, int newVal) {
+    _currentStatus.update(type, newVal);
   }
 
   void changeEditMode() {

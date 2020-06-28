@@ -33,7 +33,7 @@ class CharacterIcon extends StatelessWidget {
       width: _size,
       height: _size,
       placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Image.asset('res/charIcons/default.jpg', width: _size, height: _size),
+      errorWidget: (context, url, dynamic error) => Image.asset('res/charIcons/default.jpg', width: _size, height: _size),
     );
   }
 }
@@ -232,7 +232,7 @@ class StatusIcon extends StatelessWidget {
   factory StatusIcon.int() {
     return StatusIcon._('res/icons/icon_status_int.png');
   }
-  factory StatusIcon.spi() {
+  factory StatusIcon.spirit() {
     return StatusIcon._('res/icons/icon_status_spi.png');
   }
   factory StatusIcon.love() {
