@@ -119,7 +119,9 @@ class CharListPage extends StatelessWidget {
 
     return ListView.builder(itemBuilder: (context, index) {
       if (index < characters.length) {
-        return CharListRowItem(characters[index]);
+        return CharListRowItem(characters[index], refreshListener: () async {
+          await viewModel.refreshMyStatuses();
+        });
       }
       return null;
     });
@@ -142,7 +144,9 @@ class CharListPage extends StatelessWidget {
 
     return ListView.builder(itemBuilder: (context, index) {
       if (index < characters.length) {
-        return CharListRowItem(characters[index]);
+        return CharListRowItem(characters[index], refreshListener: () async {
+          await viewModel.refreshMyStatuses();
+        });
       }
       return null;
     });
@@ -167,7 +171,9 @@ class CharListPage extends StatelessWidget {
       final characters = viewModel.findHaveCharacter();
 
       if (index < characters.length) {
-        return CharListRowItem(characters[index]);
+        return CharListRowItem(characters[index], refreshListener: () async {
+          await viewModel.refreshMyStatuses();
+        });
       }
       return null;
     });
@@ -178,7 +184,9 @@ class CharListPage extends StatelessWidget {
       final characters = viewModel.findNotHaveCharacter();
 
       if (index < characters.length) {
-        return CharListRowItem(characters[index]);
+        return CharListRowItem(characters[index], refreshListener: () async {
+          await viewModel.refreshMyStatuses();
+        });
       }
       return null;
     });

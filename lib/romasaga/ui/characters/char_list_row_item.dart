@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/ui/detail/char_detail_page.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
 import 'package:rsapp/romasaga/model/character.dart';
@@ -7,10 +8,10 @@ import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/common/rs_colors.dart';
 
 class CharListRowItem extends StatelessWidget {
-  const CharListRowItem(this.character, {this.index});
+  const CharListRowItem(this.character, {this.refreshListener});
 
   final Character character;
-  final int index;
+  final Function refreshListener;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +27,14 @@ class CharListRowItem extends StatelessWidget {
                 Expanded(child: _labelStatus(character, context), flex: 3),
               ],
             )),
-        onTap: () {
-          Navigator.push<void>(
-            context,
+        onTap: () async {
+          bool isUpdate = await Navigator.of(context).push<bool>(
             MaterialPageRoute(builder: (context) => CharDetailPage(character: character)),
           );
+          RSLogger.d('詳細画面でステータスが更新されたか？ $isUpdate');
+          if (isUpdate) {
+            await refreshListener();
+          }
         },
       ),
     );
