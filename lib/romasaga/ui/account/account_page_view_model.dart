@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:package_info/package_info.dart';
 import 'package:rsapp/romasaga/data/letter_repository.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/stage_repository.dart';
@@ -32,6 +33,10 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   final MyStatusRepository _myStatusRepository;
   final AccountRepository _accountRepository;
 
+  // アプリ情報
+  PackageInfo _packageInfo;
+  String get appVersion => _packageInfo.version + '-' + _packageInfo.buildNumber;
+
   // ステータス
   _Status _status = _Status.nowLoading;
   bool get nowLoading => _status == _Status.nowLoading;
@@ -49,6 +54,8 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   /// このViewModelを使うときに必ず呼ぶ
   ///
   Future<void> load() async {
+    _packageInfo = await PackageInfo.fromPlatform();
+
     await _accountRepository.load();
 
     final isLogIn = _accountRepository.isLogIn;

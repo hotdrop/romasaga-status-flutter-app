@@ -38,6 +38,7 @@ dependencies:
   cached_network_image: ^2.0.0-rc
 
   # other
+  package_info: ^0.4.1
   json_serializable: ^2.0.0
   logger: ^0.7.0
 

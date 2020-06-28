@@ -50,6 +50,8 @@ class RSStrings {
   static const String accountPageTitle = 'アカウント';
   static const String accountNotLoginEmailLabel = '未ログイン';
   static const String accountNotLoginNameLabel = 'ー';
+  static const String accountChangeApplicationThemeLabel = 'テーマの切り替え';
+  static const String accountAppVersionLabel = 'バージョン';
   static const String accountLoginWithGoogle = 'Googleアカウントでログイン';
   static const String accountLogoutTitle = 'Googleアカウントからログアウト';
   static const String accountLogoutDialogMessage = 'ログアウトしてもよろしいですか？';
@@ -89,6 +91,7 @@ class RSStrings {
   static const String accountDialogTitleSuccess = '成功';
   static const String accountDialogTitleError = 'エラー';
 
+  // ステータス
   static const String hpName = 'HP';
   static const String strName = '腕力';
   static const String vitName = '体力';

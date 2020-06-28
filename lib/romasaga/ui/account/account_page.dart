@@ -45,6 +45,7 @@ class AccountPage extends StatelessWidget {
     return ListView(
       children: <Widget>[
         _rowAccountInfo(),
+        _rowAppVersion(context),
         _rowLightDarkSwitch(),
         Divider(color: Theme.of(context).accentColor),
         _rowDataUpdateLabel(context),
@@ -131,13 +132,22 @@ class AccountPage extends StatelessWidget {
       builder: (context, appSettings, child) {
         return ListTile(
           leading: Icon(appSettings.isDarkMode ? Icons.brightness_7 : Icons.brightness_4),
-          title: Text('テーマの切り替え'),
+          title: Text(RSStrings.accountChangeApplicationThemeLabel),
           trailing: Switch(
             onChanged: (isDark) => appSettings.setDarkMode(isDark),
             value: appSettings.isDarkMode,
           ),
         );
       },
+    );
+  }
+
+  Widget _rowAppVersion(BuildContext context) {
+    final viewModel = Provider.of<AccountPageViewModel>(context);
+    return ListTile(
+      leading: Icon(Icons.info),
+      title: Text(RSStrings.accountAppVersionLabel),
+      trailing: Text(viewModel.appVersion),
     );
   }
 
