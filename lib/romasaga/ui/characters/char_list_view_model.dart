@@ -91,9 +91,8 @@ class CharListViewModel extends foundation.ChangeNotifier {
   }
 
   ///
-  /// 自身のステータス情報を更新する。
-  /// 通常、自身のステータスはロード時に持ってきて以降は更新処理がいちいち走るのでこのメソッドは不要。
-  /// ただ、アカウント画面で自身のステータス情報を復元した場合のみリフレッシュが必要なのでこれを用意している。
+  /// ステータス情報を更新する。
+  /// 詳細画面から戻ってきたときに使う。
   ///
   Future<void> refreshMyStatuses() async {
     await _loadMyStatuses();

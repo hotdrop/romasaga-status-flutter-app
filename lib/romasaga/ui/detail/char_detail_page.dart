@@ -61,26 +61,33 @@ class CharDetailPage extends StatelessWidget {
   }
 
   Widget _loadSuccessView(String charName, BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(charName), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 4.0, left: 16.0, right: 16.0, bottom: 16.0),
-        child: ListView(
-          children: <Widget>[
-            _contentCharacterOverview(),
-            SizedBox(height: 16.0),
-            _contentStatus(),
-            SizedBox(height: 16.0),
-            _contentsStage(context),
-            SizedBox(height: 24.0),
-            _contentsEachStyleStatus(context),
-            SizedBox(height: 16.0),
-          ],
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(title: Text(charName), centerTitle: true),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 4.0, left: 16.0, right: 16.0, bottom: 16.0),
+          child: ListView(
+            children: <Widget>[
+              _contentCharacterOverview(),
+              SizedBox(height: 16.0),
+              _contentStatus(),
+              SizedBox(height: 16.0),
+              _contentsStage(context),
+              SizedBox(height: 24.0),
+              _contentsEachStyleStatus(context),
+              SizedBox(height: 16.0),
+            ],
+          ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButton: _editStatusFab(),
+        bottomNavigationBar: _appBarContent(),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: _editStatusFab(),
-      bottomNavigationBar: _appBarContent(),
+      onWillPop: () async {
+        final viewModel = Provider.of<CharDetailViewModel>(context);
+        Navigator.pop(context, viewModel.isUpdate);
+        return true;
+      },
     );
   }
 
@@ -314,7 +321,7 @@ class CharDetailPage extends StatelessWidget {
             children: <Widget>[
               Text(RSStrings.hpName, style: Theme.of(context).textTheme.caption),
               SizedBox(height: 8.0),
-              Text(hp.toString(), style: Theme.of(context).textTheme.subtitle1),
+              Text(hp.toString(), style: Theme.of(context).textTheme.headline6),
             ],
           ),
         )

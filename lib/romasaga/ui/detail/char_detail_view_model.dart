@@ -41,6 +41,10 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   String get selectedIconFilePath => _selectedStyle?.iconFilePath ?? 'default';
   String get selectedStyleTitle => _selectedStyle?.title ?? '';
 
+  // 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
+  bool _isUpdateStatus = false;
+  bool get isUpdate => _isUpdateStatus;
+
   ///
   /// このViewModelを使うときに必ず呼ぶ
   ///
@@ -138,6 +142,7 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
 
   Future<void> refreshStatus() async {
     character.myStatus = await _myStatusRepository.find(character.id);
+    _isUpdateStatus = true;
     notifyListeners();
   }
 
@@ -146,23 +151,31 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     character.selectedStyleRank = _selectedStyle.rank;
     character.selectedIconFilePath = _selectedStyle.iconFilePath;
     await _characterRepository.saveSelectedRank(character.id, _selectedStyle.rank, _selectedStyle.iconFilePath);
+
+    _isUpdateStatus = true;
   }
 
   Future<void> saveFavorite(bool favorite) async {
     character.myStatus.favorite = favorite;
     await _myStatusRepository.save(character.myStatus);
+
+    _isUpdateStatus = true;
     notifyListeners();
   }
 
   Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
     character.statusUpEvent = statusUpEvent;
     await _characterRepository.saveStatusUpEvent(id, statusUpEvent);
+
+    _isUpdateStatus = true;
     notifyListeners();
   }
 
   Future<void> saveHaveCharacter(bool haveChar) async {
     character.myStatus.have = haveChar;
     await _myStatusRepository.save(character.myStatus);
+
+    _isUpdateStatus = true;
     notifyListeners();
   }
 }
