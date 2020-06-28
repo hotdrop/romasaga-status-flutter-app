@@ -104,7 +104,7 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// キャラクターの名前、肩書き、武器情報
+  /// キャラクターの作品、名前、肩書き、武器情報
   ///
   Widget _contentCharacterTitle(BuildContext context) {
     final viewModel = Provider.of<CharDetailViewModel>(context);
@@ -123,6 +123,8 @@ class CharDetailPage extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            SizedBox(height: 8.0),
+            Text(viewModel.character.production, style: Theme.of(context).textTheme.caption),
             Text(viewModel.character.name, style: Theme.of(context).textTheme.subtitle1),
             Text(viewModel.selectedStyleTitle, style: Theme.of(context).textTheme.caption),
             _contentCharacterWeaponAttribute(context),
