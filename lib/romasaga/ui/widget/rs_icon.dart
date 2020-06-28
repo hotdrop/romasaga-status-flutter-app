@@ -232,7 +232,7 @@ class StatusIcon extends StatelessWidget {
   factory StatusIcon.int() {
     return StatusIcon._('res/icons/icon_status_int.png');
   }
-  factory StatusIcon.spi() {
+  factory StatusIcon.spirit() {
     return StatusIcon._('res/icons/icon_status_spi.png');
   }
   factory StatusIcon.love() {
