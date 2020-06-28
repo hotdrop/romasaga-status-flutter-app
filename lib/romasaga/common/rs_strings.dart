@@ -7,7 +7,7 @@ class RSStrings {
   static const String bottomMenuAccount = 'アカウント';
 
   static const String characterListPageTitle = 'キャラクターリスト';
-  static const String characterListFavoriteTabTitle = 'メイン';
+  static const String characterListFavoriteTabTitle = 'お気入';
   static const String characterListEventTabTitle = 'ステUP';
   static const String characterListPossessionTabTitle = '所持';
   static const String characterListNotPossessionTabTitle = '未所持';
