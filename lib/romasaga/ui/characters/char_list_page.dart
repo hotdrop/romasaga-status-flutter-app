@@ -18,8 +18,8 @@ class CharListPage extends StatelessWidget {
       builder: (context, viewModel, child) {
         if (viewModel.isLoading) {
           return _loadingView();
-        } else if (viewModel.isSuccess) {
-          return _loadSuccessView(viewModel);
+        } else if (viewModel.isLoaded) {
+          return _loadSuccessView(context);
         } else {
           return _loadErrorView();
         }
@@ -45,7 +45,8 @@ class CharListPage extends StatelessWidget {
     );
   }
 
-  Widget _loadSuccessView(CharListViewModel viewModel) {
+  Widget _loadSuccessView(BuildContext context) {
+    final viewModel = Provider.of<CharListViewModel>(context);
     return DefaultTabController(
       length: 4,
       child: Scaffold(
