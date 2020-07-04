@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' as foundation;
 import 'package:package_info/package_info.dart';
 import 'package:rsapp/romasaga/data/letter_repository.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
@@ -7,8 +6,9 @@ import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/data/account_repository.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
-class AccountPageViewModel extends foundation.ChangeNotifier {
+class AccountPageViewModel extends ChangeNotifierViewModel {
   AccountPageViewModel._(
     this._characterRepository,
     this._stageRepository,
@@ -38,9 +38,8 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   String get appVersion => _packageInfo.version + '-' + _packageInfo.buildNumber;
 
   // ステータス
-  _Status _status = _Status.nowLoading;
-  bool get nowLoading => _status == _Status.nowLoading;
-  bool get loggedIn => _status == _Status.loggedIn;
+  _LoginStatus _loginStatus = _LoginStatus.notLogin;
+  bool get loggedIn => _loginStatus == _LoginStatus.loggedIn;
 
   String _errorMessage = '';
   String get errorMessage => _errorMessage;
@@ -54,28 +53,27 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   /// このViewModelを使うときに必ず呼ぶ
   ///
   Future<void> load() async {
-    _packageInfo = await PackageInfo.fromPlatform();
+    await run(
+        label: 'アカウント情報のロード処理',
+        block: () async {
+          _packageInfo = await PackageInfo.fromPlatform();
 
-    await _accountRepository.load();
+          await _accountRepository.load();
 
-    final isLogIn = _accountRepository.isLogIn;
-
-    if (!isLogIn) {
-      await _loadRowSubTitleData();
-      _status = _Status.notLogin;
-      notifyListeners();
-      return;
-    }
-
-    backupDateLabel = await _myStatusRepository.getPreviousBackupDateStr();
-    await _loadRowSubTitleData();
-
-    _status = _Status.loggedIn;
-    notifyListeners();
+          final isLogIn = _accountRepository.isLogIn;
+          if (isLogIn) {
+            backupDateLabel = await _myStatusRepository.getPreviousBackupDateStr();
+            await _loadRowSubTitleData();
+            _loginStatus = _LoginStatus.loggedIn;
+          } else {
+            await _loadRowSubTitleData();
+            _loginStatus = _LoginStatus.notLogin;
+          }
+        });
   }
 
   String getLoginUserName() {
-    if (_status == _Status.loggedIn) {
+    if (_loginStatus == _LoginStatus.loggedIn) {
       return _accountRepository.getUserName();
     } else {
       return RSStrings.accountNotLoginNameLabel;
@@ -83,7 +81,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   }
 
   String getLoginEmail() {
-    if (_status == _Status.loggedIn) {
+    if (_loginStatus == _LoginStatus.loggedIn) {
       return _accountRepository.getEmail();
     } else {
       return RSStrings.accountNotLoginEmailLabel;
@@ -91,20 +89,15 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   }
 
   Future<void> loginWithGoogle() async {
-    _status = _Status.nowLoading;
-    notifyListeners();
-
-    try {
-      await _accountRepository.login();
-      await _loadRowSubTitleData();
-
-      _status = _Status.loggedIn;
-      notifyListeners();
-    } catch (e) {
-      RSLogger.e('ログイン中にエラーが発生しました。', e);
-      _status = _Status.notLogin;
-      notifyListeners();
-    }
+    await run(
+      label: 'ログイン処理',
+      block: () async {
+        await _accountRepository.login();
+        await _loadRowSubTitleData();
+        _loginStatus = _LoginStatus.loggedIn;
+      },
+      onError: (e) => _errorMessage = e.toString(),
+    );
   }
 
   Future<void> _loadRowSubTitleData() async {
@@ -116,7 +109,7 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   Future<bool> logout() async {
     try {
       await _accountRepository.logout();
-      _status = _Status.notLogin;
+      _loginStatus = _LoginStatus.notLogin;
       notifyListeners();
       return true;
     } catch (e) {
@@ -203,4 +196,4 @@ class AccountPageViewModel extends foundation.ChangeNotifier {
   }
 }
 
-enum _Status { nowLoading, notLogin, loggedIn }
+enum _LoginStatus { notLogin, loggedIn }

@@ -21,7 +21,7 @@ class SearchPage extends StatelessWidget {
       builder: (context, viewModel, child) {
         if (viewModel.isLoading) {
           return _loadingView();
-        } else if (viewModel.isSuccess) {
+        } else if (viewModel.isLoaded) {
           return _loadSuccessView();
         } else {
           return _loadErrorView();

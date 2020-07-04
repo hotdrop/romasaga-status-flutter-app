@@ -1,8 +1,8 @@
-import 'package:flutter/foundation.dart' as foundation;
 import 'package:rsapp/romasaga/model/status.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
+import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
-class CharStatusEditViewModel extends foundation.ChangeNotifier {
+class CharStatusEditViewModel extends ChangeNotifierViewModel {
   CharStatusEditViewModel._(this._currentStatus, this._statusRepository, this._editMode);
 
   factory CharStatusEditViewModel.create(MyStatusForEdit status) {

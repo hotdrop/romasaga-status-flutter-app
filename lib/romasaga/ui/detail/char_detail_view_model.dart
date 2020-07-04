@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' as foundation;
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/style.dart';
 import 'package:rsapp/romasaga/model/stage.dart';
@@ -7,8 +6,9 @@ import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/data/stage_repository.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
-class CharDetailViewModel extends foundation.ChangeNotifier {
+class CharDetailViewModel extends ChangeNotifierViewModel {
   CharDetailViewModel._(this.character, this._characterRepository, this._stageRepository, this._myStatusRepository);
 
   factory CharDetailViewModel.create(Character character) {
@@ -23,11 +23,6 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   final CharacterRepository _characterRepository;
   final StageRepository _stageRepository;
   final MyStatusRepository _myStatusRepository;
-
-  _PageState _pageState = _PageState.loading;
-  bool get isLoading => _pageState == _PageState.loading;
-  bool get isSuccess => _pageState == _PageState.success;
-  bool get isError => _pageState == _PageState.error;
 
   final Character character;
   bool get haveAttribute => character.attributes?.isNotEmpty ?? false;
@@ -49,30 +44,21 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
   /// このViewModelを使うときに必ず呼ぶ
   ///
   Future<void> load() async {
-    RSLogger.d('キャラ詳細情報をロードします。');
-    _pageState = _PageState.loading;
-    notifyListeners();
+    await run(
+        label: 'キャラ詳細のロード処理',
+        block: () async {
+          _stages = await _stageRepository.findAll();
+          _selectedStage = _stages.first;
 
-    try {
-      _stages = await _stageRepository.findAll();
-      _selectedStage = _stages.first;
+          if (character.styles.isEmpty) {
+            RSLogger.d('キャラクターのスタイルが未取得なので取得します。id=${character.id}');
+            final styles = await _characterRepository.findStyles(character.id);
+            RSLogger.d('キャラクターのスタイルを取得しました。件数=${styles.length}');
+            character.addStyles(styles);
+          }
 
-      if (character.styles.isEmpty) {
-        RSLogger.d('キャラクターのスタイルが未取得なので取得します。id=${character.id}');
-        final styles = await _characterRepository.findStyles(character.id);
-        RSLogger.d('キャラクターのスタイルを取得しました。件数=${styles.length}');
-        character.addStyles(styles);
-      }
-
-      _selectedStyle = character.selectedStyle;
-
-      _pageState = _PageState.success;
-      notifyListeners();
-    } catch (e) {
-      RSLogger.e('${character.name}のロード時にエラーが発生しました。', e);
-      _pageState = _PageState.error;
-      notifyListeners();
-    }
+          _selectedStyle = character.selectedStyle;
+        });
   }
 
   void onSelectRank(String rank) {
@@ -179,5 +165,3 @@ class CharDetailViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 }
-
-enum _PageState { loading, success, error }

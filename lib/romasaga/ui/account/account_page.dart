@@ -26,7 +26,7 @@ class AccountPage extends StatelessWidget {
   Widget _contentsBody() {
     return Consumer<AccountPageViewModel>(
       builder: (context, viewModel, child) {
-        if (viewModel.nowLoading) {
+        if (viewModel.isLoading) {
           return _loadingView(context);
         } else {
           return _loadLoginView(context, viewModel.loggedIn);
@@ -106,7 +106,7 @@ class AccountPage extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
             child: Text(RSStrings.accountLoginWithGoogle),
             onPressed: () {
-              if (viewModel.nowLoading) return;
+              if (viewModel.isLoading) return;
               viewModel.loginWithGoogle();
             },
           ),

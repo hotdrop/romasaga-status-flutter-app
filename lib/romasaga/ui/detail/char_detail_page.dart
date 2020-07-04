@@ -33,7 +33,7 @@ class CharDetailPage extends StatelessWidget {
       builder: (context, viewModel, child) {
         if (viewModel.isLoading) {
           return _loadingView(viewModel.character.name);
-        } else if (viewModel.isSuccess) {
+        } else if (viewModel.isLoaded) {
           return _loadSuccessView(viewModel.character.name, context);
         } else {
           return _loadErrorView(viewModel.character.name);

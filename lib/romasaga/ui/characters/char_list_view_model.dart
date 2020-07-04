@@ -1,10 +1,10 @@
-import 'package:flutter/foundation.dart' as foundation;
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
-class CharListViewModel extends foundation.ChangeNotifier {
+class CharListViewModel extends ChangeNotifierViewModel {
   CharListViewModel._(this._characterRepository, this._myStatusRepository);
 
   factory CharListViewModel.create() {
@@ -20,34 +20,18 @@ class CharListViewModel extends foundation.ChangeNotifier {
   List<Character> _characters;
   OrderType selectedOrderType = OrderType.status;
 
-  _PageState _pageState = _PageState.loading;
-
-  bool get isLoading => _pageState == _PageState.loading;
-  bool get isSuccess => _pageState == _PageState.success;
-  bool get isError => _pageState == _PageState.error;
-
   ///
   /// このViewModelを使うときに必ず呼ぶ
   ///
   Future<void> load() async {
-    await refreshCharacters();
-  }
-
-  Future<void> refreshCharacters() async {
-    _pageState = _PageState.loading;
-    notifyListeners();
-
-    try {
-      _characters = await _characterRepository.findAll();
-      await _loadMyStatuses();
-      _pageState = _PageState.success;
-
-      orderBy(OrderType.status);
-    } catch (e) {
-      RSLogger.e("キャラ情報ロード時にエラーが発生しました。", e);
-      _pageState = _PageState.error;
-      notifyListeners();
-    }
+    await run(
+      label: 'キャラ一覧のロード処理',
+      block: () async {
+        _characters = await _characterRepository.findAll();
+        await _loadMyStatuses();
+        orderBy(OrderType.status);
+      },
+    );
   }
 
   List<Character> findAll() {
@@ -115,4 +99,3 @@ class CharListViewModel extends foundation.ChangeNotifier {
 }
 
 enum OrderType { status, hp, production }
-enum _PageState { loading, success, error }
