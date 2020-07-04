@@ -1,12 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:side_header_list_view/side_header_list_view.dart';
+import 'package:rsapp/romasaga/ui/letter/letter_row_item.dart';
 import 'package:rsapp/romasaga/ui/letter/letter_view_model.dart';
-import 'package:rsapp/romasaga/ui/letter/letter_detail_page.dart';
-import 'package:rsapp/romasaga/ui/widget/custom_page_route.dart';
-import 'package:rsapp/romasaga/model/letter.dart';
-import 'package:rsapp/romasaga/common/rs_colors.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class LetterPage extends StatelessWidget {
@@ -26,7 +21,7 @@ class LetterPage extends StatelessWidget {
         } else if (viewModel.isError) {
           return _errorView();
         } else {
-          return _loadedView();
+          return _loadSuccessView(context);
         }
       },
     );
@@ -56,105 +51,36 @@ class LetterPage extends StatelessWidget {
     );
   }
 
-  Widget _loadedView() {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(RSStrings.letterPageTitle),
-      ),
-      body: _widgetContents(),
-    );
-  }
+  Widget _loadSuccessView(BuildContext context) {
+    final viewModel = Provider.of<LetterViewModel>(context);
+    final years = viewModel.getDistinctYears();
 
-  Widget _widgetContents() {
-    return Consumer<LetterViewModel>(
-      builder: (context, viewModel, child) {
-        final items = viewModel.letters;
-        if (items.isEmpty) {
-          return Center(
-            child: Text(RSStrings.letterNothingMessage),
-          );
-        } else {
-          return SideHeaderListView(
-            itemCount: items.length,
-            itemExtend: 340.0,
-            headerBuilder: (context, index) => _createHeader(items[index]),
-            itemBuilder: (context, index) => _createCardLetter(context, items, index),
-            hasSameHeader: (headerIndex, itemIndex) => items[headerIndex].year == items[itemIndex].year,
-          );
-        }
-      },
-    );
-  }
-
-  Widget _createHeader(Letter letter) {
-    return Center(
-      child: Text('${letter.year}${RSStrings.letterYearLabel}'),
-    );
-  }
-
-  Widget _createCardLetter(BuildContext context, List<Letter> letters, int index) {
-    final letter = letters[index];
-    return Card(
-      color: RSColors.thumbnailCardBackground,
-      child: InkWell(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 300,
-              width: 200,
-              child: Stack(
-                children: <Widget>[
-                  Positioned.fill(
-                    child: CachedNetworkImage(
-                      imageUrl: letter.staticImagePath,
-                      fit: BoxFit.fill,
-                      placeholder: (context, url) => _loadingIcon(letter.loadingIcon),
-                      errorWidget: (context, url, dynamic error) => _errorIcon(letter.loadingIcon),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Text('${letter.month}${RSStrings.letterMonthLabel} ${letter.shortTitle}', style: TextStyle(color: letter.themeColor)),
-          ],
-        ),
-        onTap: () {
-          Navigator.push<void>(
-            context,
-            ScalePageRoute(page: LetterMainPage(selectedIndex: index, letters: letters)),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _loadingIcon(String res) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Image.asset(res),
-        Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Text(RSStrings.letterNowLoading),
-        ),
-      ],
-    );
-  }
-
-  Widget _errorIcon(String res) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Image.asset(res),
-        Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Text(
-            RSStrings.letterLoadingFailure,
-            style: TextStyle(color: Colors.red),
+    return DefaultTabController(
+      length: years.length,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(RSStrings.letterPageTitle),
+          bottom: TabBar(
+            tabs: years.map((y) => Tab(text: '$y${RSStrings.letterYearLabel}')).toList(),
           ),
         ),
-      ],
+        body: TabBarView(
+          children: years.map((y) => _createLetterTab(context, y)).toList(),
+        ),
+      ),
     );
+  }
+
+  Widget _createLetterTab(BuildContext context, int year) {
+    final viewModel = Provider.of<LetterViewModel>(context);
+
+    final letters = viewModel.letterByYear(year);
+    return ListView.builder(itemBuilder: (context, index) {
+      if (index < letters.length) {
+        return LetterRowItem(index, letters);
+      }
+      return null;
+    });
   }
 }

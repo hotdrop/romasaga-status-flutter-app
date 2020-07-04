@@ -1,40 +1,38 @@
-import 'package:flutter/foundation.dart' as foundation;
 import 'package:rsapp/romasaga/data/letter_repository.dart';
 import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
-class LetterViewModel extends foundation.ChangeNotifier {
+class LetterViewModel extends ChangeNotifierViewModel {
   LetterViewModel._(this._repository);
 
   factory LetterViewModel.create() {
     return LetterViewModel._(LetterRepository.create());
   }
 
-  List<Letter> letters;
+  List<Letter> _letters;
   final LetterRepository _repository;
-  _PageState _pageState = _PageState.loading;
-
-  bool get isLoading => _pageState == _PageState.loading;
-  bool get isLoaded => _pageState == _PageState.loaded;
-  bool get isError => _pageState == _PageState.error;
 
   ///
   /// このViewModelを使うときに必ず呼ぶ
   ///
-  Future<void> load() async {
-    _pageState = _PageState.loading;
-    notifyListeners();
+  void load() {
+    run(
+      label: "お便りのロード処理",
+      block: () async {
+        _letters = await _repository.findAll();
+      },
+    );
+  }
 
-    try {
-      letters = await _repository.findAll();
-    } catch (e) {
-      _pageState = _PageState.error;
-      notifyListeners();
-      return;
+  List<int> getDistinctYears() {
+    Map<int, bool> m = {};
+    for (Letter l in _letters) {
+      m.putIfAbsent(l.year, () => true);
     }
+    return m.keys.toList();
+  }
 
-    _pageState = _PageState.loaded;
-    notifyListeners();
+  List<Letter> letterByYear(int year) {
+    return _letters.where((letter) => letter.year == year).toList();
   }
 }
-
-enum _PageState { loading, loaded, error }
