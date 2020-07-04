@@ -76,11 +76,13 @@ class LetterPage extends StatelessWidget {
     final viewModel = Provider.of<LetterViewModel>(context);
 
     final letters = viewModel.letterByYear(year);
-    return ListView.builder(itemBuilder: (context, index) {
-      if (index < letters.length) {
-        return LetterRowItem(index, letters);
-      }
-      return null;
-    });
+    return GridView.count(
+      crossAxisCount: 2,
+      childAspectRatio: 2 / 3,
+      children: List.generate(
+        letters.length,
+        (index) => LetterRowItem(index, letters),
+      ),
+    );
   }
 }

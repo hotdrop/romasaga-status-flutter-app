@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/model/letter.dart';
 import 'package:rsapp/romasaga/ui/letter/letter_detail_page.dart';
@@ -18,8 +18,16 @@ class LetterRowItem extends StatelessWidget {
       child: InkWell(
         child: Column(
           children: <Widget>[
-            _createStaticImage(currentLetter),
-            _createTitle(currentLetter),
+            CachedNetworkImage(
+              imageUrl: currentLetter.staticImagePath,
+              fit: BoxFit.fill,
+              placeholder: (context, url) => _loadingIcon(currentLetter.loadingIcon),
+              errorWidget: (context, url, dynamic error) => _errorIcon(currentLetter.loadingIcon),
+            ),
+            Text(
+              '${currentLetter.month}${RSStrings.letterMonthLabel} ${currentLetter.shortTitle}',
+              style: TextStyle(color: currentLetter.themeColor),
+            ),
           ],
         ),
         onTap: () {
@@ -29,32 +37,6 @@ class LetterRowItem extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-
-  Widget _createStaticImage(Letter currentLetter) {
-    return SizedBox(
-      height: 300,
-      width: 200,
-      child: Stack(
-        children: <Widget>[
-          Positioned.fill(
-            child: CachedNetworkImage(
-              imageUrl: currentLetter.staticImagePath,
-              fit: BoxFit.fill,
-              placeholder: (context, url) => _loadingIcon(currentLetter.loadingIcon),
-              errorWidget: (context, url, dynamic error) => _errorIcon(currentLetter.loadingIcon),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _createTitle(Letter currentLetter) {
-    return Text(
-      '${currentLetter.month}${RSStrings.letterMonthLabel} ${currentLetter.shortTitle}',
-      style: TextStyle(color: currentLetter.themeColor),
     );
   }
 
