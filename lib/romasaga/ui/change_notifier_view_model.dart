@@ -13,6 +13,7 @@ class ChangeNotifierViewModel extends ChangeNotifier {
     void onError(Exception e),
   }) async {
     _nowLoading();
+    notifyListeners();
 
     try {
       await block();

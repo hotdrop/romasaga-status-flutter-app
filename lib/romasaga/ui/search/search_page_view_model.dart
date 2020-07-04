@@ -1,12 +1,12 @@
-import 'package:flutter/foundation.dart' as foundation;
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/search_condition.dart';
 import 'package:rsapp/romasaga/model/weapon.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
-class SearchPageViewModel extends foundation.ChangeNotifier {
+class SearchPageViewModel extends ChangeNotifierViewModel {
   SearchPageViewModel._(this._characterRepository, this._myStatusRepository);
 
   factory SearchPageViewModel.create() {
@@ -24,34 +24,22 @@ class SearchPageViewModel extends foundation.ChangeNotifier {
 
   SearchCondition _condition = SearchCondition();
 
-  _PageState _pageState = _PageState.loading;
-  bool get isLoading => _pageState == _PageState.loading;
-  bool get isSuccess => _pageState == _PageState.success;
-  bool get isError => _pageState == _PageState.error;
-
   bool isKeywordSearch = false;
 
   ///
   /// このViewModelを使うときに必ず呼ぶ
   ///
   Future<void> load() async {
-    _pageState = _PageState.loading;
-    notifyListeners();
+    await run(
+      label: '検索画面のキャラ一覧ロード処理',
+      block: () async {
+        final characters = await _characterRepository.findAll();
+        final charactersWithMyStatus = await _loadMyStatuses(characters);
 
-    try {
-      final characters = await _characterRepository.findAll();
-      final charactersWithMyStatus = await _loadMyStatuses(characters);
-
-      _originalCharacters = charactersWithMyStatus;
-      charactersWithFilter = charactersWithMyStatus;
-
-      _pageState = _PageState.success;
-      notifyListeners();
-    } catch (e) {
-      RSLogger.e("キャラ情報ロード時にエラーが発生しました。", e);
-      _pageState = _PageState.error;
-      notifyListeners();
-    }
+        _originalCharacters = charactersWithMyStatus;
+        charactersWithFilter = charactersWithMyStatus;
+      },
+    );
   }
 
   Future<List<Character>> _loadMyStatuses(List<Character> argCharacters) async {
@@ -130,5 +118,3 @@ class SearchPageViewModel extends foundation.ChangeNotifier {
     notifyListeners();
   }
 }
-
-enum _PageState { loading, success, error }
