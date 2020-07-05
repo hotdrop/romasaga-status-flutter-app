@@ -50,7 +50,7 @@ class CharListPage extends StatelessWidget {
           centerTitle: true,
           title: const Text(RSStrings.characterListPageTitle),
           actions: <Widget>[
-            _titlePopupMenu(),
+            _titlePopupMenu(context),
           ],
           bottom: const TabBar(tabs: <Tab>[
             Tab(icon: Icon(Icons.favorite), text: RSStrings.characterListFavoriteTabTitle),
@@ -71,30 +71,28 @@ class CharListPage extends StatelessWidget {
     );
   }
 
-  Widget _titlePopupMenu() {
-    return Consumer<CharListViewModel>(
-      builder: (_, viewModel, child) {
-        return PopupMenuButton<OrderType>(
-          padding: EdgeInsets.zero,
-          itemBuilder: (_) => [
-            PopupMenuItem(
-              value: OrderType.status,
-              child: const Text(RSStrings.characterListOrderStatus),
-            ),
-            PopupMenuItem(
-              value: OrderType.hp,
-              child: const Text(RSStrings.characterListOrderHp),
-            ),
-            PopupMenuItem(
-              value: OrderType.production,
-              child: const Text(RSStrings.characterListOrderProduction),
-            ),
-          ],
-          initialValue: viewModel.selectedOrderType,
-          onSelected: (value) {
-            viewModel.orderBy(value);
-          },
-        );
+  Widget _titlePopupMenu(BuildContext context) {
+    final viewModel = Provider.of<CharListViewModel>(context);
+
+    return PopupMenuButton<OrderType>(
+      padding: EdgeInsets.zero,
+      itemBuilder: (_) => [
+        PopupMenuItem(
+          value: OrderType.status,
+          child: const Text(RSStrings.characterListOrderStatus),
+        ),
+        PopupMenuItem(
+          value: OrderType.hp,
+          child: const Text(RSStrings.characterListOrderHp),
+        ),
+        PopupMenuItem(
+          value: OrderType.production,
+          child: const Text(RSStrings.characterListOrderProduction),
+        ),
+      ],
+      initialValue: viewModel.selectedOrderType,
+      onSelected: (value) {
+        viewModel.orderBy(value);
       },
     );
   }

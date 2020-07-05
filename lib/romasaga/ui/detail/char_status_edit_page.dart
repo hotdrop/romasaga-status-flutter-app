@@ -228,21 +228,17 @@ class CharStatusEditPage extends StatelessWidget {
   /// ボトムメニュー
   ///
   Widget _appBarContent() {
-    return Consumer<CharStatusEditViewModel>(
-      builder: (context, viewModel, child) {
-        return BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          notchMargin: 4.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(padding: const EdgeInsets.only(left: 16.0)),
-              _changeEditScreen(),
-              Padding(padding: const EdgeInsets.only(left: 16.0)),
-            ],
-          ),
-        );
-      },
+    return BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      notchMargin: 4.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Padding(padding: const EdgeInsets.only(left: 16.0)),
+          _changeEditScreen(),
+          Padding(padding: const EdgeInsets.only(left: 16.0)),
+        ],
+      ),
     );
   }
 
