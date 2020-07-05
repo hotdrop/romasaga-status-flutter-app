@@ -77,7 +77,7 @@ class AccountPage extends StatelessWidget {
             await AwesomeDialog(
               context: context,
               dialogType: DialogType.INFO,
-              tittle: RSStrings.accountLogoutTitle,
+              title: RSStrings.accountLogoutTitle,
               desc: RSStrings.accountLogoutDialogMessage,
               btnCancelOnPress: () {},
               btnOkOnPress: () async {
@@ -175,7 +175,7 @@ class AccountPage extends StatelessWidget {
         await AwesomeDialog(
           context: context,
           dialogType: DialogType.INFO,
-          tittle: RSStrings.accountCharacterUpdateLabel,
+          title: RSStrings.accountCharacterUpdateLabel,
           desc: RSStrings.accountCharacterOnlyNewUpdateDialogMessage,
           btnCancelOnPress: () {},
           btnOkOnPress: () async {
@@ -192,7 +192,7 @@ class AccountPage extends StatelessWidget {
         await AwesomeDialog(
           context: context,
           dialogType: DialogType.WARNING,
-          tittle: RSStrings.accountCharacterUpdateLabel,
+          title: RSStrings.accountCharacterUpdateLabel,
           desc: RSStrings.accountCharacterAllUpdateDialogMessage,
           btnCancelOnPress: () {},
           btnOkOnPress: () async {
@@ -218,7 +218,7 @@ class AccountPage extends StatelessWidget {
         await AwesomeDialog(
           context: context,
           dialogType: DialogType.INFO,
-          tittle: RSStrings.accountStageUpdateLabel,
+          title: RSStrings.accountStageUpdateLabel,
           desc: RSStrings.accountStageUpdateDialogMessage,
           btnCancelOnPress: () {},
           btnOkOnPress: () async {
@@ -244,7 +244,7 @@ class AccountPage extends StatelessWidget {
         await AwesomeDialog(
           context: context,
           dialogType: DialogType.INFO,
-          tittle: RSStrings.accountLetterUpdateLabel,
+          title: RSStrings.accountLetterUpdateLabel,
           desc: RSStrings.accountLetterUpdateDialogMessage,
           btnCancelOnPress: () {},
           btnOkOnPress: () async {
@@ -270,7 +270,7 @@ class AccountPage extends StatelessWidget {
         await AwesomeDialog(
           context: context,
           dialogType: DialogType.INFO,
-          tittle: RSStrings.accountStatusBackupLabel,
+          title: RSStrings.accountStatusBackupLabel,
           desc: RSStrings.accountStatusBackupDialogMessage,
           btnCancelOnPress: () {},
           btnOkOnPress: () async {
@@ -296,7 +296,7 @@ class AccountPage extends StatelessWidget {
         await AwesomeDialog(
           context: context,
           dialogType: DialogType.WARNING,
-          tittle: RSStrings.accountStatusRestoreLabel,
+          title: RSStrings.accountStatusRestoreLabel,
           desc: RSStrings.accountStatusRestoreDialogMessage,
           btnCancelOnPress: () {},
           btnOkOnPress: () async {
@@ -326,7 +326,7 @@ class AccountPage extends StatelessWidget {
       await AwesomeDialog(
         context: context,
         dialogType: DialogType.SUCCES,
-        tittle: RSStrings.accountDialogTitleSuccess,
+        title: RSStrings.accountDialogTitleSuccess,
         desc: successMessage,
         btnOkOnPress: () {},
       ).show();
@@ -334,7 +334,7 @@ class AccountPage extends StatelessWidget {
       await AwesomeDialog(
         context: context,
         dialogType: DialogType.ERROR,
-        tittle: RSStrings.accountDialogTitleError,
+        title: RSStrings.accountDialogTitleError,
         desc: errorMessage,
         btnOkOnPress: () {},
       ).show();

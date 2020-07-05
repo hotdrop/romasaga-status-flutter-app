@@ -8,7 +8,7 @@ class CharListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CharListViewModel.create()..load(),
+      create: (_) => CharListViewModel.create()..load(),
       child: _loadingBody(),
     );
   }

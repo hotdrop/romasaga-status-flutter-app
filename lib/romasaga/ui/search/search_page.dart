@@ -11,7 +11,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => SearchPageViewModel.create()..load(),
+      create: (_) => SearchPageViewModel.create()..load(),
       child: _loadingBody(),
     );
   }
