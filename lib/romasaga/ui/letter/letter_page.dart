@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/ui/letter/letter_row_item.dart';
 import 'package:rsapp/romasaga/ui/letter/letter_view_model.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
@@ -9,21 +10,17 @@ class LetterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => LetterViewModel.create()..load(),
-      child: _loadingBody(),
-    );
-  }
-
-  Widget _loadingBody() {
-    return Consumer<LetterViewModel>(
-      builder: (context, viewModel, child) {
-        if (viewModel.isLoading) {
+      builder: (context, child) {
+        final pageState = context.select<LetterViewModel, PageState>((viewModel) => viewModel.pageState);
+        if (pageState.nowLoading()) {
           return _loadingView();
-        } else if (viewModel.isError) {
-          return _errorView();
-        } else {
+        } else if (pageState.loadSuccess()) {
           return _loadSuccessView(context);
+        } else {
+          return _errorView();
         }
       },
+      child: _loadingView(),
     );
   }
 
