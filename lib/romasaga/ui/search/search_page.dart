@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/ui/characters/char_list_row_item.dart';
 import 'package:rsapp/romasaga/ui/search/search_page_view_model.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
@@ -12,21 +14,17 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => SearchPageViewModel.create()..load(),
-      child: _loadingBody(),
-    );
-  }
-
-  Widget _loadingBody() {
-    return Consumer<SearchPageViewModel>(
-      builder: (context, viewModel, child) {
-        if (viewModel.isLoading) {
+      builder: (context, child) {
+        final pageState = context.select<SearchPageViewModel, PageState>((viewModel) => viewModel.pageState);
+        if (pageState.nowLoading()) {
           return _loadingView();
-        } else if (viewModel.isLoaded) {
+        } else if (pageState.loadSuccess()) {
           return _loadSuccessView();
         } else {
           return _loadErrorView();
         }
       },
+      child: _loadingView(),
     );
   }
 
@@ -344,23 +342,20 @@ class _BackdropPanel extends StatelessWidget {
             ),
           ),
           const Divider(height: 1.0),
-          Expanded(child: _searchResultList()),
+          Expanded(child: _searchResultList(context)),
         ],
       ),
     );
   }
 
-  Widget _searchResultList() {
-    return Consumer<SearchPageViewModel>(
-      builder: (_, viewModel, child) {
-        return ListView.builder(itemBuilder: (_, index) {
-          final characters = viewModel.charactersWithFilter;
-          if (index < characters.length) {
-            return CharListRowItem(characters[index]);
-          }
-          return null;
-        });
-      },
-    );
+  Widget _searchResultList(BuildContext context) {
+    final characters = context.select<SearchPageViewModel, List<Character>>((vm) => vm.charactersWithFilter);
+
+    return ListView.builder(itemBuilder: (_, index) {
+      if (index < characters.length) {
+        return CharListRowItem(characters[index]);
+      }
+      return null;
+    });
   }
 }

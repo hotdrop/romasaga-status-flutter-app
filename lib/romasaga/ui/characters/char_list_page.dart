@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/ui/characters/char_list_row_item.dart';
 import 'package:rsapp/romasaga/ui/characters/char_list_view_model.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
@@ -9,21 +10,17 @@ class CharListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => CharListViewModel.create()..load(),
-      child: _loadingBody(),
-    );
-  }
-
-  Widget _loadingBody() {
-    return Consumer<CharListViewModel>(
-      builder: (context, viewModel, child) {
-        if (viewModel.isLoading) {
+      builder: (context, child) {
+        final pageState = context.select<CharListViewModel, PageState>((value) => value.pageState);
+        if (pageState.nowLoading()) {
           return _loadingView();
-        } else if (viewModel.isLoaded) {
-          return _loadSuccessView(context);
+        } else if (pageState.loadSuccess()) {
+          return _loadedView(context);
         } else {
           return _loadErrorView();
         }
       },
+      child: _loadingView(),
     );
   }
 
@@ -45,8 +42,7 @@ class CharListPage extends StatelessWidget {
     );
   }
 
-  Widget _loadSuccessView(BuildContext context) {
-    final viewModel = Provider.of<CharListViewModel>(context);
+  Widget _loadedView(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -65,10 +61,10 @@ class CharListPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            _favoriteTab(viewModel),
-            _statusUpEventTab(viewModel),
-            _haveCharTab(viewModel),
-            _notHaveCharTab(viewModel),
+            _favoriteTab(context),
+            _statusUpEventTab(context),
+            _haveCharTab(context),
+            _notHaveCharTab(context),
           ],
         ),
       ),
@@ -103,7 +99,8 @@ class CharListPage extends StatelessWidget {
     );
   }
 
-  Widget _favoriteTab(CharListViewModel viewModel) {
+  Widget _favoriteTab(BuildContext context) {
+    final viewModel = Provider.of<CharListViewModel>(context);
     final characters = viewModel.findFavorite();
 
     if (characters.isEmpty) {
@@ -128,7 +125,8 @@ class CharListPage extends StatelessWidget {
     });
   }
 
-  Widget _statusUpEventTab(CharListViewModel viewModel) {
+  Widget _statusUpEventTab(BuildContext context) {
+    final viewModel = Provider.of<CharListViewModel>(context);
     final characters = viewModel.findStatusUpEvent();
 
     if (characters.isEmpty) {
@@ -153,7 +151,8 @@ class CharListPage extends StatelessWidget {
     });
   }
 
-  Widget _haveCharTab(CharListViewModel viewModel) {
+  Widget _haveCharTab(BuildContext context) {
+    final viewModel = Provider.of<CharListViewModel>(context);
     final characters = viewModel.findHaveCharacter();
 
     if (characters.isEmpty) {
@@ -180,7 +179,9 @@ class CharListPage extends StatelessWidget {
     });
   }
 
-  Widget _notHaveCharTab(CharListViewModel viewModel) {
+  Widget _notHaveCharTab(BuildContext context) {
+    final viewModel = Provider.of<CharListViewModel>(context);
+
     return ListView.builder(itemBuilder: (context, index) {
       final characters = viewModel.findNotHaveCharacter();
 

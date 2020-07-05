@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:rsapp/romasaga/model/app_settings.dart';
+import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/ui/account/account_page_view_model.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
 
@@ -13,35 +14,37 @@ class AccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AccountPageViewModel>(
       create: (_) => AccountPageViewModel.create()..load(),
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text(RSStrings.accountPageTitle),
-        ),
-        body: _contentsBody(),
+      builder: (context, child) {
+        final pageState = context.select<AccountPageViewModel, PageState>((viewModel) => viewModel.pageState);
+        if (pageState.nowLoading()) {
+          return _loadingView();
+        } else {
+          return _loadedView(context);
+        }
+      },
+      child: _loadingView(),
+    );
+  }
+
+  Widget _loadingView() {
+    return Scaffold(
+      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.accountPageTitle)),
+      body: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
 
-  Widget _contentsBody() {
-    return Consumer<AccountPageViewModel>(
-      builder: (context, viewModel, child) {
-        if (viewModel.isLoading) {
-          return _loadingView(context);
-        } else {
-          return _loadLoginView(context, viewModel.loggedIn);
-        }
-      },
+  Widget _loadedView(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(centerTitle: true, title: const Text(RSStrings.accountPageTitle)),
+      body: _loadLoginView(context),
     );
   }
 
-  Widget _loadingView(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  Widget _loadLoginView(BuildContext context) {
+    final loggedIn = context.select<AccountPageViewModel, bool>((viewModel) => viewModel.loggedIn);
 
-  Widget _loadLoginView(BuildContext context, bool loggedIn) {
     return ListView(
       children: <Widget>[
         _rowAccountInfo(context),
@@ -57,61 +60,59 @@ class AccountPage extends StatelessWidget {
           _rowBackUp(context),
           _rowRestore(context),
           Divider(color: Theme.of(context).accentColor),
-          _rowLogoutButton(),
+          _rowLogoutButton(context),
         ],
-        if (!loggedIn) _googleSignInButton(),
+        if (!loggedIn) _googleSignInButton(context),
       ],
     );
   }
 
-  Widget _rowLogoutButton() {
-    return Consumer<AccountPageViewModel>(builder: (context, viewModel, child) {
-      return Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: OutlineButton(
-          padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-          color: Theme.of(context).accentColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-          child: Text(RSStrings.accountLogoutTitle),
-          onPressed: () async {
-            await AwesomeDialog(
-              context: context,
-              dialogType: DialogType.INFO,
-              title: RSStrings.accountLogoutTitle,
-              desc: RSStrings.accountLogoutDialogMessage,
-              btnCancelOnPress: () {},
-              btnOkOnPress: () async {
-                await _executeWithStateDialog(
-                  context,
-                  execFunc: viewModel.logout(),
-                  successMessage: RSStrings.accountLogoutSuccessMessage,
-                  errorMessage: viewModel.errorMessage,
-                );
-              },
-            ).show();
-          },
-        ),
-      );
-    });
+  Widget _rowLogoutButton(BuildContext context) {
+    final viewModel = Provider.of<AccountPageViewModel>(context);
+
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: OutlineButton(
+        padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+        color: Theme.of(context).accentColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        child: Text(RSStrings.accountLogoutTitle),
+        onPressed: () async {
+          await AwesomeDialog(
+            context: context,
+            dialogType: DialogType.INFO,
+            title: RSStrings.accountLogoutTitle,
+            desc: RSStrings.accountLogoutDialogMessage,
+            btnCancelOnPress: () {},
+            btnOkOnPress: () async {
+              await _executeWithStateDialog(
+                context,
+                execFunc: viewModel.logout(),
+                successMessage: RSStrings.accountLogoutSuccessMessage,
+                errorMessage: viewModel.errorMessage,
+              );
+            },
+          ).show();
+        },
+      ),
+    );
   }
 
-  Widget _googleSignInButton() {
-    return Consumer<AccountPageViewModel>(
-      builder: (context, viewModel, child) {
-        return Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: RaisedButton(
-            padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-            color: Theme.of(context).accentColor,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-            child: Text(RSStrings.accountLoginWithGoogle),
-            onPressed: () {
-              if (viewModel.isLoading) return;
-              viewModel.loginWithGoogle();
-            },
-          ),
-        );
-      },
+  Widget _googleSignInButton(BuildContext context) {
+    final viewModel = Provider.of<AccountPageViewModel>(context);
+
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: RaisedButton(
+        padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+        color: Theme.of(context).accentColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        child: Text(RSStrings.accountLoginWithGoogle),
+        onPressed: () {
+          if (viewModel.pageState.nowLoading()) return;
+          viewModel.loginWithGoogle();
+        },
+      ),
     );
   }
 
@@ -137,11 +138,11 @@ class AccountPage extends StatelessWidget {
   }
 
   Widget _rowAppVersion(BuildContext context) {
-    final viewModel = Provider.of<AccountPageViewModel>(context);
+    final appVersion = context.select<AccountPageViewModel, String>((viewModel) => viewModel.appVersion);
     return ListTile(
       leading: Icon(Icons.info),
       title: Text(RSStrings.accountAppVersionLabel),
-      trailing: Text(viewModel.appVersion),
+      trailing: Text(appVersion),
     );
   }
 
@@ -210,6 +211,7 @@ class AccountPage extends StatelessWidget {
 
   Widget _rowStageReload(BuildContext context) {
     final viewModel = Provider.of<AccountPageViewModel>(context);
+
     return ListTile(
       leading: const Icon(Icons.map),
       title: const Text(RSStrings.accountStageUpdateLabel),
@@ -236,6 +238,7 @@ class AccountPage extends StatelessWidget {
 
   Widget _rowLetterReload(BuildContext context) {
     final viewModel = Provider.of<AccountPageViewModel>(context);
+
     return ListTile(
       leading: const Icon(Icons.mail),
       title: const Text(RSStrings.accountLetterUpdateLabel),
@@ -262,6 +265,7 @@ class AccountPage extends StatelessWidget {
 
   Widget _rowBackUp(BuildContext context) {
     final viewModel = Provider.of<AccountPageViewModel>(context);
+
     return ListTile(
       leading: const Icon(Icons.backup),
       title: const Text(RSStrings.accountStatusBackupLabel),
@@ -288,6 +292,7 @@ class AccountPage extends StatelessWidget {
 
   Widget _rowRestore(BuildContext context) {
     final viewModel = Provider.of<AccountPageViewModel>(context);
+
     return ListTile(
       leading: const Icon(Icons.settings_backup_restore),
       title: const Text(RSStrings.accountStatusRestoreLabel),

@@ -1,11 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/model/page_state.dart';
 
 class ChangeNotifierViewModel extends ChangeNotifier {
-  _PageState _pageState = _PageState.loading;
-  bool get isLoading => _pageState == _PageState.loading;
-  bool get isLoaded => _pageState == _PageState.loaded;
-  bool get isError => _pageState == _PageState.error;
+  PageState pageState = PageNowLoading();
 
   Future<void> run({
     @required String label,
@@ -29,16 +27,14 @@ class ChangeNotifierViewModel extends ChangeNotifier {
   }
 
   void _nowLoading() {
-    _pageState = _PageState.loading;
+    pageState = PageNowLoading();
   }
 
   void _loadSuccess() {
-    _pageState = _PageState.loaded;
+    pageState = PageLoaded();
   }
 
   void _loadError() {
-    _pageState = _PageState.error;
+    pageState = PageLoadError();
   }
 }
-
-enum _PageState { loading, loaded, error }
