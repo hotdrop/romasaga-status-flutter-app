@@ -21,6 +21,7 @@ class RSStrings {
 
   static const String characterTotalStatus = '計: ';
 
+  static const String characterDetailPageTitle = 'キャラクター詳細';
   static const String characterDetailTotalStatusCircleLabel = 'Total Status';
   static const String characterDetailTotalLimitStatusLabel = 'Total Limit Status';
   static const String characterDetailChangeStyleIconDialogContent = 'このアイコンを一覧表示用にしますか？';
