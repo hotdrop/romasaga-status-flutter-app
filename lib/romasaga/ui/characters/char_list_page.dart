@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/ui/characters/char_list_row_item.dart';
 import 'package:rsapp/romasaga/ui/characters/char_list_view_model.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class CharListPage extends StatelessWidget {
   @override
@@ -53,10 +53,10 @@ class CharListPage extends StatelessWidget {
             _titlePopupMenu(context),
           ],
           bottom: const TabBar(tabs: <Tab>[
-            Tab(icon: Icon(Icons.favorite), text: RSStrings.characterListFavoriteTabTitle),
-            Tab(icon: Icon(Icons.trending_up), text: RSStrings.characterListEventTabTitle),
-            Tab(icon: Icon(Icons.check), text: RSStrings.characterListPossessionTabTitle),
-            Tab(icon: Icon(Icons.not_interested), text: RSStrings.characterListNotPossessionTabTitle),
+            const Tab(icon: const Icon(Icons.favorite), text: RSStrings.characterListFavoriteTabTitle),
+            const Tab(icon: const Icon(Icons.trending_up), text: RSStrings.characterListEventTabTitle),
+            const Tab(icon: const Icon(Icons.check), text: RSStrings.characterListPossessionTabTitle),
+            const Tab(icon: const Icon(Icons.not_interested), text: RSStrings.characterListNotPossessionTabTitle),
           ]),
         ),
         body: TabBarView(

@@ -1,20 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rsapp/romasaga/model/attribute.dart';
-import 'package:rsapp/romasaga/model/page_state.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
-import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/model/status.dart';
-import 'package:rsapp/romasaga/ui/detail/char_detail_view_model.dart';
-import 'package:rsapp/romasaga/ui/detail/char_status_edit_page.dart';
-import 'package:rsapp/romasaga/ui/widget/custom_rs_widgets.dart';
-import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
-import 'package:rsapp/romasaga/ui/widget/rank_choice_chip.dart';
-import 'package:rsapp/romasaga/ui/widget/custom_page_route.dart';
 import 'package:rsapp/romasaga/common/rs_colors.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/model/attribute.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/page_state.dart';
+import 'package:rsapp/romasaga/model/status.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/romasaga/ui/detail/char_detail_view_model.dart';
+import 'package:rsapp/romasaga/ui/detail/char_status_edit_page.dart';
+import 'package:rsapp/romasaga/ui/widget/custom_page_route.dart';
+import 'package:rsapp/romasaga/ui/widget/custom_rs_widgets.dart';
+import 'package:rsapp/romasaga/ui/widget/rank_choice_chip.dart';
+import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
 
 class CharDetailPage extends StatelessWidget {
   const CharDetailPage({@required this.character});
@@ -477,7 +477,7 @@ class CharDetailPage extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
-          child: Text(
+          child: const Text(
             RSStrings.characterDetailStatusTableLabel,
             style: TextStyle(
               fontStyle: FontStyle.italic,
