@@ -162,17 +162,18 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
   }
 
   Widget _filterView(BuildContext context) {
+    final viewModel = Provider.of<SearchPageViewModel>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListView(
         children: <Widget>[
           _filterViewSubTitle(context, RSStrings.searchFilterTitleOwn),
           _filterViewOwnState(context),
-          _filterViewSubTitle(context, RSStrings.searchFilterTitleWeapon),
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleWeapon, onClearListener: () => viewModel.clearFilterWeapon()),
           _filterViewWeaponType(context),
-          _filterViewSubTitle(context, RSStrings.searchFilterTitleAttributes),
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleAttributes, onClearListener: () => viewModel.clearFilterAttribute()),
           _filterViewAttributes(context),
-          _filterViewSubTitle(context, RSStrings.searchFilterTitleProduction),
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleProduction, onClearListener: () => viewModel.clearFilterProduction()),
           _filterViewProduct(context),
           SizedBox(height: 60.0),
         ],
@@ -180,13 +181,24 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
     );
   }
 
-  Widget _filterViewSubTitle(BuildContext context, String title) {
+  Widget _filterViewSubTitle(BuildContext context, String title, {Function() onClearListener}) {
     return Padding(
       padding: const EdgeInsets.only(left: 4.0, top: 24.0, right: 4.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(title, style: Theme.of(context).textTheme.subtitle2),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(title, style: Theme.of(context).textTheme.subtitle2),
+              if (onClearListener != null)
+                FlatButton(
+                  child: Text(RSStrings.searchFilterClear, style: TextStyle(color: Theme.of(context).accentColor)),
+                  onPressed: () => onClearListener(),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+            ],
+          ),
           Divider(color: Theme.of(context).accentColor),
         ],
       ),

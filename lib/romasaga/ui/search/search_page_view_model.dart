@@ -127,6 +127,21 @@ class SearchPageViewModel extends ChangeNotifierViewModel {
     _search();
   }
 
+  void clearFilterWeapon() {
+    _condition.weaponType = null;
+    _search();
+  }
+
+  void clearFilterAttribute() {
+    _condition.attributeType = null;
+    _search();
+  }
+
+  void clearFilterProduction() {
+    _condition.productionType = null;
+    _search();
+  }
+
   void _search() {
     charactersWithFilter = _originalCharacters
         .where((c) => _condition.filterWord(targetName: c.name, targetProduction: c.production))

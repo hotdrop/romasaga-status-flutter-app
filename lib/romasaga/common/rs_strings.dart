@@ -34,6 +34,7 @@ class RSStrings {
   static const String searchFilterTitleWeapon = '武器種別';
   static const String searchFilterTitleAttributes = '属性別';
   static const String searchFilterTitleProduction = '作品別';
+  static const String searchFilterClear = 'クリア';
   static const String searchFilterLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
 
   static const String letterPageTitle = '運営からのお便り';
