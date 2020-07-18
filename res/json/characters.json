@@ -4,9 +4,21 @@
       "id": 88888,
       "name": "テストキャラ1",
       "weapon_type": "大剣",
-      "production": "サガ",
+      "production": "ロマンシング・サガ1",
       "styles": [
-        {"rank": "S", "title": "Sキャラです", "str": 47, "vit": 47, "dex": 47, "agi": 47, "int": 44, "spi": 45, "love": 45, "attr": 46, "icon": "test_ss.jpg"}
+        {
+          "rank": "S",
+          "title": "Sキャラです",
+          "str": 47,
+          "vit": 47,
+          "dex": 47,
+          "agi": 47,
+          "int": 44,
+          "spi": 45,
+          "love": 45,
+          "attr": 46,
+          "icon": "test_ss.jpg"
+        }
       ]
     },
     {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/ui/letter/letter_row_item.dart';
 import 'package:rsapp/romasaga/ui/letter/letter_view_model.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class LetterPage extends StatelessWidget {
   @override
@@ -50,8 +50,38 @@ class LetterPage extends StatelessWidget {
 
   Widget _loadSuccessView(BuildContext context) {
     final viewModel = Provider.of<LetterViewModel>(context);
-    final years = viewModel.getDistinctYears();
+    if (viewModel.isEmpty) {
+      return _onLoadNothingView(context, viewModel);
+    } else {
+      return _onLoadLetterView(context, viewModel);
+    }
+  }
 
+  Widget _onLoadNothingView(BuildContext context, LetterViewModel viewModel) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(RSStrings.letterPageTitle),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset('res/icons/letter_not_data.png'),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              RSStrings.letterPageNotData,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _onLoadLetterView(BuildContext context, LetterViewModel viewModel) {
+    final years = viewModel.getDistinctYears();
     return DefaultTabController(
       length: years.length,
       child: Scaffold(

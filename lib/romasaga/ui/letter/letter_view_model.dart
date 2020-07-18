@@ -24,6 +24,8 @@ class LetterViewModel extends ChangeNotifierViewModel {
     );
   }
 
+  bool get isEmpty => _letters.isEmpty;
+
   List<int> getDistinctYears() {
     Map<int, bool> m = {};
     for (Letter l in _letters) {

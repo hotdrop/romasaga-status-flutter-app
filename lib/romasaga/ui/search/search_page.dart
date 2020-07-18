@@ -1,13 +1,16 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/model/attribute.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';
+import 'package:rsapp/romasaga/model/production.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
 import 'package:rsapp/romasaga/ui/characters/char_list_row_item.dart';
 import 'package:rsapp/romasaga/ui/search/search_page_view_model.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class SearchPage extends StatelessWidget {
   @override
@@ -41,7 +44,7 @@ class SearchPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(RSStrings.searchPageTitle), centerTitle: true),
       body: Center(
-        child: Text(RSStrings.searchFilerLoadingErrorMessage),
+        child: Text(RSStrings.searchFilterLoadingErrorMessage),
       ),
     );
   }
@@ -159,29 +162,43 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
   }
 
   Widget _filterView(BuildContext context) {
-    // フィルターしたい要素をここに詰めていく
-    final filterViews = <Widget>[];
-    filterViews.add(_filterViewSubTitle(context, RSStrings.searchFilerTitleOwn));
-    filterViews.add(_filterViewOwnState(context));
-    filterViews.add(_filterViewSubTitle(context, RSStrings.searchFilerTitleWeapon));
-    filterViews.add(_filterViewWeaponType(context));
-
+    final viewModel = Provider.of<SearchPageViewModel>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: filterViews,
+      child: ListView(
+        children: <Widget>[
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleOwn),
+          _filterViewOwnState(context),
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleWeapon, onClearListener: () => viewModel.clearFilterWeapon()),
+          _filterViewWeaponType(context),
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleAttributes, onClearListener: () => viewModel.clearFilterAttribute()),
+          _filterViewAttributes(context),
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleProduction, onClearListener: () => viewModel.clearFilterProduction()),
+          _filterViewProduct(context),
+          SizedBox(height: 60.0),
+        ],
       ),
     );
   }
 
-  Widget _filterViewSubTitle(BuildContext context, String title) {
+  Widget _filterViewSubTitle(BuildContext context, String title, {Function() onClearListener}) {
     return Padding(
-      padding: const EdgeInsets.only(left: 4.0, top: 32.0, right: 4.0, bottom: 16.0),
+      padding: const EdgeInsets.only(left: 4.0, top: 24.0, right: 4.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(title, style: Theme.of(context).textTheme.subtitle2),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(title, style: Theme.of(context).textTheme.subtitle2),
+              if (onClearListener != null)
+                FlatButton(
+                  child: Text(RSStrings.searchFilterClear, style: TextStyle(color: Theme.of(context).accentColor)),
+                  onPressed: () => onClearListener(),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+            ],
+          ),
           Divider(color: Theme.of(context).accentColor),
         ],
       ),
@@ -193,8 +210,7 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
     bool selectedHaveChar = viewModel.isFilterHave();
     bool selectedFavorite = viewModel.isFilterFavorite();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+    return Wrap(
       children: <Widget>[
         HaveCharacterIcon(
           selected: selectedHaveChar,
@@ -202,13 +218,13 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
             viewModel.filterHaveChar(!selectedHaveChar);
           },
         ),
-        const SizedBox(width: 16.0),
+        SizedBox(width: 8.0),
         FavoriteIcon(
           selected: selectedFavorite,
           onTap: () {
             viewModel.filterFavorite(!selectedFavorite);
           },
-        )
+        ),
       ],
     );
   }
@@ -221,11 +237,51 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
       runSpacing: 16.0,
       children: WeaponType.values.map<Widget>((type) {
         bool selected = viewModel.isSelectWeaponType(type);
-        return WeaponIcon.normal(
+        return WeaponIcon.small(
           type,
           selected: selected,
           onTap: () {
             viewModel.findByWeaponType(type);
+            _showBackDropPanel();
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _filterViewAttributes(BuildContext context) {
+    final viewModel = context.read<SearchPageViewModel>();
+
+    return Wrap(
+      spacing: 16.0,
+      runSpacing: 16.0,
+      children: AttributeType.values.map<Widget>((type) {
+        bool selected = viewModel.isSelectAttributeType(type);
+        return AttributeIcon.small(
+          type,
+          selected: selected,
+          onTap: () {
+            viewModel.findByAttributeType(type);
+            _showBackDropPanel();
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _filterViewProduct(BuildContext context) {
+    final viewModel = context.read<SearchPageViewModel>();
+
+    return Wrap(
+      spacing: 16.0,
+      runSpacing: 16.0,
+      children: ProductionType.values.map<Widget>((type) {
+        bool selected = viewModel.isSelectProductType(type);
+        return ProductionLogo.normal(
+          type,
+          selected: selected,
+          onTap: () {
+            viewModel.findByProduction(type);
             _showBackDropPanel();
           },
         );

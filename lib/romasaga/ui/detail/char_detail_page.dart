@@ -172,7 +172,7 @@ class CharDetailPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 4.0, left: 16.0),
       child: CircleAvatar(
-        child: AttributeIcon(attribute.type),
+        child: AttributeIcon.normal(attribute.type),
         backgroundColor: Theme.of(context).disabledColor,
       ),
     );
@@ -688,10 +688,10 @@ class CharDetailPage extends StatelessWidget {
   Widget _haveCharacterIcon(BuildContext context) {
     final viewModel = Provider.of<CharDetailViewModel>(context);
     final myStatus = viewModel.character.myStatus;
-    final color = myStatus.have ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+    final icon = myStatus.have ? Icon(Icons.person, color: Theme.of(context).accentColor) : Icon(Icons.person_outline, color: Theme.of(context).disabledColor);
 
     return IconButton(
-      icon: Icon(Icons.check, color: color),
+      icon: icon,
       iconSize: 28.0,
       onPressed: () {
         viewModel.saveHaveCharacter(!myStatus.have);

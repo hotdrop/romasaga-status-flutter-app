@@ -53,10 +53,10 @@ class CharListPage extends StatelessWidget {
             _titlePopupMenu(context),
           ],
           bottom: const TabBar(tabs: <Tab>[
-            const Tab(icon: const Icon(Icons.favorite), text: RSStrings.characterListFavoriteTabTitle),
-            const Tab(icon: const Icon(Icons.trending_up), text: RSStrings.characterListEventTabTitle),
-            const Tab(icon: const Icon(Icons.check), text: RSStrings.characterListPossessionTabTitle),
-            const Tab(icon: const Icon(Icons.not_interested), text: RSStrings.characterListNotPossessionTabTitle),
+            const Tab(icon: const Icon(Icons.favorite)),
+            const Tab(icon: const Icon(Icons.trending_up)),
+            const Tab(icon: const Icon(Icons.people)),
+            const Tab(icon: const Icon(Icons.people_outline)),
           ]),
         ),
         body: TabBarView(

@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:rsapp/romasaga/model/attribute.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:flutter/material.dart';
 import 'package:rsapp/romasaga/common/rs_colors.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/model/attribute.dart';
+import 'package:rsapp/romasaga/model/production.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
 
 ///
 /// キャラクターアイコン
@@ -97,7 +98,7 @@ class WeaponIcon extends StatelessWidget {
     } else {
       return Material(
         shape: CircleBorder(),
-        color: _selected ? RSColors.weaponIconSelectedBackground : Theme.of(context).disabledColor,
+        color: _selected ? RSColors.iconSelectedBackground : Theme.of(context).disabledColor,
         child: Ink.image(
           image: AssetImage(res),
           fit: BoxFit.cover,
@@ -173,22 +174,50 @@ class WeaponCategoryIcon extends StatelessWidget {
 }
 
 class AttributeIcon extends StatelessWidget {
-  const AttributeIcon(this._attribute);
+  const AttributeIcon._(this._type, this._size, this._selected, this._onTap);
 
-  final AttributeType _attribute;
+  factory AttributeIcon.small(AttributeType type, {bool selected, void Function() onTap}) {
+    return AttributeIcon._(type, 30.0, selected, onTap);
+  }
+
+  factory AttributeIcon.normal(AttributeType type, {bool selected, void Function() onTap}) {
+    return AttributeIcon._(type, 50.0, selected, onTap);
+  }
+
+  final AttributeType _type;
+  final double _size;
+  final void Function() _onTap;
+  final bool _selected;
 
   @override
   Widget build(BuildContext context) {
     String res = _getResourcePath();
-    return Image.asset(
-      res,
-      width: 50.0,
-      height: 50.0,
+    if (_onTap == null) {
+      return Image.asset(
+        res,
+        width: _size,
+        height: _size,
+      );
+    }
+
+    return Material(
+      shape: CircleBorder(),
+      child: Ink.image(
+        image: AssetImage(res),
+        fit: BoxFit.cover,
+        width: _size,
+        height: _size,
+        colorFilter: _selected ? null : ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+        child: InkWell(
+          onTap: () => _onTap(),
+          child: null,
+        ),
+      ),
     );
   }
 
   String _getResourcePath() {
-    switch (_attribute) {
+    switch (_type) {
       case AttributeType.fire:
         return 'res/icons/icon_attribute_fire.png';
       case AttributeType.cold:
@@ -204,7 +233,7 @@ class AttributeIcon extends StatelessWidget {
       case AttributeType.shine:
         return 'res/icons/icon_attribute_shine.png';
       default:
-        throw FormatException("不正なAttributeです。attribute=$_attribute");
+        throw FormatException("不正なAttributeです。attribute=$_type");
     }
   }
 }
@@ -265,19 +294,16 @@ class HaveCharacterIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = selected ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+    final icon = selected ? Icon(Icons.people, color: Theme.of(context).accentColor, size: 20.0) : Icon(Icons.people_outline, color: Theme.of(context).disabledColor, size: 20.0);
+
     return RawMaterialButton(
       shape: CircleBorder(),
       constraints: BoxConstraints(
-        minWidth: 50.0,
-        minHeight: 50.0,
+        minWidth: 40.0,
+        minHeight: 40.0,
       ),
       fillColor: Theme.of(context).disabledColor,
-      child: Icon(
-        Icons.check,
-        color: iconColor,
-        size: 30.0,
-      ),
+      child: icon,
       onPressed: onTap,
     );
   }
@@ -298,16 +324,77 @@ class FavoriteIcon extends StatelessWidget {
     return RawMaterialButton(
       shape: CircleBorder(),
       constraints: BoxConstraints(
-        minWidth: 50.0,
-        minHeight: 50.0,
+        minWidth: 40.0,
+        minHeight: 40.0,
       ),
       fillColor: Theme.of(context).disabledColor,
       child: Icon(
         Icons.favorite,
         color: iconColor,
-        size: 30.0,
+        size: 20.0,
       ),
       onPressed: onTap,
     );
+  }
+}
+
+class ProductionLogo extends StatelessWidget {
+  const ProductionLogo._(this._type, this._selected, this._onTap);
+
+  factory ProductionLogo.normal(ProductionType type, {bool selected, void Function() onTap}) {
+    return ProductionLogo._(type, selected, onTap);
+  }
+
+  final ProductionType _type;
+  final void Function() _onTap;
+  final bool _selected;
+
+  @override
+  Widget build(BuildContext context) {
+    String res = _getResourcePath();
+    if (_onTap == null) {
+      return Image.asset(res);
+    }
+
+    return Material(
+      child: Ink.image(
+        image: AssetImage(res),
+        fit: BoxFit.cover,
+        width: 90,
+        height: 50,
+        colorFilter: _selected ? null : ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+        child: InkWell(
+          onTap: () => _onTap(),
+          child: null,
+        ),
+      ),
+    );
+  }
+
+  String _getResourcePath() {
+    switch (_type) {
+      case ProductionType.romasaga1:
+        return 'res/logos/RomancingSaGa1.jpg';
+      case ProductionType.romasaga2:
+        return 'res/logos/RomancingSaGa2.jpg';
+      case ProductionType.romasaga3:
+        return 'res/logos/RomancingSaGa3.jpg';
+      case ProductionType.sagafro1:
+        return 'res/logos/SagaFrontier1.jpg';
+      case ProductionType.sagafro2:
+        return 'res/logos/SagaFrontier2.jpg';
+      case ProductionType.sagasca:
+        return 'res/logos/SagaSca.jpg';
+      case ProductionType.unlimited:
+        return 'res/logos/UnlimitedSage.jpg';
+      case ProductionType.emperorssaga:
+        return 'res/logos/EmperorsSaga.jpg';
+      case ProductionType.romasagaRS:
+        return 'res/logos/RomasagaRS.jpg';
+      case ProductionType.saga2:
+        return 'res/logos/Saga2.jpg';
+      default:
+        throw FormatException("不正なProductです。ProductType=$_type");
+    }
   }
 }

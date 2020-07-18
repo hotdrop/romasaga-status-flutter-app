@@ -6,39 +6,41 @@ class RSStrings {
   static const String bottomMenuLetter = 'お便り';
   static const String bottomMenuAccount = 'アカウント';
 
-  static const String characterListPageTitle = 'キャラクターリスト';
-  static const String characterListFavoriteTabTitle = 'メイン';
-  static const String characterListEventTabTitle = 'ステUP';
-  static const String characterListPossessionTabTitle = '所持';
-  static const String characterListNotPossessionTabTitle = '未所持';
+  static const String characterListPageTitle = 'キャラ一覧';
   static const String characterListOrderStatus = 'ステータス';
   static const String characterListOrderHp = 'HP';
   static const String characterListOrderProduction = '作品';
   static const String nothingCharacterFavoriteMessage = 'お気に入りキャラは設定されていません。';
   static const String nothingStatusUpEventCharacterMessage = '現在、ステータスアップ育成イベント中のキャラはいません。';
   static const String nothingCharacterPossessionMessage = '持っているキャラはいません。';
-  static const String characterListLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
+  static const String characterListLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
 
   static const String characterTotalStatus = '計: ';
 
-  static const String characterDetailPageTitle = 'キャラクター詳細';
+  static const String characterDetailPageTitle = 'キャラ詳細';
   static const String characterDetailTotalStatusCircleLabel = 'Total Status';
   static const String characterDetailTotalLimitStatusLabel = 'Total Limit Status';
   static const String characterDetailChangeStyleIconDialogContent = 'このアイコンを一覧表示用にしますか？';
   static const String characterDetailStageSelectDescLabel = 'カッコの値はステータス上限です。';
   static const String characterDetailStatusTableLabel = 'ステータス上限表';
-  static const String characterDetailLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
+  static const String characterDetailLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
 
   static const String statusEditTitle = 'ステータス編集';
 
   static const String searchPageTitle = '検索';
   static const String searchListQueryHint = 'キャラ名で検索';
   static const String searchBackDropTitle = 'キャラ一覧';
-  static const String searchFilerTitleOwn = '所持とお気に入りフィルター';
-  static const String searchFilerTitleWeapon = '武器種別';
-  static const String searchFilerLoadingErrorMessage = 'キャラクター情報のロード中にエラーが発生しました。';
+  static const String searchFilterTitleOwn = 'フィルター';
+  static const String searchFilterTitleWeapon = '武器種別';
+  static const String searchFilterTitleAttributes = '属性別';
+  static const String searchFilterTitleProduction = '作品別';
+  static const String searchFilterClear = 'クリア';
+  static const String searchFilterLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
 
   static const String letterPageTitle = '運営からのお便り';
+  static const String letterPageNotData = 'お便り情報がロードされていません。'
+      '\nアカウント画面よりお便り情報を取得してください。'
+      '\n\n（お便り情報取得時はネットワーク通信を行いますのでご注意ください。）';
   static const String letterDetailPageTitle = '運営からのお便り詳細';
   static const String letterNothingMessage = '運営からのお便りデータが0件でした。';
   static const String letterLoadingErrorMessage = '運営からのお便りデータ取得時にエラーが発生しました。';
@@ -61,11 +63,11 @@ class RSStrings {
   static const String accountDataUpdateTitle = 'サーバーからデータ取得';
   static const String accountDataUpdateDetail = 'キャラ情報はタップで新キャラのみ取得、ロングタップで全キャラ取得します。';
 
-  static const String accountCharacterUpdateLabel = 'キャラクター';
+  static const String accountCharacterUpdateLabel = 'キャラー';
   static const String accountCharacterRegisterCountLabel = '現在の登録数:';
-  static const String accountCharacterOnlyNewUpdateDialogMessage = '新しくサーバーに登録されたキャラクター情報を取得します。\nよろしいですか？';
-  static const String accountCharacterAllUpdateDialogMessage = '注意！！\n現在アプリ内に保存されているキャラクター情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
-  static const String accountCharacterUpdateDialogSuccessMessage = '最新のキャラクター情報を取得しました。';
+  static const String accountCharacterOnlyNewUpdateDialogMessage = '新しくサーバーに登録されたキャラ情報を取得します。\nよろしいですか？';
+  static const String accountCharacterAllUpdateDialogMessage = '注意！！\n現在アプリ内に保存されているキャラ情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
+  static const String accountCharacterUpdateDialogSuccessMessage = '最新のキャラ情報を取得しました。';
 
   static const String accountStageUpdateLabel = 'ステージ';
   static const String accountStageLatestLabel = '最新:';
@@ -81,11 +83,11 @@ class RSStrings {
 
   static const String accountStatusBackupLabel = 'バックアップ';
   static const String accountStatusBackupDateLabel = '前回実行日:';
-  static const String accountStatusBackupDialogMessage = '現在のキャラクターステータスをサーバーへバックアップします。\nよろしいですか？';
+  static const String accountStatusBackupDialogMessage = '現在のキャラステータスをサーバーへバックアップします。\nよろしいですか？';
   static const String accountStatusBackupDialogSuccessMessage = 'バックアップに成功しました。';
 
   static const String accountStatusRestoreLabel = '復元';
-  static const String accountStatusRestoreDialogMessage = 'サーバーにバックアップしたキャラクターステータスを復元します。\n現在のステータスは全て消えますがよろしいですか？';
+  static const String accountStatusRestoreDialogMessage = 'サーバーにバックアップしたキャラステータスを復元します。\n現在のステータスは全て消えますがよろしいですか？';
   static const String accountStatusRestoreDescriptionLabel = 'アプリ内のデータを上書きします。';
   static const String accountStatusRestoreDialogSuccessMessage = '復元に成功しました。';
 
@@ -125,4 +127,16 @@ class RSStrings {
   static const String attributeThunder = '雷';
   static const String attributeDark = '闇';
   static const String attributeShine = '光';
+
+  // 作品（キャラjsonに設定されている文字列）
+  static const String productRomaSaga1 = 'ロマンシング・サガ1';
+  static const String productRomaSaga2 = 'ロマンシング・サガ2';
+  static const String productRomaSaga3 = 'ロマンシング・サガ3';
+  static const String productSagaFro1 = 'サガ・フロンティア1';
+  static const String productSagaFro2 = 'サガ・フロンティア2';
+  static const String productSagaSca = 'サガスカーレットグレイス';
+  static const String productUnLimited = 'アンリミテッド・サガ';
+  static const String productEmperorsSaga = 'エンペラーズサガ';
+  static const String productRomaSagaRS = 'ロマンシング・サガRS';
+  static const String productSaga2 = 'Sa・Ga2 秘宝伝説';
 }
