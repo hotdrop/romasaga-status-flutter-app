@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rsapp/romasaga/common/rs_colors.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/model/attribute.dart';
+import 'package:rsapp/romasaga/model/production.dart';
 import 'package:rsapp/romasaga/model/weapon.dart';
 
 ///
@@ -334,5 +335,66 @@ class FavoriteIcon extends StatelessWidget {
       ),
       onPressed: onTap,
     );
+  }
+}
+
+class ProductionLogo extends StatelessWidget {
+  const ProductionLogo._(this._type, this._selected, this._onTap);
+
+  factory ProductionLogo.normal(ProductionType type, {bool selected, void Function() onTap}) {
+    return ProductionLogo._(type, selected, onTap);
+  }
+
+  final ProductionType _type;
+  final void Function() _onTap;
+  final bool _selected;
+
+  @override
+  Widget build(BuildContext context) {
+    String res = _getResourcePath();
+    if (_onTap == null) {
+      return Image.asset(res);
+    }
+
+    return Material(
+      child: Ink.image(
+        image: AssetImage(res),
+        fit: BoxFit.cover,
+        width: 90,
+        height: 50,
+        colorFilter: _selected ? null : ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+        child: InkWell(
+          onTap: () => _onTap(),
+          child: null,
+        ),
+      ),
+    );
+  }
+
+  String _getResourcePath() {
+    switch (_type) {
+      case ProductionType.romasaga1:
+        return 'res/logos/RomancingSaGa1.jpg';
+      case ProductionType.romasaga2:
+        return 'res/logos/RomancingSaGa2.jpg';
+      case ProductionType.romasaga3:
+        return 'res/logos/RomancingSaGa3.jpg';
+      case ProductionType.sagafro1:
+        return 'res/logos/SagaFrontier1.jpg';
+      case ProductionType.sagafro2:
+        return 'res/logos/SagaFrontier2.jpg';
+      case ProductionType.sagasca:
+        return 'res/logos/SagaSca.jpg';
+      case ProductionType.unlimited:
+        return 'res/logos/UnlimitedSage.jpg';
+      case ProductionType.emperorssaga:
+        return 'res/logos/EmperorsSaga.jpg';
+      case ProductionType.romasagaRS:
+        return 'res/logos/RomasagaRS.jpg';
+      case ProductionType.saga2:
+        return 'res/logos/Saga2.jpg';
+      default:
+        throw FormatException("不正なProductです。ProductType=$_type");
+    }
   }
 }

@@ -66,4 +66,5 @@ flutter:
     - res/json/
     - res/icons/
     - res/charIcons/
+    - res/logos/
 

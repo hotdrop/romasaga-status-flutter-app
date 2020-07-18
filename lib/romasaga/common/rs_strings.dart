@@ -34,6 +34,7 @@ class RSStrings {
   static const String searchFilterTitleWeapon = '武器種別';
   static const String searchFilterTitleAttributes = '属性別';
   static const String searchFilterTitleProduction = '作品別';
+  static const String searchFilterClear = 'クリア';
   static const String searchFilterLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
 
   static const String letterPageTitle = '運営からのお便り';
@@ -126,4 +127,16 @@ class RSStrings {
   static const String attributeThunder = '雷';
   static const String attributeDark = '闇';
   static const String attributeShine = '光';
+
+  // 作品（キャラjsonに設定されている文字列）
+  static const String productRomaSaga1 = 'ロマンシング・サガ1';
+  static const String productRomaSaga2 = 'ロマンシング・サガ2';
+  static const String productRomaSaga3 = 'ロマンシング・サガ3';
+  static const String productSagaFro1 = 'サガ・フロンティア1';
+  static const String productSagaFro2 = 'サガ・フロンティア2';
+  static const String productSagaSca = 'サガスカーレットグレイス';
+  static const String productUnLimited = 'アンリミテッド・サガ';
+  static const String productEmperorsSaga = 'エンペラーズサガ';
+  static const String productRomaSagaRS = 'ロマンシング・サガRS';
+  static const String productSaga2 = 'Sa・Ga2 秘宝伝説';
 }
