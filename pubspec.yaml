@@ -1,7 +1,7 @@
 name: rsapp
 description: Romancing Saga RS Status Management application.
 
-version: 1.4.0+3
+version: 1.5.0+4
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
