@@ -56,6 +56,10 @@ class SearchCondition {
     if (attributeType == null) {
       return true;
     }
+    if (attributes == null) {
+      return false;
+    }
+
     return attributes.any((a) => a.type == attributeType);
   }
 
