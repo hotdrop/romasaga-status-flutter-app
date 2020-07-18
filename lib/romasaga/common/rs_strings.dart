@@ -35,6 +35,9 @@ class RSStrings {
   static const String searchFilerLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
 
   static const String letterPageTitle = '運営からのお便り';
+  static const String letterPageNotData = 'お便り情報がロードされていません。'
+      '\nアカウント画面よりお便り情報を取得してください。'
+      '\n\n（お便り情報取得時はネットワーク通信を行いますのでご注意ください。）';
   static const String letterDetailPageTitle = '運営からのお便り詳細';
   static const String letterNothingMessage = '運営からのお便りデータが0件でした。';
   static const String letterLoadingErrorMessage = '運営からのお便りデータ取得時にエラーが発生しました。';

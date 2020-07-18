@@ -1,7 +1,7 @@
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/json/letter_json_object.dart';
 import 'package:rsapp/romasaga/model/letter.dart';
 import 'package:rsapp/romasaga/service/rs_service.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class LetterApi {
   const LetterApi._(this._rsService);
@@ -9,35 +9,13 @@ class LetterApi {
   factory LetterApi.create() {
     return LetterApi._(RSService.getInstance());
   }
+
   final RSService _rsService;
 
   ///
-  /// リモートからjsonを取得しパースして「お便りモデル」クラスのリストを取得する。
-  /// jsonから取得したgif名と画像名はFirebaseのStorageに置いてあるファイル名なので
-  /// Storageのフルパスを取得する必要がある。そのため少し時間がかかる。
-  ///
-  Future<List<Letter>> findAll() async {
-    try {
-      final json = await _rsService.readLettersJson();
-      final letterObjects = LetterJsonObject.parseToObjects(json);
-      RSLogger.d('リモートから${letterObjects.length}件のデータを取得しました。');
-
-      List<Letter> letters = [];
-      for (var obj in letterObjects) {
-        final tmp = await _toModel(obj);
-        letters.add(tmp);
-      }
-      return letters;
-    } catch (e) {
-      RSLogger.e('お便りデータ取得時にエラーが発生しました。', e);
-      rethrow;
-    }
-  }
-
-  ///
-  /// リモートからjsonを取得しパースして「お便りモデル」クラスのリストを取得する。
+  /// ネットワーク経由で「お便りモデル」クラスのリストを取得する。
   /// gifと画像名からStorageのフルパスを取得する処理がかなり重いので毎回更新のたびにやるとうざい。
-  /// なので、新たにjsonに追加されたデータだけフルパスを取得するメソッドを設けた。
+  /// そのため、新たに追加されたデータのみ差分取得する。
   ///
   Future<List<Letter>> findNew(List<Letter> currentLetters) async {
     try {
