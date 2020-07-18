@@ -53,7 +53,7 @@ class SearchCondition {
   /// 属性でのフィルタ
   ///
   bool filterAttributesType(List<Attribute> attributes) {
-    if (attributes == null || attributes.isEmpty) {
+    if (attributeType == null) {
       return true;
     }
     return attributes.any((a) => a.type == attributeType);
@@ -63,7 +63,7 @@ class SearchCondition {
   /// 作品でのフィルタ
   ///
   bool filterProductionType(String name) {
-    if (name == null) {
+    if (productionType == null) {
       return true;
     }
     return Production.equal(productionType, name);
