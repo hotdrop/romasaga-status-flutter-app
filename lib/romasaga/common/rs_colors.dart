@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class RSColors {
   static const Color floatingActionButtonIcon = Colors.white;
+
   // Chip
   static final Color chipAvatarBackground = Colors.grey.shade300;
   static const Color chipRankA = Color.fromARGB(255, 239, 201, 191);
@@ -9,7 +10,7 @@ class RSColors {
   static final Color chipRankSS = Color.fromARGB(255, 233, 217, 77);
 
   // アイコン
-  static final Color weaponIconSelectedBackground = Colors.yellowAccent;
+  static final Color iconSelectedBackground = Colors.yellowAccent;
 
   // キャラクター詳細
   static const Color characterDetailCardShadow = Color(0xFF3A5160);

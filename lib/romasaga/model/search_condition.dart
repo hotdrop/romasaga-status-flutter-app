@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rsapp/romasaga/model/attribute.dart';
 import 'package:rsapp/romasaga/model/weapon.dart';
 
 class SearchCondition {
   String keyword;
   WeaponType weaponType;
+  AttributeType attributeType;
   bool isFavorite = false;
   bool haveChar = false;
 
@@ -43,5 +45,15 @@ class SearchCondition {
       return true;
     }
     return weapon.type == weaponType;
+  }
+
+  ///
+  /// 属性でのフィルタ
+  ///
+  bool filterAttributesType(List<Attribute> attributes) {
+    if (attributes == null || attributes.isEmpty) {
+      return true;
+    }
+    return attributes.any((a) => a.type == attributeType);
   }
 }

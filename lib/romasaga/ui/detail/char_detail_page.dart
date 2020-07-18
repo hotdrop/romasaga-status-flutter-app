@@ -172,7 +172,7 @@ class CharDetailPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 4.0, left: 16.0),
       child: CircleAvatar(
-        child: AttributeIcon(attribute.type),
+        child: AttributeIcon.normal(attribute.type),
         backgroundColor: Theme.of(context).disabledColor,
       ),
     );

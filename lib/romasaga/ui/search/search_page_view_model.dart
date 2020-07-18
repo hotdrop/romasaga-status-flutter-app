@@ -1,9 +1,10 @@
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
+import 'package:rsapp/romasaga/model/attribute.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/search_condition.dart';
 import 'package:rsapp/romasaga/model/weapon.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class SearchPageViewModel extends ChangeNotifierViewModel {
@@ -81,6 +82,10 @@ class SearchPageViewModel extends ChangeNotifierViewModel {
     return type == _condition.weaponType;
   }
 
+  bool isSelectAttributeType(AttributeType type) {
+    return type == _condition.attributeType;
+  }
+
   void clear() {
     charactersWithFilter = _originalCharacters;
     notifyListeners();
@@ -94,6 +99,11 @@ class SearchPageViewModel extends ChangeNotifierViewModel {
 
   void findByWeaponType(WeaponType type) {
     _condition.weaponType = type;
+    _search();
+  }
+
+  void findByAttributeType(AttributeType type) {
+    _condition.attributeType = type;
     _search();
   }
 
@@ -113,6 +123,7 @@ class SearchPageViewModel extends ChangeNotifierViewModel {
         .where((c) => _condition.filterHave(c.myStatus.have))
         .where((c) => _condition.filterFavorite(c.myStatus.favorite))
         .where((c) => _condition.filterWeaponType(c.weapon))
+        .where((e) => _condition.filterAttributesType(e.attributes))
         .toList();
     RSLogger.d("フィルター後のキャラ数=${charactersWithFilter.length}");
     notifyListeners();
