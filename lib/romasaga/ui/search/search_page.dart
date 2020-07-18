@@ -6,6 +6,7 @@ import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/model/attribute.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';
+import 'package:rsapp/romasaga/model/production.dart';
 import 'package:rsapp/romasaga/model/weapon.dart';
 import 'package:rsapp/romasaga/ui/characters/char_list_row_item.dart';
 import 'package:rsapp/romasaga/ui/search/search_page_view_model.dart';
@@ -161,21 +162,20 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
   }
 
   Widget _filterView(BuildContext context) {
-    // フィルターしたい要素をここに詰めていく
-    final filterViews = <Widget>[];
-    filterViews.add(_filterViewSubTitle(context, RSStrings.searchFilterTitleOwn));
-    filterViews.add(_filterViewOwnState(context));
-    filterViews.add(_filterViewSubTitle(context, RSStrings.searchFilterTitleWeapon));
-    filterViews.add(_filterViewWeaponType(context));
-    filterViews.add(_filterViewSubTitle(context, RSStrings.searchFilterTitleAttributes));
-    filterViews.add(_filterViewAttributes(context));
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: filterViews,
+      child: ListView(
+        children: <Widget>[
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleOwn),
+          _filterViewOwnState(context),
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleWeapon),
+          _filterViewWeaponType(context),
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleAttributes),
+          _filterViewAttributes(context),
+          _filterViewSubTitle(context, RSStrings.searchFilterTitleProduction),
+          _filterViewProduct(context),
+          SizedBox(height: 60.0),
+        ],
       ),
     );
   }
@@ -250,6 +250,26 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
           selected: selected,
           onTap: () {
             viewModel.findByAttributeType(type);
+            _showBackDropPanel();
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _filterViewProduct(BuildContext context) {
+    final viewModel = context.read<SearchPageViewModel>();
+
+    return Wrap(
+      spacing: 16.0,
+      runSpacing: 16.0,
+      children: ProductionType.values.map<Widget>((type) {
+        bool selected = viewModel.isSelectProductType(type);
+        return ProductionLogo.normal(
+          type,
+          selected: selected,
+          onTap: () {
+            viewModel.findByProduction(type);
             _showBackDropPanel();
           },
         );

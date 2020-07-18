@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/romasaga/model/attribute.dart';
+import 'package:rsapp/romasaga/model/production.dart';
 import 'package:rsapp/romasaga/model/weapon.dart';
 
 class SearchCondition {
   String keyword;
   WeaponType weaponType;
   AttributeType attributeType;
+  ProductionType productionType;
   bool isFavorite = false;
   bool haveChar = false;
 
@@ -55,5 +57,15 @@ class SearchCondition {
       return true;
     }
     return attributes.any((a) => a.type == attributeType);
+  }
+
+  ///
+  /// 作品でのフィルタ
+  ///
+  bool filterProductionType(String name) {
+    if (name == null) {
+      return true;
+    }
+    return Production.equal(productionType, name);
   }
 }

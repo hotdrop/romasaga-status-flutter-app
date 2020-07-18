@@ -3,6 +3,7 @@ import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/model/attribute.dart';
 import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/production.dart';
 import 'package:rsapp/romasaga/model/search_condition.dart';
 import 'package:rsapp/romasaga/model/weapon.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
@@ -86,6 +87,10 @@ class SearchPageViewModel extends ChangeNotifierViewModel {
     return type == _condition.attributeType;
   }
 
+  bool isSelectProductType(ProductionType type) {
+    return type == _condition.productionType;
+  }
+
   void clear() {
     charactersWithFilter = _originalCharacters;
     notifyListeners();
@@ -107,6 +112,11 @@ class SearchPageViewModel extends ChangeNotifierViewModel {
     _search();
   }
 
+  void findByProduction(ProductionType type) {
+    _condition.productionType = type;
+    _search();
+  }
+
   void filterHaveChar(bool haveChar) {
     _condition.haveChar = haveChar;
     _search();
@@ -124,6 +134,7 @@ class SearchPageViewModel extends ChangeNotifierViewModel {
         .where((c) => _condition.filterFavorite(c.myStatus.favorite))
         .where((c) => _condition.filterWeaponType(c.weapon))
         .where((e) => _condition.filterAttributesType(e.attributes))
+        .where((e) => _condition.filterProductionType(e.production))
         .toList();
     RSLogger.d("フィルター後のキャラ数=${charactersWithFilter.length}");
     notifyListeners();
