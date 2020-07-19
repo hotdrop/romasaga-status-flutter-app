@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rsapp/romasaga/ui/characters/char_list_page.dart';
-import 'package:rsapp/romasaga/ui/search/search_page.dart';
-import 'package:rsapp/romasaga/ui/letter/letter_page.dart';
-import 'package:rsapp/romasaga/ui/account/account_page.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/ui/account/account_page.dart';
+import 'package:rsapp/romasaga/ui/characters/char_list_page.dart';
+import 'package:rsapp/romasaga/ui/dashboard/dashboard_page.dart';
+import 'package:rsapp/romasaga/ui/letter/letter_page.dart';
+import 'package:rsapp/romasaga/ui/search/search_page.dart';
 
 class TopPage extends StatefulWidget {
   @override
@@ -46,8 +47,10 @@ class _TopPageState extends State<TopPage> {
       case 1:
         return SearchPage();
       case 2:
-        return LetterPage();
+        return DashboardPage();
       case 3:
+        return LetterPage();
+      case 4:
         return AccountPage();
       default:
         return null;
@@ -64,6 +67,7 @@ class Destination {
 const _allDestinations = <Destination>[
   Destination(RSStrings.bottomMenuCharacter, Icons.view_list),
   Destination(RSStrings.bottomMenuSearch, Icons.search),
+  Destination(RSStrings.bottomMenuDashboard, Icons.dashboard),
   Destination(RSStrings.bottomMenuLetter, Icons.mail),
   Destination(RSStrings.bottomMenuAccount, Icons.person),
 ];

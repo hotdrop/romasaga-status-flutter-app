@@ -5,6 +5,7 @@ class RSStrings {
   static const String bottomMenuSearch = '検索';
   static const String bottomMenuLetter = 'お便り';
   static const String bottomMenuAccount = 'アカウント';
+  static const String bottomMenuDashboard = 'ボード';
 
   static const String characterListPageTitle = 'キャラ一覧';
   static const String characterListOrderStatus = 'ステータス';
@@ -48,6 +49,13 @@ class RSStrings {
   static const String letterLoadingFailure = '画像取得エラー！';
   static const String letterYearLabel = '年';
   static const String letterMonthLabel = '月';
+
+  // ダッシュボード画面
+  static const String dashboardPageTitle = 'ダッシュボード';
+  static const String dashboardPageFavoriteCharLabel = 'お気に入り数';
+  static const String dashboardPageHaveCharLabel = '保持キャラ数';
+  static const String dashboardPageAllCharLabel = '全キャラ数';
+  static const String dashboardPageLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
 
   // アカウント画面
   static const String accountPageTitle = 'アカウント';
