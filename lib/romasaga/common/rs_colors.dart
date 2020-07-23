@@ -33,4 +33,22 @@ class RSColors {
   static const Color spring = Colors.pinkAccent;
   static const Color summer = Colors.blueAccent;
   static const Color fall = Color(0xFFF2E100);
+
+  // ダッシュボード
+  static const Color str = Color(0xFF980000);
+  static const Color strThin = Color(0xFFFFCCCC);
+  static const Color vit = Color(0xFF0000CB);
+  static const Color vitThin = Color(0xFFCCD8FF);
+  static const Color dex = Color(0xFF989800);
+  static const Color dexThin = Color(0xFFFFFFCC);
+  static const Color agi = Color(0xFF006500);
+  static const Color agiThin = Color(0xFFCCFFCC);
+  static const Color int = Color(0xFF007298);
+  static const Color intThin = Color(0xFFCCF2FF);
+  static const Color spirit = Color(0xFF987200);
+  static const Color spiritThin = Color(0xFFFFE5CC);
+  static const Color love = Color(0xFFCB00CB);
+  static const Color loveThin = Color(0xFFFFCCF2);
+  static const Color attr = Color(0xFF980098);
+  static const Color attrThin = Color(0xFFE5CCFF);
 }

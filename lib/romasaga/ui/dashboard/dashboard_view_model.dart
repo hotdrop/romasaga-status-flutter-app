@@ -45,4 +45,44 @@ class DashboardViewModel extends ChangeNotifierViewModel {
   int get haveNum => _characters.where((c) => c.myStatus.have).toList().length;
 
   int get allCharNum => _characters.length;
+
+  List<Character> getStrTop5() {
+    _characters.sort((a, b) => b.myStatus.str.compareTo(a.myStatus.str));
+    return _characters.take(5).toList();
+  }
+
+  List<Character> getVitTop5() {
+    _characters.sort((a, b) => b.myStatus.vit.compareTo(a.myStatus.vit));
+    return _characters.take(5).toList();
+  }
+
+  List<Character> getDexTop5() {
+    _characters.sort((a, b) => b.myStatus.dex.compareTo(a.myStatus.dex));
+    return _characters.take(5).toList();
+  }
+
+  List<Character> getAgiTop5() {
+    _characters.sort((a, b) => b.myStatus.agi.compareTo(a.myStatus.agi));
+    return _characters.take(5).toList();
+  }
+
+  List<Character> getIntTop5() {
+    _characters.sort((a, b) => b.myStatus.intelligence.compareTo(a.myStatus.intelligence));
+    return _characters.take(5).toList();
+  }
+
+  List<Character> getSpiritTop5() {
+    _characters.sort((a, b) => b.myStatus.spirit.compareTo(a.myStatus.spirit));
+    return _characters.take(5).toList();
+  }
+
+  List<Character> getLoveTop5() {
+    _characters.sort((a, b) => b.myStatus.love.compareTo(a.myStatus.love));
+    return _characters.take(5).toList();
+  }
+
+  List<Character> getAttrTop5() {
+    _characters.sort((a, b) => b.myStatus.attr.compareTo(a.myStatus.attr));
+    return _characters.take(5).toList();
+  }
 }

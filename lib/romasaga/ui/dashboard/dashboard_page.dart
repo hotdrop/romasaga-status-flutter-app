@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
@@ -6,6 +5,7 @@ import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/model/status.dart';
 import 'package:rsapp/romasaga/ui/dashboard/dashboard_view_model.dart';
 import 'package:rsapp/romasaga/ui/widget/custom_rs_widgets.dart';
+import 'package:rsapp/romasaga/ui/widget/status_ranking_container.dart';
 
 class DashboardPage extends StatelessWidget {
   @override
@@ -47,9 +47,15 @@ class DashboardPage extends StatelessWidget {
   Widget _loadedView(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(RSStrings.dashboardPageTitle), centerTitle: true),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.only(top: 4.0, left: 16.0, right: 16.0, bottom: 16.0),
-        child: _contentsCharacterNum(context),
+        children: <Widget>[
+          _contentsCharacterNum(context),
+          const SizedBox(height: 16.0),
+          _contentsTopRanker(context),
+          const SizedBox(height: 16.0),
+          _contentsStatusRanking(context),
+        ],
       ),
     );
   }
@@ -80,9 +86,9 @@ class DashboardPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         titleView,
-        SizedBox(height: 8.0),
+        const SizedBox(height: 8.0),
         Text(num.toString(), style: Theme.of(context).textTheme.headline5),
-        SizedBox(height: 4.0),
+        const SizedBox(height: 4.0),
         Text(detail, style: TextStyle(color: Colors.grey, fontSize: 12.0)),
       ],
     );
@@ -103,15 +109,36 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  ///
-  /// 各キャラのステータスランキング
-  ///
-  Widget _contentsStatusRanking(BuildContext context) {
-    // TODO ステータス毎のランキング作る。HPはソートで見れるのでいらない
+  /// TODO ランキングが一番多いキャラを表示したい
+  Widget _contentsTopRanker(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 120.0, left: 48.0, right: 48.0, bottom: 16.0),
+      child: Text('ここにランキングトップキャラとチャートを表示したいが・・'),
+    );
   }
 
-  Widget _rankingView(StatusType type) {
-    // TODO 1位〜5位までのキャラを取得する
-    // TODO 位のアイコン、数値、キャラアイコン、名前を表示
+  ///
+  /// 各キャラのステータスランキング
+  /// HPはキャラ一覧のソートで確認できるので表示しない
+  ///
+  Widget _contentsStatusRanking(BuildContext context) {
+    final viewModel = Provider.of<DashboardViewModel>(context);
+
+    return SizedBox(
+      height: 300.0,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: <Widget>[
+          StatusRankingContainer(StatusType.str, viewModel.getStrTop5()),
+          StatusRankingContainer(StatusType.vit, viewModel.getVitTop5()),
+          StatusRankingContainer(StatusType.dex, viewModel.getDexTop5()),
+          StatusRankingContainer(StatusType.agi, viewModel.getAgiTop5()),
+          StatusRankingContainer(StatusType.intelligence, viewModel.getIntTop5()),
+          StatusRankingContainer(StatusType.spirit, viewModel.getSpiritTop5()),
+          StatusRankingContainer(StatusType.love, viewModel.getLoveTop5()),
+          StatusRankingContainer(StatusType.attr, viewModel.getAttrTop5()),
+        ],
+      ),
+    );
   }
 }
