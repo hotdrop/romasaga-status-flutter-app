@@ -125,18 +125,18 @@ class DashboardPage extends StatelessWidget {
     final viewModel = Provider.of<DashboardViewModel>(context);
 
     return SizedBox(
-      height: 300.0,
+      height: 280.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
-          StatusRankingContainer(StatusType.str, viewModel.getStrTop5()),
-          StatusRankingContainer(StatusType.vit, viewModel.getVitTop5()),
-          StatusRankingContainer(StatusType.dex, viewModel.getDexTop5()),
-          StatusRankingContainer(StatusType.agi, viewModel.getAgiTop5()),
-          StatusRankingContainer(StatusType.intelligence, viewModel.getIntTop5()),
-          StatusRankingContainer(StatusType.spirit, viewModel.getSpiritTop5()),
-          StatusRankingContainer(StatusType.love, viewModel.getLoveTop5()),
-          StatusRankingContainer(StatusType.attr, viewModel.getAttrTop5()),
+          StatusRankingContainer(StatusType.str, viewModel.strTop5),
+          StatusRankingContainer(StatusType.vit, viewModel.vitTop5),
+          StatusRankingContainer(StatusType.dex, viewModel.dexTop5),
+          StatusRankingContainer(StatusType.agi, viewModel.agiTop5),
+          StatusRankingContainer(StatusType.intelligence, viewModel.intTop5),
+          StatusRankingContainer(StatusType.spirit, viewModel.spiritTop5),
+          StatusRankingContainer(StatusType.love, viewModel.loveTop5),
+          StatusRankingContainer(StatusType.attr, viewModel.attrTop5),
         ],
       ),
     );

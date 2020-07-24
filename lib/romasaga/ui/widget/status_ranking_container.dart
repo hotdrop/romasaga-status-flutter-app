@@ -21,7 +21,7 @@ class StatusRankingContainer extends StatelessWidget {
       children: <Widget>[
         Container(
           width: 150.0,
-          height: 250.0,
+          height: 270.0,
           margin: const EdgeInsets.only(top: 24.0, left: 8.0, right: 8.0),
           decoration: BoxDecoration(
             boxShadow: <BoxShadow>[

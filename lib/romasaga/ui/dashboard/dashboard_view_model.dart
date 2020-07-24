@@ -16,12 +16,47 @@ class DashboardViewModel extends ChangeNotifierViewModel {
 
   List<Character> _characters;
 
+  List<Character> _strTop5;
+
+  List<Character> get strTop5 => _strTop5;
+
+  List<Character> _vitTop5;
+
+  List<Character> get vitTop5 => _vitTop5;
+
+  List<Character> _dexTop5;
+
+  List<Character> get dexTop5 => _dexTop5;
+
+  List<Character> _agiTop5;
+
+  List<Character> get agiTop5 => _agiTop5;
+
+  List<Character> _intTop5;
+
+  List<Character> get intTop5 => _intTop5;
+
+  List<Character> _spiritTop5;
+
+  List<Character> get spiritTop5 => _spiritTop5;
+
+  List<Character> _loveTop5;
+
+  List<Character> get loveTop5 => _loveTop5;
+
+  List<Character> _attrTop5;
+
+  List<Character> get attrTop5 => _attrTop5;
+
   Future<void> load() async {
     await run(
       label: 'ダッシュボードのキャラ一覧ロード処理',
       block: () async {
         final chars = await _characterRepository.findAll();
         _characters = await _loadMyStatuses(chars);
+
+        // いちいちソートしてトップ5を取得すると効率悪いのでload時に取得してしまう。
+        takeStatusTop5Characters(_characters);
       },
     );
   }
@@ -46,43 +81,29 @@ class DashboardViewModel extends ChangeNotifierViewModel {
 
   int get allCharNum => _characters.length;
 
-  List<Character> getStrTop5() {
-    _characters.sort((a, b) => b.myStatus.str.compareTo(a.myStatus.str));
-    return _characters.take(5).toList();
-  }
+  void takeStatusTop5Characters(List<Character> c) {
+    c.sort((a, b) => b.myStatus.str.compareTo(a.myStatus.str));
+    _strTop5 = c.take(5).toList();
 
-  List<Character> getVitTop5() {
-    _characters.sort((a, b) => b.myStatus.vit.compareTo(a.myStatus.vit));
-    return _characters.take(5).toList();
-  }
+    c.sort((a, b) => b.myStatus.vit.compareTo(a.myStatus.vit));
+    _vitTop5 = c.take(5).toList();
 
-  List<Character> getDexTop5() {
-    _characters.sort((a, b) => b.myStatus.dex.compareTo(a.myStatus.dex));
-    return _characters.take(5).toList();
-  }
+    c.sort((a, b) => b.myStatus.dex.compareTo(a.myStatus.dex));
+    _dexTop5 = c.take(5).toList();
 
-  List<Character> getAgiTop5() {
-    _characters.sort((a, b) => b.myStatus.agi.compareTo(a.myStatus.agi));
-    return _characters.take(5).toList();
-  }
+    c.sort((a, b) => b.myStatus.agi.compareTo(a.myStatus.agi));
+    _agiTop5 = c.take(5).toList();
 
-  List<Character> getIntTop5() {
-    _characters.sort((a, b) => b.myStatus.intelligence.compareTo(a.myStatus.intelligence));
-    return _characters.take(5).toList();
-  }
+    c.sort((a, b) => b.myStatus.intelligence.compareTo(a.myStatus.intelligence));
+    _intTop5 = c.take(5).toList();
 
-  List<Character> getSpiritTop5() {
-    _characters.sort((a, b) => b.myStatus.spirit.compareTo(a.myStatus.spirit));
-    return _characters.take(5).toList();
-  }
+    c.sort((a, b) => b.myStatus.spirit.compareTo(a.myStatus.spirit));
+    _spiritTop5 = c.take(5).toList();
 
-  List<Character> getLoveTop5() {
-    _characters.sort((a, b) => b.myStatus.love.compareTo(a.myStatus.love));
-    return _characters.take(5).toList();
-  }
+    c.sort((a, b) => b.myStatus.love.compareTo(a.myStatus.love));
+    _loveTop5 = c.take(5).toList();
 
-  List<Character> getAttrTop5() {
-    _characters.sort((a, b) => b.myStatus.attr.compareTo(a.myStatus.attr));
-    return _characters.take(5).toList();
+    c.sort((a, b) => b.myStatus.attr.compareTo(a.myStatus.attr));
+    _attrTop5 = c.take(5).toList();
   }
 }
