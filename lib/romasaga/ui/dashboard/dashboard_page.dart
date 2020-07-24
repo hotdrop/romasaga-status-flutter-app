@@ -5,6 +5,7 @@ import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/model/status.dart';
 import 'package:rsapp/romasaga/ui/dashboard/dashboard_view_model.dart';
 import 'package:rsapp/romasaga/ui/widget/custom_rs_widgets.dart';
+import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
 import 'package:rsapp/romasaga/ui/widget/status_ranking_container.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -64,7 +65,8 @@ class DashboardPage extends StatelessWidget {
   /// 上部に表示するお気に入りや保持キャラ数のWidget
   ///
   Widget _contentsCharacterNum(BuildContext context) {
-    final viewModel = Provider.of<DashboardViewModel>(context);
+    final viewModel = context.watch<DashboardViewModel>();
+
     return Padding(
       padding: const EdgeInsets.only(top: 16.0),
       child: Row(
@@ -111,9 +113,31 @@ class DashboardPage extends StatelessWidget {
 
   /// TODO ランキングが一番多いキャラを表示したい
   Widget _contentsTopRanker(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 120.0, left: 48.0, right: 48.0, bottom: 16.0),
-      child: Text('ここにランキングトップキャラとチャートを表示したいが・・'),
+    final viewModel = Provider.of<DashboardViewModel>(context);
+    final topCharacter = viewModel.topCharacter;
+
+    return Column(
+      children: <Widget>[
+        Text('現在の総合ランキングトップキャラ'),
+        SizedBox(height: 16.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(width: 48.0),
+            RankingIcon.createFirst(),
+            SizedBox(width: 16.0),
+            CharacterIcon.small(topCharacter.character.selectedIconFilePath),
+            SizedBox(width: 16.0),
+            Expanded(
+              child: Text(topCharacter.character.name),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 48.0, right: 48.0, top: 100.0, bottom: 100.0),
+          child: Text('ここチャート'),
+        ),
+      ],
     );
   }
 
@@ -125,7 +149,7 @@ class DashboardPage extends StatelessWidget {
     final viewModel = Provider.of<DashboardViewModel>(context);
 
     return SizedBox(
-      height: 280.0,
+      height: 270.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[

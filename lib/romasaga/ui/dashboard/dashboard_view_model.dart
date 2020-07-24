@@ -2,6 +2,7 @@ import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/ranking_character.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class DashboardViewModel extends ChangeNotifierViewModel {
@@ -16,6 +17,10 @@ class DashboardViewModel extends ChangeNotifierViewModel {
 
   List<Character> _characters;
 
+  RankingCharacter _topCharacter;
+
+  RankingCharacter get topCharacter => _topCharacter;
+
   List<Character> _strTop5;
 
   List<Character> get strTop5 => _strTop5;
@@ -29,23 +34,18 @@ class DashboardViewModel extends ChangeNotifierViewModel {
   List<Character> get dexTop5 => _dexTop5;
 
   List<Character> _agiTop5;
-
   List<Character> get agiTop5 => _agiTop5;
 
   List<Character> _intTop5;
-
   List<Character> get intTop5 => _intTop5;
 
   List<Character> _spiritTop5;
-
   List<Character> get spiritTop5 => _spiritTop5;
 
   List<Character> _loveTop5;
-
   List<Character> get loveTop5 => _loveTop5;
 
   List<Character> _attrTop5;
-
   List<Character> get attrTop5 => _attrTop5;
 
   Future<void> load() async {
@@ -55,7 +55,7 @@ class DashboardViewModel extends ChangeNotifierViewModel {
         final chars = await _characterRepository.findAll();
         _characters = await _loadMyStatuses(chars);
 
-        // いちいちソートしてトップ5を取得すると効率悪いのでload時に取得してしまう。
+        // いちいちソートしてトップ5を取得すると効率悪いのでload時に取得する。
         takeStatusTop5Characters(_characters);
       },
     );
@@ -105,5 +105,23 @@ class DashboardViewModel extends ChangeNotifierViewModel {
 
     c.sort((a, b) => b.myStatus.attr.compareTo(a.myStatus.attr));
     _attrTop5 = c.take(5).toList();
+
+    _takeTopCharacter();
+  }
+
+  void _takeTopCharacter() {
+    final ranking = Ranking(
+      strTop5,
+      vitTop5,
+      dexTop5,
+      agiTop5,
+      intTop5,
+      spiritTop5,
+      loveTop5,
+      attrTop5,
+    );
+
+    _topCharacter = ranking.getTop();
+    RSLogger.d('ランキングトップは${_topCharacter.character.name}です。ポイント${_topCharacter.rankingPoint()}');
   }
 }
