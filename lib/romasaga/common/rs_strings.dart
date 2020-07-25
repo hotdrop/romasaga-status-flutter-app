@@ -55,7 +55,16 @@ class RSStrings {
   static const String dashboardPageFavoriteCharLabel = 'お気に入り数';
   static const String dashboardPageHaveCharLabel = '保持キャラ数';
   static const String dashboardPageAllCharLabel = '全キャラ数';
+  static const String dashboardPageTopCharacterLabel = '現在の総合ランキングトップキャラ';
   static const String dashboardPageLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
+  static const String strL = '力';
+  static const String vitL = '体';
+  static const String dexL = '器';
+  static const String agiL = '早';
+  static const String intL = '知';
+  static const String spiL = '精';
+  static const String loveL = '愛';
+  static const String attrL = '魅';
 
   // アカウント画面
   static const String accountPageTitle = 'アカウント';

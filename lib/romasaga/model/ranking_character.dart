@@ -134,4 +134,8 @@ class RankingCharacter {
   int rankingPoint() {
     return strRanking + vitRanking + dexRanking + agiRanking + intRanking + spiritRanking + loveRanking + attrRanking;
   }
+
+  List<int> toStatuses() {
+    return [strRanking, vitRanking, dexRanking, agiRanking, intRanking, spiritRanking, loveRanking, attrRanking];
+  }
 }

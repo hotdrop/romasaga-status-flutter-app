@@ -82,7 +82,7 @@ class StatusRankingContainer extends StatelessWidget {
         SizedBox(width: 8.0),
         CharacterIcon.small(character.selectedIconFilePath),
         SizedBox(width: 8.0),
-        Text(_targetStatus(character)),
+        Text(_targetStatus(character), style: TextStyle(color: Colors.white)),
       ],
     );
   }

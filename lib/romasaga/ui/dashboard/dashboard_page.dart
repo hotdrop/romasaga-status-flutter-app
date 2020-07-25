@@ -6,6 +6,7 @@ import 'package:rsapp/romasaga/model/status.dart';
 import 'package:rsapp/romasaga/ui/dashboard/dashboard_view_model.dart';
 import 'package:rsapp/romasaga/ui/widget/custom_rs_widgets.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
+import 'package:rsapp/romasaga/ui/widget/rs_radar_chart.dart';
 import 'package:rsapp/romasaga/ui/widget/status_ranking_container.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -118,7 +119,7 @@ class DashboardPage extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        Text('現在の総合ランキングトップキャラ'),
+        Text(RSStrings.dashboardPageTopCharacterLabel),
         SizedBox(height: 16.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -134,8 +135,12 @@ class DashboardPage extends StatelessWidget {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 48.0, right: 48.0, top: 100.0, bottom: 100.0),
-          child: Text('ここチャート'),
+          padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 8.0, bottom: 8.0),
+          child: SizedBox(
+            width: 250,
+            height: 250,
+            child: RSRadarChart(topCharacter),
+          ),
         ),
       ],
     );
