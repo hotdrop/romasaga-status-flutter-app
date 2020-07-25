@@ -5,6 +5,7 @@ class RSStrings {
   static const String bottomMenuSearch = '検索';
   static const String bottomMenuLetter = 'お便り';
   static const String bottomMenuAccount = 'アカウント';
+  static const String bottomMenuDashboard = 'ボード';
 
   static const String characterListPageTitle = 'キャラ一覧';
   static const String characterListOrderStatus = 'ステータス';
@@ -49,6 +50,22 @@ class RSStrings {
   static const String letterYearLabel = '年';
   static const String letterMonthLabel = '月';
 
+  // ダッシュボード画面
+  static const String dashboardPageTitle = 'ダッシュボード';
+  static const String dashboardPageFavoriteCharLabel = 'お気に入り数';
+  static const String dashboardPageHaveCharLabel = '保持キャラ数';
+  static const String dashboardPageAllCharLabel = '全キャラ数';
+  static const String dashboardPageTopCharacterLabel = '現在の総合ランキングトップキャラ';
+  static const String dashboardPageLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
+  static const String strL = '力';
+  static const String vitL = '体';
+  static const String dexL = '器';
+  static const String agiL = '早';
+  static const String intL = '知';
+  static const String spiL = '精';
+  static const String loveL = '愛';
+  static const String attrL = '魅';
+
   // アカウント画面
   static const String accountPageTitle = 'アカウント';
   static const String accountNotLoginEmailLabel = '未ログイン';
@@ -63,7 +80,7 @@ class RSStrings {
   static const String accountDataUpdateTitle = 'サーバーからデータ取得';
   static const String accountDataUpdateDetail = 'キャラ情報はタップで新キャラのみ取得、ロングタップで全キャラ取得します。';
 
-  static const String accountCharacterUpdateLabel = 'キャラー';
+  static const String accountCharacterUpdateLabel = 'キャラ';
   static const String accountCharacterRegisterCountLabel = '現在の登録数:';
   static const String accountCharacterOnlyNewUpdateDialogMessage = '新しくサーバーに登録されたキャラ情報を取得します。\nよろしいですか？';
   static const String accountCharacterAllUpdateDialogMessage = '注意！！\n現在アプリ内に保存されているキャラ情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
