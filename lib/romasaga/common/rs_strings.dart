@@ -80,7 +80,7 @@ class RSStrings {
   static const String accountDataUpdateTitle = 'サーバーからデータ取得';
   static const String accountDataUpdateDetail = 'キャラ情報はタップで新キャラのみ取得、ロングタップで全キャラ取得します。';
 
-  static const String accountCharacterUpdateLabel = 'キャラー';
+  static const String accountCharacterUpdateLabel = 'キャラ';
   static const String accountCharacterRegisterCountLabel = '現在の登録数:';
   static const String accountCharacterOnlyNewUpdateDialogMessage = '新しくサーバーに登録されたキャラ情報を取得します。\nよろしいですか？';
   static const String accountCharacterAllUpdateDialogMessage = '注意！！\n現在アプリ内に保存されているキャラ情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';

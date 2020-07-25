@@ -106,27 +106,38 @@ class Ranking {
 class RankingCharacter {
   RankingCharacter(
     this.character, {
-    this.strRanking,
-    this.vitRanking,
-    this.dexRanking,
-    this.agiRanking,
-    this.intRanking,
-    this.spiritRanking,
-    this.loveRanking,
-    this.attrRanking,
-  });
+    int strRanking,
+    int vitRanking,
+    int dexRanking,
+    int agiRanking,
+    int intRanking,
+    int spiritRanking,
+    int loveRanking,
+    int attrRanking,
+  }) {
+    this.strRanking = (strRanking != null) ? strRanking : _defaultRanking;
+    this.vitRanking = (vitRanking != null) ? vitRanking : _defaultRanking;
+    this.dexRanking = (dexRanking != null) ? dexRanking : _defaultRanking;
+    this.agiRanking = (agiRanking != null) ? agiRanking : _defaultRanking;
+    this.intRanking = (intRanking != null) ? intRanking : _defaultRanking;
+    this.spiritRanking = (spiritRanking != null) ? spiritRanking : _defaultRanking;
+    this.loveRanking = (loveRanking != null) ? loveRanking : _defaultRanking;
+    this.attrRanking = (attrRanking != null) ? attrRanking : _defaultRanking;
+  }
 
   final Character character;
 
   // ランク外は6位とする
-  int strRanking = 6;
-  int vitRanking = 6;
-  int dexRanking = 6;
-  int agiRanking = 6;
-  int intRanking = 6;
-  int spiritRanking = 6;
-  int loveRanking = 6;
-  int attrRanking = 6;
+  static const int _defaultRanking = 6;
+
+  int strRanking;
+  int vitRanking;
+  int dexRanking;
+  int agiRanking;
+  int intRanking;
+  int spiritRanking;
+  int loveRanking;
+  int attrRanking;
 
   ///
   /// これかなり適当
