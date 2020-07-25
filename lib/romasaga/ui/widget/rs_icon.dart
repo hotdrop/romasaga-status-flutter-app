@@ -33,7 +33,7 @@ class CharacterIcon extends StatelessWidget {
       imageUrl: _res,
       width: _size,
       height: _size,
-      placeholder: (context, url) => CircularProgressIndicator(),
+      placeholder: (context, url) => SizedBox(width: _size, height: _size, child: CircularProgressIndicator()),
       errorWidget: (context, url, dynamic error) => Image.asset('res/charIcons/default.jpg', width: _size, height: _size),
     );
   }
@@ -396,5 +396,33 @@ class ProductionLogo extends StatelessWidget {
       default:
         throw FormatException("不正なProductです。ProductType=$_type");
     }
+  }
+}
+
+///
+/// ダッシュボードのランキングアイコン
+///
+class RankingIcon extends StatelessWidget {
+  const RankingIcon._(this._res);
+
+  factory RankingIcon.createFirst() => RankingIcon._('res/icons/icon_ranking_1.png');
+
+  factory RankingIcon.createSecond() => RankingIcon._('res/icons/icon_ranking_2.png');
+
+  factory RankingIcon.createThird() => RankingIcon._('res/icons/icon_ranking_3.png');
+
+  factory RankingIcon.createFourth() => RankingIcon._('res/icons/icon_ranking_4.png');
+
+  factory RankingIcon.createFifth() => RankingIcon._('res/icons/icon_ranking_5.png');
+
+  final String _res;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      _res,
+      width: 30.0,
+      height: 30.0,
+    );
   }
 }
