@@ -119,7 +119,11 @@ class CharDetailPage extends StatelessWidget {
           child: GestureDetector(
             child: CharacterIcon.large(viewModel.selectedIconFilePath),
             onTap: () async {
-              _showDialog(context);
+              _showDialogChangeDefaultIcon(context);
+            },
+            onLongPress: () async {
+              // TODO 長押しでキャラアイコンをサーバーのものにリフレッシュしたい
+              // TODO ダイアログ出してプログレスバー回す
             },
           ),
         ),
@@ -210,7 +214,7 @@ class CharDetailPage extends StatelessWidget {
   ///
   /// キャラクターアイコンタップ時のダイアログ
   ///
-  void _showDialog(BuildContext context) {
+  void _showDialogChangeDefaultIcon(BuildContext context) {
     showDialog<void>(
       context: context,
       builder: (_) {

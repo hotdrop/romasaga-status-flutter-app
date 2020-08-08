@@ -1,14 +1,15 @@
 import 'dart:io';
+
 import 'package:flutter/services.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/data/json/character_object.dart';
 import 'package:rsapp/romasaga/data/local/database.dart';
 import 'package:rsapp/romasaga/data/local/entity/character_entity.dart';
 import 'package:rsapp/romasaga/data/local/entity/style_entity.dart';
-import 'package:rsapp/romasaga/data/json/character_object.dart';
+import 'package:rsapp/romasaga/extension/mapper.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/style.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
-import 'package:rsapp/romasaga/extension/mapper.dart';
+import 'package:sqflite/sqflite.dart';
 
 class CharacterDao {
   const CharacterDao._(this._dbProvider);
@@ -106,6 +107,18 @@ class CharacterDao {
         await txn.insert(StyleEntity.tableName, entity.toMap());
       }
     }
+  }
+
+  Future<void> updateStyleIcon(int id, String rank, String iconFilePath) async {
+    final db = await _dbProvider.database;
+    await db.rawUpdate("""
+      UPDATE 
+        ${StyleEntity.tableName} 
+      SET
+        ${StyleEntity.columnIconFilePath} = '$iconFilePath'
+      WHERE
+        ${StyleEntity.columnCharacterId} = $id AND ${StyleEntity.columnRank} = $rank
+    """);
   }
 
   Future<void> saveSelectedStyle(int id, String rank, String iconFilePath) async {

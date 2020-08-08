@@ -1,11 +1,11 @@
-import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/model/style.dart';
-import 'package:rsapp/romasaga/model/stage.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/data/stage_repository.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/stage.dart';
+import 'package:rsapp/romasaga/model/style.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class CharDetailViewModel extends ChangeNotifierViewModel {
@@ -160,6 +160,15 @@ class CharDetailViewModel extends ChangeNotifierViewModel {
   Future<void> saveHaveCharacter(bool haveChar) async {
     character.myStatus.have = haveChar;
     await _myStatusRepository.save(character.myStatus);
+
+    _isUpdateStatus = true;
+    notifyListeners();
+  }
+
+  Future<void> refreshIcon() async {
+    final isSelectedIcon = _selectedStyle.rank == character.selectedStyleRank;
+    RSLogger.d('アイコンをサーバーから再取得します。このアイコンをデフォルトにしているか？ $isSelectedIcon');
+    await _characterRepository.refreshIcon(_selectedStyle, isSelectedIcon);
 
     _isUpdateStatus = true;
     notifyListeners();
