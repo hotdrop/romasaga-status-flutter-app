@@ -2,10 +2,10 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/model/app_settings.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/ui/account/account_page_view_model.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage();
@@ -317,6 +317,7 @@ class AccountPage extends StatelessWidget {
     );
   }
 
+  // TODO これと呼び元はRSDialogに集約する
   Future<void> _executeWithStateDialog(
     BuildContext context, {
     @required Future<bool> execFunc,
@@ -331,7 +332,7 @@ class AccountPage extends StatelessWidget {
       await AwesomeDialog(
         context: context,
         dialogType: DialogType.SUCCES,
-        title: RSStrings.accountDialogTitleSuccess,
+        title: RSStrings.dialogTitleSuccess,
         desc: successMessage,
         btnOkOnPress: () {},
       ).show();
@@ -339,7 +340,7 @@ class AccountPage extends StatelessWidget {
       await AwesomeDialog(
         context: context,
         dialogType: DialogType.ERROR,
-        title: RSStrings.accountDialogTitleError,
+        title: RSStrings.dialogTitleError,
         desc: errorMessage,
         btnOkOnPress: () {},
       ).show();
