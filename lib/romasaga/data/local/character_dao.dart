@@ -117,7 +117,7 @@ class CharacterDao {
       SET
         ${StyleEntity.columnIconFilePath} = '$iconFilePath'
       WHERE
-        ${StyleEntity.columnCharacterId} = $id AND ${StyleEntity.columnRank} = $rank
+        ${StyleEntity.columnCharacterId} = $id AND ${StyleEntity.columnRank} = '$rank'
     """);
   }
 

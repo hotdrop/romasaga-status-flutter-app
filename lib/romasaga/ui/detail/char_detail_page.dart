@@ -122,8 +122,7 @@ class CharDetailPage extends StatelessWidget {
               _showDialogChangeDefaultIcon(context);
             },
             onLongPress: () async {
-              // TODO 長押しでキャラアイコンをサーバーのものにリフレッシュしたい
-              // TODO ダイアログ出してプログレスバー回す
+              _showDialogRefreshIcon(context);
             },
           ),
         ),
@@ -213,13 +212,14 @@ class CharDetailPage extends StatelessWidget {
 
   ///
   /// キャラクターアイコンタップ時のダイアログ
+  /// キャラのデフォルト表示アイコンを変更する
   ///
   void _showDialogChangeDefaultIcon(BuildContext context) {
     showDialog<void>(
       context: context,
       builder: (_) {
         return AlertDialog(
-          content: Text(RSStrings.characterDetailChangeStyleIconDialogContent),
+          content: Text(RSStrings.characterDetailChangeStyleIconDialogMessage),
           actions: <Widget>[
             FlatButton(
               child: Text('Cancel'),
@@ -232,6 +232,37 @@ class CharDetailPage extends StatelessWidget {
               onPressed: () {
                 final viewModel = context.read<CharDetailViewModel>();
                 viewModel.saveCurrentSelectStyle();
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  ///
+  /// キャラクターアイコンのロングタップ時ダイアログ
+  /// アイコンをサーバーから再取得する
+  ///
+  void _showDialogRefreshIcon(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          content: Text(RSStrings.characterRefreshStyleIconDialogMessage),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                final viewModel = context.read<CharDetailViewModel>();
+                viewModel.refreshIcon();
                 Navigator.pop(context);
               },
             )

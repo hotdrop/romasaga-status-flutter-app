@@ -158,6 +158,7 @@ class CharacterRepository {
 
   Future<void> refreshIcon(Style style, bool isSelected) async {
     final newIconFilePath = await _api.findIconUrl(style.iconFileName);
+    RSLogger.d('新しいアイコンパス $newIconFilePath');
     await _dao.updateStyleIcon(style.characterId, style.rank, newIconFilePath);
     if (isSelected) {
       await saveSelectedRank(style.characterId, style.rank, newIconFilePath);
