@@ -1,11 +1,11 @@
-import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/model/style.dart';
-import 'package:rsapp/romasaga/model/stage.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/data/stage_repository.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/romasaga/model/stage.dart';
+import 'package:rsapp/romasaga/model/style.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class CharDetailViewModel extends ChangeNotifierViewModel {
@@ -25,19 +25,25 @@ class CharDetailViewModel extends ChangeNotifierViewModel {
   final MyStatusRepository _myStatusRepository;
 
   final Character character;
+
   bool get haveAttribute => character.attributes?.isNotEmpty ?? false;
+
   int get myTotalStatus => character.myStatus.sumWithoutHp();
 
   List<Stage> _stages;
+
   List<Stage> get stages => _stages ?? [];
 
   Style _selectedStyle;
   Stage _selectedStage;
+
   String get selectedIconFilePath => _selectedStyle?.iconFilePath ?? 'default';
+
   String get selectedStyleTitle => _selectedStyle?.title ?? '';
 
   // 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
   bool _isUpdateStatus = false;
+
   bool get isUpdate => _isUpdateStatus;
 
   ///
@@ -128,8 +134,7 @@ class CharDetailViewModel extends ChangeNotifierViewModel {
 
   Future<void> refreshStatus() async {
     character.myStatus = await _myStatusRepository.find(character.id);
-    _isUpdateStatus = true;
-    notifyListeners();
+    refreshCharacterData();
   }
 
   Future<void> saveCurrentSelectStyle() async {
@@ -145,22 +150,40 @@ class CharDetailViewModel extends ChangeNotifierViewModel {
     character.myStatus.favorite = favorite;
     await _myStatusRepository.save(character.myStatus);
 
-    _isUpdateStatus = true;
-    notifyListeners();
+    refreshCharacterData();
   }
 
   Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
     character.statusUpEvent = statusUpEvent;
     await _characterRepository.saveStatusUpEvent(id, statusUpEvent);
 
-    _isUpdateStatus = true;
-    notifyListeners();
+    refreshCharacterData();
   }
 
   Future<void> saveHaveCharacter(bool haveChar) async {
     character.myStatus.have = haveChar;
     await _myStatusRepository.save(character.myStatus);
 
+    refreshCharacterData();
+  }
+
+  ///
+  /// アイコンの更新処理ではrefreshCharacterDataを実行しないので画面状態はそのままになる。
+  /// そのため呼び元でrefreshCharacterDataを実行する
+  ///
+  Future<bool> refreshIcon() async {
+    try {
+      final isSelectedIcon = _selectedStyle.rank == character.selectedStyleRank;
+      RSLogger.d('アイコンをサーバーから再取得します。（このアイコンをデフォルトにしているか？ $isSelectedIcon)');
+      await _characterRepository.refreshIcon(_selectedStyle, isSelectedIcon);
+      return true;
+    } catch (e) {
+      RSLogger.e('アイコン更新処理でエラーが発生しました', e);
+      return false;
+    }
+  }
+
+  void refreshCharacterData() {
     _isUpdateStatus = true;
     notifyListeners();
   }

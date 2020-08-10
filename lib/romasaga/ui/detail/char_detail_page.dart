@@ -14,6 +14,7 @@ import 'package:rsapp/romasaga/ui/detail/char_status_edit_page.dart';
 import 'package:rsapp/romasaga/ui/widget/custom_page_route.dart';
 import 'package:rsapp/romasaga/ui/widget/custom_rs_widgets.dart';
 import 'package:rsapp/romasaga/ui/widget/rank_choice_chip.dart';
+import 'package:rsapp/romasaga/ui/widget/rs_dialog.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
 
 class CharDetailPage extends StatelessWidget {
@@ -119,7 +120,21 @@ class CharDetailPage extends StatelessWidget {
           child: GestureDetector(
             child: CharacterIcon.large(viewModel.selectedIconFilePath),
             onTap: () async {
-              _showDialog(context);
+              RSSimpleDialog(
+                message: RSStrings.characterDetailChangeStyleIconDialogMessage,
+                onOkPress: () => viewModel.saveCurrentSelectStyle(),
+              )..show(context);
+            },
+            onLongPress: () async {
+              final dialog = RSDialog.createInfo(
+                title: RSStrings.characterRefreshIconDialogTitle,
+                description: RSStrings.characterRefreshIconDialogDesc,
+                successMessage: RSStrings.characterRefreshIconDialogSuccess,
+                errorMessage: RSStrings.characterRefreshIconDialogError,
+                onOkPress: viewModel.refreshIcon,
+                onSuccessOkPress: viewModel.refreshCharacterData,
+              );
+              await dialog.show(context);
             },
           ),
         ),
@@ -204,36 +219,6 @@ class CharDetailPage extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-
-  ///
-  /// キャラクターアイコンタップ時のダイアログ
-  ///
-  void _showDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          content: Text(RSStrings.characterDetailChangeStyleIconDialogContent),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            FlatButton(
-              child: Text('OK'),
-              onPressed: () {
-                final viewModel = context.read<CharDetailViewModel>();
-                viewModel.saveCurrentSelectStyle();
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
     );
   }
 
