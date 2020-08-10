@@ -1,8 +1,8 @@
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/local/character_dao.dart';
 import 'package:rsapp/romasaga/data/remote/character_api.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/style.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class CharacterRepository {
   const CharacterRepository._(this._dao, this._api);
@@ -154,5 +154,14 @@ class CharacterRepository {
 
   Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
     await _dao.saveStatusUpEvent(id, statusUpEvent);
+  }
+
+  Future<void> refreshIcon(Style style, bool isSelected) async {
+    final newIconFilePath = await _api.findIconUrl(style.iconFileName);
+    RSLogger.d('新しいアイコンパス $newIconFilePath');
+    await _dao.updateStyleIcon(style.characterId, style.rank, newIconFilePath);
+    if (isSelected) {
+      await saveSelectedRank(style.characterId, style.rank, newIconFilePath);
+    }
   }
 }
