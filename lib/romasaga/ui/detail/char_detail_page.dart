@@ -223,37 +223,6 @@ class CharDetailPage extends StatelessWidget {
   }
 
   ///
-  /// キャラクターアイコンタップ時のダイアログ
-  /// キャラのデフォルト表示アイコンを変更する
-  ///
-  void _showDialogChangeDefaultIcon(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          content: Text(RSStrings.characterDetailChangeStyleIconDialogMessage),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            FlatButton(
-              child: Text('OK'),
-              onPressed: () {
-                final viewModel = context.read<CharDetailViewModel>();
-                viewModel.saveCurrentSelectStyle();
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  ///
   /// ステータス表示領域
   ///
   Widget _contentStatus(BuildContext context) {
