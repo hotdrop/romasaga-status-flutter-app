@@ -1,7 +1,7 @@
 import 'package:rsapp/romasaga/model/attribute.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
 import 'package:rsapp/romasaga/model/status.dart';
 import 'package:rsapp/romasaga/model/style.dart';
+import 'package:rsapp/romasaga/model/weapon.dart';
 
 class Character {
   Character(
@@ -30,17 +30,22 @@ class Character {
   MyStatus myStatus;
 
   WeaponType get weaponType => weapon.type;
+
   WeaponCategory get weaponCategory => weapon.category;
+
   Style get selectedStyle => getStyle(selectedStyleRank);
 
-  void addStyles(List<Style> styles) {
-    for (var style in styles) {
-      addStyle(style);
-    }
+  void addStyles(List<Style> argStyles) {
+    styles.addAll(argStyles);
   }
 
   void addStyle(Style style) {
     styles.add(style);
+  }
+
+  void refreshStyles(List<Style> argStyles) {
+    styles.clear();
+    styles.addAll(argStyles);
   }
 
   Style getStyle(String rank) {

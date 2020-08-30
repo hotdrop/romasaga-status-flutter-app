@@ -67,13 +67,13 @@ class CharDetailPage extends StatelessWidget {
           child: ListView(
             children: <Widget>[
               _contentCharacterOverview(context),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               _contentStatus(context),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               _contentsStage(context),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               _contentsEachStyleStatus(context),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
             ],
           ),
         ),
@@ -158,7 +158,8 @@ class CharDetailPage extends StatelessWidget {
       children: <Widget>[
         _createWeaponIcon(context, viewModel.character.weaponType),
         if (viewModel.character.weaponCategory != WeaponCategory.rod) _createWeaponCategoryIcon(context, viewModel.character.weaponCategory),
-        if (viewModel.haveAttribute) for (final attribute in viewModel.character.attributes) _createAttributeIcon(context, attribute),
+        if (viewModel.haveAttribute)
+          for (final attribute in viewModel.character.attributes) _createAttributeIcon(context, attribute),
       ],
     );
   }
