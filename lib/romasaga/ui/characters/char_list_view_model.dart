@@ -1,7 +1,7 @@
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class CharListViewModel extends ChangeNotifierViewModel {
@@ -34,8 +34,16 @@ class CharListViewModel extends ChangeNotifierViewModel {
     );
   }
 
-  List<Character> findAll() {
-    return _characters;
+  ///
+  /// キャラ情報を更新する
+  ///
+  Future<void> refresh() async {
+    RSLogger.d("キャラ情報を更新します");
+    _characters = await _characterRepository.findAll();
+    await _loadMyStatuses();
+    orderBy(OrderType.status);
+
+    notifyListeners();
   }
 
   List<Character> findFavorite() {
@@ -71,15 +79,6 @@ class CharListViewModel extends ChangeNotifierViewModel {
         break;
     }
     selectedOrderType = order;
-    notifyListeners();
-  }
-
-  ///
-  /// ステータス情報を更新する。
-  /// 詳細画面から戻ってきたときに使う。
-  ///
-  Future<void> refreshMyStatuses() async {
-    await _loadMyStatuses();
     notifyListeners();
   }
 

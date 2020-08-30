@@ -116,7 +116,7 @@ class CharListPage extends StatelessWidget {
     return ListView.builder(itemBuilder: (context, index) {
       if (index < characters.length) {
         return CharListRowItem(characters[index], refreshListener: () async {
-          await viewModel.refreshMyStatuses();
+          await viewModel.refresh();
         });
       }
       return null;
@@ -142,7 +142,7 @@ class CharListPage extends StatelessWidget {
     return ListView.builder(itemBuilder: (context, index) {
       if (index < characters.length) {
         return CharListRowItem(characters[index], refreshListener: () async {
-          await viewModel.refreshMyStatuses();
+          await viewModel.refresh();
         });
       }
       return null;
@@ -170,7 +170,7 @@ class CharListPage extends StatelessWidget {
 
       if (index < characters.length) {
         return CharListRowItem(characters[index], refreshListener: () async {
-          await viewModel.refreshMyStatuses();
+          await viewModel.refresh();
         });
       }
       return null;
@@ -185,7 +185,7 @@ class CharListPage extends StatelessWidget {
 
       if (index < characters.length) {
         return CharListRowItem(characters[index], refreshListener: () async {
-          await viewModel.refreshMyStatuses();
+          await viewModel.refresh();
         });
       }
       return null;
