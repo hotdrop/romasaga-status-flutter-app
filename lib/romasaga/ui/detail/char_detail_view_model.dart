@@ -176,6 +176,11 @@ class CharDetailViewModel extends ChangeNotifierViewModel {
       final isSelectedIcon = _selectedStyle.rank == character.selectedStyleRank;
       RSLogger.d('アイコンをサーバーから再取得します。（このアイコンをデフォルトにしているか？ $isSelectedIcon)');
       await _characterRepository.refreshIcon(_selectedStyle, isSelectedIcon);
+
+      RSLogger.d('アイコン情報をキャラ情報に反映します。');
+      final styles = await _characterRepository.findStyles(character.id);
+      character.refreshStyles(styles);
+
       return true;
     } catch (e) {
       RSLogger.e('アイコン更新処理でエラーが発生しました', e);
