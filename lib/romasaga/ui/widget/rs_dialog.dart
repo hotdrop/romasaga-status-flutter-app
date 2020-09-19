@@ -98,7 +98,7 @@ class RSSimpleDialog {
       context: context,
       builder: (_) {
         return AlertDialog(
-          content: const Text(RSStrings.characterDetailChangeStyleIconDialogMessage),
+          content: Text(message),
           actions: <Widget>[
             FlatButton(
               child: const Text(RSStrings.simpleDialogCancelLabel),

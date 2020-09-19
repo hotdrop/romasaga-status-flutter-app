@@ -162,5 +162,6 @@ class RSStrings {
   static const String productUnLimited = 'アンリミテッド・サガ';
   static const String productEmperorsSaga = 'エンペラーズサガ';
   static const String productRomaSagaRS = 'ロマンシング・サガRS';
+  static const String productSaga = '魔界塔士 Sa・Ga';
   static const String productSaga2 = 'Sa・Ga2 秘宝伝説';
 }
