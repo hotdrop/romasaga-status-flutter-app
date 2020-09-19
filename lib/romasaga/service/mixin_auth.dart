@@ -31,7 +31,7 @@ mixin RSAuthMixin {
     RSLogger.d("サインイン処理を実行します。");
     final googleUser = await GoogleSignIn().signIn();
     final googleAuth = await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final AuthCredential credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
       accessToken: googleAuth.accessToken,
     );
