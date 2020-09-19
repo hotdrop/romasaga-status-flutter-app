@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:logger/logger.dart';
+import 'package:rsapp/romasaga/service/rs_crashlytics.dart';
 
 class RSLogger {
   const RSLogger._();
@@ -17,7 +19,11 @@ class RSLogger {
     _logger.w(message);
   }
 
-  static void e(String message, dynamic e) {
-    _logger.e(message, e);
+  static Future<void> e(String message, dynamic exception, StackTrace stackTrace) async {
+    if (kDebugMode) {
+      _logger.e(message, exception);
+    } else {
+      await RSCrashlytics.getInstance().record(message, exception, stackTrace);
+    }
   }
 }

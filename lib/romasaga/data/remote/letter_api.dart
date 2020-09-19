@@ -18,27 +18,22 @@ class LetterApi {
   /// そのため、新たに追加されたデータのみ差分取得する。
   ///
   Future<List<Letter>> findNew(List<Letter> currentLetters) async {
-    try {
-      final json = await _rsService.readLettersJson();
-      final letterObjects = LetterJsonObject.parseToObjects(json);
+    final json = await _rsService.readLettersJson();
+    final letterObjects = LetterJsonObject.parseToObjects(json);
 
-      List<Letter> newLetters = [];
-      for (var obj in letterObjects) {
-        var current = currentLetters.firstWhere((letter) => letter.year == obj.year && letter.month == obj.month, orElse: () => null);
-        Letter newLetter;
-        if (current != null) {
-          newLetter = await _toModel(obj, gifFilePath: current.gifFilePath, staticImagePath: current.staticImagePath);
-        } else {
-          newLetter = await _toModel(obj);
-        }
-        newLetters.add(newLetter);
+    List<Letter> newLetters = [];
+    for (var obj in letterObjects) {
+      var current = currentLetters.firstWhere((letter) => letter.year == obj.year && letter.month == obj.month, orElse: () => null);
+      Letter newLetter;
+      if (current != null) {
+        newLetter = await _toModel(obj, gifFilePath: current.gifFilePath, staticImagePath: current.staticImagePath);
+      } else {
+        newLetter = await _toModel(obj);
       }
-
-      return newLetters;
-    } catch (e) {
-      RSLogger.e('お便りデータ取得時にエラーが発生しました。', e);
-      rethrow;
+      newLetters.add(newLetter);
     }
+
+    return newLetters;
   }
 
   Future<Letter> _toModel(LetterJsonObject obj, {String gifFilePath, String staticImagePath}) async {

@@ -1,12 +1,13 @@
 import 'dart:io';
+
 import 'package:flutter/services.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/data/json/stage_object.dart';
 import 'package:rsapp/romasaga/data/local/database.dart';
 import 'package:rsapp/romasaga/data/local/entity/stage_entity.dart';
-import 'package:rsapp/romasaga/data/json/stage_object.dart';
-import 'package:rsapp/romasaga/model/stage.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/extension/mapper.dart';
+import 'package:rsapp/romasaga/model/stage.dart';
+import 'package:sqflite/sqflite.dart';
 
 class StageDao {
   const StageDao._(this._dbProvider);
@@ -22,8 +23,8 @@ class StageDao {
       return await rootBundle.loadStructuredData(localPath, (json) async {
         return StagesJsonObject.parseToObjects(json);
       });
-    } on IOException catch (e) {
-      RSLogger.e('ステージデータの取得時にエラーが発生しました。', e);
+    } on IOException catch (e, s) {
+      await RSLogger.e('ステージデータの取得に失敗しました。', e, s);
       rethrow;
     }
   }

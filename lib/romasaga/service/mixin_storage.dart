@@ -1,18 +1,20 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart' as http;
+import 'package:rsapp/romasaga/common/rs_env.dart';
 
 mixin RSStorageMixin {
   Future<String> readStagesJson() async {
-    return await _readJson(path: 'stage.json');
+    return await _readJson(path: RSEnv.instance.stageJsonFileName);
   }
 
   Future<String> readCharactersJson() async {
-    return await _readJson(path: 'characters.json');
+    return await _readJson(path: RSEnv.instance.characterJsonFileName);
   }
 
   Future<String> readLettersJson() async {
-    return await _readJson(path: 'letters.json');
+    return await _readJson(path: RSEnv.instance.lettersJsonFileName);
   }
 
   Future<String> _readJson({String path}) async {
