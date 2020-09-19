@@ -163,6 +163,7 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
 
   Widget _filterView(BuildContext context) {
     final viewModel = Provider.of<SearchPageViewModel>(context);
+    // TODO 該当キャラがいない場合はメッセージ表示したい
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListView(

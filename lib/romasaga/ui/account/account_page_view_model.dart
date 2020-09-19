@@ -71,7 +71,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       }
       loadSuccess();
     } catch (e, s) {
-      RSLogger.e('アカウント画面のロードに失敗しました。', e, s);
+      await RSLogger.e('アカウント画面のロードに失敗しました。', e, s);
       loadError();
     }
   }
@@ -101,7 +101,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       _loginStatus = _LoginStatus.loggedIn;
       loadSuccess();
     } catch (e, s) {
-      await RSLogger.e('Googleアカウントのサインイン処理でエラーが発生しました。', e, s);
+      await RSLogger.e('Googleアカウントのサインインに失敗しました。', e, s);
       loadError();
     }
   }
@@ -119,7 +119,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       notifyListeners();
       return true;
     } catch (e, s) {
-      RSLogger.e('ログアウト中にエラーが発生しました。', e, s);
+      await RSLogger.e('ログアウトに失敗しました。', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -131,7 +131,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       notifyListeners();
       return true;
     } catch (e, s) {
-      RSLogger.e('新キャラのデータ登録処理でエラーが発生しました', e, s);
+      await RSLogger.e('新キャラのデータ登録に失敗しました。', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -144,7 +144,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       notifyListeners();
       return true;
     } catch (e, s) {
-      RSLogger.e('キャラデータ全更新処理でエラーが発生しました', e, s);
+      await RSLogger.e('キャラデータ全更新に失敗しました。', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -157,7 +157,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       notifyListeners();
       return true;
     } catch (e, s) {
-      RSLogger.e('ステージデータ更新処理でエラーが発生しました', e, s);
+      await RSLogger.e('ステージデータ更新に失敗しました。', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -170,7 +170,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       notifyListeners();
       return true;
     } catch (e, s) {
-      RSLogger.e('お便りデータ更新処理でエラーが発生しました', e, s);
+      await RSLogger.e('お便りデータ更新に失敗しました。', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -183,7 +183,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       notifyListeners();
       return true;
     } catch (e, s) {
-      RSLogger.e('ステータスバックアップ処理でエラーが発生しました', e, s);
+      await RSLogger.e('ステータスバックアップに失敗しました。', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -195,7 +195,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       notifyListeners();
       return true;
     } catch (e, s) {
-      RSLogger.e('ステータス復元処理でエラーが発生しました', e, s);
+      await RSLogger.e('ステータス復元に失敗しました。', e, s);
       _errorMessage = '$e';
       return false;
     }

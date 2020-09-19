@@ -66,7 +66,7 @@ class CharDetailViewModel extends ChangeNotifierViewModel {
       _selectedStyle = character.selectedStyle;
       loadSuccess();
     } catch (e, s) {
-      RSLogger.e('キャラクター詳細画面のロードに発生しました。', e, s);
+      await RSLogger.e('キャラクター詳細画面のロードに発生しました。', e, s);
       loadError();
     }
   }
@@ -187,7 +187,7 @@ class CharDetailViewModel extends ChangeNotifierViewModel {
 
       return true;
     } catch (e, s) {
-      RSLogger.e('アイコン更新処理でエラーが発生しました', e, s);
+      await RSLogger.e('アイコン更新に失敗しました。', e, s);
       return false;
     }
   }

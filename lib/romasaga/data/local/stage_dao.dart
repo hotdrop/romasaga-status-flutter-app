@@ -24,7 +24,7 @@ class StageDao {
         return StagesJsonObject.parseToObjects(json);
       });
     } on IOException catch (e, s) {
-      RSLogger.e('ステージデータの取得時にエラーが発生しました。', e, s);
+      await RSLogger.e('ステージデータの取得に失敗しました。', e, s);
       rethrow;
     }
   }

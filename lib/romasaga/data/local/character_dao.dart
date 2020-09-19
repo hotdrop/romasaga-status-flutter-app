@@ -79,7 +79,7 @@ class CharacterDao {
         return CharactersJsonObject.parseToObjects(json);
       });
     } on IOException catch (e, s) {
-      RSLogger.e('キャラデータ取得時にエラーが発生しました。', e, s);
+      await RSLogger.e('キャラデータ取得に失敗しました。', e, s);
       rethrow;
     }
   }

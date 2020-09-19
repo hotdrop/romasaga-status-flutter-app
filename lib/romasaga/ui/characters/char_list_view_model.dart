@@ -32,7 +32,7 @@ class CharListViewModel extends ChangeNotifierViewModel {
       orderBy(OrderType.status);
       loadSuccess();
     } catch (e, s) {
-      RSLogger.e('キャラクター一覧画面のロードに失敗しました。', e, s);
+      await RSLogger.e('キャラクター一覧画面のロードに失敗しました。', e, s);
       loadError();
     }
   }
@@ -42,11 +42,16 @@ class CharListViewModel extends ChangeNotifierViewModel {
   ///
   Future<void> refresh() async {
     RSLogger.d("キャラ情報を更新します");
-    _characters = await _characterRepository.findAll();
-    await _loadMyStatuses();
-    orderBy(OrderType.status);
+    try {
+      _characters = await _characterRepository.findAll();
+      await _loadMyStatuses();
+      orderBy(OrderType.status);
 
-    notifyListeners();
+      notifyListeners();
+    } catch (e, s) {
+      await RSLogger.e('キャラクター一覧画面の更新に失敗しました。', e, s);
+      loadError();
+    }
   }
 
   List<Character> findFavorite() {

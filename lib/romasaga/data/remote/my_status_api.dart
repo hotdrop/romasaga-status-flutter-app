@@ -12,22 +12,12 @@ class MyStatusApi {
   final RSService _rsService;
 
   Future<void> save(List<MyStatus> myStatuses) async {
-    try {
-      RSLogger.d('ステータスを保存します。対象数=${myStatuses.length}');
-      await _rsService.saveMyStatuses(myStatuses);
-    } catch (e, s) {
-      RSLogger.e('ステータス保存時にエラーが発生しました。', e, s);
-      rethrow;
-    }
+    RSLogger.d('ステータスを保存します。対象数=${myStatuses.length}');
+    await _rsService.saveMyStatuses(myStatuses);
   }
 
   Future<List<MyStatus>> findAll() async {
-    try {
-      RSLogger.d('サーバから保存したステータスを取得します。');
-      return await _rsService.findMyStatues();
-    } catch (e, s) {
-      RSLogger.e('保存したステータス取得時にエラーが発生しました。', e, s);
-      rethrow;
-    }
+    RSLogger.d('サーバから保存したステータスを取得します。');
+    return await _rsService.findMyStatues();
   }
 }

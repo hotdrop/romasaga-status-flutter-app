@@ -59,7 +59,7 @@ class DashboardViewModel extends ChangeNotifierViewModel {
       takeStatusTop5Characters(_characters);
       loadSuccess();
     } catch (e, s) {
-      RSLogger.e('ダッシュボード画面のロードに失敗しました。', e, s);
+      await RSLogger.e('ダッシュボード画面のロードに失敗しました。', e, s);
       loadError();
     }
   }

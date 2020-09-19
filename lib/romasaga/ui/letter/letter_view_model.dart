@@ -23,7 +23,7 @@ class LetterViewModel extends ChangeNotifierViewModel {
       _letters = await _repository.findAll();
       loadSuccess();
     } catch (e, s) {
-      RSLogger.e('お便り画面のロードに失敗しました。', e, s);
+      await RSLogger.e('お便り画面のロードに失敗しました。', e, s);
       loadError();
     }
   }
