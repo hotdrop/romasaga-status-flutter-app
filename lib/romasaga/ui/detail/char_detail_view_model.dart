@@ -50,21 +50,25 @@ class CharDetailViewModel extends ChangeNotifierViewModel {
   /// このViewModelを使うときに必ず呼ぶ
   ///
   Future<void> load() async {
-    await run(
-        label: 'キャラ詳細のロード処理',
-        block: () async {
-          _stages = await _stageRepository.findAll();
-          _selectedStage = _stages.first;
+    nowLoading();
 
-          if (character.styles.isEmpty) {
-            RSLogger.d('キャラクターのスタイルが未取得なので取得します。id=${character.id}');
-            final styles = await _characterRepository.findStyles(character.id);
-            RSLogger.d('キャラクターのスタイルを取得しました。件数=${styles.length}');
-            character.addStyles(styles);
-          }
+    try {
+      _stages = await _stageRepository.findAll();
+      _selectedStage = _stages.first;
 
-          _selectedStyle = character.selectedStyle;
-        });
+      if (character.styles.isEmpty) {
+        RSLogger.d('キャラクターのスタイルが未取得なので取得します。id=${character.id}');
+        final styles = await _characterRepository.findStyles(character.id);
+        RSLogger.d('キャラクターのスタイルを取得しました。件数=${styles.length}');
+        character.addStyles(styles);
+      }
+
+      _selectedStyle = character.selectedStyle;
+      loadSuccess();
+    } catch (e, s) {
+      RSLogger.e('キャラクター詳細画面のロードに発生しました。', e, s);
+      loadError();
+    }
   }
 
   void onSelectRank(String rank) {

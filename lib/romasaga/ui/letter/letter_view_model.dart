@@ -1,3 +1,4 @@
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/letter_repository.dart';
 import 'package:rsapp/romasaga/model/letter.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
@@ -15,13 +16,16 @@ class LetterViewModel extends ChangeNotifierViewModel {
   ///
   /// このViewModelを使うときに必ず呼ぶ
   ///
-  void load() {
-    run(
-      label: "お便りのロード処理",
-      block: () async {
-        _letters = await _repository.findAll();
-      },
-    );
+  Future<void> load() async {
+    nowLoading();
+
+    try {
+      _letters = await _repository.findAll();
+      loadSuccess();
+    } catch (e, s) {
+      RSLogger.e('お便り画面のロードに失敗しました。', e, s);
+      loadError();
+    }
   }
 
   bool get isEmpty => _letters.isEmpty;

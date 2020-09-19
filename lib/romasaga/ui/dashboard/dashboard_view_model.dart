@@ -49,16 +49,19 @@ class DashboardViewModel extends ChangeNotifierViewModel {
   List<Character> get attrTop5 => _attrTop5;
 
   Future<void> load() async {
-    await run(
-      label: 'ダッシュボードのキャラ一覧ロード処理',
-      block: () async {
-        final chars = await _characterRepository.findAll();
-        _characters = await _loadMyStatuses(chars);
+    nowLoading();
 
-        // いちいちソートしてトップ5を取得すると効率悪いのでload時に取得する。
-        takeStatusTop5Characters(_characters);
-      },
-    );
+    try {
+      final chars = await _characterRepository.findAll();
+      _characters = await _loadMyStatuses(chars);
+
+      // いちいちソートしてトップ5を取得すると効率悪いのでload時に取得する。
+      takeStatusTop5Characters(_characters);
+      loadSuccess();
+    } catch (e, s) {
+      RSLogger.e('ダッシュボード画面のロードに失敗しました。', e, s);
+      loadError();
+    }
   }
 
   Future<List<Character>> _loadMyStatuses(List<Character> argCharacters) async {

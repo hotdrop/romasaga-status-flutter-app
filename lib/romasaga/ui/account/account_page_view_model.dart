@@ -71,7 +71,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       }
       loadSuccess();
     } catch (e, s) {
-      RSLogger.e('アカウントページのロードに失敗しました。', e, s);
+      RSLogger.e('アカウント画面のロードに失敗しました。', e, s);
       loadError();
     }
   }
@@ -101,7 +101,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       _loginStatus = _LoginStatus.loggedIn;
       loadSuccess();
     } catch (e, s) {
-      RSLogger.e('Googleアカウントのサインイン処理でエラーが発生しました。', e, s);
+      await RSLogger.e('Googleアカウントのサインイン処理でエラーが発生しました。', e, s);
       loadError();
     }
   }

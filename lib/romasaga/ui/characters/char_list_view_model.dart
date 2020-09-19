@@ -24,14 +24,17 @@ class CharListViewModel extends ChangeNotifierViewModel {
   /// このViewModelを使うときに必ず呼ぶ
   ///
   Future<void> load() async {
-    await run(
-      label: 'キャラ一覧のロード処理',
-      block: () async {
-        _characters = await _characterRepository.findAll();
-        await _loadMyStatuses();
-        orderBy(OrderType.status);
-      },
-    );
+    nowLoading();
+
+    try {
+      _characters = await _characterRepository.findAll();
+      await _loadMyStatuses();
+      orderBy(OrderType.status);
+      loadSuccess();
+    } catch (e, s) {
+      RSLogger.e('キャラクター一覧画面のロードに失敗しました。', e, s);
+      loadError();
+    }
   }
 
   ///
