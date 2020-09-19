@@ -1,11 +1,11 @@
 import 'package:package_info/package_info.dart';
-import 'package:rsapp/romasaga/data/letter_repository.dart';
-import 'package:rsapp/romasaga/data/character_repository.dart';
-import 'package:rsapp/romasaga/data/stage_repository.dart';
-import 'package:rsapp/romasaga/data/my_status_repository.dart';
-import 'package:rsapp/romasaga/data/account_repository.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/romasaga/data/account_repository.dart';
+import 'package:rsapp/romasaga/data/character_repository.dart';
+import 'package:rsapp/romasaga/data/letter_repository.dart';
+import 'package:rsapp/romasaga/data/my_status_repository.dart';
+import 'package:rsapp/romasaga/data/stage_repository.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class AccountPageViewModel extends ChangeNotifierViewModel {
@@ -53,23 +53,27 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
   /// このViewModelを使うときに必ず呼ぶ
   ///
   Future<void> load() async {
-    await run(
-        label: 'アカウント情報のロード処理',
-        block: () async {
-          _packageInfo = await PackageInfo.fromPlatform();
+    nowLoading();
 
-          await _accountRepository.load();
+    try {
+      _packageInfo = await PackageInfo.fromPlatform();
 
-          final isLogIn = _accountRepository.isLogIn;
-          if (isLogIn) {
-            backupDateLabel = await _myStatusRepository.getPreviousBackupDateStr();
-            await _loadRowSubTitleData();
-            _loginStatus = _LoginStatus.loggedIn;
-          } else {
-            await _loadRowSubTitleData();
-            _loginStatus = _LoginStatus.notLogin;
-          }
-        });
+      await _accountRepository.load();
+
+      final isLogIn = _accountRepository.isLogIn;
+      if (isLogIn) {
+        backupDateLabel = await _myStatusRepository.getPreviousBackupDateStr();
+        await _loadRowSubTitleData();
+        _loginStatus = _LoginStatus.loggedIn;
+      } else {
+        await _loadRowSubTitleData();
+        _loginStatus = _LoginStatus.notLogin;
+      }
+      loadSuccess();
+    } catch (e, s) {
+      RSLogger.e('アカウントページのロードに失敗しました。', e, s);
+      loadError();
+    }
   }
 
   String getLoginUserName() {
@@ -89,15 +93,17 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
   }
 
   Future<void> loginWithGoogle() async {
-    await run(
-      label: 'ログイン処理',
-      block: () async {
-        await _accountRepository.login();
-        await _loadRowSubTitleData();
-        _loginStatus = _LoginStatus.loggedIn;
-      },
-      onError: (e) => _errorMessage = e.toString(),
-    );
+    nowLoading();
+
+    try {
+      await _accountRepository.login();
+      await _loadRowSubTitleData();
+      _loginStatus = _LoginStatus.loggedIn;
+      loadSuccess();
+    } catch (e, s) {
+      RSLogger.e('Googleアカウントのサインイン処理でエラーが発生しました。', e, s);
+      loadError();
+    }
   }
 
   Future<void> _loadRowSubTitleData() async {
@@ -112,8 +118,8 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       _loginStatus = _LoginStatus.notLogin;
       notifyListeners();
       return true;
-    } catch (e) {
-      RSLogger.e('ログアウト中にエラーが発生しました。', e);
+    } catch (e, s) {
+      RSLogger.e('ログアウト中にエラーが発生しました。', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -124,8 +130,8 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       await _characterRepository.update();
       notifyListeners();
       return true;
-    } catch (e) {
-      RSLogger.e('新キャラのデータ登録処理でエラーが発生しました', e);
+    } catch (e, s) {
+      RSLogger.e('新キャラのデータ登録処理でエラーが発生しました', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -137,8 +143,8 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       characterCount = await _characterRepository.count();
       notifyListeners();
       return true;
-    } catch (e) {
-      RSLogger.e('キャラデータ全更新処理でエラーが発生しました', e);
+    } catch (e, s) {
+      RSLogger.e('キャラデータ全更新処理でエラーが発生しました', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -150,8 +156,8 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       latestStageName = await _stageRepository.getLatestStageName();
       notifyListeners();
       return true;
-    } catch (e) {
-      RSLogger.e('ステージデータ更新処理でエラーが発生しました', e);
+    } catch (e, s) {
+      RSLogger.e('ステージデータ更新処理でエラーが発生しました', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -163,8 +169,8 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       latestLetterName = await _letterRepository.getLatestLetterName();
       notifyListeners();
       return true;
-    } catch (e) {
-      RSLogger.e('お便りデータ更新処理でエラーが発生しました', e);
+    } catch (e, s) {
+      RSLogger.e('お便りデータ更新処理でエラーが発生しました', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -176,8 +182,8 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       backupDateLabel = await _myStatusRepository.getPreviousBackupDateStr();
       notifyListeners();
       return true;
-    } catch (e) {
-      RSLogger.e('ステータスバックアップ処理でエラーが発生しました', e);
+    } catch (e, s) {
+      RSLogger.e('ステータスバックアップ処理でエラーが発生しました', e, s);
       _errorMessage = '$e';
       return false;
     }
@@ -188,8 +194,8 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
       await _myStatusRepository.restore();
       notifyListeners();
       return true;
-    } catch (e) {
-      RSLogger.e('ステータス復元処理でエラーが発生しました', e);
+    } catch (e, s) {
+      RSLogger.e('ステータス復元処理でエラーが発生しました', e, s);
       _errorMessage = '$e';
       return false;
     }
