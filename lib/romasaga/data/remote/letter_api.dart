@@ -35,8 +35,8 @@ class LetterApi {
       }
 
       return newLetters;
-    } catch (e) {
-      RSLogger.e('お便りデータ取得時にエラーが発生しました。', e);
+    } catch (e, s) {
+      RSLogger.e('お便りデータ取得時にエラーが発生しました。', e, s);
       rethrow;
     }
   }

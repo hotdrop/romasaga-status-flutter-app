@@ -1,6 +1,6 @@
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/model/status.dart' show MyStatus;
 import 'package:rsapp/romasaga/service/rs_service.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class MyStatusApi {
   const MyStatusApi._(this._rsService);
@@ -15,8 +15,8 @@ class MyStatusApi {
     try {
       RSLogger.d('ステータスを保存します。対象数=${myStatuses.length}');
       await _rsService.saveMyStatuses(myStatuses);
-    } catch (e) {
-      RSLogger.e('ステータス保存時にエラーが発生しました。', e);
+    } catch (e, s) {
+      RSLogger.e('ステータス保存時にエラーが発生しました。', e, s);
       rethrow;
     }
   }
@@ -25,8 +25,8 @@ class MyStatusApi {
     try {
       RSLogger.d('サーバから保存したステータスを取得します。');
       return await _rsService.findMyStatues();
-    } catch (e) {
-      RSLogger.e('保存したステータス取得時にエラーが発生しました。', e);
+    } catch (e, s) {
+      RSLogger.e('保存したステータス取得時にエラーが発生しました。', e, s);
       rethrow;
     }
   }

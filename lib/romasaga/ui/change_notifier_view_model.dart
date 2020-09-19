@@ -10,31 +10,31 @@ class ChangeNotifierViewModel extends ChangeNotifier {
     @required Future<void> block(),
     void onError(Exception e),
   }) async {
-    _nowLoading();
-    notifyListeners();
+    nowLoading();
 
     try {
       await block();
     } on Exception catch (e) {
       RSLogger.d('$label の実行でエラーが発生しました。message=${e.toString()}');
       onError?.call(e);
-      _loadError();
-      notifyListeners();
+      loadError();
     }
 
-    _loadSuccess();
+    loadSuccess();
+  }
+
+  void nowLoading() {
+    pageState = PageNowLoading();
     notifyListeners();
   }
 
-  void _nowLoading() {
-    pageState = PageNowLoading();
-  }
-
-  void _loadSuccess() {
+  void loadSuccess() {
     pageState = PageLoaded();
+    notifyListeners();
   }
 
-  void _loadError() {
+  void loadError() {
     pageState = PageLoadError();
+    notifyListeners();
   }
 }

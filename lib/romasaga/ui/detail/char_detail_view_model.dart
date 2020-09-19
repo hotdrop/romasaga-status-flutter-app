@@ -182,8 +182,8 @@ class CharDetailViewModel extends ChangeNotifierViewModel {
       character.refreshStyles(styles);
 
       return true;
-    } catch (e) {
-      RSLogger.e('アイコン更新処理でエラーが発生しました', e);
+    } catch (e, s) {
+      RSLogger.e('アイコン更新処理でエラーが発生しました', e, s);
       return false;
     }
   }

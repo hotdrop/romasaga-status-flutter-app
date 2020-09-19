@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:logger/logger.dart';
 
 class RSLogger {
@@ -17,7 +18,13 @@ class RSLogger {
     _logger.w(message);
   }
 
-  static void e(String message, dynamic e) {
-    _logger.e(message, e);
+  static void e(String message, dynamic exception, StackTrace stackTrace) {
+    if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+      _logger.d("クラッシュレポートを送ります");
+      FirebaseCrashlytics.instance.setCustomKey("message", message);
+      FirebaseCrashlytics.instance.recordError(exception, stackTrace);
+    } else {
+      _logger.e(message, exception);
+    }
   }
 }

@@ -1,7 +1,7 @@
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/json/stage_object.dart';
 import 'package:rsapp/romasaga/model/stage.dart';
 import 'package:rsapp/romasaga/service/rs_service.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class StageApi {
   const StageApi._(this._rsService);
@@ -16,8 +16,8 @@ class StageApi {
     try {
       String json = await _rsService.readStagesJson();
       return StagesJsonObject.parseToObjects(json);
-    } catch (e) {
-      RSLogger.e('ステージデータの取得時にエラーが発生しました。', e);
+    } catch (e, s) {
+      RSLogger.e('ステージデータの取得時にエラーが発生しました。', e, s);
       rethrow;
     }
   }

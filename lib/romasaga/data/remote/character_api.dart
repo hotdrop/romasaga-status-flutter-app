@@ -1,7 +1,7 @@
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/json/character_object.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/service/rs_service.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class CharacterApi {
   const CharacterApi._(this._rsService);
@@ -16,8 +16,8 @@ class CharacterApi {
     try {
       String json = await _rsService.readCharactersJson();
       return CharactersJsonObject.parseToObjects(json);
-    } catch (e) {
-      RSLogger.e('キャラデータ取得時にエラーが発生しました。', e);
+    } catch (e, s) {
+      RSLogger.e('キャラデータ取得時にエラーが発生しました。', e, s);
       rethrow;
     }
   }
