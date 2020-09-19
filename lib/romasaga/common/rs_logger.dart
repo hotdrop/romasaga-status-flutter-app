@@ -1,5 +1,6 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:logger/logger.dart';
+import 'package:rsapp/romasaga/service/rs_crashlytics.dart';
 
 class RSLogger {
   const RSLogger._();
@@ -18,13 +19,11 @@ class RSLogger {
     _logger.w(message);
   }
 
-  static void e(String message, dynamic exception, StackTrace stackTrace) {
-    if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
-      _logger.d("クラッシュレポートを送ります");
-      FirebaseCrashlytics.instance.setCustomKey("message", message);
-      FirebaseCrashlytics.instance.recordError(exception, stackTrace);
-    } else {
+  static Future<void> e(String message, dynamic exception, StackTrace stackTrace) async {
+    if (kDebugMode) {
       _logger.e(message, exception);
+    } else {
+      await RSCrashlytics.getInstance().record(message, exception, stackTrace);
     }
   }
 }
