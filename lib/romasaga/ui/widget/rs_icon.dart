@@ -391,6 +391,8 @@ class ProductionLogo extends StatelessWidget {
         return 'res/logos/EmperorsSaga.jpg';
       case ProductionType.romasagaRS:
         return 'res/logos/RomasagaRS.jpg';
+      case ProductionType.saga1:
+        return 'res/logos/Saga.jpg';
       case ProductionType.saga2:
         return 'res/logos/Saga2.jpg';
       default:

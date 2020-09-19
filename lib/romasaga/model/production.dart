@@ -26,6 +26,8 @@ class Production {
         return ProductionType.emperorssaga;
       case RSStrings.productRomaSagaRS:
         return ProductionType.romasagaRS;
+      case RSStrings.productSaga:
+        return ProductionType.saga1;
       case RSStrings.productSaga2:
         return ProductionType.saga2;
       default:
@@ -44,5 +46,6 @@ enum ProductionType {
   unlimited,
   emperorssaga,
   romasagaRS,
+  saga1,
   saga2,
 }
