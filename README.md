@@ -9,12 +9,13 @@ Flutterの学習用で作成したロマサガRSのステータス管理用ア�
 電車などでサッと起動して閲覧したかったので、アカウント画面の各機能と各キャラの画像アイコン初回ロード時のみネットワーク通信をします。
  
 # 利用している外部サービス
-  - Firebase Storage
   - Firebase Authentication
+  - Firebase Storage
   - Firebase Firestore
+  - Firebase Crashlytics
 
 # 設計
-最近AACでのMVVM構成に慣れてしまったのでこのアプリも`View-ViewModel-Repository`で作成しました。  
+自分はAACでのMVVM構成に慣れてしまったため、このアプリもAACによったMVVMで作成しました。  
 BLoCパターンは利用しておらず、状態管理はProvdierのChangeNotifierProviderで行なっています。
 
 # 環境
