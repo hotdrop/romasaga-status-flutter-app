@@ -32,16 +32,19 @@ class SearchPageViewModel extends ChangeNotifierViewModel {
   /// このViewModelを使うときに必ず呼ぶ
   ///
   Future<void> load() async {
-    await run(
-      label: '検索画面のキャラ一覧ロード処理',
-      block: () async {
-        final characters = await _characterRepository.findAll();
-        final charactersWithMyStatus = await _loadMyStatuses(characters);
+    nowLoading();
 
-        _originalCharacters = charactersWithMyStatus;
-        charactersWithFilter = charactersWithMyStatus;
-      },
-    );
+    try {
+      final characters = await _characterRepository.findAll();
+      final charactersWithMyStatus = await _loadMyStatuses(characters);
+
+      _originalCharacters = charactersWithMyStatus;
+      charactersWithFilter = charactersWithMyStatus;
+      loadSuccess();
+    } catch (e, s) {
+      await RSLogger.e('検索画面のロードに失敗しました。', e, s);
+      loadError();
+    }
   }
 
   Future<List<Character>> _loadMyStatuses(List<Character> argCharacters) async {

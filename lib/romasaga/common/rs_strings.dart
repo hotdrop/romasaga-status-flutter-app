@@ -14,7 +14,7 @@ class RSStrings {
   static const String nothingCharacterFavoriteMessage = 'お気に入りキャラは設定されていません。';
   static const String nothingStatusUpEventCharacterMessage = '現在、ステータスアップ育成イベント中のキャラはいません。';
   static const String nothingCharacterPossessionMessage = '持っているキャラはいません。';
-  static const String characterListLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
+  static const String characterListLoadingErrorMessage = 'キャラ情報のロードに失敗しました。';
 
   static const String characterTotalStatus = '計: ';
 
@@ -28,7 +28,7 @@ class RSStrings {
   static const String characterRefreshIconDialogError = '再取得に失敗しました・・';
   static const String characterDetailStageSelectDescLabel = 'カッコの値はステータス上限です。';
   static const String characterDetailStatusTableLabel = 'ステータス上限表';
-  static const String characterDetailLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
+  static const String characterDetailLoadingErrorMessage = 'キャラ情報のロードに失敗しました。';
 
   static const String statusEditTitle = 'ステータス編集';
 
@@ -40,7 +40,7 @@ class RSStrings {
   static const String searchFilterTitleAttributes = '属性別';
   static const String searchFilterTitleProduction = '作品別';
   static const String searchFilterClear = 'クリア';
-  static const String searchFilterLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
+  static const String searchFilterLoadingErrorMessage = 'キャラ情報のロードに失敗しました。';
 
   static const String letterPageTitle = '運営からのお便り';
   static const String letterPageNotData = 'お便り情報がロードされていません。'
@@ -48,7 +48,7 @@ class RSStrings {
       '\n\n（お便り情報取得時はネットワーク通信を行いますのでご注意ください。）';
   static const String letterDetailPageTitle = '運営からのお便り詳細';
   static const String letterNothingMessage = '運営からのお便りデータが0件でした。';
-  static const String letterLoadingErrorMessage = '運営からのお便りデータ取得時にエラーが発生しました。';
+  static const String letterLoadingErrorMessage = '運営からのお便りデータ取得に失敗しました。';
   static const String letterNowLoading = 'Now Loading...';
   static const String letterLoadingFailure = '画像取得エラー！';
   static const String letterYearLabel = '年';
@@ -60,7 +60,7 @@ class RSStrings {
   static const String dashboardPageHaveCharLabel = '保持キャラ数';
   static const String dashboardPageAllCharLabel = '全キャラ数';
   static const String dashboardPageTopCharacterLabel = '現在の総合ランキングトップキャラ';
-  static const String dashboardPageLoadingErrorMessage = 'キャラ情報のロード中にエラーが発生しました。';
+  static const String dashboardPageLoadingErrorMessage = 'キャラ情報のロードに失敗しました。';
   static const String strL = '力';
   static const String vitL = '体';
   static const String dexL = '器';
@@ -162,5 +162,6 @@ class RSStrings {
   static const String productUnLimited = 'アンリミテッド・サガ';
   static const String productEmperorsSaga = 'エンペラーズサガ';
   static const String productRomaSagaRS = 'ロマンシング・サガRS';
+  static const String productSaga = '魔界塔士 Sa・Ga';
   static const String productSaga2 = 'Sa・Ga2 秘宝伝説';
 }

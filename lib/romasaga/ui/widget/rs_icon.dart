@@ -90,10 +90,13 @@ class WeaponIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     String res = _getResourcePath();
     if (_onTap == null) {
-      return Image.asset(
-        res,
-        width: _size,
-        height: _size,
+      return CircleAvatar(
+        child: Image.asset(
+          res,
+          width: _size,
+          height: _size,
+        ),
+        backgroundColor: Theme.of(context).disabledColor,
       );
     } else {
       return Material(
@@ -145,17 +148,25 @@ class WeaponIcon extends StatelessWidget {
 /// 武器カテゴリーアイコン
 ///
 class WeaponCategoryIcon extends StatelessWidget {
-  const WeaponCategoryIcon(this._category) : assert(_category != WeaponCategory.rod, 'ロッドは武器カテゴリーアイコンが存在しないため渡してはいけません。');
+  const WeaponCategoryIcon._(this._category, this._size) : assert(_category != WeaponCategory.rod, 'ロッドは武器カテゴリーアイコンが存在しないため渡してはいけません。');
+
+  factory WeaponCategoryIcon.normal(WeaponCategory category) {
+    return WeaponCategoryIcon._(category, 50.0);
+  }
 
   final WeaponCategory _category;
+  final double _size;
 
   @override
   Widget build(BuildContext context) {
     String res = _getResourcePath();
-    return Image.asset(
-      res,
-      width: 50.0,
-      height: 50.0,
+    return CircleAvatar(
+      child: Image.asset(
+        res,
+        width: _size,
+        height: _size,
+      ),
+      backgroundColor: Theme.of(context).disabledColor,
     );
   }
 
@@ -176,10 +187,6 @@ class WeaponCategoryIcon extends StatelessWidget {
 class AttributeIcon extends StatelessWidget {
   const AttributeIcon._(this._type, this._size, this._selected, this._onTap);
 
-  factory AttributeIcon.small(AttributeType type, {bool selected, void Function() onTap}) {
-    return AttributeIcon._(type, 30.0, selected, onTap);
-  }
-
   factory AttributeIcon.normal(AttributeType type, {bool selected, void Function() onTap}) {
     return AttributeIcon._(type, 50.0, selected, onTap);
   }
@@ -193,10 +200,13 @@ class AttributeIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     String res = _getResourcePath();
     if (_onTap == null) {
-      return Image.asset(
-        res,
-        width: _size,
-        height: _size,
+      return CircleAvatar(
+        child: Image.asset(
+          res,
+          width: _size,
+          height: _size,
+        ),
+        backgroundColor: Theme.of(context).disabledColor,
       );
     }
 
@@ -391,6 +401,8 @@ class ProductionLogo extends StatelessWidget {
         return 'res/logos/EmperorsSaga.jpg';
       case ProductionType.romasagaRS:
         return 'res/logos/RomasagaRS.jpg';
+      case ProductionType.saga1:
+        return 'res/logos/Saga.jpg';
       case ProductionType.saga2:
         return 'res/logos/Saga2.jpg';
       default:

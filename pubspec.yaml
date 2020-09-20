@@ -1,7 +1,7 @@
 name: rsapp
 description: Romancing Saga RS Status Management application.
 
-version: 1.6.1+7
+version: 1.6.2+8
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -14,10 +14,11 @@ dependencies:
 
   # Firebase
   google_sign_in: ^4.5.1
-  firebase_core: ^0.4.5
-  firebase_auth: ^0.16.1
-  cloud_firestore: ^0.13.7
-  firebase_storage: ^3.1.6
+  firebase_core: ^0.5.0
+  firebase_auth: ^0.18.0
+  cloud_firestore: ^0.14.0
+  firebase_storage: ^4.0.0
+  firebase_crashlytics: ^0.2.0-dev.5
 
   # UI
   percent_indicator: ^2.1.5

@@ -1,5 +1,6 @@
-import 'package:rsapp/romasaga/model/status.dart';
+import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
+import 'package:rsapp/romasaga/model/status.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class CharStatusEditViewModel extends ChangeNotifierViewModel {
@@ -56,7 +57,11 @@ class CharStatusEditViewModel extends ChangeNotifierViewModel {
   }
 
   Future<void> saveNewStatus() async {
-    await _statusRepository.save(_currentStatus.toMyStatus());
+    try {
+      await _statusRepository.save(_currentStatus.toMyStatus());
+    } catch (e, s) {
+      await RSLogger.e('キャラステータス編集画面で保存に失敗しました。', e, s);
+    }
   }
 }
 
