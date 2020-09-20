@@ -238,7 +238,7 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
       runSpacing: 16.0,
       children: WeaponType.values.map<Widget>((type) {
         bool selected = viewModel.isSelectWeaponType(type);
-        return WeaponIcon.small(
+        return WeaponIcon.normal(
           type,
           selected: selected,
           onTap: () {
@@ -258,7 +258,7 @@ class _SearchPageState extends State<_SearchPage> with SingleTickerProviderState
       runSpacing: 16.0,
       children: AttributeType.values.map<Widget>((type) {
         bool selected = viewModel.isSelectAttributeType(type);
-        return AttributeIcon.small(
+        return AttributeIcon.normal(
           type,
           selected: selected,
           onTap: () {
