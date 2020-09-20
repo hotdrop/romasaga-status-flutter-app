@@ -98,6 +98,7 @@ class CharDetailPage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           _contentCharacterTitle(context),
+          _contentCharacterAttribute(context),
           _borderLine(context),
           _contentsStyleChips(context),
         ],
@@ -144,7 +145,6 @@ class CharDetailPage extends StatelessWidget {
             Text(viewModel.character.production, style: Theme.of(context).textTheme.caption),
             Text(viewModel.character.name, style: Theme.of(context).textTheme.subtitle1),
             Text(viewModel.selectedStyleTitle, style: Theme.of(context).textTheme.caption),
-            _contentCharacterAttribute(context),
           ],
         ),
       ],
@@ -152,24 +152,37 @@ class CharDetailPage extends StatelessWidget {
   }
 
   Widget _contentCharacterAttribute(BuildContext context) {
-    final viewModel = Provider.of<CharDetailViewModel>(context);
-    return Container(
-      width: 200,
-      child: Expanded(
-        child: Wrap(
-          alignment: WrapAlignment.start,
-          direction: Axis.horizontal,
-          spacing: 8.0,
-          runSpacing: 8.0,
-          children: <Widget>[
-            WeaponIcon.normal(viewModel.character.weaponType),
-            if (viewModel.character.weaponCategory != WeaponCategory.rod) WeaponCategoryIcon.normal(viewModel.character.weaponCategory),
-            if (viewModel.haveAttribute)
-              for (final attribute in viewModel.character.attributes) AttributeIcon.normal(attribute.type),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 24.0, right: 16.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  direction: Axis.horizontal,
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: _attributeIcons(context),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
+  }
+
+  List<Widget> _attributeIcons(BuildContext context) {
+    final viewModel = Provider.of<CharDetailViewModel>(context);
+    return <Widget>[
+      WeaponIcon.normal(viewModel.character.weaponType),
+      if (viewModel.character.weaponCategory != WeaponCategory.rod) WeaponCategoryIcon.normal(viewModel.character.weaponCategory),
+      if (viewModel.haveAttribute)
+        for (final attribute in viewModel.character.attributes) AttributeIcon.normal(attribute.type),
+    ];
   }
 
   ///
