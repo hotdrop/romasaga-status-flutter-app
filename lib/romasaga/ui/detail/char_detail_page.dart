@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:rsapp/romasaga/common/rs_colors.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/common/rs_strings.dart';
-import 'package:rsapp/romasaga/model/attribute.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/model/status.dart';
@@ -145,51 +144,30 @@ class CharDetailPage extends StatelessWidget {
             Text(viewModel.character.production, style: Theme.of(context).textTheme.caption),
             Text(viewModel.character.name, style: Theme.of(context).textTheme.subtitle1),
             Text(viewModel.selectedStyleTitle, style: Theme.of(context).textTheme.caption),
-            _contentCharacterWeaponAttribute(context),
+            _contentCharacterAttribute(context),
           ],
         ),
       ],
     );
   }
 
-  Widget _contentCharacterWeaponAttribute(BuildContext context) {
+  Widget _contentCharacterAttribute(BuildContext context) {
     final viewModel = Provider.of<CharDetailViewModel>(context);
-    return Row(
-      children: <Widget>[
-        _createWeaponIcon(context, viewModel.character.weaponType),
-        if (viewModel.character.weaponCategory != WeaponCategory.rod) _createWeaponCategoryIcon(context, viewModel.character.weaponCategory),
-        if (viewModel.haveAttribute)
-          for (final attribute in viewModel.character.attributes) _createAttributeIcon(context, attribute),
-      ],
-    );
-  }
-
-  Widget _createWeaponIcon(BuildContext context, WeaponType weaponType) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4.0),
-      child: CircleAvatar(
-        child: WeaponIcon.normal(weaponType),
-        backgroundColor: Theme.of(context).disabledColor,
-      ),
-    );
-  }
-
-  Widget _createWeaponCategoryIcon(BuildContext context, WeaponCategory weaponCategory) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4.0, left: 16.0),
-      child: CircleAvatar(
-        child: WeaponCategoryIcon(weaponCategory),
-        backgroundColor: Theme.of(context).disabledColor,
-      ),
-    );
-  }
-
-  Widget _createAttributeIcon(BuildContext context, Attribute attribute) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4.0, left: 16.0),
-      child: CircleAvatar(
-        child: AttributeIcon.normal(attribute.type),
-        backgroundColor: Theme.of(context).disabledColor,
+    return Container(
+      width: 200,
+      child: Expanded(
+        child: Wrap(
+          alignment: WrapAlignment.start,
+          direction: Axis.horizontal,
+          spacing: 8.0,
+          runSpacing: 8.0,
+          children: <Widget>[
+            WeaponIcon.normal(viewModel.character.weaponType),
+            if (viewModel.character.weaponCategory != WeaponCategory.rod) WeaponCategoryIcon.normal(viewModel.character.weaponCategory),
+            if (viewModel.haveAttribute)
+              for (final attribute in viewModel.character.attributes) AttributeIcon.normal(attribute.type),
+          ],
+        ),
       ),
     );
   }
