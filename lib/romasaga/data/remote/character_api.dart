@@ -1,4 +1,4 @@
-import 'package:rsapp/romasaga/data/json/character_object.dart';
+import 'package:rsapp/romasaga/data/json/characters_json.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/service/rs_service.dart';
 
@@ -13,7 +13,7 @@ class CharacterApi {
 
   Future<List<Character>> findAll() async {
     String json = await _rsService.readCharactersJson();
-    return CharactersJsonObject.parseToObjects(json);
+    return CharactersJson.parse(json);
   }
 
   Future<String> findIconUrl(String iconFileName) async => await _rsService.getCharacterIconUrl(iconFileName);

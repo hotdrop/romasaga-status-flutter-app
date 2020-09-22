@@ -84,3 +84,5 @@ build/
 **/ios/Runner/GoogleService-Info.plist
 gen/
 ios/Frameworks/
+**/*.g.dart
+**/*.freezed.dart
