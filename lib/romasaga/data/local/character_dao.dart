@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
-import 'package:rsapp/romasaga/data/json/character_object.dart';
+import 'package:rsapp/romasaga/data/json/characters_json.dart';
 import 'package:rsapp/romasaga/data/local/database.dart';
 import 'package:rsapp/romasaga/data/local/entity/character_entity.dart';
 import 'package:rsapp/romasaga/data/local/entity/style_entity.dart';
@@ -76,7 +76,7 @@ class CharacterDao {
   Future<List<Character>> loadDummy({String localPath = 'res/json/characters.json'}) async {
     try {
       return await rootBundle.loadStructuredData(localPath, (json) async {
-        return CharactersJsonObject.parseToObjects(json);
+        return CharactersJson.parse(json);
       });
     } on IOException catch (e, s) {
       await RSLogger.e('キャラデータ取得に失敗しました。', e, s);

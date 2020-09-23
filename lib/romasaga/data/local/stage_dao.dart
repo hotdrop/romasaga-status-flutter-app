@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
-import 'package:rsapp/romasaga/data/json/stage_object.dart';
+import 'package:rsapp/romasaga/data/json/stages_json.dart';
 import 'package:rsapp/romasaga/data/local/database.dart';
 import 'package:rsapp/romasaga/data/local/entity/stage_entity.dart';
 import 'package:rsapp/romasaga/extension/mapper.dart';
@@ -21,7 +21,7 @@ class StageDao {
   Future<List<Stage>> loadDummy({String localPath = 'res/json/stage.json'}) async {
     try {
       return await rootBundle.loadStructuredData(localPath, (json) async {
-        return StagesJsonObject.parseToObjects(json);
+        return StagesJson.parse(json);
       });
     } on IOException catch (e, s) {
       await RSLogger.e('ステージデータの取得に失敗しました。', e, s);
