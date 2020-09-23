@@ -1,4 +1,4 @@
-import 'package:rsapp/romasaga/data/json/stage_object.dart';
+import 'package:rsapp/romasaga/data/json/stages_json.dart';
 import 'package:rsapp/romasaga/model/stage.dart';
 import 'package:rsapp/romasaga/service/rs_service.dart';
 
@@ -13,6 +13,6 @@ class StageApi {
 
   Future<List<Stage>> findAll() async {
     String json = await _rsService.readStagesJson();
-    return StagesJsonObject.parseToObjects(json);
+    return StagesJson.parse(json);
   }
 }

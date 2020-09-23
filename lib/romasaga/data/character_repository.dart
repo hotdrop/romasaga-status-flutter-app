@@ -84,19 +84,23 @@ class CharacterRepository {
 
     for (var latest in remoteCharacters) {
       final localCharacter = localMap.containsKey(latest.id) ? localMap[latest.id] : null;
+      if (localCharacter != null) {
+        RSLogger.d('${latest.name} は既存キャラです。');
+        latest.selectedStyleRank = localCharacter.selectedStyleRank;
+        latest.selectedIconFilePath = localCharacter.selectedIconFilePath;
+      } else {
+        RSLogger.d('${latest.name} は新規キャラです。');
+      }
 
-      RSLogger.d('キャラ ${latest.name} ローカルには $localCharacter} ');
       for (var style in latest.styles) {
         // スタイル自体がせいぜい数個程度なのでいちいちfirstWhereでスタイルを取得する
-        RSLogger.d('取得したスタイル ${style.rank} ');
         final localStyle = localCharacter?.styles?.firstWhere((ls) => ls.rank == style.rank, orElse: () => null);
 
-        RSLogger.d('DBから取得したstyle = $localStyle');
         if (localStyle != null && localStyle.iconFilePath.isNotEmpty) {
-          RSLogger.d('${latest.name}のスタイル${localStyle.rank} はアイコン取得済みなので既存のアイコンパスを使用');
+          RSLogger.d(' スタイル${localStyle.rank} はアイコン取得済みなので既存のアイコンパスを使用');
           style.iconFilePath = localStyle.iconFilePath;
         } else {
-          RSLogger.d('${latest.name}のスタイル${style.rank} はアイコン未取得なのでリモートから取得');
+          RSLogger.d(' スタイル${style.rank} はアイコン未取得なのでリモートから取得');
           style.iconFilePath = await _api.findIconUrl(style.iconFileName);
         }
 
