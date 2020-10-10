@@ -1,10 +1,10 @@
 name: rsapp
 description: Romancing Saga RS Status Management application.
 
-version: 1.6.2+9
+version: 1.6.3+10
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
   flutter:
