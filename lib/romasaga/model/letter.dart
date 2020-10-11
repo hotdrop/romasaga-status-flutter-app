@@ -7,14 +7,14 @@ class Letter {
     @required this.month,
     @required this.title,
     @required this.shortTitle,
-    @required this.gifFilePath,
-    @required this.staticImagePath,
+    this.fileName,
+    this.gifFilePath,
+    this.staticImagePath,
   })  : assert(year != null),
         assert(month != null),
         assert(title != null),
         assert(shortTitle != null),
-        assert(gifFilePath != null, 'A non-null gifFilePath'),
-        assert(staticImagePath != null, 'A non-null staticImagePath');
+        assert(fileName != null || (gifFilePath != null && staticImagePath != null));
 
   final int year;
   final int month;
@@ -22,6 +22,7 @@ class Letter {
   final String title;
   final String shortTitle;
 
+  final String fileName;
   final String gifFilePath;
   final String staticImagePath;
 
@@ -47,5 +48,27 @@ class Letter {
     } else {
       return 'res/icons/loading_winter.gif';
     }
+  }
+}
+
+extension LetterCopyWith on Letter {
+  Letter copyWith({
+    int year,
+    int month,
+    String title,
+    String shortTitle,
+    String fileName,
+    String gifFilePath,
+    String staticImagePath,
+  }) {
+    return Letter(
+      year: year ?? this.year,
+      month: month ?? this.month,
+      title: title ?? this.title,
+      fileName: fileName ?? this.fileName,
+      shortTitle: shortTitle ?? this.shortTitle,
+      gifFilePath: gifFilePath ?? this.gifFilePath,
+      staticImagePath: staticImagePath ?? this.staticImagePath,
+    );
   }
 }

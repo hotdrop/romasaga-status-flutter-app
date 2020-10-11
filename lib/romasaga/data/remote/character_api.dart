@@ -12,7 +12,7 @@ class CharacterApi {
   final RSService _rsService;
 
   Future<List<Character>> findAll() async {
-    String json = await _rsService.readCharactersJson();
+    final String json = await _rsService.readCharactersJson();
     return CharactersJson.parse(json);
   }
 

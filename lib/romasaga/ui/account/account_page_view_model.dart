@@ -125,7 +125,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
     }
   }
 
-  Future<bool> registerNewCharacters() async {
+  Future<bool> onLoadNewCharacters() async {
     try {
       await _characterRepository.update();
       notifyListeners();
@@ -137,7 +137,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
     }
   }
 
-  Future<bool> updateAllCharacters() async {
+  Future<bool> refreshAllCharacters() async {
     try {
       await _characterRepository.refresh();
       characterCount = await _characterRepository.count();
@@ -163,14 +163,27 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
     }
   }
 
-  Future<bool> refreshLetter() async {
+  Future<bool> onLoadNewLetter() async {
     try {
       await _letterRepository.update();
       latestLetterName = await _letterRepository.getLatestLetterName();
       notifyListeners();
       return true;
     } catch (e, s) {
-      await RSLogger.e('お便りデータ更新に失敗しました。', e, s);
+      await RSLogger.e('最新のお便りデータ取得に失敗しました。', e, s);
+      _errorMessage = '$e';
+      return false;
+    }
+  }
+
+  Future<bool> refreshAllLetter() async {
+    try {
+      await _letterRepository.refresh();
+      latestLetterName = await _letterRepository.getLatestLetterName();
+      notifyListeners();
+      return true;
+    } catch (e, s) {
+      await RSLogger.e('お便りデータ全更新に失敗しました。', e, s);
       _errorMessage = '$e';
       return false;
     }

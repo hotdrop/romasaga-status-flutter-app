@@ -100,6 +100,7 @@ class RSStrings {
   static const String accountLetterLatestLabel = '最新:';
   static const String accountLetterEmptyLabel = 'ー';
   static const String accountLetterUpdateDialogMessage = '新しくサーバーに登録されたお便り情報を取得します。\nよろしいですか？';
+  static const String accountLetterAllUpdateDialogMessage = '注意！！\n現在アプリ内に保存されているお便り情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
   static const String accountLetterUpdateDialogSuccessMessage = '最新のお便り情報を取得しました。';
 
   static const String accountStatusBackupLabel = 'バックアップ';
