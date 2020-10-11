@@ -70,12 +70,12 @@ class CharacterRepository {
     final localCharacters = await _dao.findAll();
     RSLogger.d('ローカルからデータ取得 件数=${localCharacters.length}');
 
-    final newCharacters = await _updateStyles(remoteCharacters, localCharacters);
+    final newCharacters = await _merge(remoteCharacters, localCharacters);
 
     await _dao.refresh(newCharacters);
   }
 
-  Future<List<Character>> _updateStyles(List<Character> remoteCharacters, List<Character> localCharacters) async {
+  Future<List<Character>> _merge(List<Character> remoteCharacters, List<Character> localCharacters) async {
     final result = <Character>[];
 
     // listのfirstWhereで同一idを見つけようと思ったがforをぶん回していて効率悪そうだったのでmapを作る

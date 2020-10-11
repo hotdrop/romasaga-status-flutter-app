@@ -185,7 +185,7 @@ class AccountPage extends StatelessWidget {
           btnOkOnPress: () async {
             await _executeWithStateDialog(
               context,
-              execFunc: viewModel.registerNewCharacters(),
+              execFunc: viewModel.onLoadNewCharacters(),
               successMessage: RSStrings.accountCharacterUpdateDialogSuccessMessage,
               errorMessage: viewModel.errorMessage,
             );
@@ -202,7 +202,7 @@ class AccountPage extends StatelessWidget {
           btnOkOnPress: () async {
             await _executeWithStateDialog(
               context,
-              execFunc: viewModel.updateAllCharacters(),
+              execFunc: viewModel.refreshAllCharacters(),
               successMessage: RSStrings.accountCharacterUpdateDialogSuccessMessage,
               errorMessage: viewModel.errorMessage,
             );
@@ -256,7 +256,24 @@ class AccountPage extends StatelessWidget {
           btnOkOnPress: () async {
             await _executeWithStateDialog(
               context,
-              execFunc: viewModel.refreshLetter(),
+              execFunc: viewModel.onLoadNewLetter(),
+              successMessage: RSStrings.accountLetterUpdateDialogSuccessMessage,
+              errorMessage: viewModel.errorMessage,
+            );
+          },
+        ).show();
+      },
+      onLongPress: () async {
+        await AwesomeDialog(
+          context: context,
+          dialogType: DialogType.WARNING,
+          title: RSStrings.accountLetterUpdateLabel,
+          desc: RSStrings.accountLetterAllUpdateDialogMessage,
+          btnCancelOnPress: () {},
+          btnOkOnPress: () async {
+            await _executeWithStateDialog(
+              context,
+              execFunc: viewModel.refreshAllLetter(),
               successMessage: RSStrings.accountLetterUpdateDialogSuccessMessage,
               errorMessage: viewModel.errorMessage,
             );

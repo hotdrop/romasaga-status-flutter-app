@@ -11,12 +11,12 @@ import 'package:rsapp/romasaga/model/weapon.dart';
 class CharactersJson {
   static List<Character> parse(String json) {
     final dynamic jsonMap = jsonDecode(json);
-    final cObjList = (jsonMap['characters'] as List).map((dynamic o) => CharacterObject.fromJson(o as Map<String, dynamic>))?.toList();
-    RSLogger.d('リモートから取得したjsonをパースしました。 size=${cObjList.length}');
+    final objList = (jsonMap['characters'] as List).map((dynamic o) => CharacterObject.fromJson(o as Map<String, dynamic>))?.toList();
+    RSLogger.d('リモートから取得したjsonをパースしました。 size=${objList.length}');
 
     final characters = <Character>[];
-    for (var cObj in cObjList) {
-      final c = _jsonObjectToCharacter(cObj);
+    for (var obj in objList) {
+      final c = _jsonObjectToCharacter(obj);
       if (characters.any((result) => result.id == c.id)) {
         throw FormatException('キャラ${c.name}のidが重複しています。jsonを見直してください。id=${c.id}');
       }
