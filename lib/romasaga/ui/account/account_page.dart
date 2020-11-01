@@ -78,7 +78,7 @@ class AccountPage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
         color: Theme.of(context).accentColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-        child: Text(RSStrings.accountLogoutTitle),
+        child: const Text(RSStrings.accountLogoutTitle),
         onPressed: () async {
           final dialog = RSDialog.createInfo(
             title: RSStrings.accountLogoutTitle,
@@ -102,7 +102,7 @@ class AccountPage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
         color: Theme.of(context).accentColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-        child: Text(RSStrings.accountLoginWithGoogle),
+        child: const Text(RSStrings.accountLoginWithGoogle),
         onPressed: () {
           if (viewModel.pageState.nowLoading()) return;
           viewModel.loginWithGoogle();
@@ -114,7 +114,7 @@ class AccountPage extends StatelessWidget {
   Widget _rowAccountInfo(BuildContext context) {
     final viewModel = Provider.of<AccountPageViewModel>(context);
     return ListTile(
-      leading: Icon(Icons.account_circle, size: 40.0),
+      leading: const Icon(Icons.account_circle, size: 40.0),
       title: Text(viewModel.getLoginEmail()),
       subtitle: Text(viewModel.getLoginUserName()),
     );
@@ -124,7 +124,7 @@ class AccountPage extends StatelessWidget {
     final appSettings = Provider.of<AppSettings>(context);
     return ListTile(
       leading: Icon(appSettings.isDarkMode ? Icons.brightness_7 : Icons.brightness_4),
-      title: Text(RSStrings.accountChangeApplicationThemeLabel),
+      title: const Text(RSStrings.accountChangeApplicationThemeLabel),
       trailing: Switch(
         onChanged: (isDark) => appSettings.setDarkMode(isDark),
         value: appSettings.isDarkMode,
@@ -135,8 +135,8 @@ class AccountPage extends StatelessWidget {
   Widget _rowAppVersion(BuildContext context) {
     final appVersion = context.select<AccountPageViewModel, String>((viewModel) => viewModel.appVersion);
     return ListTile(
-      leading: Icon(Icons.info),
-      title: Text(RSStrings.accountAppVersionLabel),
+      leading: const Icon(Icons.info),
+      title: const Text(RSStrings.accountAppVersionLabel),
       trailing: Text(appVersion),
     );
   }
@@ -147,7 +147,7 @@ class AccountPage extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 16.0, top: 16.0),
-          child: Text(RSStrings.accountDataUpdateTitle),
+          child: const Text(RSStrings.accountDataUpdateTitle),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
