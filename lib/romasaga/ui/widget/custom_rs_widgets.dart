@@ -190,40 +190,41 @@ class StatusTextField extends StatelessWidget {
 /// ステータス編集用のテキストフィールドを作るためのWidget
 ///
 class TextFormFieldWithChanged extends StatefulWidget {
-  TextFormFieldWithChanged(
-      {this.key,
-      this.initialValue,
-      this.focusNode,
-      this.decoration = const InputDecoration(),
-      this.keyboardType,
-      this.textCapitalization = TextCapitalization.none,
-      this.textInputAction,
-      this.style,
-      this.strutStyle,
-      this.textDirection,
-      this.textAlign = TextAlign.start,
-      this.autofocus = false,
-      this.obscureText = false,
-      this.autocorrect = true,
-      this.autovalidate = false,
-      this.maxLengthEnforced = true,
-      this.maxLines = 1,
-      this.minLines,
-      this.expands = false,
-      this.maxLength,
-      this.onEditingComplete,
-      this.onFieldSubmitted,
-      this.onSaved,
-      this.validator,
-      this.enabled = true,
-      this.cursorWidth = 2.0,
-      this.cursorRadius,
-      this.cursorColor,
-      this.keyboardAppearance,
-      this.scrollPadding = const EdgeInsets.all(20.0),
-      this.enableInteractiveSelection = true,
-      this.buildCounter,
-      this.onChanged});
+  TextFormFieldWithChanged({
+    this.key,
+    this.initialValue,
+    this.focusNode,
+    this.decoration = const InputDecoration(),
+    this.keyboardType,
+    this.textCapitalization = TextCapitalization.none,
+    this.textInputAction,
+    this.style,
+    this.strutStyle,
+    this.textDirection,
+    this.textAlign = TextAlign.start,
+    this.autofocus = false,
+    this.obscureText = false,
+    this.autocorrect = true,
+    this.maxLengthEnforced = true,
+    this.maxLines = 1,
+    this.minLines,
+    this.expands = false,
+    this.maxLength,
+    this.onEditingComplete,
+    this.onFieldSubmitted,
+    this.onSaved,
+    this.validator,
+    this.enabled = true,
+    this.cursorWidth = 2.0,
+    this.cursorRadius,
+    this.cursorColor,
+    this.keyboardAppearance,
+    this.scrollPadding = const EdgeInsets.all(20.0),
+    this.enableInteractiveSelection = true,
+    this.buildCounter,
+    this.autovalidateMode,
+    this.onChanged,
+  });
 
   // TextFormFieldで使うフィールドと同じ
   final Key key;
@@ -240,7 +241,6 @@ class TextFormFieldWithChanged extends StatefulWidget {
   final bool autofocus;
   final bool obscureText;
   final bool autocorrect;
-  final bool autovalidate;
   final bool maxLengthEnforced;
   final int maxLines;
   final int minLines;
@@ -258,6 +258,7 @@ class TextFormFieldWithChanged extends StatefulWidget {
   final EdgeInsets scrollPadding;
   final bool enableInteractiveSelection;
   final InputCounterWidgetBuilder buildCounter;
+  final AutovalidateMode autovalidateMode;
 
   // これだけ追加
   final ValueChanged<String> onChanged;
@@ -309,7 +310,6 @@ class _TextFormFieldWithChanged extends State<TextFormFieldWithChanged> {
       autofocus: widget.autofocus,
       obscureText: widget.obscureText,
       autocorrect: widget.autocorrect,
-      autovalidate: widget.autovalidate,
       maxLengthEnforced: widget.maxLengthEnforced,
       maxLines: widget.maxLines,
       minLines: widget.minLines,
@@ -327,6 +327,7 @@ class _TextFormFieldWithChanged extends State<TextFormFieldWithChanged> {
       scrollPadding: widget.scrollPadding,
       enableInteractiveSelection: widget.enableInteractiveSelection,
       buildCounter: widget.buildCounter,
+      autovalidateMode: widget.autovalidateMode,
     );
   }
 }

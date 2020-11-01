@@ -27,7 +27,7 @@ class _TopPageState extends State<TopPage> {
         showUnselectedLabels: false,
         items: _allDestinations.map((destination) {
           return BottomNavigationBarItem(
-            title: Text(destination.title),
+            label: destination.title,
             icon: Icon(destination.icon),
           );
         }).toList(),

@@ -1,6 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:rsapp/romasaga/common/rs_env.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
@@ -8,6 +6,7 @@ import 'package:rsapp/romasaga/common/rs_strings.dart';
 import 'package:rsapp/romasaga/model/app_settings.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/ui/account/account_page_view_model.dart';
+import 'package:rsapp/romasaga/ui/widget/rs_dialog.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage();
@@ -38,7 +37,7 @@ class AccountPage extends StatelessWidget {
   }
 
   Widget _loadedView(BuildContext context) {
-    RSLogger.d('グローバル変数:${RSEnv.instance.characterJsonFileName}');
+    RSLogger.d('読み込むキャラクターjsonファイル名:${RSEnv.instance.characterJsonFileName}');
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: const Text(RSStrings.accountPageTitle)),
       body: _loadLoginView(context),
@@ -79,23 +78,16 @@ class AccountPage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
         color: Theme.of(context).accentColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-        child: Text(RSStrings.accountLogoutTitle),
+        child: const Text(RSStrings.accountLogoutTitle),
         onPressed: () async {
-          await AwesomeDialog(
-            context: context,
-            dialogType: DialogType.INFO,
+          final dialog = RSDialog.createInfo(
             title: RSStrings.accountLogoutTitle,
-            desc: RSStrings.accountLogoutDialogMessage,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () async {
-              await _executeWithStateDialog(
-                context,
-                execFunc: viewModel.logout(),
-                successMessage: RSStrings.accountLogoutSuccessMessage,
-                errorMessage: viewModel.errorMessage,
-              );
-            },
-          ).show();
+            description: RSStrings.accountLogoutDialogMessage,
+            successMessage: RSStrings.accountLogoutSuccessMessage,
+            errorMessage: viewModel.errorMessage,
+            onOkPress: viewModel.logout,
+          );
+          await dialog.show(context);
         },
       ),
     );
@@ -110,7 +102,7 @@ class AccountPage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
         color: Theme.of(context).accentColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-        child: Text(RSStrings.accountLoginWithGoogle),
+        child: const Text(RSStrings.accountLoginWithGoogle),
         onPressed: () {
           if (viewModel.pageState.nowLoading()) return;
           viewModel.loginWithGoogle();
@@ -122,7 +114,7 @@ class AccountPage extends StatelessWidget {
   Widget _rowAccountInfo(BuildContext context) {
     final viewModel = Provider.of<AccountPageViewModel>(context);
     return ListTile(
-      leading: Icon(Icons.account_circle, size: 40.0),
+      leading: const Icon(Icons.account_circle, size: 40.0),
       title: Text(viewModel.getLoginEmail()),
       subtitle: Text(viewModel.getLoginUserName()),
     );
@@ -132,7 +124,7 @@ class AccountPage extends StatelessWidget {
     final appSettings = Provider.of<AppSettings>(context);
     return ListTile(
       leading: Icon(appSettings.isDarkMode ? Icons.brightness_7 : Icons.brightness_4),
-      title: Text(RSStrings.accountChangeApplicationThemeLabel),
+      title: const Text(RSStrings.accountChangeApplicationThemeLabel),
       trailing: Switch(
         onChanged: (isDark) => appSettings.setDarkMode(isDark),
         value: appSettings.isDarkMode,
@@ -143,8 +135,8 @@ class AccountPage extends StatelessWidget {
   Widget _rowAppVersion(BuildContext context) {
     final appVersion = context.select<AccountPageViewModel, String>((viewModel) => viewModel.appVersion);
     return ListTile(
-      leading: Icon(Icons.info),
-      title: Text(RSStrings.accountAppVersionLabel),
+      leading: const Icon(Icons.info),
+      title: const Text(RSStrings.accountAppVersionLabel),
       trailing: Text(appVersion),
     );
   }
@@ -155,7 +147,7 @@ class AccountPage extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 16.0, top: 16.0),
-          child: Text(RSStrings.accountDataUpdateTitle),
+          child: const Text(RSStrings.accountDataUpdateTitle),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
@@ -176,38 +168,24 @@ class AccountPage extends StatelessWidget {
       title: const Text(RSStrings.accountCharacterUpdateLabel),
       subtitle: Text('${RSStrings.accountCharacterRegisterCountLabel} ${viewModel.characterCount ?? 0}'),
       onTap: () async {
-        await AwesomeDialog(
-          context: context,
-          dialogType: DialogType.INFO,
+        final dialog = RSDialog.createInfo(
           title: RSStrings.accountCharacterUpdateLabel,
-          desc: RSStrings.accountCharacterOnlyNewUpdateDialogMessage,
-          btnCancelOnPress: () {},
-          btnOkOnPress: () async {
-            await _executeWithStateDialog(
-              context,
-              execFunc: viewModel.onLoadNewCharacters(),
-              successMessage: RSStrings.accountCharacterUpdateDialogSuccessMessage,
-              errorMessage: viewModel.errorMessage,
-            );
-          },
-        ).show();
+          description: RSStrings.accountCharacterOnlyNewUpdateDialogMessage,
+          successMessage: RSStrings.accountCharacterUpdateDialogSuccessMessage,
+          errorMessage: viewModel.errorMessage,
+          onOkPress: viewModel.onLoadNewCharacters,
+        );
+        await dialog.show(context);
       },
       onLongPress: () async {
-        await AwesomeDialog(
-          context: context,
-          dialogType: DialogType.WARNING,
+        final dialog = RSDialog.createWarning(
           title: RSStrings.accountCharacterUpdateLabel,
-          desc: RSStrings.accountCharacterAllUpdateDialogMessage,
-          btnCancelOnPress: () {},
-          btnOkOnPress: () async {
-            await _executeWithStateDialog(
-              context,
-              execFunc: viewModel.refreshAllCharacters(),
-              successMessage: RSStrings.accountCharacterUpdateDialogSuccessMessage,
-              errorMessage: viewModel.errorMessage,
-            );
-          },
-        ).show();
+          description: RSStrings.accountCharacterAllUpdateDialogMessage,
+          successMessage: RSStrings.accountCharacterUpdateDialogSuccessMessage,
+          errorMessage: viewModel.errorMessage,
+          onOkPress: viewModel.refreshAllCharacters,
+        );
+        await dialog.show(context);
       },
     );
   }
@@ -220,21 +198,14 @@ class AccountPage extends StatelessWidget {
       title: const Text(RSStrings.accountStageUpdateLabel),
       subtitle: Text('${RSStrings.accountStageLatestLabel} ${viewModel.latestStageName ?? 'ー'}'),
       onTap: () async {
-        await AwesomeDialog(
-          context: context,
-          dialogType: DialogType.INFO,
+        final dialog = RSDialog.createInfo(
           title: RSStrings.accountStageUpdateLabel,
-          desc: RSStrings.accountStageUpdateDialogMessage,
-          btnCancelOnPress: () {},
-          btnOkOnPress: () async {
-            await _executeWithStateDialog(
-              context,
-              execFunc: viewModel.refreshStage(),
-              successMessage: RSStrings.accountStageUpdateDialogSuccessMessage,
-              errorMessage: viewModel.errorMessage,
-            );
-          },
-        ).show();
+          description: RSStrings.accountStageUpdateDialogMessage,
+          successMessage: RSStrings.accountStageUpdateDialogSuccessMessage,
+          errorMessage: viewModel.errorMessage,
+          onOkPress: viewModel.onLoadStage,
+        );
+        await dialog.show(context);
       },
     );
   }
@@ -247,38 +218,24 @@ class AccountPage extends StatelessWidget {
       title: const Text(RSStrings.accountLetterUpdateLabel),
       subtitle: Text('${RSStrings.accountLetterLatestLabel} ${viewModel.latestLetterName ?? 'ー'}'),
       onTap: () async {
-        await AwesomeDialog(
-          context: context,
-          dialogType: DialogType.INFO,
+        final dialog = RSDialog.createInfo(
           title: RSStrings.accountLetterUpdateLabel,
-          desc: RSStrings.accountLetterUpdateDialogMessage,
-          btnCancelOnPress: () {},
-          btnOkOnPress: () async {
-            await _executeWithStateDialog(
-              context,
-              execFunc: viewModel.onLoadNewLetter(),
-              successMessage: RSStrings.accountLetterUpdateDialogSuccessMessage,
-              errorMessage: viewModel.errorMessage,
-            );
-          },
-        ).show();
+          description: RSStrings.accountLetterUpdateDialogMessage,
+          successMessage: RSStrings.accountLetterUpdateDialogSuccessMessage,
+          errorMessage: viewModel.errorMessage,
+          onOkPress: viewModel.onLoadNewLetter,
+        );
+        await dialog.show(context);
       },
       onLongPress: () async {
-        await AwesomeDialog(
-          context: context,
-          dialogType: DialogType.WARNING,
+        final dialog = RSDialog.createWarning(
           title: RSStrings.accountLetterUpdateLabel,
-          desc: RSStrings.accountLetterAllUpdateDialogMessage,
-          btnCancelOnPress: () {},
-          btnOkOnPress: () async {
-            await _executeWithStateDialog(
-              context,
-              execFunc: viewModel.refreshAllLetter(),
-              successMessage: RSStrings.accountLetterUpdateDialogSuccessMessage,
-              errorMessage: viewModel.errorMessage,
-            );
-          },
-        ).show();
+          description: RSStrings.accountLetterAllUpdateDialogMessage,
+          successMessage: RSStrings.accountLetterUpdateDialogSuccessMessage,
+          errorMessage: viewModel.errorMessage,
+          onOkPress: viewModel.refreshAllLetter,
+        );
+        await dialog.show(context);
       },
     );
   }
@@ -291,21 +248,14 @@ class AccountPage extends StatelessWidget {
       title: const Text(RSStrings.accountStatusBackupLabel),
       subtitle: Text('${RSStrings.accountStatusBackupDateLabel} ${viewModel.backupDateLabel}'),
       onTap: () async {
-        await AwesomeDialog(
-          context: context,
-          dialogType: DialogType.INFO,
+        final dialog = RSDialog.createInfo(
           title: RSStrings.accountStatusBackupLabel,
-          desc: RSStrings.accountStatusBackupDialogMessage,
-          btnCancelOnPress: () {},
-          btnOkOnPress: () async {
-            await _executeWithStateDialog(
-              context,
-              execFunc: viewModel.backup(),
-              successMessage: RSStrings.accountStatusBackupDialogSuccessMessage,
-              errorMessage: viewModel.errorMessage,
-            );
-          },
-        ).show();
+          description: RSStrings.accountStatusBackupDialogMessage,
+          successMessage: RSStrings.accountStatusBackupDialogSuccessMessage,
+          errorMessage: viewModel.errorMessage,
+          onOkPress: viewModel.backup,
+        );
+        await dialog.show(context);
       },
     );
   }
@@ -318,52 +268,15 @@ class AccountPage extends StatelessWidget {
       title: const Text(RSStrings.accountStatusRestoreLabel),
       subtitle: Text(RSStrings.accountStatusRestoreDescriptionLabel),
       onTap: () async {
-        await AwesomeDialog(
-          context: context,
-          dialogType: DialogType.WARNING,
+        final dialog = RSDialog.createWarning(
           title: RSStrings.accountStatusRestoreLabel,
-          desc: RSStrings.accountStatusRestoreDialogMessage,
-          btnCancelOnPress: () {},
-          btnOkOnPress: () async {
-            await _executeWithStateDialog(
-              context,
-              execFunc: viewModel.restore(),
-              successMessage: RSStrings.accountStatusBackupDialogSuccessMessage,
-              errorMessage: viewModel.errorMessage,
-            );
-          },
-        ).show();
+          description: RSStrings.accountStatusRestoreDialogMessage,
+          successMessage: RSStrings.accountStatusBackupDialogSuccessMessage,
+          errorMessage: viewModel.errorMessage,
+          onOkPress: viewModel.restore,
+        );
+        await dialog.show(context);
       },
     );
-  }
-
-  // TODO これと呼び元はRSDialogに集約する
-  Future<void> _executeWithStateDialog(
-    BuildContext context, {
-    @required Future<bool> execFunc,
-    @required String successMessage,
-    @required String errorMessage,
-  }) async {
-    final progressDialog = ProgressDialog(context, type: ProgressDialogType.Normal);
-    await progressDialog.show();
-    final isSuccess = await execFunc;
-    await progressDialog.hide();
-    if (isSuccess) {
-      await AwesomeDialog(
-        context: context,
-        dialogType: DialogType.SUCCES,
-        title: RSStrings.dialogTitleSuccess,
-        desc: successMessage,
-        btnOkOnPress: () {},
-      ).show();
-    } else {
-      await AwesomeDialog(
-        context: context,
-        dialogType: DialogType.ERROR,
-        title: RSStrings.dialogTitleError,
-        desc: errorMessage,
-        btnOkOnPress: () {},
-      ).show();
-    }
   }
 }
