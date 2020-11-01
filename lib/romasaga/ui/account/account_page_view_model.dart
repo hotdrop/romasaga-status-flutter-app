@@ -150,7 +150,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
     }
   }
 
-  Future<bool> refreshStage() async {
+  Future<bool> onLoadStage() async {
     try {
       await _stageRepository.refresh();
       latestStageName = await _stageRepository.getLatestStageName();

@@ -15,16 +15,38 @@ class RSDialog {
     this._onSuccessOkPress,
   );
 
-  factory RSDialog.createInfo(
-      {@required String title,
-      @required String description,
-      @required String successMessage,
-      @required String errorMessage,
-      @required Future<bool> Function() onOkPress,
-      void Function() onCancelPress,
-      void Function() onSuccessOkPress}) {
+  factory RSDialog.createInfo({
+    @required String title,
+    @required String description,
+    @required String successMessage,
+    @required String errorMessage,
+    @required Future<bool> Function() onOkPress,
+    void Function() onCancelPress,
+    void Function() onSuccessOkPress,
+  }) {
     return RSDialog._(
       DialogType.INFO,
+      title,
+      description,
+      successMessage,
+      errorMessage,
+      onOkPress,
+      onCancelPress,
+      onSuccessOkPress,
+    );
+  }
+
+  factory RSDialog.createWarning({
+    @required String title,
+    @required String description,
+    @required String successMessage,
+    @required String errorMessage,
+    @required Future<bool> Function() onOkPress,
+    void Function() onCancelPress,
+    void Function() onSuccessOkPress,
+  }) {
+    return RSDialog._(
+      DialogType.WARNING,
       title,
       description,
       successMessage,
