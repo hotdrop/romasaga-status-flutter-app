@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:rsapp/romasaga/common/rs_colors.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_colors.dart';
+import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/model/attribute.dart';
 import 'package:rsapp/romasaga/model/production.dart';
 import 'package:rsapp/romasaga/model/weapon.dart';

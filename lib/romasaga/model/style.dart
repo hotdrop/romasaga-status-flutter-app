@@ -1,4 +1,4 @@
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_strings.dart';
 
 class Style {
   Style(
@@ -44,8 +44,16 @@ class Style {
   String iconFilePath;
 
   static int rankSort(String first, String second) {
-    final firstPriority = (first == RSStrings.rankA) ? 1 : (first == RSStrings.rankS) ? 2 : 3;
-    final secondPriority = (second == RSStrings.rankA) ? 1 : (second == RSStrings.rankS) ? 2 : 3;
+    final firstPriority = (first == RSStrings.rankA)
+        ? 1
+        : (first == RSStrings.rankS)
+            ? 2
+            : 3;
+    final secondPriority = (second == RSStrings.rankA)
+        ? 1
+        : (second == RSStrings.rankS)
+            ? 2
+            : 3;
     if (firstPriority < secondPriority) {
       return -1;
     } else if (firstPriority == secondPriority) {

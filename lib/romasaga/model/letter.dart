@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rsapp/romasaga/common/rs_colors.dart';
+import 'package:rsapp/res/rs_colors.dart';
 
 class Letter {
   const Letter({

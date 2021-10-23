@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rsapp/romasaga/common/rs_colors.dart';
+import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/status.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';

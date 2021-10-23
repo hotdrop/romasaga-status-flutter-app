@@ -29,6 +29,15 @@
 .pub/
 build/
 
+# Web related
+lib/generated_plugin_registrant.dart
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
@@ -84,5 +93,6 @@ build/
 **/ios/Runner/GoogleService-Info.plist
 gen/
 ios/Frameworks/
-**/*.g.dart
-**/*.freezed.dart
+*.g.dart
+*.freezed.dart
+*.mocks.dart

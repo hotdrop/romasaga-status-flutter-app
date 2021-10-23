@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/model/attribute.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rsapp/romasaga/common/rs_env.dart';
+import 'package:rsapp/res/env.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/model/app_settings.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/ui/account/account_page_view_model.dart';
@@ -37,7 +37,7 @@ class AccountPage extends StatelessWidget {
   }
 
   Widget _loadedView(BuildContext context) {
-    RSLogger.d('読み込むキャラクターjsonファイル名:${RSEnv.instance.characterJsonFileName}');
+    RSLogger.d('読み込むキャラクターjsonファイル名:${RSEnv.res.characterJsonFileName}');
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: const Text(RSStrings.accountPageTitle)),
       body: _loadLoginView(context),

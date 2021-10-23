@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/ui/account/account_page.dart';
 import 'package:rsapp/romasaga/ui/characters/char_list_page.dart';
 import 'package:rsapp/romasaga/ui/dashboard/dashboard_page.dart';

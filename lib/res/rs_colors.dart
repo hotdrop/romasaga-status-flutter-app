@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class RSColors {
+  RSColors._();
+
   static const Color floatingActionButtonIcon = Colors.white;
 
   // Chip
   static final Color chipAvatarBackground = Colors.grey.shade300;
   static const Color chipRankA = Color.fromARGB(255, 239, 201, 191);
-  static final Color chipRankS = Color.fromARGB(255, 200, 204, 219);
-  static final Color chipRankSS = Color.fromARGB(255, 233, 217, 77);
+  static const Color chipRankS = Color.fromARGB(255, 200, 204, 219);
+  static const Color chipRankSS = Color.fromARGB(255, 233, 217, 77);
 
   // アイコン
   static final Color iconSelectedBackground = Colors.yellowAccent;

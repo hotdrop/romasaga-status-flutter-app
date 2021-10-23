@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/ui/characters/char_list_row_item.dart';
 import 'package:rsapp/romasaga/ui/characters/char_list_view_model.dart';

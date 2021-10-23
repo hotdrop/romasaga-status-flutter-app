@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rsapp/romasaga/common/rs_colors.dart';
+import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/model/character.dart';
 import 'package:rsapp/romasaga/model/page_state.dart';
 import 'package:rsapp/romasaga/model/status.dart';

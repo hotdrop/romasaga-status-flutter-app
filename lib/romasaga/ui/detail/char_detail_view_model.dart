@@ -1,5 +1,5 @@
 import 'package:rsapp/romasaga/common/rs_logger.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/data/stage_repository.dart';

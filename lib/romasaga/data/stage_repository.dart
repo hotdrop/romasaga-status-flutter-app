@@ -1,4 +1,4 @@
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/data/local/stage_dao.dart';
 import 'package:rsapp/romasaga/data/remote/stage_api.dart';
 import 'package:rsapp/romasaga/model/stage.dart';

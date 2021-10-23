@@ -1,4 +1,6 @@
 class RSStrings {
+  RSStrings._();
+
   static const String appTitle = 'ロマサガRSステータス管理';
 
   static const String bottomMenuCharacter = 'キャラ';

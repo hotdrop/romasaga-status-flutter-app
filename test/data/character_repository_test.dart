@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/local/character_dao.dart';
 import 'package:rsapp/romasaga/data/remote/character_api.dart';

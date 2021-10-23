@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:rsapp/romasaga/common/rs_strings.dart';
+import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/model/letter.dart';
 import 'package:rsapp/romasaga/ui/letter/letter_detail_page.dart';
 import 'package:rsapp/romasaga/ui/widget/custom_page_route.dart';
