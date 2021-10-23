@@ -1,4 +1,4 @@
-import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/local/character_dao.dart';
 import 'package:rsapp/romasaga/data/remote/character_api.dart';
 import 'package:rsapp/models/character.dart';

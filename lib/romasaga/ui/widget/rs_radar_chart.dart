@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_radar_chart/flutter_radar_chart.dart';
 import 'package:provider/provider.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/model/app_settings.dart';
 import 'package:rsapp/models/ranking_character.dart';

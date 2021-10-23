@@ -1,4 +1,4 @@
-import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/common/rs_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppSettingsDao {

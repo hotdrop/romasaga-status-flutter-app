@@ -1,4 +1,4 @@
-import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/letter_repository.dart';
 import 'package:rsapp/models/letter.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';

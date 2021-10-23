@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:rsapp/romasaga/data/local/database.dart';
 import 'package:rsapp/romasaga/data/local/entity/my_status_entity.dart';
 import 'package:rsapp/models/status.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/romasaga/extension/mapper.dart';
 
 class MyStatusDao {

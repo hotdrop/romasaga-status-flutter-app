@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/json/object/character_object.dart';
 import 'package:rsapp/romasaga/data/json/object/style_object.dart';
 import 'package:rsapp/models/attribute.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_colors.dart';
-import 'package:rsapp/romasaga/common/rs_logger.dart';
+import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/romasaga/ui/detail/char_detail_page.dart';
