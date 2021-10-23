@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/romasaga/model/page_state.dart';
-import 'package:rsapp/romasaga/model/status.dart';
+import 'package:rsapp/models/page_state.dart';
+import 'package:rsapp/models/status.dart';
 import 'package:rsapp/romasaga/ui/dashboard/dashboard_view_model.dart';
 import 'package:rsapp/romasaga/ui/widget/custom_rs_widgets.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';

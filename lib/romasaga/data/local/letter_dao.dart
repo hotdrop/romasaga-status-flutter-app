@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:rsapp/romasaga/data/local/database.dart';
 import 'package:rsapp/romasaga/data/local/entity/letter_entity.dart';
-import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/models/letter.dart';
 import 'package:rsapp/romasaga/extension/mapper.dart';
 
 class LetterDao {

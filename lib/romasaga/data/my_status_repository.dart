@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rsapp/romasaga/data/local/my_status_dao.dart';
 import 'package:rsapp/romasaga/data/remote/my_status_api.dart';
-import 'package:rsapp/romasaga/model/status.dart' show MyStatus;
+import 'package:rsapp/models/status.dart' show MyStatus;
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 
 class MyStatusRepository {

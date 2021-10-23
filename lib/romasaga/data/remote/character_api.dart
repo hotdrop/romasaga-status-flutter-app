@@ -1,5 +1,5 @@
 import 'package:rsapp/romasaga/data/json/characters_json.dart';
-import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/models/character.dart';
 import 'package:rsapp/romasaga/service/rs_service.dart';
 
 class CharacterApi {

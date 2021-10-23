@@ -3,9 +3,9 @@ import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
 import 'package:rsapp/romasaga/data/stage_repository.dart';
-import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/model/stage.dart';
-import 'package:rsapp/romasaga/model/style.dart';
+import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/stage.dart';
+import 'package:rsapp/models/style.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class CharDetailViewModel extends ChangeNotifierViewModel {

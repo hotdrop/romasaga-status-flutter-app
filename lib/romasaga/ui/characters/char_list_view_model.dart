@@ -1,7 +1,7 @@
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
-import 'package:rsapp/romasaga/model/character.dart';
+import 'package:rsapp/models/character.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class CharListViewModel extends ChangeNotifierViewModel {

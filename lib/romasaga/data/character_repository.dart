@@ -1,8 +1,8 @@
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/local/character_dao.dart';
 import 'package:rsapp/romasaga/data/remote/character_api.dart';
-import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/model/style.dart';
+import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/style.dart';
 
 class CharacterRepository {
   const CharacterRepository._(this._dao, this._api);

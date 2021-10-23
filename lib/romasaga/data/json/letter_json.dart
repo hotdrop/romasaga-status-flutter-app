@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/json/object/letter_object.dart';
-import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/models/letter.dart';
 
 class LetterJson {
   ///

@@ -1,11 +1,11 @@
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/my_status_repository.dart';
-import 'package:rsapp/romasaga/model/attribute.dart';
-import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/model/production.dart';
-import 'package:rsapp/romasaga/model/search_condition.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/models/attribute.dart';
+import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/production.dart';
+import 'package:rsapp/models/search_condition.dart';
+import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class SearchPageViewModel extends ChangeNotifierViewModel {

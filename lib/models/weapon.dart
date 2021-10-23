@@ -1,22 +1,22 @@
 import 'package:rsapp/res/rs_strings.dart';
 
 class Weapon {
-  Weapon({String name, int type}) {
+  Weapon({String? name, int? type}) {
     if (name != null) {
       _type = _convertType(name);
       _category = _convertCategory(name);
     } else if (type != null) {
-      _type = WeaponType.values.firstWhere((v) => v.index == type, orElse: () => null);
+      _type = WeaponType.values.firstWhere((v) => v.index == type);
       _category = _convertCategoryByType(_type);
     } else {
-      throw FormatException('nameまたはtypeが両方nullです。どちらか片方は必ず指定してください');
+      throw const FormatException('nameまたはtypeが両方nullです。どちらか片方は必ず指定してください');
     }
   }
 
-  WeaponType _type;
+  late WeaponType _type;
   WeaponType get type => _type;
 
-  WeaponCategory _category;
+  late WeaponCategory _category;
   WeaponCategory get category => _category;
 
   WeaponType _convertType(String name) {

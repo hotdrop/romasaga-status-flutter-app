@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rsapp/romasaga/model/status.dart';
+import 'package:rsapp/models/status.dart';
 
 class RSFirestoreMixin {
   static final String _rootCollectionName = 'backup';

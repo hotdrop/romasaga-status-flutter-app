@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/model/app_settings.dart';
-import 'package:rsapp/romasaga/model/ranking_character.dart';
+import 'package:rsapp/models/ranking_character.dart';
 
 class RSRadarChart extends StatelessWidget {
   const RSRadarChart(this._char);

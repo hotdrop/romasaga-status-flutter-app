@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/romasaga/model/attribute.dart';
-import 'package:rsapp/romasaga/model/production.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/models/attribute.dart';
+import 'package:rsapp/models/production.dart';
+import 'package:rsapp/models/weapon.dart';
 
 ///
 /// キャラクターアイコン

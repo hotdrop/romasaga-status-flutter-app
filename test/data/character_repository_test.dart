@@ -4,9 +4,9 @@ import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/data/character_repository.dart';
 import 'package:rsapp/romasaga/data/local/character_dao.dart';
 import 'package:rsapp/romasaga/data/remote/character_api.dart';
-import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/model/style.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/style.dart';
+import 'package:rsapp/models/weapon.dart';
 
 void main() {
   final String dummyNetworkPath = '/dummy/net/icon.jpg';

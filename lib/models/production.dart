@@ -1,5 +1,8 @@
 import 'package:rsapp/res/rs_strings.dart';
 
+///
+/// 作品のモデルクラス
+///
 class Production {
   static bool equal(ProductionType type, String name) {
     final nameToType = convert(name);

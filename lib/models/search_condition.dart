@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:rsapp/romasaga/model/attribute.dart';
-import 'package:rsapp/romasaga/model/production.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/models/attribute.dart';
+import 'package:rsapp/models/production.dart';
+import 'package:rsapp/models/weapon.dart';
 
 class SearchCondition {
-  String keyword;
-  WeaponType weaponType;
-  AttributeType attributeType;
-  ProductionType productionType;
+  String? keyword;
+  WeaponType? weaponType;
+  AttributeType? attributeType;
+  ProductionType? productionType;
   bool isFavorite = false;
   bool haveChar = false;
 
-  bool filterWord({@required String targetName, @required String targetProduction}) {
+  bool filterWord({required String targetName, required String targetProduction}) {
     if (keyword == null) {
       return true;
     }
-    return targetName.contains(keyword) || targetProduction.contains(keyword);
+    return targetName.contains(keyword!) || targetProduction.contains(keyword!);
   }
 
   ///
@@ -52,7 +52,7 @@ class SearchCondition {
   ///
   /// 属性でのフィルタ
   ///
-  bool filterAttributesType(List<Attribute> attributes) {
+  bool filterAttributesType(List<Attribute>? attributes) {
     if (attributeType == null) {
       return true;
     }
@@ -70,6 +70,6 @@ class SearchCondition {
     if (productionType == null) {
       return true;
     }
-    return Production.equal(productionType, name);
+    return Production.equal(productionType!, name);
   }
 }

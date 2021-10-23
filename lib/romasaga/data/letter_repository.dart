@@ -2,7 +2,7 @@ import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/data/local/letter_dao.dart';
 import 'package:rsapp/romasaga/data/remote/letter_api.dart';
-import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/models/letter.dart';
 
 class LetterRepository {
   const LetterRepository._(this._dao, this._api);

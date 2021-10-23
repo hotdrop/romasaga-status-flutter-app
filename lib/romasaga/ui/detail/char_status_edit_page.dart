@@ -4,7 +4,7 @@ import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
 import 'package:rsapp/romasaga/ui/detail/char_status_edit_view_model.dart';
 import 'package:rsapp/romasaga/ui/widget/custom_rs_widgets.dart';
-import 'package:rsapp/romasaga/model/status.dart';
+import 'package:rsapp/models/status.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/res/rs_colors.dart';
 

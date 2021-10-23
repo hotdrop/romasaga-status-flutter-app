@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/json/object/character_object.dart';
 import 'package:rsapp/romasaga/data/json/object/style_object.dart';
-import 'package:rsapp/romasaga/model/attribute.dart';
-import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/model/style.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/models/attribute.dart';
+import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/style.dart';
+import 'package:rsapp/models/weapon.dart';
 
 class CharactersJson {
   static List<Character> parse(String json) {

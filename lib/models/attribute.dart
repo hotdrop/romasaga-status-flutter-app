@@ -1,22 +1,16 @@
-import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
 
 class Attribute {
-  Attribute({String name, int type}) {
+  Attribute({String? name, int? type}) {
     if (name != null) {
       _type = _convert(name);
-    }
-    if (type != null) {
-      _type = AttributeType.values.firstWhere((v) => v.index == type, orElse: () => null);
-    }
-    if (_type == null) {
-      RSLogger.d('typeがnullです');
-      throw FormatException('typeがnullです');
+    } else {
+      _type = AttributeType.values.firstWhere((v) => v.index == type);
     }
   }
 
-  AttributeType _type;
-  AttributeType get type => _type;
+  AttributeType? _type;
+  AttributeType? get type => _type;
 
   AttributeType _convert(String name) {
     switch (name) {

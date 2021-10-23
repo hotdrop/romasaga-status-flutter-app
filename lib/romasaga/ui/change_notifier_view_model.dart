@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:rsapp/romasaga/model/page_state.dart';
+import 'package:rsapp/models/page_state.dart';
 
 class ChangeNotifierViewModel extends ChangeNotifier {
   PageState pageState = PageNowLoading();

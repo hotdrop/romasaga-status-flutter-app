@@ -1,7 +1,7 @@
 import 'package:rsapp/romasaga/service/mixin_auth.dart';
 import 'package:rsapp/romasaga/service/mixin_storage.dart';
 import 'package:rsapp/romasaga/service/mixin_firestore.dart';
-import 'package:rsapp/romasaga/model/status.dart' show MyStatus;
+import 'package:rsapp/models/status.dart' show MyStatus;
 
 class RSService with RSAuthMixin, RSStorageMixin, RSFirestoreMixin {
   RSService._();

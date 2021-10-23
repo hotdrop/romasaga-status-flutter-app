@@ -1,7 +1,7 @@
-import 'package:rsapp/romasaga/model/attribute.dart';
-import 'package:rsapp/romasaga/model/status.dart';
-import 'package:rsapp/romasaga/model/style.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/models/attribute.dart';
+import 'package:rsapp/models/status.dart';
+import 'package:rsapp/models/style.dart';
+import 'package:rsapp/models/weapon.dart';
 
 class Character {
   Character(
@@ -13,20 +13,17 @@ class Character {
     this.selectedStyleRank,
     this.selectedIconFilePath,
     this.statusUpEvent = false,
-  }) : this.myStatus = MyStatus.empty(id);
+  }) : myStatus = MyStatus.empty(id);
 
   final int id;
   final String name;
   final String production; // 登場作品
   final Weapon weapon;
-  final List<Attribute> attributes;
-
-  String selectedStyleRank;
-  String selectedIconFilePath;
+  final List<Attribute>? attributes;
+  String? selectedStyleRank;
+  String? selectedIconFilePath;
   bool statusUpEvent;
-
   final styles = <Style>[];
-
   MyStatus myStatus;
 
   WeaponType get weaponType => weapon.type;
@@ -48,7 +45,7 @@ class Character {
     styles.addAll(argStyles);
   }
 
-  Style getStyle(String rank) {
+  Style getStyle(String? rank) {
     return styles.firstWhere((style) => style.rank == rank);
   }
 }

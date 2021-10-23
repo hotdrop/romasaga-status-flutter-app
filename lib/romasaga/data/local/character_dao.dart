@@ -7,8 +7,8 @@ import 'package:rsapp/romasaga/data/local/database.dart';
 import 'package:rsapp/romasaga/data/local/entity/character_entity.dart';
 import 'package:rsapp/romasaga/data/local/entity/style_entity.dart';
 import 'package:rsapp/romasaga/extension/mapper.dart';
-import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/model/style.dart';
+import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/style.dart';
 import 'package:sqflite/sqflite.dart';
 
 class CharacterDao {

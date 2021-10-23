@@ -6,7 +6,7 @@ import 'package:rsapp/romasaga/data/json/stages_json.dart';
 import 'package:rsapp/romasaga/data/local/database.dart';
 import 'package:rsapp/romasaga/data/local/entity/stage_entity.dart';
 import 'package:rsapp/romasaga/extension/mapper.dart';
-import 'package:rsapp/romasaga/model/stage.dart';
+import 'package:rsapp/models/stage.dart';
 import 'package:sqflite/sqflite.dart';
 
 class StageDao {

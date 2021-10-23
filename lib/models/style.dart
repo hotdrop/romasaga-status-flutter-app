@@ -14,23 +14,12 @@ class Style {
     this.spirit,
     this.love,
     this.attr,
-  )   : assert(rank != null, 'id=$characterId のrankがnullです'),
-        assert(title != null, 'id=$characterId のtitleがnullです'),
-        assert(str != null, 'id=$characterId のstrがnullです'),
-        assert(vit != null, 'id=$characterId のvitがnullです'),
-        assert(dex != null, 'id=$characterId のdexがnullです'),
-        assert(agi != null, 'id=$characterId のaigがnullです'),
-        assert(intelligence != null, 'id=$characterId のintがnullです'),
-        assert(spirit != null, 'id=$characterId のspiritがnullです'),
-        assert(love != null, 'id=$characterId のloveがnullです'),
-        assert(attr != null, 'id=$characterId のattrがnullです'),
-        assert(iconFileName != null, 'id=$characterId のiconFileNameがnullです');
+  );
 
   final int characterId;
   final String rank;
   final String title;
   final String iconFileName;
-
   final int str;
   final int vit;
   final int dex;
@@ -39,9 +28,7 @@ class Style {
   final int spirit;
   final int love;
   final int attr;
-
-  // アイコンはネットワーク経由で取得するためパスを別に取得する必要がありfinalをつけていない
-  String iconFilePath;
+  String? iconFilePath; // アイコンはネットワーク経由で取得する
 
   static int rankSort(String first, String second) {
     final firstPriority = (first == RSStrings.rankA)

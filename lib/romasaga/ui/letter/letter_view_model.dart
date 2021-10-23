@@ -1,6 +1,6 @@
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/romasaga/data/letter_repository.dart';
-import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/models/letter.dart';
 import 'package:rsapp/romasaga/ui/change_notifier_view_model.dart';
 
 class LetterViewModel extends ChangeNotifierViewModel {

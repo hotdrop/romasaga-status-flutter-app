@@ -1,5 +1,5 @@
 import 'package:rsapp/romasaga/data/json/letter_json.dart';
-import 'package:rsapp/romasaga/model/letter.dart';
+import 'package:rsapp/models/letter.dart';
 import 'package:rsapp/romasaga/service/rs_service.dart';
 
 class LetterApi {

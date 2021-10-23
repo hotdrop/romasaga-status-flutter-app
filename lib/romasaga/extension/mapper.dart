@@ -1,10 +1,10 @@
-import 'package:rsapp/romasaga/model/stage.dart';
-import 'package:rsapp/romasaga/model/character.dart';
-import 'package:rsapp/romasaga/model/style.dart';
-import 'package:rsapp/romasaga/model/status.dart';
-import 'package:rsapp/romasaga/model/letter.dart';
-import 'package:rsapp/romasaga/model/attribute.dart';
-import 'package:rsapp/romasaga/model/weapon.dart';
+import 'package:rsapp/models/stage.dart';
+import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/style.dart';
+import 'package:rsapp/models/status.dart';
+import 'package:rsapp/models/letter.dart';
+import 'package:rsapp/models/attribute.dart';
+import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/romasaga/data/local/entity/stage_entity.dart';
 import 'package:rsapp/romasaga/data/local/entity/character_entity.dart';
 import 'package:rsapp/romasaga/data/local/entity/style_entity.dart';

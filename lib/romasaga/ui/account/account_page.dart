@@ -4,7 +4,7 @@ import 'package:rsapp/res/env.dart';
 import 'package:rsapp/romasaga/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/model/app_settings.dart';
-import 'package:rsapp/romasaga/model/page_state.dart';
+import 'package:rsapp/models/page_state.dart';
 import 'package:rsapp/romasaga/ui/account/account_page_view_model.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_dialog.dart';
 
