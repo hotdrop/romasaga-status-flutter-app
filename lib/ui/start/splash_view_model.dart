@@ -12,7 +12,7 @@ class _SplashViewModel extends BaseViewModel {
 
   Future<void> init() async {
     // アプリに必要な初期処理を行う
-    await _read(appSettingsProvider.notifier).refresh();
+    await _read(appSettingsProvider.notifier).init();
     onSuccess();
   }
 }

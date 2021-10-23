@@ -114,7 +114,7 @@ class AccountPageViewModel extends ChangeNotifierViewModel {
 
   Future<bool> logout() async {
     try {
-      await _accountRepository.logout();
+      await _accountRepository.signOut();
       _loginStatus = _LoginStatus.notLogin;
       notifyListeners();
       return true;

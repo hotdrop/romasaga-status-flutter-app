@@ -34,15 +34,16 @@ mixin RSAuthMixin {
       await FirebaseAuth.instance.signInWithCredential(credential);
       RSLogger.d('サインイン処理が完了しました。');
     } on PlatformException catch (e, s) {
+      // TODO eを出力してthrowするのだるいからいっぺんにできたほうがいい。
       RSLogger.e('FirebaseAuth: サインイン処理でエラー', exception: e, stackTrace: s);
-      throw const RSException(message: 'サインイン処理でプラットフォームのエラーが発生しました。');
+      throw RSException(message: 'サインイン処理でプラットフォームのエラーが発生しました。', exception: e, stackTrace: s);
     } on FirebaseAuthException catch (e, s) {
       RSLogger.e('FirebaseAuth: サインイン処理でエラー', exception: e, stackTrace: s);
-      throw const RSException(message: 'サインイン処理でFirebaseのエラーが発生しました。');
+      throw RSException(message: 'サインイン処理でFirebaseのエラーが発生しました。', exception: e, stackTrace: s);
     }
   }
 
-  Future<void> logout() async {
+  Future<void> signOut() async {
     GoogleSignIn().disconnect();
     await FirebaseAuth.instance.signOut();
   }

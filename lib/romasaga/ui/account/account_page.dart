@@ -85,7 +85,7 @@ class AccountPage extends StatelessWidget {
             description: RSStrings.accountLogoutDialogMessage,
             successMessage: RSStrings.accountLogoutSuccessMessage,
             errorMessage: viewModel.errorMessage,
-            onOkPress: viewModel.logout,
+            onOkPress: viewModel.signOut,
           );
           await dialog.show(context);
         },

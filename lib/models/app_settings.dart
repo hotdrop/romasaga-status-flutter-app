@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/app_setting_repository.dart';
+import 'package:rsapp/service/rs_service.dart';
 
 final appSettingsProvider = StateNotifierProvider<_AppSettingsNotifier, AppSettings>((ref) => _AppSettingsNotifier(ref.read));
 
@@ -8,6 +9,14 @@ class _AppSettingsNotifier extends StateNotifier<AppSettings> {
   _AppSettingsNotifier(this._read) : super(const AppSettings());
 
   final Reader _read;
+
+  ///
+  /// アプリ起動時に一回だけ呼ぶ
+  ///
+  Future<void> init() async {
+    await _read(rsServiceProvider).init();
+    await refresh();
+  }
 
   Future<void> refresh() async {
     final isDarkMode = await _read(appSettingsRepositoryProvider).isDarkMode();
