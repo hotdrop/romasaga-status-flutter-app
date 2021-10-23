@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/res/rs_theme.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/romasaga/model/app_settings.dart';
-import 'package:rsapp/romasaga/ui/top_page.dart';
 import 'package:rsapp/ui/start/splash_page.dart';
 
 class App extends StatelessWidget {

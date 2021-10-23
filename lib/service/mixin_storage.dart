@@ -2,25 +2,24 @@ import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:rsapp/romasaga/common/rs_env.dart';
+import 'package:rsapp/res/env.dart';
 
 mixin RSStorageMixin {
   Future<String> readStagesJson() async {
-    return await _readJson(path: RSEnv.instance.stageJsonFileName);
+    return await _readJson(path: RSEnv.res.stageJsonFileName);
   }
 
   Future<String> readCharactersJson() async {
-    return await _readJson(path: RSEnv.instance.characterJsonFileName);
+    return await _readJson(path: RSEnv.res.characterJsonFileName);
   }
 
   Future<String> readLettersJson() async {
-    return await _readJson(path: RSEnv.instance.lettersJsonFileName);
+    return await _readJson(path: RSEnv.res.lettersJsonFileName);
   }
 
-  Future<String> _readJson({String path}) async {
-    final StorageReference ref = FirebaseStorage().ref().child(path);
-    final String url = await ref.getDownloadURL() as String;
-    final http.Response response = await http.get(url);
+  Future<String> _readJson({required String path}) async {
+    final url = await FirebaseStorage.instance.ref().child(path).getDownloadURL();
+    final response = await http.get(Uri.parse(url));
     return utf8.decode(response.bodyBytes);
   }
 
@@ -33,7 +32,6 @@ mixin RSStorageMixin {
   }
 
   Future<String> _getDownloadUrl(String refPath) async {
-    final StorageReference ref = FirebaseStorage().ref().child(refPath);
-    return await ref.getDownloadURL() as String;
+    return FirebaseStorage.instance.ref().child(refPath).getDownloadURL();
   }
 }

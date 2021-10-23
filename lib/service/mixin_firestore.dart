@@ -2,12 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rsapp/models/status.dart';
 
 class RSFirestoreMixin {
-  static final String _rootCollectionName = 'backup';
-  static final String _statusCollectionName = 'statuses';
+  static const String _rootCollectionName = 'backup';
+  static const String _statusCollectionName = 'statuses';
 
   Future<void> setMyStatuses(List<MyStatus> myStatuses, String uid) async {
     for (var myStatus in myStatuses) {
-      await FirebaseFirestore.instance.collection(_rootCollectionName).doc(uid).collection(_statusCollectionName).doc(myStatus.id.toString()).set(_toMap(myStatus));
+      await FirebaseFirestore.instance //
+          .collection(_rootCollectionName)
+          .doc(uid)
+          .collection(_statusCollectionName)
+          .doc(myStatus.id.toString())
+          .set(_toMap(myStatus));
     }
   }
 
@@ -28,7 +33,12 @@ class RSFirestoreMixin {
   }
 
   Future<List<MyStatus>> getMyStatues(String uid) async {
-    final snapshots = await FirebaseFirestore.instance.collection(_rootCollectionName).doc(uid).collection(_statusCollectionName).get();
+    final snapshots = await FirebaseFirestore.instance //
+        .collection(_rootCollectionName)
+        .doc(uid)
+        .collection(_statusCollectionName)
+        .get();
+
     final results = <MyStatus>[];
     for (var doc in snapshots.docs) {
       results.add(_toMyStatus(doc));
