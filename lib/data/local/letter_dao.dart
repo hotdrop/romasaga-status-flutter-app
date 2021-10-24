@@ -7,6 +7,9 @@ import 'package:rsapp/common/mapper.dart';
 
 final letterDaoProvider = Provider((ref) => _LetterDao(ref.read, DBProvider.instance));
 
+///
+/// TODO Hiveに作り直し
+///
 class _LetterDao {
   const _LetterDao(this._read, this._dbProvider);
 

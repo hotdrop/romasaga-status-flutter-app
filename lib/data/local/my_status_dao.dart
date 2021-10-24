@@ -8,6 +8,9 @@ import 'package:rsapp/common/mapper.dart';
 
 final myStatusDaoProvider = Provider((ref) => _MyStatusDao(ref.read, DBProvider.instance));
 
+///
+/// TODO Hiveに作り直し
+///
 class _MyStatusDao {
   const _MyStatusDao(this._read, this._dbProvider);
 

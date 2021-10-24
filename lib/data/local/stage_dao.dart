@@ -1,64 +1,56 @@
-import 'dart:io';
+import 'dart:math';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rsapp/data/local/database.dart';
-import 'package:rsapp/models/rs_exception.dart';
-import 'package:rsapp/data/json/stages_json.dart';
+import 'package:hive/hive.dart';
 import 'package:rsapp/data/local/entity/stage_entity.dart';
-import 'package:rsapp/common/mapper.dart';
 import 'package:rsapp/models/stage.dart';
-import 'package:sqflite/sqflite.dart';
 
-final stageDaoProvider = Provider((ref) => _StageDao(ref.read, DBProvider.instance));
+final stageDaoProvider = Provider((ref) => const _StageDao());
 
 class _StageDao {
-  const _StageDao(this._read, this._dbProvider);
-
-  final Reader _read;
-  final DBProvider _dbProvider;
-
-  Future<List<Stage>> loadDummy({String localPath = 'res/json/stage.json'}) async {
-    try {
-      return await rootBundle.loadStructuredData(localPath, (json) async {
-        return StagesJson.parse(json);
-      });
-    } on IOException catch (e, s) {
-      throw RSException(message: 'ステージデータの取得に失敗しました。', exception: e, stackTrace: s);
-    }
-  }
+  const _StageDao();
 
   Future<List<Stage>> findAll() async {
-    final db = await _dbProvider.database;
-    final results = await db.query(StageEntity.tableName, orderBy: StageEntity.columnOrder);
-
-    // ステージ情報は最新を先頭に持ってきたいのでorderの降順にしている。
-    final List<StageEntity> entities = results.isNotEmpty ? results.reversed.map((it) => StageEntity.fromMap(it)).toList() : [];
-    return entities.map((entity) => entity.toStage()).toList();
-  }
-
-  Future<int> count() async {
-    final db = await _dbProvider.database;
-    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM ${StageEntity.tableName}'));
-    return count ?? 0;
-  }
-
-  Future<void> refresh(List<Stage> stages) async {
-    final db = await _dbProvider.database;
-    await db.transaction((txn) async {
-      await _delete(txn);
-      await _insert(txn, stages);
-    });
-  }
-
-  Future<void> _delete(Transaction txn) async {
-    await txn.delete(StageEntity.tableName);
-  }
-
-  Future<void> _insert(Transaction txn, List<Stage> stages) async {
-    final entities = stages.map((stage) => stage.toEntity());
-    for (var entity in entities) {
-      await txn.insert(StageEntity.tableName, entity.toMap());
+    final box = await Hive.openBox<StageEntity>(StageEntity.boxName);
+    if (box.isEmpty) {
+      return _defaultStages();
     }
+
+    return box.values
+        .map((e) => Stage(
+              e.name,
+              e.limit,
+              e.order,
+              id: e.id,
+            ))
+        .toList();
+  }
+
+  List<Stage> _defaultStages() {
+    return const [
+      Stage('VH6', 0, 1),
+      Stage('VH7', 2, 2),
+    ];
+  }
+
+  Future<void> save(Stage stage) async {
+    final id = stage.id ?? await _createNewId();
+    final entity = StageEntity(id: id, name: stage.name, limit: stage.limit, order: stage.order);
+    final box = await Hive.openBox<StageEntity>(StageEntity.boxName);
+    await box.put(id, entity);
+  }
+
+  Future<int> _createNewId() async {
+    final box = await Hive.openBox<StageEntity>(StageEntity.boxName);
+    if (box.isEmpty) {
+      return 1;
+    }
+    final maxId = box.values.map((e) => e.id).reduce(max);
+    return maxId + 1;
+  }
+
+  Future<void> delete(Stage stage) async {
+    final box = await Hive.openBox<StageEntity>(StageEntity.boxName);
+    box.delete(stage.id!);
   }
 }

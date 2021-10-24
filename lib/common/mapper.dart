@@ -125,13 +125,7 @@ extension StyleMapper on Style {
 
 extension StageEntityMapper on StageEntity {
   Stage toStage() {
-    return Stage(name, statusUpperLimit, itemOrder);
-  }
-}
-
-extension StageMapper on Stage {
-  StageEntity toEntity() {
-    return StageEntity(name, limit, order);
+    return Stage(name, limit, order);
   }
 }
 

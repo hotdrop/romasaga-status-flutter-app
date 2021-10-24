@@ -53,7 +53,6 @@ class DBProvider {
   void _createTableV1(Batch batch) {
     batch.execute(CharacterEntity.createTableSql);
     batch.execute(StyleEntity.createTableSql);
-    batch.execute(StageEntity.createTableSql);
     batch.execute(MyStatusEntity.createTableSql);
   }
 

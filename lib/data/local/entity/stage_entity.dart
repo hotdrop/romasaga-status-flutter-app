@@ -1,45 +1,27 @@
-class StageEntity {
-  StageEntity(
-    this.name,
-    this.statusUpperLimit,
-    this.itemOrder,
-  );
+import 'package:hive/hive.dart';
 
-  StageEntity.fromMap(Map<String, dynamic> map)
-      : id = map[columnId] as int,
-        name = map[columnName] as String,
-        statusUpperLimit = map[columnAddLimit] as int,
-        itemOrder = map[columnOrder] as int;
+part 'stage_entity.g.dart';
 
-  static const String tableName = 'Stage';
-  static const String createTableSql = '''
-      CREATE TABLE $tableName (
-        $columnId INTEGER PRIMARY KEY autoincrement,
-        $columnName TEXT,
-        $columnAddLimit INTEGER,
-        $columnOrder INTEGER
-      )
-      ''';
+@HiveType(typeId: 0)
+class StageEntity extends HiveObject {
+  StageEntity({
+    required this.id,
+    required this.name,
+    required this.limit,
+    required this.order,
+  });
 
-  static const String columnId = 'id';
-  int? id;
+  static const String boxName = 'stage';
 
-  static const String columnName = 'name';
+  @HiveField(0)
+  final int id;
+
+  @HiveField(1)
   final String name;
 
-  static const String columnAddLimit = 'status_upper_limit';
-  final int statusUpperLimit;
+  @HiveField(2)
+  final int limit;
 
-  static const String columnOrder = 'item_order';
-  final int itemOrder;
-
-  Map<String, dynamic> toMap() {
-    final map = <String, dynamic>{columnName: name, columnAddLimit: statusUpperLimit, columnOrder: itemOrder};
-
-    if (id != null) {
-      map[columnId] = id;
-    }
-
-    return map;
-  }
+  @HiveField(3)
+  final int order;
 }

@@ -20,9 +20,9 @@ class _StageRepository {
 
     if (stages.isEmpty) {
       RSLogger.d('キャッシュにデータがないのでローカルファイルを読み込みます。');
-      final tmp = await _read(stageDaoProvider).loadDummy();
-      RSLogger.d('  ${tmp.length}件のデータを取得しました。キャッシュします。');
-      await _read(stageDaoProvider).refresh(tmp);
+      // final tmp = await _read(stageDaoProvider).loadDummy();
+      // RSLogger.d('  ${tmp.length}件のデータを取得しました。キャッシュします。');
+      // await _read(stageDaoProvider).refresh(tmp);
 
       RSLogger.d('再度キャッシュからデータを取得します。');
       stages = await _read(stageDaoProvider).findAll();
@@ -36,7 +36,7 @@ class _StageRepository {
     final stages = await _read(stageApiProvider).findAll();
     RSLogger.d('リモートから${stages.length}件のデータを取得しました。');
 
-    await _read(stageDaoProvider).refresh(stages);
+    // await _read(stageDaoProvider).refresh(stages);
   }
 
   Future<String> getLatestStageName() async {

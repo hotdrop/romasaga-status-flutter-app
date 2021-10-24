@@ -15,6 +15,9 @@ import 'package:sqflite/sqflite.dart';
 
 final characterDaoProvider = Provider((ref) => _CharacterDao(ref.read, DBProvider.instance));
 
+///
+/// TODO Hiveに作り直し
+///
 class _CharacterDao {
   const _CharacterDao(this._read, this._dbProvider);
 
