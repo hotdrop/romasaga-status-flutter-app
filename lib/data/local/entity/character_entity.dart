@@ -1,75 +1,67 @@
-class CharacterEntity {
-  const CharacterEntity(
-    this.id,
-    this.name,
-    this.production,
-    this.weaponType,
-    this.attributeTypes,
-    this.selectedStyleRank,
-    this.selectedIconFilePath,
-    this.statusUpEvent,
-  );
+import 'package:hive_flutter/hive_flutter.dart';
 
-  CharacterEntity.fromMap(Map<String, dynamic> map)
-      : id = map[columnId] as int,
-        name = map[columnName] as String,
-        production = map[columnProduction] as String,
-        weaponType = map[columnWeaponType] as int,
-        attributeTypes = map[columnAttributeTypes] as String,
-        selectedStyleRank = map[columnSelectedStyleRank] as String,
-        selectedIconFilePath = map[columnSelectedIconFilePath] as String,
-        statusUpEvent = map[columnStatusUpEvent] as int;
+part 'character_entity.g.dart';
 
-  static const String tableName = 'Character';
-  static const String createTableSql = '''
-      CREATE TABLE $tableName (
-        $columnId INTEGER,
-        $columnName TEXT,
-        $columnProduction TEXT,
-        $columnWeaponType INTEGER,
-        $columnAttributeTypes TEXT,
-        $columnSelectedStyleRank TEXT,
-        $columnSelectedIconFilePath TEXT,
-        $columnStatusUpEvent INTEGER
-      )
-      ''';
+@HiveType(typeId: 2)
+class CharacterEntity extends HiveObject {
+  CharacterEntity({
+    required this.id,
+    required this.name,
+    required this.production,
+    required this.weaponType,
+    required this.attributeTypes,
+    required this.selectedStyleRank,
+    required this.selectedIconFilePath,
+    required this.statusUpEvent,
+  });
 
-  static const String columnId = 'id';
+  static const String boxName = 'character';
+
+  @HiveField(0)
   final int id;
 
-  static const String columnName = 'name';
+  @HiveField(1)
   final String name;
 
-  static const String columnProduction = 'production';
+  @HiveField(2)
   final String production;
 
-  static const String columnWeaponType = 'weapon_type';
+  @HiveField(3)
   final int weaponType;
 
-  static const String columnAttributeTypes = 'attributes';
+  @HiveField(4)
   final String attributeTypes;
 
-  static const String columnSelectedStyleRank = 'selected_style_rank';
+  @HiveField(5)
   final String selectedStyleRank;
 
-  static const String columnSelectedIconFilePath = 'selected_icon_file_path';
+  @HiveField(6)
   final String selectedIconFilePath;
 
-  static const String columnStatusUpEvent = 'status_up_event';
-  static const int nowStatusUpEvent = 1;
-  static const int notStatusUpEvent = 0;
+  @HiveField(7)
   final int statusUpEvent;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      columnId: id,
-      columnName: name,
-      columnProduction: production,
-      columnWeaponType: weaponType,
-      columnAttributeTypes: attributeTypes,
-      columnSelectedStyleRank: selectedStyleRank,
-      columnSelectedIconFilePath: selectedIconFilePath,
-      columnStatusUpEvent: statusUpEvent,
-    };
+  static const int nowStatusUpEvent = 1;
+  static const int notStatusUpEvent = 0;
+
+  CharacterEntity copyWith({
+    String? name,
+    String? production,
+    int? weaponType,
+    String? attributeTypes,
+    String? selectedStyleRank,
+    String? selectedIconFilePath,
+    int? statusUpEvent,
+  }) {
+    return CharacterEntity(
+      id: id,
+      name: name ?? this.name,
+      production: production ?? this.name,
+      weaponType: weaponType ?? this.weaponType,
+      attributeTypes: attributeTypes ?? this.attributeTypes,
+      selectedStyleRank: selectedStyleRank ?? this.selectedStyleRank,
+      selectedIconFilePath: selectedIconFilePath ?? this.selectedIconFilePath,
+      statusUpEvent: statusUpEvent ?? this.statusUpEvent,
+    );
   }
 }

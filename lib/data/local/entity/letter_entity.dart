@@ -1,70 +1,39 @@
-class LetterEntity {
-  LetterEntity(
-    this.year,
-    this.month,
-    this.title,
-    this.shortTitle,
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'letter_entity.g.dart';
+
+@HiveType(typeId: 1)
+class LetterEntity extends HiveObject {
+  LetterEntity({
+    required this.id,
+    required this.year,
+    required this.month,
+    required this.title,
+    required this.shortTitle,
     this.gifFilePath,
     this.staticImagePath,
-  );
+  });
 
-  LetterEntity.fromMap(Map<String, dynamic> map)
-      : id = map[columnId] as int,
-        year = map[columnYear] as int,
-        month = map[columnMonth] as int,
-        title = map[columnTitle] as String,
-        shortTitle = map[columnShortTitle] as String,
-        gifFilePath = map[columnGifFilePath] as String,
-        staticImagePath = map[columnStaticImagePath] as String;
+  static const String boxName = 'letter';
 
-  static const String tableName = 'Letter';
-  static const String createTableSql = '''
-      CREATE TABLE $tableName (
-        $columnId INTEGER PRIMARY KEY autoincrement,
-        $columnYear INTEGER,
-        $columnMonth INTEGER,
-        $columnTitle TEXT,
-        $columnShortTitle TEXT,
-        $columnGifFilePath TEXT,
-        $columnStaticImagePath TEXT
-      )
-      ''';
+  @HiveField(0)
+  final int id;
 
-  static const String columnId = 'id';
-  int? id;
-
-  static const String columnYear = 'year';
+  @HiveField(1)
   final int year;
 
-  static const String columnMonth = 'month';
+  @HiveField(2)
   final int month;
 
-  static const String columnTitle = 'title';
+  @HiveField(3)
   final String title;
 
-  static const String columnShortTitle = 'shortTitle';
+  @HiveField(4)
   final String shortTitle;
 
-  static const String columnGifFilePath = 'gifFilePath';
-  final String gifFilePath;
+  @HiveField(5)
+  final String? gifFilePath;
 
-  static const String columnStaticImagePath = 'staticImagePath';
-  final String staticImagePath;
-
-  Map<String, dynamic> toMap() {
-    final map = <String, dynamic>{
-      columnYear: year,
-      columnMonth: month,
-      columnTitle: title,
-      columnShortTitle: shortTitle,
-      columnGifFilePath: gifFilePath,
-      columnStaticImagePath: staticImagePath,
-    };
-
-    if (id != null) {
-      map[columnId] = id;
-    }
-
-    return map;
-  }
+  @HiveField(6)
+  final String? staticImagePath;
 }

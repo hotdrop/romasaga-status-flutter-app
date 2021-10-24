@@ -2,79 +2,62 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rsapp/common/rs_logger.dart';
+import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/rs_exception.dart';
 import 'package:rsapp/data/json/characters_json.dart';
-import 'package:rsapp/data/local/database.dart';
 import 'package:rsapp/data/local/entity/character_entity.dart';
 import 'package:rsapp/data/local/entity/style_entity.dart';
-import 'package:rsapp/common/mapper.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/style.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:rsapp/models/weapon.dart';
 
-final characterDaoProvider = Provider((ref) => _CharacterDao(ref.read, DBProvider.instance));
+final characterDaoProvider = Provider((ref) => const _CharacterDao());
 
-///
-/// TODO Hiveに作り直し
-///
 class _CharacterDao {
-  const _CharacterDao(this._read, this._dbProvider);
-
-  final Reader _read;
-  final DBProvider _dbProvider;
+  const _CharacterDao();
 
   ///
   /// 全キャラクター情報を取得
   ///
   Future<List<Character>> findAll() async {
-    final db = await _dbProvider.database;
-
-    final fromDb = await db.query(CharacterEntity.tableName);
-    final fromDbStyle = await db.query(StyleEntity.tableName);
-
-    if (fromDb.isEmpty) {
+    final charBox = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
+    final styleBox = await Hive.openBox<StyleEntity>(StyleEntity.boxName);
+    if (charBox.isEmpty) {
       return [];
     }
 
-    final styles = fromDbStyle.map((result) => StyleEntity.fromMap(result)).map((entity) => entity.toStyle()).toList();
-
-    return fromDb.map((result) => CharacterEntity.fromMap(result)).map((entity) => entity.toCharacter()).map((character) {
+    final styles = styleBox.values.map((e) => _toStyle(e)).toList();
+    return charBox.values.map((e) => _toCharacter(e)).map((character) {
       styles.where((style) => style.characterId == character.id).forEach((style) => character.addStyle(style));
       return character;
     }).toList();
   }
 
   ///
-  /// 全キャラクター情報を取得
-  /// スタイル情報は取ってこないので注意
+  /// 全キャラクターのスタイル以外の情報を取得
   ///
   Future<List<Character>> findAllSummary() async {
-    final db = await _dbProvider.database;
-    final results = await db.query(CharacterEntity.tableName);
-
-    if (results.isEmpty) {
+    final box = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
+    if (box.isEmpty) {
       return [];
     }
-
-    return results.map((result) => CharacterEntity.fromMap(result)).map((entity) => entity.toCharacter()).toList();
+    return box.values.map((e) => _toCharacter(e)).toList();
   }
 
   ///
   /// 引数に指定したキャラクターIDのスタイル一式を取得
   ///
   Future<List<Style>> findStyles(int id) async {
-    final db = await _dbProvider.database;
-    final results = await db.query(StyleEntity.tableName, where: '${StyleEntity.columnCharacterId} = ?', whereArgs: <int>[id]);
-
-    return results.map((result) => StyleEntity.fromMap(result)).map((entity) => entity.toStyle()).toList();
+    final box = await Hive.openBox<StyleEntity>(StyleEntity.boxName);
+    final styleEntities = box.values.where((e) => e.characterId == id).toList();
+    return styleEntities.map((e) => _toStyle(e)).toList();
   }
 
   Future<int> count() async {
-    final db = await _dbProvider.database;
-    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM ${CharacterEntity.tableName}'));
-
-    return count ?? 0;
+    final box = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
+    return box.length;
   }
 
   Future<List<Character>> loadDummy({String localPath = 'res/json/characters.json'}) async {
@@ -89,65 +72,111 @@ class _CharacterDao {
   }
 
   Future<void> refresh(List<Character> characters) async {
-    final db = await _dbProvider.database;
-    await db.transaction((txn) async {
-      await _delete(txn);
-      await _insert(txn, characters);
-    });
-  }
+    final charBox = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
+    final styleBox = await Hive.openBox<StyleEntity>(StyleEntity.boxName);
 
-  Future<void> _delete(Transaction txn) async {
-    await txn.delete(CharacterEntity.tableName);
-    await txn.delete(StyleEntity.tableName);
-  }
+    charBox.clear();
+    styleBox.clear();
 
-  Future<void> _insert(Transaction txn, List<Character> characters) async {
     for (var character in characters) {
-      final entity = character.toEntity();
-      await txn.insert(CharacterEntity.tableName, entity.toMap());
+      final entity = _toCharacterEntity(character);
+      await charBox.put(entity.id, entity);
 
       for (var style in character.styles) {
-        final entity = style.toEntity();
-        await txn.insert(StyleEntity.tableName, entity.toMap());
+        final entity = _toStyleEntity(style);
+        await styleBox.put(entity.id, entity);
       }
     }
   }
 
   Future<void> updateStyleIcon(int id, String rank, String iconFilePath) async {
-    final db = await _dbProvider.database;
-    await db.rawUpdate("""
-      UPDATE 
-        ${StyleEntity.tableName} 
-      SET
-        ${StyleEntity.columnIconFilePath} = '$iconFilePath'
-      WHERE
-        ${StyleEntity.columnCharacterId} = $id AND ${StyleEntity.columnRank} = '$rank'
-    """);
+    final box = await Hive.openBox<StyleEntity>(StyleEntity.boxName);
+    final target = box.values.where((s) => s.characterId == id && s.rank == rank).first;
+    final newData = target.copyWith(iconFilePath: iconFilePath);
+    await box.put(newData.id, newData);
   }
 
   Future<void> saveSelectedStyle(int id, String rank, String iconFilePath) async {
-    final db = await _dbProvider.database;
-    await db.rawUpdate("""
-      UPDATE 
-        ${CharacterEntity.tableName}
-      SET 
-        ${CharacterEntity.columnSelectedStyleRank} = '$rank', 
-        ${CharacterEntity.columnSelectedIconFilePath} = '$iconFilePath' 
-      WHERE 
-        ${CharacterEntity.columnId} = $id
-      """);
+    final box = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
+    final target = box.values.where((c) => c.id == id).first;
+    final newData = target.copyWith(selectedStyleRank: rank, selectedIconFilePath: iconFilePath);
+    await box.put(newData.id, newData);
   }
 
   Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
-    final db = await _dbProvider.database;
+    final box = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
+    final target = box.values.where((c) => c.id == id).first;
+
     final value = statusUpEvent ? CharacterEntity.nowStatusUpEvent : CharacterEntity.notStatusUpEvent;
-    await db.rawUpdate("""
-      UPDATE 
-        ${CharacterEntity.tableName}
-      SET 
-        ${CharacterEntity.columnStatusUpEvent} = '$value'
-      WHERE 
-        ${CharacterEntity.columnId} = $id
-      """);
+    final newData = target.copyWith(statusUpEvent: value);
+    await box.put(newData.id, newData);
+  }
+
+  Character _toCharacter(CharacterEntity entity) {
+    final attributeTypes = entity.attributeTypes.trim();
+    List<Attribute>? attributes;
+    if (attributeTypes.isNotEmpty) {
+      attributes = attributeTypes.split(',').map((s) => int.parse(s)).map((t) => Attribute(type: t)).toList();
+    }
+    return Character(
+      entity.id,
+      entity.name,
+      entity.production,
+      Weapon(type: entity.weaponType),
+      attributes: attributes ?? [],
+      selectedStyleRank: entity.selectedStyleRank,
+      selectedIconFilePath: entity.selectedIconFilePath,
+      statusUpEvent: entity.statusUpEvent == CharacterEntity.nowStatusUpEvent ? true : false,
+    );
+  }
+
+  CharacterEntity _toCharacterEntity(Character character) {
+    return CharacterEntity(
+      id: character.id,
+      name: character.name,
+      production: character.production,
+      weaponType: character.weapon.type.index,
+      attributeTypes: character.attributes?.map((a) => a.type?.index).join(',') ?? '',
+      selectedStyleRank: character.selectedStyleRank ?? '',
+      selectedIconFilePath: character.selectedIconFilePath ?? '',
+      statusUpEvent: character.statusUpEvent ? CharacterEntity.nowStatusUpEvent : CharacterEntity.notStatusUpEvent,
+    );
+  }
+
+  Style _toStyle(StyleEntity entity) {
+    return Style(
+      entity.id,
+      entity.characterId,
+      entity.rank,
+      entity.title,
+      entity.iconFileName,
+      entity.str,
+      entity.vit,
+      entity.dex,
+      entity.agi,
+      entity.intelligence,
+      entity.spirit,
+      entity.love,
+      entity.attr,
+    )..iconFilePath = entity.iconFilePath;
+  }
+
+  StyleEntity _toStyleEntity(Style style) {
+    return StyleEntity(
+      id: style.id,
+      characterId: style.characterId,
+      rank: style.rank,
+      title: style.title,
+      iconFileName: style.iconFileName,
+      str: style.str,
+      vit: style.vit,
+      dex: style.dex,
+      agi: style.agi,
+      intelligence: style.intelligence,
+      spirit: style.spirit,
+      love: style.love,
+      attr: style.attr,
+      iconFilePath: style.iconFilePath ?? '',
+    );
   }
 }

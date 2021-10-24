@@ -2,6 +2,7 @@ import 'package:rsapp/res/rs_strings.dart';
 
 class Style {
   Style(
+    this.id,
     this.characterId,
     this.rank,
     this.title,
@@ -16,6 +17,7 @@ class Style {
     this.attr,
   );
 
+  final int id;
   final int characterId;
   final String rank;
   final String title;

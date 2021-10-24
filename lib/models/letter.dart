@@ -20,6 +20,8 @@ class Letter {
   final String? gifFilePath;
   final String? staticImagePath;
 
+  int get id => int.parse('$year${month.toString().padLeft(2, '0')}');
+
   Color get themeColor {
     if (3 <= month && month <= 5) {
       return RSColors.spring;

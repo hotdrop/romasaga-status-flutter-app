@@ -1,119 +1,99 @@
-class StyleEntity {
-  StyleEntity(
-    this.characterId,
-    this.rank,
-    this.title,
-    this.iconFileName,
-    this.str,
-    this.vit,
-    this.dex,
-    this.agi,
-    this.intelligence,
-    this.spirit,
-    this.love,
-    this.attr,
-    this.iconFilePath,
-  );
+import 'package:hive_flutter/hive_flutter.dart';
 
-  StyleEntity.fromMap(Map<String, dynamic> map)
-      : id = map[columnId] as int,
-        characterId = map[columnCharacterId] as int,
-        rank = map[columnRank] as String,
-        title = map[columnTitle] as String,
-        iconFileName = map[columnIconFileName] as String,
-        str = map[columnStr] as int,
-        vit = map[columnVit] as int,
-        dex = map[columnDex] as int,
-        agi = map[columnAgi] as int,
-        intelligence = map[columnInt] as int,
-        spirit = map[columnSpirit] as int,
-        love = map[columnLove] as int,
-        attr = map[columnAttr] as int,
-        iconFilePath = map[columnIconFilePath] as String;
+part 'style_entity.g.dart';
 
-  static const String tableName = 'Style';
-  static const String createTableSql = '''
-      CREATE TABLE $tableName (
-        $columnId INTEGER PRIMARY KEY autoincrement,
-        $columnCharacterId INTEGER,
-        $columnRank TEXT,
-        $columnTitle TEXT,
-        $columnIconFileName TEXT,
-        $columnStr INTEGER,
-        $columnVit INTEGER,
-        $columnDex INTEGER,
-        $columnAgi INTEGER,
-        $columnInt INTEGER,
-        $columnSpirit INTEGER,
-        $columnLove INTEGER,
-        $columnAttr INTEGER,
-        $columnIconFilePath TEXT
-      )
-      ''';
+@HiveType(typeId: 3)
+class StyleEntity extends HiveObject {
+  StyleEntity({
+    required this.id,
+    required this.characterId,
+    required this.rank,
+    required this.title,
+    required this.iconFileName,
+    required this.str,
+    required this.vit,
+    required this.dex,
+    required this.agi,
+    required this.intelligence,
+    required this.spirit,
+    required this.love,
+    required this.attr,
+    required this.iconFilePath,
+  });
 
-  static const String columnId = 'id';
-  int? id;
+  static const String boxName = 'style';
 
-  static const String columnCharacterId = 'character_id';
+  @HiveField(0)
+  final int id;
+
+  @HiveField(1)
   final int characterId;
 
-  static const String columnRank = 'rank';
+  @HiveField(2)
   final String rank;
 
-  static const String columnTitle = 'title';
+  @HiveField(3)
   final String title;
 
-  static const String columnIconFileName = 'icon_file_name';
+  @HiveField(4)
   final String iconFileName;
 
-  static const String columnStr = 'str';
+  @HiveField(5)
   final int str;
 
-  static const String columnVit = 'vit';
+  @HiveField(6)
   final int vit;
 
-  static const String columnDex = 'dex';
+  @HiveField(7)
   final int dex;
 
-  static const String columnAgi = 'agi';
+  @HiveField(8)
   final int agi;
 
-  static const String columnInt = 'intelligence';
+  @HiveField(9)
   final int intelligence;
 
-  static const String columnSpirit = 'spirit';
+  @HiveField(10)
   final int spirit;
 
-  static const String columnLove = 'love';
+  @HiveField(11)
   final int love;
 
-  static const String columnAttr = 'attr';
+  @HiveField(12)
   final int attr;
 
-  static const String columnIconFilePath = 'icon_file_path';
+  @HiveField(13)
   final String iconFilePath;
 
-  Map<String, dynamic> toMap() {
-    final map = <String, dynamic>{
-      columnCharacterId: characterId,
-      columnRank: rank,
-      columnTitle: title,
-      columnIconFileName: iconFileName,
-      columnStr: str,
-      columnVit: vit,
-      columnDex: dex,
-      columnAgi: agi,
-      columnInt: intelligence,
-      columnSpirit: spirit,
-      columnLove: love,
-      columnAttr: attr,
-      columnIconFilePath: iconFilePath,
-    };
-
-    if (id != null) {
-      map[columnId] = id;
-    }
-
-    return map;
+  StyleEntity copyWith({
+    String? rank,
+    String? title,
+    String? iconFileName,
+    int? str,
+    int? vit,
+    int? dex,
+    int? agi,
+    int? intelligence,
+    int? spirit,
+    int? love,
+    int? attr,
+    String? iconFilePath,
+  }) {
+    return StyleEntity(
+      id: id,
+      characterId: characterId,
+      rank: rank ?? this.rank,
+      title: title ?? this.rank,
+      iconFileName: iconFileName ?? this.iconFileName,
+      str: str ?? this.str,
+      vit: vit ?? this.vit,
+      dex: dex ?? this.dex,
+      agi: agi ?? this.agi,
+      intelligence: intelligence ?? this.intelligence,
+      spirit: spirit ?? this.spirit,
+      love: love ?? this.love,
+      attr: attr ?? this.attr,
+      iconFilePath: iconFilePath ?? this.rank,
+    );
   }
 }

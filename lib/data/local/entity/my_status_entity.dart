@@ -1,105 +1,65 @@
-class MyStatusEntity {
-  const MyStatusEntity(
-    this.id,
-    this.hp,
-    this.str,
-    this.vit,
-    this.dex,
-    this.agi,
-    this.intelligence,
-    this.spirit,
-    this.love,
-    this.attr,
-    this.charHave,
-    this.favorite,
-  );
+import 'package:hive_flutter/hive_flutter.dart';
 
-  MyStatusEntity.fromMap(Map<String, dynamic> map)
-      : id = map[columnId] as int,
-        hp = map[columnHp] as int,
-        str = map[columnStr] as int,
-        vit = map[columnVit] as int,
-        dex = map[columnDex] as int,
-        agi = map[columnAgi] as int,
-        intelligence = map[columnInt] as int,
-        spirit = map[columnSpirit] as int,
-        love = map[columnLove] as int,
-        attr = map[columnAttr] as int,
-        charHave = map[columnHaveChar] as int,
-        favorite = map[columnFavorite] as int;
+part 'my_status_entity.g.dart';
 
-  static const String tableName = 'MyStatus';
-  static const String createTableSql = '''
-      CREATE TABLE $tableName (
-        $columnId INTEGER,
-        $columnHp INTEGER,
-        $columnStr INTEGER,
-        $columnVit INTEGER,
-        $columnDex INTEGER,
-        $columnAgi INTEGER,
-        $columnInt INTEGER,
-        $columnSpirit INTEGER,
-        $columnLove INTEGER,
-        $columnAttr INTEGER,
-        $columnHaveChar INTEGER,
-        $columnFavorite INTEGER
-      )
-      ''';
+@HiveType(typeId: 4)
+class MyStatusEntity extends HiveObject {
+  MyStatusEntity({
+    required this.id,
+    required this.hp,
+    required this.str,
+    required this.vit,
+    required this.dex,
+    required this.agi,
+    required this.intelligence,
+    required this.spirit,
+    required this.love,
+    required this.attr,
+    required this.charHave,
+    required this.favorite,
+  });
 
-  static const String columnId = 'id';
+  static const String boxName = 'myStatus';
+
+  @HiveField(0)
   final int id;
 
-  static const String columnHp = 'hp';
+  @HiveField(1)
   final int hp;
 
-  static const String columnStr = 'str';
+  @HiveField(2)
   final int str;
 
-  static const String columnVit = 'vit';
+  @HiveField(3)
   final int vit;
 
-  static const String columnDex = 'dex';
+  @HiveField(4)
   final int dex;
 
-  static const String columnAgi = 'agi';
+  @HiveField(5)
   final int agi;
 
-  static const String columnInt = 'intelligence';
+  @HiveField(6)
   final int intelligence;
 
-  static const String columnSpirit = 'spirit';
+  @HiveField(7)
   final int spirit;
 
-  static const String columnLove = 'love';
+  @HiveField(8)
   final int love;
 
-  static const String columnAttr = 'attr';
+  @HiveField(9)
   final int attr;
 
-  static const String columnHaveChar = 'have_char';
-  static const int haveChar = 1;
-  static const int notHaveChar = 0;
+  @HiveField(10)
   final int charHave;
 
-  static const String columnFavorite = 'favorite';
-  static const int isFavorite = 1;
-  static const int notFavorite = 0;
+  static const int haveChar = 1;
+  static const int notHaveChar = 0;
+
+  @HiveField(11)
   final int favorite;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      columnId: id,
-      columnHp: hp,
-      columnStr: str,
-      columnVit: vit,
-      columnDex: dex,
-      columnAgi: agi,
-      columnInt: intelligence,
-      columnSpirit: spirit,
-      columnLove: love,
-      columnAttr: attr,
-      columnHaveChar: charHave,
-      columnFavorite: favorite,
-    };
-  }
+  static const int isFavorite = 1;
+  static const int notFavorite = 0;
 }

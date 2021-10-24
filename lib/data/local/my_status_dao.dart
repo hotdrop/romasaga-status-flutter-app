@@ -1,33 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rsapp/data/local/database.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rsapp/data/local/entity/my_status_entity.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:rsapp/models/status.dart';
 import 'package:rsapp/common/rs_logger.dart';
-import 'package:rsapp/common/mapper.dart';
 
-final myStatusDaoProvider = Provider((ref) => _MyStatusDao(ref.read, DBProvider.instance));
+final myStatusDaoProvider = Provider((ref) => const _MyStatusDao());
 
-///
-/// TODO Hiveに作り直し
-///
 class _MyStatusDao {
-  const _MyStatusDao(this._read, this._dbProvider);
-
-  final Reader _read;
-  final DBProvider _dbProvider;
+  const _MyStatusDao();
 
   ///
   /// 登録されているステータス情報を全て取得
   ///
   Future<List<MyStatus>> findAll() async {
-    RSLogger.d('登録されているステータス情報を全て取得します');
-    final db = await _dbProvider.database;
-    final results = await db.query(MyStatusEntity.tableName);
-    final List<MyStatusEntity> entities = results.isNotEmpty ? results.map((it) => MyStatusEntity.fromMap(it)).toList() : [];
-
-    RSLogger.d('登録されているステータス件数=${entities.length}');
-    return entities.map((entity) => entity.toMyStatus()).toList();
+    final box = await Hive.openBox<MyStatusEntity>(MyStatusEntity.boxName);
+    if (box.isEmpty) {
+      return [];
+    }
+    RSLogger.d('登録されているステータス件数=${box.values.length}');
+    return box.values.map((e) => _toModel(e)).toList();
   }
 
   ///
@@ -36,18 +27,15 @@ class _MyStatusDao {
   Future<MyStatus?> find(int id) async {
     RSLogger.d('ID=$idのキャラクターのステータスを取得します');
 
-    final db = await _dbProvider.database;
-    final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: <int>[id]);
-
-    if (result.isEmpty) {
-      RSLogger.d('statusは空でした。');
+    final box = await Hive.openBox<MyStatusEntity>(MyStatusEntity.boxName);
+    final target = box.get(id);
+    if (target == null) {
+      RSLogger.d('statusがありません');
       return null;
     }
 
     RSLogger.d('statusを取得しました。');
-
-    final entity = MyStatusEntity.fromMap(result.first);
-    return entity.toMyStatus();
+    return _toModel(target);
   }
 
   ///
@@ -55,35 +43,51 @@ class _MyStatusDao {
   ///
   Future<void> save(MyStatus myStatus) async {
     RSLogger.d('ID=${myStatus.id}のキャラクターのステータスを保存します');
-    final entity = myStatus.toEntity();
-    final db = await _dbProvider.database;
-
-    final result = await db.query(MyStatusEntity.tableName, where: '${MyStatusEntity.columnId} = ?', whereArgs: <int>[myStatus.id]);
-    if (result.isEmpty) {
-      RSLogger.d('ステータスが未登録なのでinsertします。');
-      await db.insert(MyStatusEntity.tableName, entity.toMap());
-    } else {
-      RSLogger.d('ステータスが登録されているのでupdateします。');
-      await db.update(MyStatusEntity.tableName, entity.toMap(), where: '${MyStatusEntity.columnId} = ?', whereArgs: <int>[myStatus.id]);
-    }
+    final entity = _toEntity(myStatus);
+    final box = await Hive.openBox<MyStatusEntity>(MyStatusEntity.boxName);
+    await box.put(entity.id, entity);
   }
 
   Future<void> refresh(List<MyStatus> myStatues) async {
-    final db = await _dbProvider.database;
-    await db.transaction((txn) async {
-      await _delete(txn);
-      await _insert(txn, myStatues);
-    });
-  }
-
-  Future<void> _delete(Transaction txn) async {
-    await txn.delete(MyStatusEntity.tableName);
-  }
-
-  Future<void> _insert(Transaction txn, List<MyStatus> myStatuses) async {
-    for (var myStatus in myStatuses) {
-      final entity = myStatus.toEntity();
-      await txn.insert(MyStatusEntity.tableName, entity.toMap());
+    final entities = myStatues.map((e) => _toEntity(e)).toList();
+    final box = await Hive.openBox<MyStatusEntity>(MyStatusEntity.boxName);
+    box.clear();
+    for (var entity in entities) {
+      await box.put(entity.id, entity);
     }
+  }
+
+  MyStatus _toModel(MyStatusEntity entity) {
+    return MyStatus(
+      entity.id,
+      entity.hp,
+      entity.str,
+      entity.vit,
+      entity.dex,
+      entity.agi,
+      entity.intelligence,
+      entity.spirit,
+      entity.love,
+      entity.attr,
+      entity.charHave == MyStatusEntity.haveChar ? true : false,
+      entity.favorite == MyStatusEntity.isFavorite ? true : false,
+    );
+  }
+
+  MyStatusEntity _toEntity(MyStatus myStatus) {
+    return MyStatusEntity(
+      id: myStatus.id,
+      hp: myStatus.hp,
+      str: myStatus.str,
+      vit: myStatus.vit,
+      dex: myStatus.dex,
+      agi: myStatus.agi,
+      intelligence: myStatus.intelligence,
+      spirit: myStatus.spirit,
+      love: myStatus.love,
+      attr: myStatus.attr,
+      charHave: myStatus.have ? MyStatusEntity.haveChar : MyStatusEntity.notHaveChar,
+      favorite: myStatus.favorite ? MyStatusEntity.isFavorite : MyStatusEntity.notFavorite,
+    );
   }
 }
