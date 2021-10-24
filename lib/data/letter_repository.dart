@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/data/local/letter_dao.dart';
+import 'package:rsapp/data/local/dao/letter_dao.dart';
 import 'package:rsapp/data/remote/letter_api.dart';
 import 'package:rsapp/models/letter.dart';
 
@@ -35,7 +35,7 @@ class _LetterRepository {
 
     final mergeLetters = await _merge(remoteLetters, localLetters);
 
-    await _read(letterDaoProvider).refresh(mergeLetters);
+    await _read(letterDaoProvider).saveAll(mergeLetters);
   }
 
   Future<List<Letter>> _merge(List<Letter> remoteLetters, List<Letter> localLetters) async {
@@ -66,7 +66,7 @@ class _LetterRepository {
     RSLogger.d('リモートからデータ取得 件数=${remoteLetters.length}');
 
     final lettersWithFilePath = await _attachFilePath(remoteLetters);
-    await _read(letterDaoProvider).refresh(lettersWithFilePath);
+    await _read(letterDaoProvider).saveAll(lettersWithFilePath);
   }
 
   Future<List<Letter>> _attachFilePath(List<Letter> letters) async {

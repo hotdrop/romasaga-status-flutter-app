@@ -19,7 +19,7 @@ class _CharacterDao {
   const _CharacterDao();
 
   ///
-  /// 全キャラクター情報を取得
+  /// 保存されているキャラクター情報を全て取得する
   ///
   Future<List<Character>> findAll() async {
     final charBox = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
@@ -36,7 +36,7 @@ class _CharacterDao {
   }
 
   ///
-  /// 全キャラクターのスタイル以外の情報を取得
+  /// 保存されているキャラ情報の概要（スタイル以外の情報）を全て取得する
   ///
   Future<List<Character>> findAllSummary() async {
     final box = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
@@ -47,7 +47,7 @@ class _CharacterDao {
   }
 
   ///
-  /// 引数に指定したキャラクターIDのスタイル一式を取得
+  /// 保存されているキャラ情報の中から、引数に指定したIDのスタイル一式を取得する
   ///
   Future<List<Style>> findStyles(int id) async {
     final box = await Hive.openBox<StyleEntity>(StyleEntity.boxName);
@@ -55,11 +55,17 @@ class _CharacterDao {
     return styleEntities.map((e) => _toStyle(e)).toList();
   }
 
+  ///
+  /// 保存されているキャラ情報の件数を取得する
+  ///
   Future<int> count() async {
     final box = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
     return box.length;
   }
 
+  ///
+  /// ローカルに持っているダミーデータ（jsonファイル）からキャラデータを取得する
+  ///
   Future<List<Character>> loadDummy({String localPath = 'res/json/characters.json'}) async {
     try {
       return await rootBundle.loadStructuredData(localPath, (json) async {
@@ -71,12 +77,15 @@ class _CharacterDao {
     }
   }
 
+  ///
+  /// 保存されているキャラ情報を全て削除し、引数のキャラ情報を全て登録する
+  ///
   Future<void> refresh(List<Character> characters) async {
     final charBox = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
     final styleBox = await Hive.openBox<StyleEntity>(StyleEntity.boxName);
 
-    charBox.clear();
-    styleBox.clear();
+    await charBox.clear();
+    await styleBox.clear();
 
     for (var character in characters) {
       final entity = _toCharacterEntity(character);
@@ -89,6 +98,9 @@ class _CharacterDao {
     }
   }
 
+  ///
+  /// 保存されされているキャラ情報のスタイルアイコンを、指定したものに更新する
+  ///
   Future<void> updateStyleIcon(int id, String rank, String iconFilePath) async {
     final box = await Hive.openBox<StyleEntity>(StyleEntity.boxName);
     final target = box.values.where((s) => s.characterId == id && s.rank == rank).first;
@@ -96,6 +108,9 @@ class _CharacterDao {
     await box.put(newData.id, newData);
   }
 
+  ///
+  /// キャラ情報毎に指定できるデフォルト表示用のスタイルアイコンを、指定したものに変更する
+  ///
   Future<void> saveSelectedStyle(int id, String rank, String iconFilePath) async {
     final box = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
     final target = box.values.where((c) => c.id == id).first;
@@ -103,6 +118,9 @@ class _CharacterDao {
     await box.put(newData.id, newData);
   }
 
+  ///
+  /// 指定したキャラ情報のstatusUpEventを更新する
+  ///
   Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
     final box = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
     final target = box.values.where((c) => c.id == id).first;

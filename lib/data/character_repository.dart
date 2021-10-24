@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
-import 'package:rsapp/data/local/character_dao.dart';
+import 'package:rsapp/data/local/dao/character_dao.dart';
 import 'package:rsapp/data/remote/character_api.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/style.dart';

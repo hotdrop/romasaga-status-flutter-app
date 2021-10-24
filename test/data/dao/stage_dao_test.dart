@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rsapp/data/local/stage_dao.dart';
+import 'package:rsapp/data/local/dao/stage_dao.dart';
 import 'package:rsapp/models/stage.dart';
 
-import 'hive_test.dart';
+import '../hive_test.dart';
 
 void main() {
   setUpAll(() => HiveTest.setUp());

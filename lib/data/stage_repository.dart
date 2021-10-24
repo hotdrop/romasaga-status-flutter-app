@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rsapp/data/local/stage_dao.dart';
+import 'package:rsapp/data/local/dao/stage_dao.dart';
 import 'package:rsapp/models/stage.dart';
 
 final stageRepositoryProvider = Provider((ref) => _StageRepository(ref.read));

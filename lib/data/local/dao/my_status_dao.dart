@@ -10,7 +10,7 @@ class _MyStatusDao {
   const _MyStatusDao();
 
   ///
-  /// 登録されているステータス情報を全て取得
+  /// 保存されているステータス情報を全て取得する
   ///
   Future<List<MyStatus>> findAll() async {
     final box = await Hive.openBox<MyStatusEntity>(MyStatusEntity.boxName);
@@ -22,7 +22,7 @@ class _MyStatusDao {
   }
 
   ///
-  /// 指定したキャラクターIDのステータス情報を取得
+  /// 保存されているステータス情報の中から、引数に指定したIDのステータス情報を取得する
   ///
   Future<MyStatus?> find(int id) async {
     RSLogger.d('ID=$idのキャラクターのステータスを取得します');
@@ -39,7 +39,8 @@ class _MyStatusDao {
   }
 
   ///
-  /// 自身のステータス情報を保存
+  /// 引数で指定したステータスを登録する。
+  /// すでに該当するIDのステージ情報が存在する場合は更新する
   ///
   Future<void> save(MyStatus myStatus) async {
     RSLogger.d('ID=${myStatus.id}のキャラクターのステータスを保存します');
@@ -48,10 +49,13 @@ class _MyStatusDao {
     await box.put(entity.id, entity);
   }
 
+  ///
+  /// 保存されているステータス情報を全て削除し、引数のステータス情報を全登録する
+  ///
   Future<void> refresh(List<MyStatus> myStatues) async {
     final entities = myStatues.map((e) => _toEntity(e)).toList();
     final box = await Hive.openBox<MyStatusEntity>(MyStatusEntity.boxName);
-    box.clear();
+    await box.clear();
     for (var entity in entities) {
       await box.put(entity.id, entity);
     }

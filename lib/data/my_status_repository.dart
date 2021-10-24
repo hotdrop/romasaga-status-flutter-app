@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:rsapp/data/local/my_status_dao.dart';
+import 'package:rsapp/data/local/dao/my_status_dao.dart';
 import 'package:rsapp/data/remote/my_status_api.dart';
 import 'package:rsapp/models/status.dart' show MyStatus;
 import 'package:rsapp/common/rs_logger.dart';

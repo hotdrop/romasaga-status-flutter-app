@@ -8,6 +8,9 @@ final letterDaoProvider = Provider((ref) => const _LetterDao());
 class _LetterDao {
   const _LetterDao();
 
+  ///
+  /// 保存されているお便り情報を全て取得する
+  ///
   Future<List<Letter>> findAll() async {
     final box = await Hive.openBox<LetterEntity>(LetterEntity.boxName);
     if (box.isEmpty) {
@@ -16,12 +19,15 @@ class _LetterDao {
     return box.values.map((e) => _toModel(e)).toList();
   }
 
-  Future<void> refresh(List<Letter> letters) async {
+  ///
+  /// 保存されているお便り情報を全て削除し、引数のお便り情報を全て登録する
+  ///
+  Future<void> saveAll(List<Letter> letters) async {
     final entities = letters.map((e) => _toEntity(e)).toList();
     final box = await Hive.openBox<LetterEntity>(LetterEntity.boxName);
-    box.clear();
+    await box.clear();
     for (var entity in entities) {
-      box.put(entity.id, entity);
+      await box.put(entity.id, entity);
     }
   }
 
