@@ -9,12 +9,9 @@ class _CharacterApi {
 
   final Reader _read;
 
-  Future<List<CharacterResponse>> findAll() async {
-    final responseRow = await _read(rsServiceProvider).getCharacters() as List<dynamic>;
-    return responseRow //
-        .map((dynamic d) => d as Map<String, Object?>)
-        .map((dmap) => CharacterResponse.fromJson(dmap))
-        .toList();
+  Future<CharactersResponse> findAll() async {
+    final responseRow = await _read(rsServiceProvider).getCharacters() as Map<String, dynamic>;
+    return CharactersResponse.fromJson(responseRow);
   }
 
   Future<String> findIconUrl(String iconFileName) async {

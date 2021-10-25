@@ -5,6 +5,15 @@ part 'character_response.freezed.dart';
 part 'character_response.g.dart';
 
 @freezed
+class CharactersResponse with _$CharactersResponse {
+  factory CharactersResponse({
+    @JsonKey(name: 'characters') required List<CharacterResponse> characters,
+  }) = _CharactersResponse;
+
+  factory CharactersResponse.fromJson(Map<String, dynamic> json) => _$CharactersResponseFromJson(json);
+}
+
+@freezed
 class CharacterResponse with _$CharacterResponse {
   factory CharacterResponse({
     @JsonKey(name: 'id') required int id,
@@ -15,5 +24,5 @@ class CharacterResponse with _$CharacterResponse {
     @JsonKey(name: 'styles') required List<StyleResponse> styles,
   }) = _CharacterResponse;
 
-  factory CharacterResponse.fromJson(Map<String, Object?> json) => _$CharacterResponseFromJson(json);
+  factory CharacterResponse.fromJson(Map<String, dynamic> json) => _$CharacterResponseFromJson(json);
 }

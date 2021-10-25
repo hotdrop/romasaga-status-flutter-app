@@ -9,12 +9,9 @@ class _LetterApi {
 
   final Reader _read;
 
-  Future<List<LetterResponse>> findAll() async {
-    final responseRow = await _read(rsServiceProvider).getLetters() as List<dynamic>;
-    return responseRow //
-        .map((dynamic d) => d as Map<String, Object?>)
-        .map((dmap) => LetterResponse.fromJson(dmap))
-        .toList();
+  Future<LettersResponse> findAll() async {
+    final responseRow = await _read(rsServiceProvider).getLetters() as Map<String, dynamic>;
+    return LettersResponse.fromJson(responseRow);
   }
 
   Future<String> findImageUrl(String fileName) async {

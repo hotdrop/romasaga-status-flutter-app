@@ -19,5 +19,5 @@ class StyleResponse with _$StyleResponse {
     @JsonKey(name: 'icon') required String iconFileName,
   }) = _StyleResponse;
 
-  factory StyleResponse.fromJson(Map<String, Object?> json) => _$StyleResponseFromJson(json);
+  factory StyleResponse.fromJson(Map<String, dynamic> json) => _$StyleResponseFromJson(json);
 }

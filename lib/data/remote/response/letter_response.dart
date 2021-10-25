@@ -4,6 +4,15 @@ part 'letter_response.freezed.dart';
 part 'letter_response.g.dart';
 
 @freezed
+class LettersResponse with _$LettersResponse {
+  factory LettersResponse({
+    @JsonKey(name: 'letters') required List<LetterResponse> letters,
+  }) = _LettersResponse;
+
+  factory LettersResponse.fromJson(Map<String, dynamic> json) => _$LettersResponseFromJson(json);
+}
+
+@freezed
 class LetterResponse with _$LetterResponse {
   factory LetterResponse({
     @JsonKey(name: 'year') required int year,
@@ -13,5 +22,5 @@ class LetterResponse with _$LetterResponse {
     @JsonKey(name: 'image_name') required String imageName,
   }) = _LetterResponse;
 
-  factory LetterResponse.fromJson(Map<String, Object?> json) => _$LetterResponseFromJson(json);
+  factory LetterResponse.fromJson(Map<String, dynamic> json) => _$LetterResponseFromJson(json);
 }
