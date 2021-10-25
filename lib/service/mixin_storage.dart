@@ -1,26 +1,24 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:rsapp/res/env.dart';
 
 mixin RSStorageMixin {
-  Future<String> readStagesJson() async {
-    return await _readJson(path: RSEnv.res.stageJsonFileName);
-  }
-
-  Future<String> readCharactersJson() async {
+  Future<dynamic> getCharacters() async {
     return await _readJson(path: RSEnv.res.characterJsonFileName);
   }
 
-  Future<String> readLettersJson() async {
+  Future<dynamic> getLetters() async {
     return await _readJson(path: RSEnv.res.lettersJsonFileName);
   }
 
-  Future<String> _readJson({required String path}) async {
+  Future<dynamic> _readJson({required String path}) async {
     final url = await FirebaseStorage.instance.ref().child(path).getDownloadURL();
     final response = await http.get(Uri.parse(url));
-    return utf8.decode(response.bodyBytes);
+
+    final bodyDecode = convert.utf8.decode(response.bodyBytes);
+    return convert.jsonDecode(bodyDecode);
   }
 
   Future<String> getCharacterIconUrl(String fileName) async {

@@ -1,12 +1,8 @@
 import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/models/attribute.dart';
-import 'package:rsapp/models/rs_exception.dart';
-import 'package:rsapp/data/json/characters_json.dart';
 import 'package:rsapp/data/local/entity/character_entity.dart';
 import 'package:rsapp/data/local/entity/style_entity.dart';
 import 'package:rsapp/models/character.dart';
@@ -49,9 +45,9 @@ class _CharacterDao {
   ///
   /// 保存されているキャラ情報の中から、引数に指定したIDのスタイル一式を取得する
   ///
-  Future<List<Style>> findStyles(int id) async {
+  Future<List<Style>> findStyles(int characterId) async {
     final box = await Hive.openBox<StyleEntity>(StyleEntity.boxName);
-    final styleEntities = box.values.where((e) => e.characterId == id).toList();
+    final styleEntities = box.values.where((e) => e.characterId == characterId).toList();
     return styleEntities.map((e) => _toStyle(e)).toList();
   }
 
@@ -61,20 +57,6 @@ class _CharacterDao {
   Future<int> count() async {
     final box = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
     return box.length;
-  }
-
-  ///
-  /// ローカルに持っているダミーデータ（jsonファイル）からキャラデータを取得する
-  ///
-  Future<List<Character>> loadDummy({String localPath = 'res/json/characters.json'}) async {
-    try {
-      return await rootBundle.loadStructuredData(localPath, (json) async {
-        return CharactersJson.parse(json);
-      });
-    } on IOException catch (e, s) {
-      await RSLogger.e('キャラデータ取得に失敗しました。', exception: e, stackTrace: s);
-      throw RSException(message: 'キャラデータ取得に失敗しました。', exception: e, stackTrace: s);
-    }
   }
 
   ///

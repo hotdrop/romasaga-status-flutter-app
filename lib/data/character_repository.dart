@@ -18,38 +18,12 @@ class _CharacterRepository {
   ///
   Future<List<Character>> findAll() async {
     var characters = await _read(characterDaoProvider).findAllSummary();
-
-    if (characters.isEmpty) {
-      RSLogger.d('保持しているデータが0件のためローカルダミーファイルを読み込みます。');
-      final tmp = await _read(characterDaoProvider).loadDummy();
-      final tmpWithStyle = _updateDummyStyles(tmp);
-      await _read(characterDaoProvider).refresh(tmpWithStyle);
-      characters = await _read(characterDaoProvider).findAllSummary();
-    }
-
     RSLogger.d('データ取得完了 件数=${characters.length}');
     return characters;
   }
 
   ///
-  /// ダミーデータロード時のスタイルを更新する
-  ///
-  List<Character> _updateDummyStyles(List<Character> characters) {
-    final result = <Character>[];
-    for (var character in characters) {
-      for (var style in character.styles) {
-        style.iconFilePath = style.iconFileName;
-
-        if (character.selectedStyleRank == style.rank) {
-          character.selectedIconFilePath = style.iconFilePath;
-        }
-      }
-      result.add(character);
-    }
-
-    return result;
-  }
-
+  /// TODO こんなバグの温床になりそうなことやらないほうがいい
   ///
   /// キャラデータはネットワーク経由で取得しても秒速なのだがアイコンのURL取得処理が異常に重い。
   /// アイコン画像をstorageに置いており、いちいちアイコン名からURLを取得するので仕方ないのだが新ガチャのたびにキャラ追加が行われるので
