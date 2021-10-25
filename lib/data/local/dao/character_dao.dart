@@ -123,7 +123,7 @@ class _CharacterDao {
       entity.name,
       entity.production,
       Weapon(type: entity.weaponType),
-      attributes: attributes ?? [],
+      attributes,
       selectedStyleRank: entity.selectedStyleRank,
       selectedIconFilePath: entity.selectedIconFilePath,
       statusUpEvent: entity.statusUpEvent == CharacterEntity.nowStatusUpEvent ? true : false,
@@ -150,6 +150,7 @@ class _CharacterDao {
       entity.rank,
       entity.title,
       entity.iconFileName,
+      entity.iconFilePath,
       entity.str,
       entity.vit,
       entity.dex,
@@ -158,7 +159,7 @@ class _CharacterDao {
       entity.spirit,
       entity.love,
       entity.attr,
-    )..iconFilePath = entity.iconFilePath;
+    );
   }
 
   StyleEntity _toStyleEntity(Style style) {
@@ -176,7 +177,7 @@ class _CharacterDao {
       spirit: style.spirit,
       love: style.love,
       attr: style.attr,
-      iconFilePath: style.iconFilePath ?? '',
+      iconFilePath: style.iconFilePath,
     );
   }
 }

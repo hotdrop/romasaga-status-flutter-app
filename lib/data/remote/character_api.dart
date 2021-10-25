@@ -2,10 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/remote/response/character_response.dart';
 import 'package:rsapp/service/rs_service.dart';
 
-final characterApiProvider = Provider((ref) => _CharacterApi(ref.read));
+final characterApiProvider = Provider((ref) => CharacterApi(ref.read));
 
-class _CharacterApi {
-  const _CharacterApi(this._read);
+///
+/// テストでモッククラスを作るのでprivateにしない
+///
+class CharacterApi {
+  const CharacterApi(this._read);
 
   final Reader _read;
 

@@ -17,6 +17,15 @@ class _SharedPrefs {
     await _saveBool('key001', value);
   }
 
+  ///
+  /// バックアップの日付
+  ///
+  Future<String> getBackupDate() async => await _getString('key002');
+  Future<void> saveBackupDate(String value) async {
+    await _saveString('key002', value);
+  }
+
+  // 以下は型別のデータ格納/取得処理
   Future<String> _getString(String key) async {
     final prefs = await _read(_sharefPregerencesProvider);
     return prefs.getString(key) ?? '';

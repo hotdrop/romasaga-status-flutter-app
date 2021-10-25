@@ -2,9 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/data/local/dao/character_dao.dart';
 import 'package:rsapp/data/remote/character_api.dart';
+import 'package:rsapp/data/remote/response/character_response.dart';
+import 'package:rsapp/data/remote/response/style_response.dart';
+import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/style.dart';
 import 'package:collection/collection.dart';
+import 'package:rsapp/models/weapon.dart';
 
 final characterRepositoryProvider = Provider((ref) => _CharacterRepository(ref.read));
 
@@ -23,93 +27,91 @@ class _CharacterRepository {
   }
 
   ///
-  /// TODO こんなバグの温床になりそうなことやらないほうがいい
-  ///
-  /// キャラデータはネットワーク経由で取得しても秒速なのだがアイコンのURL取得処理が異常に重い。
-  /// アイコン画像をstorageに置いており、いちいちアイコン名からURLを取得するので仕方ないのだが新ガチャのたびにキャラ追加が行われるので
-  /// これを頻繁にやってたら面倒になった。
-  /// なので、すでにアイコンURLを取得しているものはアイコンURLのみそのままにしてデータ更新だけするメソッドを作成した。
-  ///
-  Future<void> update() async {
-    final remoteCharacters = await _read(characterApiProvider).findAll();
-    RSLogger.d('リモートからデータ取得 件数=${remoteCharacters.length}');
-
-    final localCharacters = await _read(characterDaoProvider).findAll();
-    RSLogger.d('ローカルからデータ取得 件数=${localCharacters.length}');
-
-    final newCharacters = await _merge(remoteCharacters, localCharacters);
-
-    await _read(characterDaoProvider).refresh(newCharacters);
-  }
-
-  Future<List<Character>> _merge(List<Character> remoteCharacters, List<Character> localCharacters) async {
-    final result = <Character>[];
-
-    // listのfirstWhereで同一idを見つけようと思ったがforをぶん回していて効率悪そうだったのでmapを作る
-    final localMap = <int, Character>{};
-    localCharacters.forEach((lc) => localMap[lc.id] = lc);
-
-    for (var latest in remoteCharacters) {
-      final localCharacter = localMap.containsKey(latest.id) ? localMap[latest.id] : null;
-      if (localCharacter != null) {
-        RSLogger.d('${latest.name} は既存キャラです。');
-        latest.selectedStyleRank = localCharacter.selectedStyleRank;
-        latest.selectedIconFilePath = localCharacter.selectedIconFilePath;
-      } else {
-        RSLogger.d('${latest.name} は新規キャラです。');
-      }
-
-      for (var style in latest.styles) {
-        // スタイル自体がせいぜい数個程度なのでいちいちfirstWhereでスタイルを取得する
-        final localStyle = localCharacter?.styles.firstWhereOrNull((ls) => ls.rank == style.rank);
-        final iconFilePath = localStyle?.iconFilePath ?? '';
-
-        if (localStyle != null && iconFilePath.isNotEmpty) {
-          RSLogger.d(' スタイル${localStyle.rank} はアイコン取得済みなので既存のアイコンパスを使用');
-          style.iconFilePath = localStyle.iconFilePath;
-        } else {
-          RSLogger.d(' スタイル${style.rank} はアイコン未取得なのでリモートから取得');
-          style.iconFilePath = await _read(characterApiProvider).findIconUrl(style.iconFileName);
-        }
-
-        if (latest.selectedStyleRank == style.rank) {
-          latest.selectedIconFilePath = style.iconFilePath;
-        }
-      }
-      result.add(latest);
-    }
-
-    return result;
-  }
-
-  ///
-  /// リモートから全キャラデータを取得しローカルに保存する
+  /// ローカルに保存されているキャラ情報をリモートデータで更新する
+  /// アイコンファイルパスはローカルのものを使うので更新したい場合はrefreshIcon()で行う
   ///
   Future<void> refresh() async {
-    final remoteCharacters = await _read(characterApiProvider).findAll();
-    RSLogger.d('リモートからデータ取得 件数=${remoteCharacters.length}');
+    final response = await _read(characterApiProvider).findAll();
+    final localCharacters = await _read(characterDaoProvider).findAll();
+    RSLogger.d('キャラ情報を取得しました。 リモートのデータ件数=${response.characters.length} 端末に登録されているデータ件数=${localCharacters.length}');
 
-    final newCharacters = await _refreshStyles(remoteCharacters);
+    final newCharacters = await merge(response.characters, localCharacters);
     await _read(characterDaoProvider).refresh(newCharacters);
   }
 
   ///
-  /// リフレッシュはローカルのデータ無視して全更新する
+  /// API経由で取得したデータとローカルに保存しているキャラ情報をマージする
+  /// このメソッドは直接テストしたかったのでpublicにしている（本当はrefreshから叩くべき）
   ///
-  Future<List<Character>> _refreshStyles(List<Character> characters) async {
-    final result = <Character>[];
-    for (var character in characters) {
-      for (var style in character.styles) {
-        style.iconFilePath = await _read(characterApiProvider).findIconUrl(style.iconFileName);
-
-        if (character.selectedStyleRank == style.rank) {
-          character.selectedIconFilePath = style.iconFilePath;
-        }
-      }
-      result.add(character);
+  Future<List<Character>> merge(List<CharacterResponse> responses, List<Character> localCharacters) async {
+    // listのfirstWhereで同一idを見つけようと思ったが効率悪そうだったのでmapを作る
+    final characterMap = <int, Character>{};
+    for (var lc in localCharacters) {
+      characterMap[lc.id] = lc;
     }
 
-    return result;
+    final characters = <Character>[];
+    for (var response in responses) {
+      final c = await _createCharacter(response, local: characterMap[response.id]);
+      characters.add(c);
+    }
+    return characters;
+  }
+
+  Future<Character> _createCharacter(CharacterResponse response, {Character? local}) async {
+    final newCharacter = _toCharacter(response, local);
+    int idx = 1;
+    for (var styleResponse in response.styles) {
+      final styleId = Style.makeId(newCharacter.id, idx);
+      final style = await _toStyle(styleId, newCharacter.id, styleResponse, styles: local?.styles);
+      idx++;
+      newCharacter.addStyle(style);
+    }
+    return newCharacter;
+  }
+
+  Character _toCharacter(CharacterResponse response, Character? currentCharacter) {
+    return Character(
+      response.id,
+      response.name,
+      response.production,
+      Weapon(name: response.weaponTypeName),
+      response.attributeNames?.map((e) => Attribute(name: e)).toList(),
+      selectedStyleRank: currentCharacter?.selectedStyleRank,
+      selectedIconFilePath: currentCharacter?.selectedIconFilePath,
+      statusUpEvent: currentCharacter?.statusUpEvent ?? false,
+    );
+  }
+
+  ///
+  /// キャラデータはネットワーク経由で取得しても秒速なのだが、アイコンのURL取得処理が異常に重い。
+  /// アイコン画像をFirebase storageに置いており、いちいちアイコン名からURLを取得するので仕方ないのだが
+  /// 新ガチャのたびにキャラ追加していくと頻繁に更新が必要になり辛くなった。
+  /// そのため、すでにアイコンURLを取得しているものはアイコンURLのみそのままにしてデータ更新だけするようにしている。
+  ///
+  Future<Style> _toStyle(int id, int characterId, StyleResponse styleResponse, {List<Style>? styles}) async {
+    String? iconFilePath = styles?.firstWhereOrNull((ls) => ls.rank == styleResponse.rank)?.iconFilePath;
+    if (iconFilePath == null) {
+      RSLogger.d(' スタイル ${styleResponse.rank} はアイコン未取得なのでリモートから取得');
+      iconFilePath = await _read(characterApiProvider).findIconUrl(styleResponse.iconFileName);
+    }
+
+    return Style(
+      id,
+      characterId,
+      styleResponse.rank,
+      styleResponse.title,
+      styleResponse.iconFileName,
+      iconFilePath,
+      styleResponse.str,
+      styleResponse.vit,
+      styleResponse.dex,
+      styleResponse.agi,
+      styleResponse.intelligence,
+      styleResponse.spi,
+      styleResponse.love,
+      styleResponse.attr,
+    );
   }
 
   Future<int> count() async {

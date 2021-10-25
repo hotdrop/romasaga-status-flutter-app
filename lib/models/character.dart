@@ -8,8 +8,8 @@ class Character {
     this.id,
     this.name,
     this.production,
-    this.weapon, {
-    this.attributes,
+    this.weapon,
+    this.attributes, {
     this.selectedStyleRank,
     this.selectedIconFilePath,
     this.statusUpEvent = false,

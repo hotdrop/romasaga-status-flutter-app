@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 import 'package:rsapp/common/rs_logger.dart';
+import 'package:rsapp/data/remote/response/letter_response.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/data/local/dao/letter_dao.dart';
 import 'package:rsapp/data/remote/letter_api.dart';
@@ -27,63 +28,36 @@ class _LetterRepository {
   }
 
   Future<void> update() async {
-    final remoteLetters = await _read(letterApiProvider).findAll();
-    RSLogger.d('リモートからデータ取得 件数=${remoteLetters.length}');
-
+    final response = await _read(letterApiProvider).findAll();
     final localLetters = await _read(letterDaoProvider).findAll();
-    RSLogger.d('ローカルからデータ取得 件数=${localLetters.length}');
+    RSLogger.d('お便り情報を取得しました。 リモートのデータ件数=${response.letters.length} 端末に登録されているデータ件数=${localLetters.length}');
 
-    final mergeLetters = await _merge(remoteLetters, localLetters);
-
+    final mergeLetters = await _merge(response.letters, localLetters);
     await _read(letterDaoProvider).saveAll(mergeLetters);
   }
 
-  Future<List<Letter>> _merge(List<Letter> remoteLetters, List<Letter> localLetters) async {
-    final List<Letter> results = [];
-
-    for (var remote in remoteLetters) {
-      final current = localLetters.firstWhereOrNull((l) => l.year == remote.year && l.month == remote.month);
-
+  Future<List<Letter>> _merge(List<LetterResponse> responses, List<Letter> localLetters) async {
+    final results = <Letter>[];
+    for (var response in responses) {
+      final current = localLetters.firstWhereOrNull((l) => l.year == response.year && l.month == response.month);
       if (current != null) {
         results.add(current);
       } else {
-        final String gifPath = await _read(letterApiProvider).findImageUrl('${remote.fileName}.gif');
-        RSLogger.d('お便り letters/${remote.fileName} のフルパスを取得しました。\n path=$gifPath');
-
-        String imagePath = await _read(letterApiProvider).findImageUrl('${remote.fileName}_static.jpg');
-        RSLogger.d('お便り letters/${remote.fileName}_static.jpg のフルパスを取得します。\n path=$imagePath');
-
-        final newLetter = remote.copyWith(gifFilePath: gifPath, staticImagePath: imagePath);
+        final newLetter = await _toLetter(response);
         results.add(newLetter);
       }
     }
-
     return results;
   }
 
   Future<void> refresh() async {
-    final remoteLetters = await _read(letterApiProvider).findAll();
-    RSLogger.d('リモートからデータ取得 件数=${remoteLetters.length}');
+    final response = await _read(letterApiProvider).findAll();
+    RSLogger.d('リモートからデータ取得 件数=${response.letters.length}');
 
-    final lettersWithFilePath = await _attachFilePath(remoteLetters);
-    await _read(letterDaoProvider).saveAll(lettersWithFilePath);
-  }
-
-  Future<List<Letter>> _attachFilePath(List<Letter> letters) async {
-    final List<Letter> results = [];
-
-    for (var remote in letters) {
-      final String gifPath = await _read(letterApiProvider).findImageUrl('${remote.fileName}.gif');
-      RSLogger.d('お便り letters/${remote.fileName} のフルパスを取得しました。\n path=$gifPath');
-
-      final String imagePath = await _read(letterApiProvider).findImageUrl('${remote.fileName}_static.jpg');
-      RSLogger.d('お便り letters/${remote.fileName}_static.jpg のフルパスを取得します。\n path=$imagePath');
-
-      final Letter l = remote.copyWith(gifFilePath: gifPath, staticImagePath: imagePath);
-      results.add(l);
-    }
-
-    return results;
+    final letters = await Future.wait(
+      response.letters.map((r) async => await _toLetter(r)).toList(),
+    );
+    await _read(letterDaoProvider).saveAll(letters);
   }
 
   Future<String> getLatestLetterName() async {
@@ -94,5 +68,20 @@ class _LetterRepository {
       final latestLetter = letters.last;
       return '${latestLetter.year}${RSStrings.letterYearLabel}${latestLetter.month}${RSStrings.letterMonthLabel} ${latestLetter.shortTitle}';
     }
+  }
+
+  Future<Letter> _toLetter(LetterResponse response) async {
+    final gifPath = await _read(letterApiProvider).findImageUrl('${response.imageName}.gif');
+    final imagePath = await _read(letterApiProvider).findImageUrl('${response.imageName}_static.jpg');
+    RSLogger.d('お便り letters/${response.imageName} のフルパスを取得しました。\n gifPath=$gifPath staticPath=$imagePath');
+
+    return Letter(
+      year: response.year,
+      month: response.month,
+      title: response.title,
+      shortTitle: response.shortTitle,
+      gifFilePath: gifPath,
+      staticImagePath: imagePath,
+    );
   }
 }

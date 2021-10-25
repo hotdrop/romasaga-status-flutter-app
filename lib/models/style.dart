@@ -7,6 +7,7 @@ class Style {
     this.rank,
     this.title,
     this.iconFileName,
+    this.iconFilePath,
     this.str,
     this.vit,
     this.dex,
@@ -22,6 +23,7 @@ class Style {
   final String rank;
   final String title;
   final String iconFileName;
+  final String iconFilePath;
   final int str;
   final int vit;
   final int dex;
@@ -30,7 +32,6 @@ class Style {
   final int spirit;
   final int love;
   final int attr;
-  String? iconFilePath; // アイコンはネットワーク経由で取得する
 
   static int rankSort(String first, String second) {
     final firstPriority = (first == RSStrings.rankA)
@@ -53,4 +54,9 @@ class Style {
   }
 
   int sum() => str + vit + dex + agi + intelligence + spirit + love + attr;
+
+  static int makeId(int charId, int index) {
+    final idStr = '$charId${index.toString().padLeft(3, '0')}';
+    return int.parse(idStr);
+  }
 }
