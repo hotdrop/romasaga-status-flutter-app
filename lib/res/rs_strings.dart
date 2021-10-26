@@ -118,8 +118,8 @@ class RSStrings {
   // ダイアログ
   static const String dialogTitleSuccess = '成功';
   static const String dialogTitleError = 'エラー';
-  static const String simpleDialogOkLabel = 'OK';
-  static const String simpleDialogCancelLabel = 'Cancel';
+  static const String dialogOk = 'OK';
+  static const String dialogCancel = 'Cancel';
 
   // ステータス
   static const String hpName = 'HP';
