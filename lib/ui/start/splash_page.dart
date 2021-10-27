@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/start/splash_view_model.dart';
+import 'package:rsapp/ui/widget/rs_dialog.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class SplashPage extends StatelessWidget {
 
   Widget _onLoading(BuildContext context, String? errorMsg) {
     Future.delayed(Duration.zero).then((_) {
-      // エラーメッセージ表示する
+      AppDialogWithClosePage(errorMsg!).show(context);
     });
     return Padding(
       padding: const EdgeInsets.all(16.0),

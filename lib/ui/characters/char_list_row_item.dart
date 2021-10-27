@@ -4,10 +4,13 @@ import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/romasaga/ui/detail/char_detail_page.dart';
-import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
 
 class CharListRowItem extends StatelessWidget {
-  const CharListRowItem(this.character, {this.refreshListener});
+  const CharListRowItem(
+    this.character, {
+    Key? key,
+    required this.refreshListener,
+  }) : super(key: key);
 
   final Character character;
   final Function refreshListener;

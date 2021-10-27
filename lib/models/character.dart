@@ -13,7 +13,8 @@ class Character {
     this.selectedStyleRank,
     this.selectedIconFilePath,
     this.statusUpEvent = false,
-  }) : myStatus = MyStatus.empty(id);
+    this.myStatus,
+  });
 
   final int id;
   final String name;
@@ -24,7 +25,7 @@ class Character {
   String? selectedIconFilePath;
   bool statusUpEvent;
   final styles = <Style>[];
-  MyStatus myStatus;
+  final MyStatus? myStatus;
 
   WeaponType get weaponType => weapon.type;
 
@@ -47,5 +48,19 @@ class Character {
 
   Style getStyle(String? rank) {
     return styles.firstWhere((style) => style.rank == rank);
+  }
+
+  Character withStatus(MyStatus status) {
+    return Character(
+      id,
+      name,
+      production,
+      weapon,
+      attributes,
+      selectedStyleRank: selectedStyleRank,
+      selectedIconFilePath: selectedIconFilePath,
+      statusUpEvent: statusUpEvent,
+      myStatus: status,
+    );
   }
 }

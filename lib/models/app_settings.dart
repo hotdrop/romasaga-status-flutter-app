@@ -23,7 +23,11 @@ class _AppSettingsNotifier extends StateNotifier<AppSettings> {
   Future<void> refresh() async {
     final isDarkMode = await _read(appSettingsRepositoryProvider).isDarkMode();
     final mode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
-    state = AppSettings(currentMode: mode);
+
+    final index = await _read(appSettingsRepositoryProvider).getCaracterListOrderIndex();
+    final type = AppSettings.toType(index);
+
+    state = AppSettings(currentMode: mode, characterListOrderType: type);
   }
 
   Future<void> setDarkMode(bool isDark) async {
@@ -34,11 +38,43 @@ class _AppSettingsNotifier extends StateNotifier<AppSettings> {
     }
     await refresh();
   }
+
+  Future<void> setCharacterListOrder(CharacterListOrderType type) async {
+    await _read(appSettingsRepositoryProvider).saveCharacterListOrderIndex(type.index);
+    state = state.copyWith(characterListOrderType: type);
+  }
 }
 
 class AppSettings {
-  const AppSettings({this.currentMode = ThemeMode.system});
+  const AppSettings({
+    this.currentMode = ThemeMode.system,
+    this.characterListOrderType = CharacterListOrderType.status,
+  });
 
   final ThemeMode currentMode;
+  final CharacterListOrderType characterListOrderType;
+
   bool get isDarkMode => currentMode == ThemeMode.dark;
+
+  static CharacterListOrderType toType(int index) {
+    if (index == CharacterListOrderType.status.index) {
+      return CharacterListOrderType.status;
+    } else if (index == CharacterListOrderType.hp.index) {
+      return CharacterListOrderType.hp;
+    } else {
+      return CharacterListOrderType.production;
+    }
+  }
+
+  AppSettings copyWith({
+    ThemeMode? currentMode,
+    CharacterListOrderType? characterListOrderType,
+  }) {
+    return AppSettings(
+      currentMode: currentMode ?? this.currentMode,
+      characterListOrderType: characterListOrderType ?? this.characterListOrderType,
+    );
+  }
 }
+
+enum CharacterListOrderType { status, hp, production }

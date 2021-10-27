@@ -33,7 +33,7 @@ class CharacterIcon extends StatelessWidget {
       imageUrl: _res,
       width: _size,
       height: _size,
-      placeholder: (context, url) => SizedBox(width: _size, height: _size, child: CircularProgressIndicator()),
+      placeholder: (context, url) => SizedBox(width: _size, height: _size, child: const CircularProgressIndicator()),
       errorWidget: (context, url, dynamic error) => Image.asset('res/charIcons/default.jpg', width: _size, height: _size),
     );
   }
@@ -47,11 +47,11 @@ class StyleRankIcon extends StatelessWidget {
 
   factory StyleRankIcon.create(String rank) {
     if (rank.contains(RSStrings.rankSS)) {
-      return StyleRankIcon._('res/icons/icon_rank_SS.png');
+      return const StyleRankIcon._('res/icons/icon_rank_SS.png');
     } else if (rank.contains(RSStrings.rankS)) {
-      return StyleRankIcon._('res/icons/icon_rank_S.png');
+      return const StyleRankIcon._('res/icons/icon_rank_S.png');
     } else {
-      return StyleRankIcon._('res/icons/icon_rank_A.png');
+      return const StyleRankIcon._('res/icons/icon_rank_A.png');
     }
   }
 
@@ -59,11 +59,7 @@ class StyleRankIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      _res,
-      width: 30.0,
-      height: 30.0,
-    );
+    return Image.asset(_res, width: 30.0, height: 30.0);
   }
 }
 
@@ -73,17 +69,17 @@ class StyleRankIcon extends StatelessWidget {
 class WeaponIcon extends StatelessWidget {
   const WeaponIcon._(this._type, this._size, this._selected, this._onTap);
 
-  factory WeaponIcon.small(WeaponType type, {bool selected, void Function() onTap}) {
+  factory WeaponIcon.small(WeaponType type, {required bool selected, Function? onTap}) {
     return WeaponIcon._(type, 30.0, selected, onTap);
   }
 
-  factory WeaponIcon.normal(WeaponType type, {bool selected, void Function() onTap}) {
+  factory WeaponIcon.normal(WeaponType type, {required bool selected, Function? onTap}) {
     return WeaponIcon._(type, 50.0, selected, onTap);
   }
 
   final WeaponType _type;
   final double _size;
-  final void Function() _onTap;
+  final Function? _onTap;
   final bool _selected;
 
   @override
@@ -91,16 +87,12 @@ class WeaponIcon extends StatelessWidget {
     String res = _getResourcePath();
     if (_onTap == null) {
       return CircleAvatar(
-        child: Image.asset(
-          res,
-          width: _size,
-          height: _size,
-        ),
+        child: Image.asset(res, width: _size, height: _size),
         backgroundColor: Theme.of(context).disabledColor,
       );
     } else {
       return Material(
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         color: _selected ? RSColors.iconSelectedBackground : Theme.of(context).disabledColor,
         child: Ink.image(
           image: AssetImage(res),
@@ -108,7 +100,7 @@ class WeaponIcon extends StatelessWidget {
           width: _size,
           height: _size,
           child: InkWell(
-            onTap: () => _onTap(),
+            onTap: () => _onTap!(),
             child: null,
           ),
         ),
@@ -138,8 +130,6 @@ class WeaponIcon extends StatelessWidget {
         return 'res/icons/icon_weapon_spear.png';
       case WeaponType.rod:
         return 'res/icons/icon_weapon_rod.png';
-      default:
-        throw FormatException("不正なWeaponTypeです。weaponType=$_type");
     }
   }
 }
@@ -148,7 +138,8 @@ class WeaponIcon extends StatelessWidget {
 /// 武器カテゴリーアイコン
 ///
 class WeaponCategoryIcon extends StatelessWidget {
-  const WeaponCategoryIcon._(this._category, this._size) : assert(_category != WeaponCategory.rod, 'ロッドは武器カテゴリーアイコンが存在しないため渡してはいけません。');
+  const WeaponCategoryIcon._(this._category, this._size) //
+      : assert(_category != WeaponCategory.rod, 'ロッドは武器カテゴリーアイコンが存在しないため渡してはいけません。');
 
   factory WeaponCategoryIcon.normal(WeaponCategory category) {
     return WeaponCategoryIcon._(category, 50.0);
@@ -161,11 +152,7 @@ class WeaponCategoryIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     String res = _getResourcePath();
     return CircleAvatar(
-      child: Image.asset(
-        res,
-        width: _size,
-        height: _size,
-      ),
+      child: Image.asset(res, width: _size, height: _size),
       backgroundColor: Theme.of(context).disabledColor,
     );
   }
@@ -178,48 +165,45 @@ class WeaponCategoryIcon extends StatelessWidget {
         return 'res/icons/icon_weapon_type_strike.png';
       case WeaponCategory.poke:
         return 'res/icons/icon_weapon_type_poke.png';
-      default:
-        throw FormatException("不正なCategoryです。attribute=$_category");
+      case WeaponCategory.rod:
+        return 'res/icons/icon_weapon_type_strike.png';
     }
   }
 }
 
 class AttributeIcon extends StatelessWidget {
-  const AttributeIcon._(this._type, this._size, this._selected, this._onTap);
+  const AttributeIcon({
+    Key? key,
+    required this.type,
+    required this.selected,
+    required this.onTap,
+  }) : super(key: key);
 
-  factory AttributeIcon.normal(AttributeType type, {bool selected, void Function() onTap}) {
-    return AttributeIcon._(type, 50.0, selected, onTap);
-  }
+  final AttributeType type;
+  final bool selected;
+  final Function? onTap;
 
-  final AttributeType _type;
-  final double _size;
-  final void Function() _onTap;
-  final bool _selected;
+  final double _size = 50.0;
 
   @override
   Widget build(BuildContext context) {
     String res = _getResourcePath();
-    if (_onTap == null) {
+    if (onTap == null) {
       return CircleAvatar(
-        child: Image.asset(
-          res,
-          width: _size,
-          height: _size,
-        ),
+        child: Image.asset(res, width: _size, height: _size),
         backgroundColor: Theme.of(context).disabledColor,
       );
     }
-
     return Material(
-      shape: CircleBorder(),
+      shape: const CircleBorder(),
       child: Ink.image(
         image: AssetImage(res),
         fit: BoxFit.cover,
         width: _size,
         height: _size,
-        colorFilter: _selected ? null : ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+        colorFilter: selected ? null : ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
         child: InkWell(
-          onTap: () => _onTap(),
+          onTap: () => onTap!(),
           child: null,
         ),
       ),
@@ -227,7 +211,7 @@ class AttributeIcon extends StatelessWidget {
   }
 
   String _getResourcePath() {
-    switch (_type) {
+    switch (type) {
       case AttributeType.fire:
         return 'res/icons/icon_attribute_fire.png';
       case AttributeType.cold:
@@ -242,8 +226,6 @@ class AttributeIcon extends StatelessWidget {
         return 'res/icons/icon_attribute_dark.png';
       case AttributeType.shine:
         return 'res/icons/icon_attribute_shine.png';
-      default:
-        throw FormatException("不正なAttributeです。attribute=$_type");
     }
   }
 }
@@ -255,41 +237,35 @@ class StatusIcon extends StatelessWidget {
   const StatusIcon._(this._res);
 
   factory StatusIcon.str() {
-    return StatusIcon._('res/icons/icon_status_str.png');
+    return const StatusIcon._('res/icons/icon_status_str.png');
   }
-
   factory StatusIcon.vit() {
-    return StatusIcon._('res/icons/icon_status_vit.png');
+    return const StatusIcon._('res/icons/icon_status_vit.png');
   }
-
   factory StatusIcon.dex() {
-    return StatusIcon._('res/icons/icon_status_dex.png');
+    return const StatusIcon._('res/icons/icon_status_dex.png');
   }
   factory StatusIcon.agi() {
-    return StatusIcon._('res/icons/icon_status_agi.png');
+    return const StatusIcon._('res/icons/icon_status_agi.png');
   }
   factory StatusIcon.int() {
-    return StatusIcon._('res/icons/icon_status_int.png');
+    return const StatusIcon._('res/icons/icon_status_int.png');
   }
   factory StatusIcon.spirit() {
-    return StatusIcon._('res/icons/icon_status_spi.png');
+    return const StatusIcon._('res/icons/icon_status_spi.png');
   }
   factory StatusIcon.love() {
-    return StatusIcon._('res/icons/icon_status_love.png');
+    return const StatusIcon._('res/icons/icon_status_love.png');
   }
   factory StatusIcon.attr() {
-    return StatusIcon._('res/icons/icon_status_attr.png');
+    return const StatusIcon._('res/icons/icon_status_attr.png');
   }
 
   final String _res;
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      _res,
-      width: 48.0,
-      height: 48.0,
-    );
+    return Image.asset(_res, width: 48.0, height: 48.0);
   }
 }
 
@@ -297,24 +273,26 @@ class StatusIcon extends StatelessWidget {
 /// キャラクター所持アイコン
 ///
 class HaveCharacterIcon extends StatelessWidget {
-  const HaveCharacterIcon({@required this.selected, @required this.onTap});
+  const HaveCharacterIcon({Key? key, required this.selected, required this.onTap}) : super(key: key);
 
-  final void Function() onTap;
+  final Function onTap;
   final bool selected;
 
   @override
   Widget build(BuildContext context) {
-    final icon = selected ? Icon(Icons.people, color: Theme.of(context).accentColor, size: 20.0) : Icon(Icons.people_outline, color: Theme.of(context).disabledColor, size: 20.0);
+    final icon = selected
+        ? Icon(Icons.people, color: Theme.of(context).primaryColor, size: 20.0) //
+        : Icon(Icons.people_outline, color: Theme.of(context).disabledColor, size: 20.0);
 
     return RawMaterialButton(
-      shape: CircleBorder(),
-      constraints: BoxConstraints(
+      shape: const CircleBorder(),
+      constraints: const BoxConstraints(
         minWidth: 40.0,
         minHeight: 40.0,
       ),
       fillColor: Theme.of(context).disabledColor,
       child: icon,
-      onPressed: onTap,
+      onPressed: () => onTap(),
     );
   }
 }
@@ -323,58 +301,51 @@ class HaveCharacterIcon extends StatelessWidget {
 /// キャラクターお気に入りアイコン
 ///
 class FavoriteIcon extends StatelessWidget {
-  const FavoriteIcon({@required this.selected, @required this.onTap});
+  const FavoriteIcon({Key? key, required this.selected, required this.onTap}) : super(key: key);
 
-  final void Function() onTap;
+  final Function onTap;
   final bool selected;
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = selected ? Theme.of(context).accentColor : Theme.of(context).disabledColor;
+    final iconColor = selected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor;
     return RawMaterialButton(
-      shape: CircleBorder(),
-      constraints: BoxConstraints(
+      shape: const CircleBorder(),
+      constraints: const BoxConstraints(
         minWidth: 40.0,
         minHeight: 40.0,
       ),
       fillColor: Theme.of(context).disabledColor,
-      child: Icon(
-        Icons.favorite,
-        color: iconColor,
-        size: 20.0,
-      ),
-      onPressed: onTap,
+      child: Icon(Icons.favorite, color: iconColor, size: 20.0),
+      onPressed: () => onTap(),
     );
   }
 }
 
 class ProductionLogo extends StatelessWidget {
-  const ProductionLogo._(this._type, this._selected, this._onTap);
+  const ProductionLogo({
+    Key? key,
+    required this.type,
+    required this.selected,
+    required this.onTap,
+  }) : super(key: key);
 
-  factory ProductionLogo.normal(ProductionType type, {bool selected, void Function() onTap}) {
-    return ProductionLogo._(type, selected, onTap);
-  }
-
-  final ProductionType _type;
-  final void Function() _onTap;
-  final bool _selected;
+  final ProductionType type;
+  final bool selected;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
     String res = _getResourcePath();
-    if (_onTap == null) {
-      return Image.asset(res);
-    }
-
     return Material(
       child: Ink.image(
         image: AssetImage(res),
         fit: BoxFit.cover,
         width: 90,
         height: 50,
-        colorFilter: _selected ? null : ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+        colorFilter: selected ? null : ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
         child: InkWell(
-          onTap: () => _onTap(),
+          onTap: () => onTap(),
           child: null,
         ),
       ),
@@ -382,7 +353,7 @@ class ProductionLogo extends StatelessWidget {
   }
 
   String _getResourcePath() {
-    switch (_type) {
+    switch (type) {
       case ProductionType.romasaga1:
         return 'res/logos/RomancingSaGa1.jpg';
       case ProductionType.romasaga2:
@@ -405,8 +376,6 @@ class ProductionLogo extends StatelessWidget {
         return 'res/logos/Saga.jpg';
       case ProductionType.saga2:
         return 'res/logos/Saga2.jpg';
-      default:
-        throw FormatException("不正なProductです。ProductType=$_type");
     }
   }
 }
@@ -417,24 +386,20 @@ class ProductionLogo extends StatelessWidget {
 class RankingIcon extends StatelessWidget {
   const RankingIcon._(this._res);
 
-  factory RankingIcon.createFirst() => RankingIcon._('res/icons/icon_ranking_1.png');
+  factory RankingIcon.createFirst() => const RankingIcon._('res/icons/icon_ranking_1.png');
 
-  factory RankingIcon.createSecond() => RankingIcon._('res/icons/icon_ranking_2.png');
+  factory RankingIcon.createSecond() => const RankingIcon._('res/icons/icon_ranking_2.png');
 
-  factory RankingIcon.createThird() => RankingIcon._('res/icons/icon_ranking_3.png');
+  factory RankingIcon.createThird() => const RankingIcon._('res/icons/icon_ranking_3.png');
 
-  factory RankingIcon.createFourth() => RankingIcon._('res/icons/icon_ranking_4.png');
+  factory RankingIcon.createFourth() => const RankingIcon._('res/icons/icon_ranking_4.png');
 
-  factory RankingIcon.createFifth() => RankingIcon._('res/icons/icon_ranking_5.png');
+  factory RankingIcon.createFifth() => const RankingIcon._('res/icons/icon_ranking_5.png');
 
   final String _res;
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      _res,
-      width: 30.0,
-      height: 30.0,
-    );
+    return Image.asset(_res, width: 30.0, height: 30.0);
   }
 }

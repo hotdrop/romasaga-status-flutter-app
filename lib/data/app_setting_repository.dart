@@ -19,4 +19,12 @@ class _AppSettingRepository {
   Future<void> changeLightMode() async {
     await _read(sharedPrefsProvider).saveDarkMode(false);
   }
+
+  Future<int> getCaracterListOrderIndex() async {
+    return await _read(sharedPrefsProvider).getCharacterOrder();
+  }
+
+  Future<void> saveCharacterListOrderIndex(int index) async {
+    await _read(sharedPrefsProvider).saveCharacterOrder(index);
+  }
 }

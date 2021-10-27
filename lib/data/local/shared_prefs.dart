@@ -18,11 +18,19 @@ class _SharedPrefs {
   }
 
   ///
+  /// キャラ一覧のソート順
+  ///
+  Future<int> getCharacterOrder() async => await _getInt('key002');
+  Future<void> saveCharacterOrder(int value) async {
+    await _saveInt('key002', value);
+  }
+
+  ///
   /// バックアップの日付
   ///
-  Future<String> getBackupDate() async => await _getString('key002');
+  Future<String> getBackupDate() async => await _getString('key003');
   Future<void> saveBackupDate(String value) async {
-    await _saveString('key002', value);
+    await _saveString('key003', value);
   }
 
   // 以下は型別のデータ格納/取得処理

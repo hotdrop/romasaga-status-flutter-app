@@ -8,7 +8,7 @@ import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/page_state.dart';
 import 'package:rsapp/models/production.dart';
 import 'package:rsapp/models/weapon.dart';
-import 'package:rsapp/romasaga/ui/characters/char_list_row_item.dart';
+import 'package:rsapp/ui/characters/char_list_row_item.dart';
 import 'package:rsapp/romasaga/ui/search/search_page_view_model.dart';
 import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
 

@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/romasaga/ui/account/account_page.dart';
-import 'package:rsapp/romasaga/ui/characters/char_list_page.dart';
-import 'package:rsapp/romasaga/ui/dashboard/dashboard_page.dart';
+import 'package:rsapp/ui/characters/characters_page.dart';
 import 'package:rsapp/romasaga/ui/letter/letter_page.dart';
 import 'package:rsapp/romasaga/ui/search/search_page.dart';
 
 class TopPage extends StatefulWidget {
+  const TopPage._();
+
+  static Future<void> start(BuildContext context) async {
+    Navigator.popUntil(context, (route) => route.isFirst);
+    await Navigator.pushReplacement<void, void>(
+      context,
+      MaterialPageRoute(
+        settings: const RouteSettings(name: routeName),
+        builder: (_) => const TopPage._(),
+      ),
+    );
+  }
+
+  static const String routeName = '/top';
+
   @override
-  _TopPageState createState() => _TopPageState();
+  State<TopPage> createState() => _TopPageState();
 }
 
 class _TopPageState extends State<TopPage> {
@@ -17,9 +31,7 @@ class _TopPageState extends State<TopPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(child: _menuView(_currentIndex)),
-      ),
+      body: Center(child: _menuView(_currentIndex)),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         elevation: 16.0,
@@ -40,17 +52,15 @@ class _TopPageState extends State<TopPage> {
     );
   }
 
-  Widget _menuView(int index) {
+  Widget? _menuView(int index) {
     switch (index) {
       case 0:
-        return CharListPage();
+        return CharactersPage();
       case 1:
         return SearchPage();
       case 2:
-        return DashboardPage();
-      case 3:
         return LetterPage();
-      case 4:
+      case 3:
         return AccountPage();
       default:
         return null;

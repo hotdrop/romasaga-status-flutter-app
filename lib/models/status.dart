@@ -14,10 +14,6 @@ class MyStatus {
     this.favorite,
   );
 
-  factory MyStatus.empty(int id) {
-    return MyStatus(id, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false);
-  }
-
   final int id;
   final int hp;
   final int str;

@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/romasaga/ui/widget/rs_icon.dart';
+import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class RankChoiceChip extends StatefulWidget {
-  const RankChoiceChip({this.ranks, this.initSelectedRank, this.onSelectedListener});
+  const RankChoiceChip({
+    Key? key,
+    required this.ranks,
+    required this.initSelectedRank,
+    required this.onSelectedListener,
+  }) : super(key: key);
 
   final List<String> ranks;
   final String initSelectedRank;
   final void Function(String) onSelectedListener;
 
   @override
-  _RankChoiceChipState createState() => _RankChoiceChipState(ranks, initSelectedRank, onSelectedListener);
+  State<RankChoiceChip> createState() => _RankChoiceChipState();
 }
 
 class _RankChoiceChipState extends State<RankChoiceChip> {
-  _RankChoiceChipState(this._ranks, this._initSelectedRank, this._listener) {
-    _selectedRankChipName = _initSelectedRank;
+  _RankChoiceChipState();
+
+  late String _selectedRankChipName;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedRankChipName = widget.initSelectedRank;
   }
-
-  final List<String> _ranks;
-  final String _initSelectedRank;
-  final void Function(String) _listener;
-
-  String _selectedRankChipName;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
   }
 
   List<Widget> _rankChips(BuildContext context) {
-    return _ranks.map<Widget>((rank) {
+    return widget.ranks.map<Widget>((rank) {
       return Padding(
         padding: const EdgeInsets.only(right: 4.0),
         child: ChoiceChip(
@@ -50,7 +55,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
             setState(() {
               _selectedRankChipName = value ? rank : '';
             });
-            _listener(rank);
+            widget.onSelectedListener(rank);
           },
         ),
       );
