@@ -11,19 +11,14 @@ class CharactersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(RSStrings.charactersPageTitle),
-      ),
-      body: Consumer(
-        builder: (context, watch, child) {
-          final uiState = watch(charactersViewModelProvider).uiState;
-          return uiState.when(
-            loading: (String? errMsg) => _onLoading(context, errMsg),
-            success: () => _onSuccess(context),
-          );
-        },
-      ),
+    return Consumer(
+      builder: (context, watch, child) {
+        final uiState = watch(charactersViewModelProvider).uiState;
+        return uiState.when(
+          loading: (String? errMsg) => _onLoading(context, errMsg),
+          success: () => _onSuccess(context),
+        );
+      },
     );
   }
 
@@ -33,8 +28,13 @@ class CharactersPage extends StatelessWidget {
         await AppDialog.onlyOk(message: errMsg).show(context);
       }
     });
-    return const Center(
-      child: CircularProgressIndicator(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(RSStrings.charactersPageTitle),
+      ),
+      body: const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 

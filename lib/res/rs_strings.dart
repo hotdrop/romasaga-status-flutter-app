@@ -9,7 +9,7 @@ class RSStrings {
   static const String bottomMenuAccount = 'アカウント';
 
   static const String charactersPageTitle = 'キャラ一覧';
-  static const String charactersPageTabStatusUp = '育成対象';
+  static const String charactersPageTabStatusUp = '育成';
   static const String charactersPageTabFavorite = 'お気に入り';
   static const String charactersPageTabNotFavorite = '全キャラ';
   static const String charactersOrderStatus = 'ステータス';

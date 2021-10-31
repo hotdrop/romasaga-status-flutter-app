@@ -11,9 +11,6 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(RSStrings.appTitle),
-      ),
       body: Consumer(
         builder: (context, watch, child) {
           final uiState = watch(splashViewModelProvider).uiState;
