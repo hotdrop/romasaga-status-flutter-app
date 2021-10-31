@@ -23,7 +23,7 @@ class RSColors {
   static const Color characterDetailStatusIndicatorBackground = Colors.white;
   static const Color characterDetailStatusLack = Color(0xFFFF5E6A);
   static const Color characterDetailStatusNormal = Color(0xFF74FF97);
-  static const Color characterDetailStatusSufficient = Color(0xFF26BCFF);
+  static const Color statusSufficient = Color(0xFF26BCFF);
 
   static const Color statusPlus = Colors.blue;
   static const Color statusMinus = Colors.red;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/romasaga/ui/account/account_page.dart';
+import 'package:rsapp/ui/account/account_page.dart';
 import 'package:rsapp/ui/characters/characters_page.dart';
-import 'package:rsapp/romasaga/ui/letter/letter_page.dart';
-import 'package:rsapp/romasaga/ui/search/search_page.dart';
+import 'package:rsapp/ui/information/information_page.dart';
+import 'package:rsapp/ui/search/search_page.dart';
 
 class TopPage extends StatefulWidget {
   const TopPage._();
@@ -55,13 +55,13 @@ class _TopPageState extends State<TopPage> {
   Widget? _menuView(int index) {
     switch (index) {
       case 0:
-        return CharactersPage();
+        return const CharactersPage();
       case 1:
-        return SearchPage();
+        return const SearchPage();
       case 2:
-        return LetterPage();
+        return const InformationPage();
       case 3:
-        return AccountPage();
+        return const AccountPage();
       default:
         return null;
     }

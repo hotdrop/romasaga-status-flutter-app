@@ -34,7 +34,7 @@ class Production {
       case RSStrings.productSaga2:
         return ProductionType.saga2;
       default:
-        throw FormatException("不正なProductionNameです。name=$name");
+        throw FormatException('不正なProductionNameです。name=$name');
     }
   }
 }

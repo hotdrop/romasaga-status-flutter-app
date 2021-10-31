@@ -103,7 +103,7 @@ class StatusGraph extends StatelessWidget {
     } else if (diffLimit >= -6 && diffLimit < -3) {
       return RSColors.characterDetailStatusNormal;
     } else {
-      return RSColors.characterDetailStatusSufficient;
+      return RSColors.statusSufficient;
     }
   }
 }

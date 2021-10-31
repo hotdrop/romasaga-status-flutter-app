@@ -60,7 +60,7 @@ class _CharactersViewModel extends BaseViewModel {
 
   Future<List<Character>> _merge(List<Character> characters, List<MyStatus> statues) async {
     if (statues.isNotEmpty) {
-      RSLogger.d("登録ステータス${statues.length}件をキャラ情報にマージします。");
+      RSLogger.d('登録ステータス${statues.length}件をキャラ情報にマージします。');
       List<Character> newCharacters = [];
       for (var c in characters) {
         final status = statues.firstWhere((s) => s.id == c.id);
@@ -68,7 +68,7 @@ class _CharactersViewModel extends BaseViewModel {
       }
       return newCharacters;
     } else {
-      RSLogger.d("登録ステータスは0件です。");
+      RSLogger.d('登録ステータスは0件です。');
       return characters;
     }
   }

@@ -24,10 +24,7 @@ class RSStrings {
   static const String characterDetailTotalStatusCircleLabel = 'Total Status';
   static const String characterDetailTotalLimitStatusLabel = 'Total Limit Status';
   static const String characterDetailChangeStyleIconDialogMessage = 'このアイコンを一覧表示用にしますか？';
-  static const String characterRefreshIconDialogTitle = 'キャラアイコン更新';
   static const String characterRefreshIconDialogDesc = 'このアイコンをサーバーから再取得します。よろしいですか？';
-  static const String characterRefreshIconDialogSuccess = '再取得に成功しました！';
-  static const String characterRefreshIconDialogError = '再取得に失敗しました・・';
   static const String characterDetailStageSelectDescLabel = 'カッコの値はステータス上限です。';
   static const String characterDetailStatusTableLabel = 'ステータス上限表';
   static const String characterDetailLoadingErrorMessage = 'キャラ情報のロードに失敗しました。';

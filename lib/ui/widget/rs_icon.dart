@@ -176,8 +176,8 @@ class AttributeIcon extends StatelessWidget {
   const AttributeIcon({
     Key? key,
     required this.type,
-    required this.selected,
-    required this.onTap,
+    this.selected = false,
+    this.onTap,
   }) : super(key: key);
 
   final AttributeType type;

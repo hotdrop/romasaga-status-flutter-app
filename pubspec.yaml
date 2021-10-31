@@ -22,13 +22,12 @@ dependencies:
   google_sign_in: ^5.2.0
   firebase_core: ^1.8.0
   firebase_auth: ^3.1.4
-  cloud_firestore: ^2.5.4
+  cloud_firestore: ^2.5.3
   firebase_storage: ^10.0.6
   firebase_crashlytics: ^2.2.4
 
   # UI
   percent_indicator: ^3.4.0
-  awesome_dialog: ^2.1.1
   progress_dialog: ^1.2.4
   flutter_radar_chart: ^0.2.0
 

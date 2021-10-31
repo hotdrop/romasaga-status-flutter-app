@@ -14,14 +14,14 @@ mixin RSAuthMixin {
   Future<void> signInWithGoogle() async {
     try {
       if (isLogIn) {
-        RSLogger.d("すでにサインインしているので終了");
+        RSLogger.d('すでにサインインしているので終了');
         return;
       }
 
       final googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
         // サインインをキャンセルした場合はそのまま終了
-        RSLogger.d("サインイン処理がキャンセルされたので終了");
+        RSLogger.d('サインイン処理がキャンセルされたので終了');
         return;
       }
 

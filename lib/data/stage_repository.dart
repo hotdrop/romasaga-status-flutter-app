@@ -10,7 +10,9 @@ class _StageRepository {
   final Reader _read;
 
   Future<List<Stage>> findAll() async {
-    return await _read(stageDaoProvider).findAll();
+    final stages = await _read(stageDaoProvider).findAll();
+    stages.sort((a, b) => b.order - a.order);
+    return stages;
   }
 
   Future<void> save(Stage stage) async {

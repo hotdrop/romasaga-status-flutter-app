@@ -11,8 +11,8 @@ class RSCrashlytics {
   static final RSCrashlytics _instance = RSCrashlytics._();
 
   Future<void> record(String message, {Exception? exception, StackTrace? stackTrace}) async {
-    RSLogger.d("クラッシュレポートを送ります");
-    await FirebaseCrashlytics.instance.setCustomKey("message", message);
+    RSLogger.d('クラッシュレポートを送ります');
+    await FirebaseCrashlytics.instance.setCustomKey('message', message);
     await FirebaseCrashlytics.instance.recordError(exception, stackTrace);
   }
 }

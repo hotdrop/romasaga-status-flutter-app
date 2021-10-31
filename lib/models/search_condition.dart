@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/production.dart';
 import 'package:rsapp/models/weapon.dart';
