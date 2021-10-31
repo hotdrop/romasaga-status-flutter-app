@@ -10,7 +10,6 @@ class MyStatus {
     this.spirit,
     this.love,
     this.attr,
-    this.have,
     this.favorite,
   );
 
@@ -24,7 +23,6 @@ class MyStatus {
   final int spirit;
   final int love;
   final int attr;
-  bool have;
   bool favorite;
 
   int sumWithoutHp() {
@@ -32,7 +30,7 @@ class MyStatus {
   }
 
   MyStatusForEdit toEditModel() {
-    return MyStatusForEdit(id, hp, str, vit, dex, agi, intelligence, spirit, love, attr, have, favorite);
+    return MyStatusForEdit(id, hp, str, vit, dex, agi, intelligence, spirit, love, attr, favorite);
   }
 }
 
@@ -51,7 +49,6 @@ class MyStatusForEdit {
     this.spirit,
     this.love,
     this.attr,
-    this.have,
     this.favorite,
   );
 
@@ -65,7 +62,6 @@ class MyStatusForEdit {
   int spirit;
   int love;
   int attr;
-  bool have;
   bool favorite;
 
   void increment(StatusType type) {
@@ -169,7 +165,7 @@ class MyStatusForEdit {
   }
 
   MyStatus toMyStatus() {
-    return MyStatus(id, hp, str, vit, dex, agi, intelligence, spirit, love, attr, have, favorite);
+    return MyStatus(id, hp, str, vit, dex, agi, intelligence, spirit, love, attr, favorite);
   }
 }
 

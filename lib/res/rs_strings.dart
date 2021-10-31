@@ -9,10 +9,13 @@ class RSStrings {
   static const String bottomMenuAccount = 'アカウント';
   static const String bottomMenuDashboard = 'ボード';
 
-  static const String characterListPageTitle = 'キャラ一覧';
-  static const String characterListOrderStatus = 'ステータス';
-  static const String characterListOrderHp = 'HP';
-  static const String characterListOrderProduction = '作品';
+  static const String charactersPageTitle = 'キャラ一覧';
+  static const String charactersPageTabStatusUp = '育成対象';
+  static const String charactersPageTabFavorite = 'お気に入り';
+  static const String charactersPageTabNotFavorite = '全キャラ';
+  static const String charactersOrderStatus = 'ステータス';
+  static const String charactersOrderHp = 'HP';
+  static const String charactersOrderProduction = '作品';
   static const String nothingCharactersLabel = '該当キャラはいません。';
 
   static const String characterTotalStatus = '計: ';

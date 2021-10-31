@@ -12,16 +12,26 @@ final charactersViewModelProvider = ChangeNotifierProvider.autoDispose((ref) {
 });
 
 class _CharactersViewModel extends BaseViewModel {
-  _CharactersViewModel(this._read);
+  _CharactersViewModel(this._read) {
+    _init();
+  }
 
   final Reader _read;
 
   late List<Character> _characters;
+  List<Character> get statusUpCharacters => _characters.where((c) => c.statusUpEvent).toList();
+  int get countStatusUpCharacters => statusUpCharacters.length;
+
+  List<Character> get favoriteCharacters => _characters.where((c) => c.myStatus?.favorite ?? false).toList();
+  int get countFavoriteCharacters => favoriteCharacters.length;
+
+  List<Character> get notFavoriteCharacters => _characters.where((c) => !(c.myStatus?.favorite ?? false)).toList();
+  int get countNotFavoriteCharacters => notFavoriteCharacters.length;
 
   late CharacterListOrderType _selectedOrderType;
   CharacterListOrderType get selectedOrderType => _selectedOrderType;
 
-  Future<void> init() async {
+  Future<void> _init() async {
     try {
       await _refreshAllData();
       onSuccess();
@@ -67,26 +77,6 @@ class _CharactersViewModel extends BaseViewModel {
     _selectedOrderType = type;
     _charactersOrderBy(type);
     notifyListeners();
-  }
-
-  List<Character> findFavorite() {
-    final characters = _characters.where((c) => c.myStatus?.favorite ?? false).toList();
-    return characters.isEmpty ? [] : characters;
-  }
-
-  List<Character> findStatusUpEvent() {
-    final characters = _characters.where((c) => c.statusUpEvent).toList();
-    return characters.isEmpty ? [] : characters;
-  }
-
-  List<Character> findHaveCharacter() {
-    final characters = _characters.where((c) => c.myStatus?.have ?? false).toList();
-    return characters.isEmpty ? [] : characters;
-  }
-
-  List<Character> findNotHaveCharacter() {
-    final characters = _characters.where((c) => !(c.myStatus?.have ?? false)).toList();
-    return characters.isEmpty ? [] : characters;
   }
 
   void _charactersOrderBy(CharacterListOrderType orderType) {

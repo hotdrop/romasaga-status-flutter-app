@@ -15,8 +15,8 @@ class _MyStatusRepository {
     return await _read(myStatusDaoProvider).findAll();
   }
 
-  Future<MyStatus> find(int id) async {
-    return await _read(myStatusDaoProvider).find(id) ?? MyStatus.empty(id);
+  Future<MyStatus?> find(int id) async {
+    return await _read(myStatusDaoProvider).find(id);
   }
 
   Future<void> save(MyStatus status) async {

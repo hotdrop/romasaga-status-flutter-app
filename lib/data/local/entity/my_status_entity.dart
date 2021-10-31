@@ -15,7 +15,6 @@ class MyStatusEntity extends HiveObject {
     required this.spirit,
     required this.love,
     required this.attr,
-    required this.charHave,
     required this.favorite,
   });
 
@@ -50,12 +49,6 @@ class MyStatusEntity extends HiveObject {
 
   @HiveField(9)
   final int attr;
-
-  @HiveField(10)
-  final int charHave;
-
-  static const int haveChar = 1;
-  static const int notHaveChar = 0;
 
   @HiveField(11)
   final int favorite;

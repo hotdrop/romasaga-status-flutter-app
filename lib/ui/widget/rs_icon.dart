@@ -12,20 +12,21 @@ import 'package:rsapp/models/weapon.dart';
 class CharacterIcon extends StatelessWidget {
   const CharacterIcon._(this._res, this._size);
 
-  factory CharacterIcon.small(String path) {
-    return CharacterIcon._(path, 30.0);
+  factory CharacterIcon.small(String? path) {
+    return CharacterIcon._(path ?? _defaultIconPath, 30.0);
   }
 
-  factory CharacterIcon.normal(String path) {
-    return CharacterIcon._(path, 50.0);
+  factory CharacterIcon.normal(String? path) {
+    return CharacterIcon._(path ?? _defaultIconPath, 50.0);
   }
 
-  factory CharacterIcon.large(String path) {
-    return CharacterIcon._(path, 80.0);
+  factory CharacterIcon.large(String? path) {
+    return CharacterIcon._(path ?? _defaultIconPath, 80.0);
   }
 
   final String _res;
   final double _size;
+  static const _defaultIconPath = 'res/charIcons/default.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class CharacterIcon extends StatelessWidget {
       width: _size,
       height: _size,
       placeholder: (context, url) => SizedBox(width: _size, height: _size, child: const CircularProgressIndicator()),
-      errorWidget: (context, url, dynamic error) => Image.asset('res/charIcons/default.jpg', width: _size, height: _size),
+      errorWidget: (context, url, dynamic error) => Image.asset(_defaultIconPath, width: _size, height: _size),
     );
   }
 }
@@ -69,11 +70,11 @@ class StyleRankIcon extends StatelessWidget {
 class WeaponIcon extends StatelessWidget {
   const WeaponIcon._(this._type, this._size, this._selected, this._onTap);
 
-  factory WeaponIcon.small(WeaponType type, {required bool selected, Function? onTap}) {
+  factory WeaponIcon.small(WeaponType type, {bool selected = false, Function? onTap}) {
     return WeaponIcon._(type, 30.0, selected, onTap);
   }
 
-  factory WeaponIcon.normal(WeaponType type, {required bool selected, Function? onTap}) {
+  factory WeaponIcon.normal(WeaponType type, {bool selected = false, Function? onTap}) {
     return WeaponIcon._(type, 50.0, selected, onTap);
   }
 

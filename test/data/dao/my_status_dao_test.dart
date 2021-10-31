@@ -14,9 +14,9 @@ void main() {
     final dao = container.read(myStatusDaoProvider);
 
     final myStatues = [
-      MyStatus(1, 10, 1, 2, 3, 4, 5, 6, 7, 8, false, false),
-      MyStatus(2, 20, 2, 4, 6, 8, 10, 12, 14, 16, true, true),
-      MyStatus(3, 30, 3, 6, 9, 12, 15, 18, 21, 24, false, true),
+      MyStatus(1, 10, 1, 2, 3, 4, 5, 6, 7, 8, false),
+      MyStatus(2, 20, 2, 4, 6, 8, 10, 12, 14, 16, true),
+      MyStatus(3, 30, 3, 6, 9, 12, 15, 18, 21, 24, true),
     ];
 
     // テスト開始
@@ -63,10 +63,6 @@ void main() {
     expect(results[1].attr, 16);
     expect(results[2].attr, 24);
 
-    expect(results[0].have, isFalse);
-    expect(results[1].have, isTrue);
-    expect(results[2].have, isFalse);
-
     expect(results[0].favorite, isFalse);
     expect(results[1].favorite, isTrue);
     expect(results[2].favorite, isTrue);
@@ -84,9 +80,9 @@ void main() {
     final dao = container.read(myStatusDaoProvider);
 
     final myStatues = [
-      MyStatus(1, 10, 1, 2, 3, 4, 5, 6, 7, 8, false, false),
-      MyStatus(2, 20, 2, 4, 6, 8, 10, 12, 14, 16, true, true),
-      MyStatus(3, 30, 3, 6, 9, 12, 15, 18, 21, 24, false, true),
+      MyStatus(1, 10, 1, 2, 3, 4, 5, 6, 7, 8, false),
+      MyStatus(2, 20, 2, 4, 6, 8, 10, 12, 14, 16, true),
+      MyStatus(3, 30, 3, 6, 9, 12, 15, 18, 21, 24, true),
     ];
     await dao.refresh(myStatues);
 
@@ -103,7 +99,6 @@ void main() {
     expect(result.spirit, 12);
     expect(result.love, 14);
     expect(result.attr, 16);
-    expect(result.have, isTrue);
     expect(result.favorite, isTrue);
   });
 
@@ -112,17 +107,17 @@ void main() {
     final dao = container.read(myStatusDaoProvider);
 
     final myStatues = [
-      MyStatus(1, 10, 1, 2, 3, 4, 5, 6, 7, 8, false, false),
-      MyStatus(2, 20, 2, 4, 6, 8, 10, 12, 14, 16, true, true),
-      MyStatus(3, 30, 3, 6, 9, 12, 15, 18, 21, 24, false, true),
+      MyStatus(1, 10, 1, 2, 3, 4, 5, 6, 7, 8, false),
+      MyStatus(2, 20, 2, 4, 6, 8, 10, 12, 14, 16, true),
+      MyStatus(3, 30, 3, 6, 9, 12, 15, 18, 21, 24, true),
     ];
     await dao.refresh(myStatues);
 
     // テスト開始
     // 既存データの更新
-    await dao.save(MyStatus(2, 40, 4, 8, 12, 16, 20, 24, 28, 32, true, false));
+    await dao.save(MyStatus(2, 40, 4, 8, 12, 16, 20, 24, 28, 32, false));
     // 新規データ登録
-    await dao.save(MyStatus(4, 50, 5, 10, 15, 20, 25, 30, 35, 40, false, false));
+    await dao.save(MyStatus(4, 50, 5, 10, 15, 20, 25, 30, 35, 40, false));
 
     final result2 = await dao.find(2);
     expect(result2, isNotNull);
@@ -136,7 +131,6 @@ void main() {
     expect(result2.spirit, 24);
     expect(result2.love, 28);
     expect(result2.attr, 32);
-    expect(result2.have, isTrue);
     expect(result2.favorite, isFalse);
 
     final result4 = await dao.find(4);
@@ -151,7 +145,6 @@ void main() {
     expect(result4.spirit, 30);
     expect(result4.love, 35);
     expect(result4.attr, 40);
-    expect(result4.have, isFalse);
     expect(result4.favorite, isFalse);
   });
 }

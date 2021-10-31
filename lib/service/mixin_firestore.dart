@@ -27,7 +27,6 @@ class RSFirestoreMixin {
       'spirit': myStatus.spirit,
       'love': myStatus.love,
       'attr': myStatus.attr,
-      'haveChar': myStatus.have,
       'favorite': myStatus.favorite,
     };
   }
@@ -58,7 +57,6 @@ class RSFirestoreMixin {
       doc.get('spirit') as int,
       doc.get('love') as int,
       doc.get('attr') as int,
-      doc.get('haveChar') as bool,
       doc.get('favorite') as bool,
     );
   }

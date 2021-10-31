@@ -4,6 +4,7 @@ import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/romasaga/ui/detail/char_detail_page.dart';
+import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class CharListRowItem extends StatelessWidget {
   const CharListRowItem(
@@ -23,6 +24,7 @@ class CharListRowItem extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: <Widget>[
+                // TODO ここflexで作らない。見直し
                 Expanded(child: _imageIcon(character), flex: 2),
                 Expanded(child: _nameOverview(character, context), flex: 5),
                 Expanded(child: _weaponTypeIcon(character), flex: 2),
@@ -83,12 +85,12 @@ class CharListRowItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          '${RSStrings.hpName} ${character.myStatus.hp}',
-          style: TextStyle(
+          '${RSStrings.hpName} ${character.myStatus?.hp ?? 0}',
+          style: const TextStyle(
             color: RSColors.characterDetailHpLabel,
           ),
         ),
-        Text('${RSStrings.characterTotalStatus} ${character.myStatus.sumWithoutHp()}'),
+        Text('${RSStrings.characterTotalStatus} ${character.myStatus?.sumWithoutHp() ?? 0}'),
       ],
     );
   }

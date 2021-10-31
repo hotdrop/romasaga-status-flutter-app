@@ -73,7 +73,6 @@ class _MyStatusDao {
       entity.spirit,
       entity.love,
       entity.attr,
-      entity.charHave == MyStatusEntity.haveChar ? true : false,
       entity.favorite == MyStatusEntity.isFavorite ? true : false,
     );
   }
@@ -90,7 +89,6 @@ class _MyStatusDao {
       spirit: myStatus.spirit,
       love: myStatus.love,
       attr: myStatus.attr,
-      charHave: myStatus.have ? MyStatusEntity.haveChar : MyStatusEntity.notHaveChar,
       favorite: myStatus.favorite ? MyStatusEntity.isFavorite : MyStatusEntity.notFavorite,
     );
   }
