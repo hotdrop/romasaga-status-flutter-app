@@ -26,6 +26,7 @@ def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -52,7 +53,6 @@ android {
         applicationId "jp.hotdrop.romansingsagaapp"
         minSdkVersion 28
         targetSdkVersion 30
-        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -71,27 +71,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-
-    flavorDimensions("default")
-
-    productFlavors {
-        develop {
-            applicationIdSuffix = ".dev"
-            versionNameSuffix = "-dev"
-        }
-        product {
-        }
-    }
-
-    variantFilter { variant ->
-        variant.flavors*.name.each { flavorName ->
-            if ((flavorName.contains("product") && (variant.buildType.name == "develop")) ||
-                    (flavorName.contains("develop") && (variant.buildType.name == "product"))
-            ) {
-                setIgnore(true)
-            }
-        }
-    }
 }
 
 flutter {
@@ -100,5 +79,4 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:multidex:1.0.3'
 }

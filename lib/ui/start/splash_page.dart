@@ -28,7 +28,9 @@ class SplashPage extends StatelessWidget {
 
   Widget _onLoading(BuildContext context, String? errorMsg) {
     Future.delayed(Duration.zero).then((_) {
-      AppDialogWithClosePage(errorMsg!).show(context);
+      if (errorMsg != null) {
+        AppDialogWithClosePage(errorMsg).show(context);
+      }
     });
     return Padding(
       padding: const EdgeInsets.all(16.0),

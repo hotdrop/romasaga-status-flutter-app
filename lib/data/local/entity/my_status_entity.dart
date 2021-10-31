@@ -50,7 +50,7 @@ class MyStatusEntity extends HiveObject {
   @HiveField(9)
   final int attr;
 
-  @HiveField(11)
+  @HiveField(10)
   final int favorite;
 
   static const int isFavorite = 1;
