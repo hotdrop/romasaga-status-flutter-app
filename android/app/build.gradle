@@ -67,9 +67,13 @@ android {
     }
 
     buildTypes {
-        release {
-            signingConfig signingConfigs.release
-        }
+      debug {
+        applicationIdSuffix = ".dev"
+        versionNameSuffix = "-dev"
+      }
+      release {
+        signingConfig signingConfigs.release
+      }
     }
 }
 

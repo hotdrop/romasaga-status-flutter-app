@@ -28,8 +28,10 @@ class CharactersPage extends StatelessWidget {
   }
 
   Widget _onLoading(BuildContext context, String? errMsg) {
-    Future.delayed(Duration.zero).then((_) {
-      AppDialog.onlyOk(message: errMsg!).show(context);
+    Future.delayed(Duration.zero).then((_) async {
+      if (errMsg != null) {
+        await AppDialog.onlyOk(message: errMsg).show(context);
+      }
     });
     return const Center(
       child: CircularProgressIndicator(),
@@ -41,7 +43,7 @@ class CharactersPage extends StatelessWidget {
     final favoriteCnt = context.read(charactersViewModelProvider).countFavoriteCharacters;
     final otherCnt = context.read(charactersViewModelProvider).countNotFavoriteCharacters;
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,

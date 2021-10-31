@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/start/splash_view_model.dart';
+import 'package:rsapp/ui/top_page.dart';
 import 'package:rsapp/ui/widget/rs_dialog.dart';
 
 class SplashPage extends StatelessWidget {
@@ -27,26 +27,27 @@ class SplashPage extends StatelessWidget {
   }
 
   Widget _onLoading(BuildContext context, String? errorMsg) {
-    Future.delayed(Duration.zero).then((_) {
+    Future.delayed(Duration.zero).then((_) async {
       if (errorMsg != null) {
-        AppDialogWithClosePage(errorMsg).show(context);
+        await AppDialogWithClosePage(errorMsg).show(context);
       }
     });
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(RSImages.splashImage),
-          const SizedBox(height: 32),
-          const CircularProgressIndicator(),
-        ],
-      ),
-    );
+    return const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ));
   }
 
   Widget _onSuccess(BuildContext context) {
-    // トップページに遷移する
-    throw UnimplementedError();
+    Future.delayed(Duration.zero).then((_) async {
+      await TopPage.start(context);
+    });
+    return const Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 }

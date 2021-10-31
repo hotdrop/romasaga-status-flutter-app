@@ -77,7 +77,6 @@ class Destination {
 const _allDestinations = <Destination>[
   Destination(RSStrings.bottomMenuCharacter, Icons.view_list),
   Destination(RSStrings.bottomMenuSearch, Icons.search),
-  Destination(RSStrings.bottomMenuDashboard, Icons.dashboard),
-  Destination(RSStrings.bottomMenuLetter, Icons.mail),
+  Destination(RSStrings.bottomMenuInformation, Icons.info),
   Destination(RSStrings.bottomMenuAccount, Icons.person),
 ];

@@ -5,9 +5,8 @@ class RSStrings {
 
   static const String bottomMenuCharacter = 'キャラ';
   static const String bottomMenuSearch = '検索';
-  static const String bottomMenuLetter = 'お便り';
+  static const String bottomMenuInformation = '情報';
   static const String bottomMenuAccount = 'アカウント';
-  static const String bottomMenuDashboard = 'ボード';
 
   static const String charactersPageTitle = 'キャラ一覧';
   static const String charactersPageTabStatusUp = '育成対象';
