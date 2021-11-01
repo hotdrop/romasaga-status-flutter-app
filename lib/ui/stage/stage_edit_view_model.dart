@@ -16,28 +16,37 @@ class _StageEditViewModel extends BaseViewModel {
   Stage get currentStage => _currentStage;
 
   String? _inputName;
+  int? _inputHpLimit;
   int? _inputLimit;
 
-  bool get isExecuteSave => (_inputName != null) && (_inputLimit != null);
+  bool get isExecuteSave => (_inputName != null) && (_inputHpLimit != null) && (_inputLimit != null);
 
   Future<void> _init() async {
     _currentStage = await _read(stageRepositoryProvider).find();
     _inputName = _currentStage.name;
-    _inputLimit = _currentStage.limit;
+    _inputHpLimit = _currentStage.hpLimit;
+    _inputLimit = _currentStage.statusLimit;
     onSuccess();
   }
 
   void inputName(String? input) {
     _inputName = input;
+    notifyListeners();
+  }
+
+  void inputHpLimit(int? input) {
+    _inputHpLimit = input;
+    notifyListeners();
   }
 
   void inputLimit(int? input) {
     _inputLimit = input;
+    notifyListeners();
   }
 
   Future<void> save() async {
     // ここでいずれかの値がnullならプログラムバグなので落とす
-    final newStage = Stage(_inputName!, _inputLimit!);
+    final newStage = Stage(_inputName!, _inputHpLimit!, _inputLimit!);
     await _read(stageRepositoryProvider).save(newStage);
   }
 }

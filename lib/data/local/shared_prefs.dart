@@ -42,11 +42,19 @@ class _SharedPrefs {
   }
 
   ///
+  /// ステージのHP上昇値
+  ///
+  Future<int> getStageHpLimit() async => await _getInt('key005');
+  Future<void> saveStageHpLimit(int value) async {
+    await _saveInt('key005', value);
+  }
+
+  ///
   /// ステージのステータス上昇値
   ///
-  Future<int> getStageStatus() async => await _getInt('key005');
-  Future<void> saveStageStatus(int value) async {
-    await _saveInt('key005', value);
+  Future<int> getStageStatusLimit() async => await _getInt('key006');
+  Future<void> saveStageStatusLimit(int value) async {
+    await _saveInt('key006', value);
   }
 
   // 以下は型別のデータ格納/取得処理

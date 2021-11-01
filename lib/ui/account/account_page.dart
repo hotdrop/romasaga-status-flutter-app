@@ -118,7 +118,7 @@ class AccountPage extends StatelessWidget {
     return ListTile(
       leading: const Icon(Icons.maps_home_work, size: _rowIconSize),
       title: const Text(RSStrings.accountStageLabel),
-      subtitle: Text('${currentStage.name} (${currentStage.limit})'),
+      subtitle: Text('${currentStage.name} (${currentStage.statusLimit})'),
       trailing: const Icon(Icons.arrow_forward_ios, size: _rowIconSize),
       onTap: () async {
         final isUpdate = await StageEditPage.start(context);

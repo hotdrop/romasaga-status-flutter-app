@@ -421,7 +421,7 @@ class CharacterDetailPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '${stage.name}(+${stage.limit})',
+            '${stage.name}(+${stage.statusLimit})',
             style: const TextStyle(decoration: TextDecoration.underline),
           ),
           Text(
@@ -519,7 +519,7 @@ class CharacterDetailPage extends StatelessWidget {
     }
 
     final List<TableRow> tableRows = [];
-    final int stageStatusLimit = viewModel.stage.limit;
+    final int stageStatusLimit = viewModel.stage.statusLimit;
 
     for (final rank in allRanks) {
       final style = viewModel.character.getStyle(rank);

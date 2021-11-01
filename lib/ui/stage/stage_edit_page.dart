@@ -56,7 +56,7 @@ class StageEditPage extends StatelessWidget {
         children: [
           _viewNameTextField(context),
           const SizedBox(height: 16),
-          _viewLimitNumberField(context),
+          _viewStatusLimits(context),
           const SizedBox(height: 8),
           const Text(RSStrings.stageEditPageOverview),
           const SizedBox(height: 16),
@@ -76,10 +76,31 @@ class StageEditPage extends StatelessWidget {
     );
   }
 
-  Widget _viewLimitNumberField(BuildContext context) {
+  Widget _viewStatusLimits(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(width: 150, child: _viewHpLimitNumberField(context)),
+        const SizedBox(width: 48),
+        SizedBox(width: 100, child: _viewStatusLimitNumberField(context)),
+      ],
+    );
+  }
+
+  Widget _viewHpLimitNumberField(BuildContext context) {
     final currentStage = context.read(stageEditViewModelProvider).currentStage;
-    return RSNumberFormField.stageLimit(
-      initValue: currentStage.limit,
+    return RSNumberFormField.stageHpLimit(
+      initValue: currentStage.hpLimit,
+      onChanged: (int? input) {
+        context.read(stageEditViewModelProvider).inputHpLimit(input);
+      },
+    );
+  }
+
+  Widget _viewStatusLimitNumberField(BuildContext context) {
+    final currentStage = context.read(stageEditViewModelProvider).currentStage;
+    return RSNumberFormField.stageStatusLimit(
+      initValue: currentStage.statusLimit,
       onChanged: (int? input) {
         context.read(stageEditViewModelProvider).inputLimit(input);
       },
@@ -87,18 +108,21 @@ class StageEditPage extends StatelessWidget {
   }
 
   Widget _viewSaveButton(BuildContext context) {
+    final isSaved = context.read(stageEditViewModelProvider).isExecuteSave;
     return ElevatedButton(
-      onPressed: () {
-        const progressDialog = AppProgressDialog<void>();
-        progressDialog.show(
-          context,
-          execute: context.read(stageEditViewModelProvider).save,
-          onSuccess: (_) async {
-            Navigator.pop(context, true);
-          },
-          onError: (err) => AppDialog.onlyOk(message: err).show(context),
-        );
-      },
+      onPressed: isSaved
+          ? () {
+              const progressDialog = AppProgressDialog<void>();
+              progressDialog.show(
+                context,
+                execute: context.read(stageEditViewModelProvider).save,
+                onSuccess: (_) async {
+                  Navigator.pop(context, true);
+                },
+                onError: (err) => AppDialog.onlyOk(message: err).show(context),
+              );
+            }
+          : null,
       child: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Text(RSStrings.stageEditPageSaveLabel),

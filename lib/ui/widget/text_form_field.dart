@@ -46,7 +46,14 @@ class _RSTextFormFieldState extends State<RSTextFormField> {
 class RSNumberFormField extends StatefulWidget {
   const RSNumberFormField._(this.label, this.initValue, this.onChanged);
 
-  factory RSNumberFormField.stageLimit({
+  factory RSNumberFormField.stageHpLimit({
+    required int initValue,
+    required Function(int? inputVal) onChanged,
+  }) {
+    return RSNumberFormField._(RSStrings.stageEditPageHpLimitLabel, initValue, onChanged);
+  }
+
+  factory RSNumberFormField.stageStatusLimit({
     required int initValue,
     required Function(int? inputVal) onChanged,
   }) {

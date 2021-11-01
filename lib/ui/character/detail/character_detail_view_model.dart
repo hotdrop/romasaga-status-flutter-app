@@ -29,7 +29,7 @@ class _CharacterDetailViewModel extends BaseViewModel {
   String get selectedStyleTitle => _selectedStyle.title;
   String get selectedRankName => character.selectedStyleRank ?? character.styles.first.rank;
 
-  int get totalLimitStatusWithSelectedStage => (_selectedStyle.sum()) + (8 * _stage.limit);
+  int get totalLimitStatusWithSelectedStage => (_selectedStyle.sum()) + (8 * _stage.statusLimit);
 
   // 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
   // TODO このフラグはよくないのでキャラデータをStateNotifierで持って更新判定する。
@@ -68,21 +68,21 @@ class _CharacterDetailViewModel extends BaseViewModel {
   int getStatusLimit(String statusName) {
     switch (statusName) {
       case RSStrings.strName:
-        return _selectedStyle.str + _stage.limit;
+        return _selectedStyle.str + _stage.statusLimit;
       case RSStrings.vitName:
-        return _selectedStyle.vit + _stage.limit;
+        return _selectedStyle.vit + _stage.statusLimit;
       case RSStrings.dexName:
-        return _selectedStyle.dex + _stage.limit;
+        return _selectedStyle.dex + _stage.statusLimit;
       case RSStrings.agiName:
-        return _selectedStyle.agi + _stage.limit;
+        return _selectedStyle.agi + _stage.statusLimit;
       case RSStrings.intName:
-        return _selectedStyle.intelligence + _stage.limit;
+        return _selectedStyle.intelligence + _stage.statusLimit;
       case RSStrings.spiName:
-        return _selectedStyle.spirit + _stage.limit;
+        return _selectedStyle.spirit + _stage.statusLimit;
       case RSStrings.loveName:
-        return _selectedStyle.love + _stage.limit;
+        return _selectedStyle.love + _stage.statusLimit;
       case RSStrings.attrName:
-        return _selectedStyle.attr + _stage.limit;
+        return _selectedStyle.attr + _stage.statusLimit;
       default:
         return 1;
     }

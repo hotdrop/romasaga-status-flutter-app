@@ -1,6 +1,7 @@
 class Stage {
-  const Stage(this.name, this.limit);
+  const Stage(this.name, this.hpLimit, this.statusLimit);
 
   final String name;
-  final int limit;
+  final int hpLimit;
+  final int statusLimit;
 }

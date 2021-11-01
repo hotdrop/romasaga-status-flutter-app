@@ -82,7 +82,8 @@ class RSStrings {
   static const String stageEditPageTitle = 'ステージ情報編集';
   static const String stageEditPageOverview = '【ステータス上限値の補足】\nステータス上限値はVH6を0で計算しています。\n一般的なサイトの上限値を参考にする場合は-45してください。';
   static const String stageEditPageNameLabel = 'ステージ名';
-  static const String stageEditPageStatusLimitLabel = 'ステータス上限値';
+  static const String stageEditPageHpLimitLabel = 'HP上限';
+  static const String stageEditPageStatusLimitLabel = 'ステ上限';
   static const String stageEditPageSaveLabel = 'この内容で更新する';
 
   // ダイアログ
