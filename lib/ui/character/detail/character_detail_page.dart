@@ -133,7 +133,7 @@ class CharacterDetailPage extends StatelessWidget {
                     context,
                     execute: viewModel.refreshIcon,
                     onSuccess: (_) => viewModel.refreshCharacterData,
-                    onError: (errMsg) => AppDialog.onlyOk(message: '$errMsg').show(context),
+                    onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
                   );
                 },
               ).show(context);

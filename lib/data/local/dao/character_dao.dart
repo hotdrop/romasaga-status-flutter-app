@@ -30,17 +30,6 @@ class _CharacterDao {
   }
 
   ///
-  /// 保存されているキャラ情報の概要（スタイル以外の情報）を全て取得する
-  ///
-  Future<List<Character>> findAllSummary() async {
-    final box = await Hive.openBox<CharacterEntity>(CharacterEntity.boxName);
-    if (box.isEmpty) {
-      return [];
-    }
-    return box.values.map((e) => _toCharacter(e)).toList();
-  }
-
-  ///
   /// 保存されているキャラ情報の中から、引数に指定したIDのスタイル一式を取得する
   ///
   Future<List<Style>> findStyles(int characterId) async {
@@ -135,8 +124,8 @@ class _CharacterDao {
       production: character.production,
       weaponType: character.weapon.type.index,
       attributeTypes: character.attributes?.map((a) => a.type?.index).join(',') ?? '',
-      selectedStyleRank: character.selectedStyleRank ?? '',
-      selectedIconFilePath: character.selectedIconFilePath ?? '',
+      selectedStyleRank: character.selectedStyleRank,
+      selectedIconFilePath: character.selectedIconFilePath,
       statusUpEvent: character.statusUpEvent ? CharacterEntity.nowStatusUpEvent : CharacterEntity.notStatusUpEvent,
     );
   }

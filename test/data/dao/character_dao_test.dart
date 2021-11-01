@@ -44,35 +44,6 @@ void main() {
     expect(results[2].styles.length, 2);
   });
 
-  test('全キャラクターの概要情報（スタイル以外の情報）が取得できることを確認する', () async {
-    final container = ProviderContainer();
-    final dao = container.read(characterDaoProvider);
-
-    final characters = [
-      Character(1001, 'Test1', 'prd', Weapon(name: RSStrings.sword), null, selectedStyleRank: 's')
-        ..addStyle(Style(1, 1001, 's', 'remote', 'remoteName1', 'path1', 91, 92, 93, 94, 95, 96, 97, 98)),
-      Character(1002, 'Test2', 'prd', Weapon(name: RSStrings.sword), null, selectedStyleRank: 's')
-        ..addStyle(Style(2, 1002, 's', 'remote', 'remoteName2', 'path1', 100, 101, 102, 103, 104, 105, 106, 107))
-        ..addStyle(Style(3, 1002, 'a', 'remote', 'remoteName3', 'path1', 21, 22, 23, 24, 25, 26, 27, 28)),
-      Character(1003, 'Test3', 'prd', Weapon(name: RSStrings.sword), null, selectedStyleRank: 'ss')
-        ..addStyle(Style(4, 1003, 'ss', 'remote', 'remoteName2', 'path1', 31, 32, 33, 34, 35, 36, 37, 38))
-        ..addStyle(Style(5, 1003, 's', 'remote', 'remoteName3', 'path1', 41, 42, 43, 44, 45, 46, 47, 48)),
-    ];
-
-    // テスト開始
-    await dao.refresh(characters);
-    final results = await dao.findAllSummary();
-    expect(results.length, 3);
-    expect(results[0].id, 1001);
-    expect(results[0].styles.length, 0);
-
-    expect(results[1].id, 1002);
-    expect(results[1].styles.length, 0);
-
-    expect(results[2].id, 1003);
-    expect(results[2].styles.length, 0);
-  });
-
   test('指定したキャラクターIDのスタイル情報が全て取得できることを確認する', () async {
     final container = ProviderContainer();
     final dao = container.read(characterDaoProvider);
@@ -178,14 +149,14 @@ void main() {
     await dao.refresh(characters);
 
     // テスト開始
-    final firstResults = await dao.findAllSummary();
+    final firstResults = await dao.findAll();
     final beforeChar = firstResults.where((c) => c.id == 1001).first;
     expect(beforeChar.selectedStyleRank, 's');
     expect(beforeChar.selectedIconFilePath, 'oldPath');
 
     await dao.saveSelectedStyle(1001, 'a', 'updateIcon');
 
-    final results = await dao.findAllSummary();
+    final results = await dao.findAll();
     final afterChar = results.where((c) => c.id == 1001).first;
     expect(afterChar.selectedStyleRank, 'a');
     expect(afterChar.selectedIconFilePath, 'updateIcon');
@@ -201,13 +172,13 @@ void main() {
     await dao.refresh(characters);
 
     // テスト開始
-    final beforeResults = await dao.findAllSummary();
+    final beforeResults = await dao.findAll();
     final beforeResult = beforeResults.where((e) => e.id == 1001).first;
     expect(beforeResult.statusUpEvent, false);
 
     await dao.saveStatusUpEvent(1001, true);
 
-    final afterResults = await dao.findAllSummary();
+    final afterResults = await dao.findAll();
     final afterResult = afterResults.where((e) => e.id == 1001).first;
     expect(afterResult.statusUpEvent, true);
   });
@@ -222,7 +193,7 @@ void main() {
     final resultFindAll = await dao.findAll();
     expect(resultFindAll.length, 0);
 
-    final resultFindAllSummary = await dao.findAllSummary();
+    final resultFindAllSummary = await dao.findAll();
     expect(resultFindAllSummary.length, 0);
 
     final result = await dao.count();

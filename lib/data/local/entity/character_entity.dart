@@ -33,10 +33,10 @@ class CharacterEntity extends HiveObject {
   final String attributeTypes;
 
   @HiveField(5)
-  final String selectedStyleRank;
+  final String? selectedStyleRank;
 
   @HiveField(6)
-  final String selectedIconFilePath;
+  final String? selectedIconFilePath;
 
   @HiveField(7)
   final int statusUpEvent;

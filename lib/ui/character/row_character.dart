@@ -45,7 +45,7 @@ class RowCharacterItem extends StatelessWidget {
   Container _imageIcon(Character character) {
     return Container(
       margin: const EdgeInsets.only(right: 16.0),
-      child: CharacterIcon.normal(character.selectedIconFilePath),
+      child: CharacterIcon.normal(character.getShowIconPath()),
     );
   }
 

@@ -36,19 +36,11 @@ class _CharacterDetailViewModel extends BaseViewModel {
   bool _isUpdateStatus = false;
   bool get isUpdate => _isUpdateStatus;
 
-  Future<void> init(Character character) async {
+  Future<void> init(Character c) async {
     try {
-      character = character;
+      character = c;
       _stage = await _read(stageRepositoryProvider).find();
-
-      if (character.styles.isEmpty) {
-        RSLogger.d('キャラクターのスタイルが未取得なので取得します。id=${character.id}');
-        final styles = await _read(characterRepositoryProvider).findStyles(character.id);
-        RSLogger.d('キャラクターのスタイルを取得しました。件数=${styles.length}');
-        character.addStyles(styles);
-      }
-
-      _selectedStyle = character.selectedStyle ?? character.styles.first;
+      _selectedStyle = c.selectedStyle ?? c.styles.first;
       onSuccess();
     } on Exception catch (e) {
       onError('$e');

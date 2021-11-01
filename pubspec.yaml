@@ -68,7 +68,6 @@ flutter_icons:
 flutter:
   uses-material-design: true
   assets:
-    - res/json/
     - res/icons/
     - res/charIcons/
     - res/launcher/

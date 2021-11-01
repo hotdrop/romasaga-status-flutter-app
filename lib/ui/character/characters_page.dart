@@ -125,12 +125,14 @@ class CharactersPage extends StatelessWidget {
     if (characters.isEmpty) {
       return _viewEmptyList();
     }
-    return ListView.builder(itemBuilder: (context, index) {
-      return RowCharacterItem(
-        characters[index],
-        refreshListener: () async => await context.read(charactersViewModelProvider).refresh(),
-      );
-    });
+    return ListView.builder(
+        shrinkWrap: true,
+        itemCount: characters.length,
+        itemBuilder: (context, index) {
+          return RowCharacterItem(characters[index], refreshListener: () async {
+            await context.read(charactersViewModelProvider).refresh();
+          });
+        });
   }
 
   Widget _viewEmptyList() {

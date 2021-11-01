@@ -34,10 +34,6 @@ class Character {
 
   Style? get selectedStyle => styles.firstWhereOrNull((style) => style.rank == selectedStyleRank);
 
-  void addStyles(List<Style> argStyles) {
-    styles.addAll(argStyles);
-  }
-
   void addStyle(Style style) {
     styles.add(style);
   }
@@ -49,6 +45,10 @@ class Character {
 
   Style getStyle(String rank) {
     return styles.firstWhere((style) => style.rank == rank);
+  }
+
+  String getShowIconPath() {
+    return selectedIconFilePath ?? styles.first.iconFilePath;
   }
 
   Character withStatus(MyStatus status) {

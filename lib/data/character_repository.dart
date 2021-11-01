@@ -18,10 +18,10 @@ class _CharacterRepository {
   final Reader _read;
 
   ///
-  /// キャラデータのロード
+  /// キャラ情報を全て取得
   ///
   Future<List<Character>> findAll() async {
-    var characters = await _read(characterDaoProvider).findAllSummary();
+    var characters = await _read(characterDaoProvider).findAll();
     RSLogger.d('データ取得完了 件数=${characters.length}');
     return characters;
   }

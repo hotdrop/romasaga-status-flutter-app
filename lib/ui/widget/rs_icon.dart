@@ -34,7 +34,7 @@ class CharacterIcon extends StatelessWidget {
       imageUrl: _res,
       width: _size,
       height: _size,
-      placeholder: (context, url) => SizedBox(width: _size, height: _size, child: const CircularProgressIndicator()),
+      placeholder: (context, url) => const CircularProgressIndicator(),
       errorWidget: (context, url, dynamic error) => Image.asset(_defaultIconPath, width: _size, height: _size),
     );
   }
