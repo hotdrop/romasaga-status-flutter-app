@@ -10,7 +10,7 @@ class AppProgressDialog<T> {
     BuildContext context, {
     required Future<T> Function() execute,
     required Function(T) onSuccess,
-    required Function(Exception) onError,
+    required Function(String) onError,
   }) async {
     _showProgressDialog(context);
     try {
@@ -19,7 +19,7 @@ class AppProgressDialog<T> {
       onSuccess(result);
     } on Exception catch (e) {
       _closeDialog(context);
-      onError(e);
+      onError('$e');
     }
   }
 

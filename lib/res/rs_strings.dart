@@ -16,7 +16,6 @@ class RSStrings {
   static const String charactersOrderHp = 'HP';
   static const String charactersOrderProduction = '作品';
   static const String nothingCharactersLabel = '該当キャラはいません。';
-
   static const String characterTotalStatus = '計: ';
 
   static const String characterDetailPageTitle = 'キャラ詳細';
@@ -30,6 +29,7 @@ class RSStrings {
 
   static const String statusEditTitle = 'ステータス編集';
 
+  // 検索
   static const String searchPageTitle = '検索';
   static const String searchListQueryHint = 'キャラ名で検索';
   static const String searchBackDropTitle = 'キャラ一覧';
@@ -40,6 +40,7 @@ class RSStrings {
   static const String searchFilterClear = 'クリア';
   static const String searchFilterLoadingErrorMessage = 'キャラ情報のロードに失敗しました。';
 
+  // お便り
   static const String letterPageTitle = '運営からのお便り';
   static const String letterPageNotData = 'お便り情報がロードされていません。'
       '\nアカウント画面よりお便り情報を取得してください。'
@@ -52,63 +53,27 @@ class RSStrings {
   static const String letterYearLabel = '年';
   static const String letterMonthLabel = '月';
 
-  // ダッシュボード画面
-  static const String dashboardPageTitle = 'ダッシュボード';
-  static const String dashboardPageFavoriteCharLabel = 'お気に入り数';
-  static const String dashboardPageHaveCharLabel = '保持キャラ数';
-  static const String dashboardPageAllCharLabel = '全キャラ数';
-  static const String dashboardPageTopCharacterLabel = '現在の総合ランキングトップキャラ';
-  static const String dashboardPageLoadingErrorMessage = 'キャラ情報のロードに失敗しました。';
-  static const String strL = '力';
-  static const String vitL = '体';
-  static const String dexL = '器';
-  static const String agiL = '早';
-  static const String intL = '知';
-  static const String spiL = '精';
-  static const String loveL = '愛';
-  static const String attrL = '魅';
-
   // アカウント画面
   static const String accountPageTitle = 'アカウント';
-  static const String accountNotLoginEmailLabel = '未ログイン';
-  static const String accountNotLoginNameLabel = 'ー';
-  static const String accountChangeApplicationThemeLabel = 'テーマの切り替え';
+  static const String accountNotSignInLabel = '未ログイン';
+  static const String accountNotNameLabel = 'ー';
+  static const String accountChangeThemeLabel = 'テーマの切り替え';
   static const String accountAppVersionLabel = 'バージョン';
-  static const String accountLoginWithGoogle = 'Googleアカウントでログイン';
-  static const String accountLogoutTitle = 'Googleアカウントからログアウト';
-  static const String accountLogoutDialogMessage = 'ログアウトしてもよろしいですか？';
-  static const String accountLogoutSuccessMessage = 'ログアウトが完了しました。';
-
-  static const String accountDataUpdateTitle = 'サーバーからデータ取得';
-  static const String accountDataUpdateDetail = 'キャラ情報はタップで新キャラのみ取得、ロングタップで全キャラ取得します。';
-
-  static const String accountCharacterUpdateLabel = 'キャラ';
-  static const String accountCharacterRegisterCountLabel = '現在の登録数:';
-  static const String accountCharacterOnlyNewUpdateDialogMessage = '新しくサーバーに登録されたキャラ情報を取得します。\nよろしいですか？';
-  static const String accountCharacterAllUpdateDialogMessage = '注意！！\n現在アプリ内に保存されているキャラ情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
-  static const String accountCharacterUpdateDialogSuccessMessage = '最新のキャラ情報を取得しました。';
-
-  static const String accountStageUpdateLabel = 'ステージ';
-  static const String accountStageLatestLabel = '最新:';
-  static const String accountStageEmptyLabel = 'ー';
-  static const String accountStageUpdateDialogMessage = '現在のステージ情報を全て削除してサーバーから再取得します。\nよろしいですか？';
-  static const String accountStageUpdateDialogSuccessMessage = '最新のステージ情報を取得しました。';
-
-  static const String accountLetterUpdateLabel = 'お便り';
-  static const String accountLetterLatestLabel = '最新:';
-  static const String accountLetterEmptyLabel = 'ー';
-  static const String accountLetterUpdateDialogMessage = '新しくサーバーに登録されたお便り情報を取得します。\nよろしいですか？';
-  static const String accountLetterAllUpdateDialogMessage = '注意！！\n現在アプリ内に保存されているお便り情報を全て削除し、サーバーから再取得します。\nこの処理は数分時間がかかりますがよろしいですか？\n(自身が入力したステータス等は削除されません。)';
-  static const String accountLetterUpdateDialogSuccessMessage = '最新のお便り情報を取得しました。';
-
+  static const String accountSignInButton = 'Googleアカウントでサインインする';
+  static const String accountSignOutButton = 'Googleアカウントからサインアウトする';
+  static const String accountSignOutDialogMessage = 'Googleアカウントからサインアウトします。よろしいですか？';
+  static const String accountCharacterUpdateLabel = 'キャラ情報更新';
+  static const String accountCharacterDetailLabel = '最新のキャラ情報を取得します';
+  static const String accountCharacterUpdateDialogMessage = 'サーバーから最新のキャラ情報を取得し更新します。\nよろしいですか？';
+  static const String accountCharacterUpdateDialogSuccessMessage = 'キャラ情報の更新に成功しました。';
   static const String accountStatusBackupLabel = 'バックアップ';
   static const String accountStatusBackupDateLabel = '前回実行日:';
+  static const String accountStatusBackupNotLabel = 'ー';
   static const String accountStatusBackupDialogMessage = '現在のキャラステータスをサーバーへバックアップします。\nよろしいですか？';
   static const String accountStatusBackupDialogSuccessMessage = 'バックアップに成功しました。';
-
   static const String accountStatusRestoreLabel = '復元';
+  static const String accountStatusRestoreDetailLabel = 'アプリ内のデータを上書きします。';
   static const String accountStatusRestoreDialogMessage = 'サーバーにバックアップしたキャラステータスを復元します。\n現在のステータスは全て消えますがよろしいですか？';
-  static const String accountStatusRestoreDescriptionLabel = 'アプリ内のデータを上書きします。';
   static const String accountStatusRestoreDialogSuccessMessage = '復元に成功しました。';
 
   // ダイアログ

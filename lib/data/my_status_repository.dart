@@ -31,8 +31,11 @@ class _MyStatusRepository {
     await _read(sharedPrefsProvider).saveBackupDate(nowStr);
   }
 
-  Future<String> getPreviousBackupDateStr() async {
+  Future<String?> getPreviousBackupDateStr() async {
     final dateStr = await _read(sharedPrefsProvider).getBackupDate();
+    if (dateStr == null || dateStr.length < 10) {
+      return null;
+    }
     return dateStr.substring(0, 10);
   }
 

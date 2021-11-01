@@ -50,26 +50,6 @@ class _LetterRepository {
     return results;
   }
 
-  Future<void> refresh() async {
-    final response = await _read(letterApiProvider).findAll();
-    RSLogger.d('リモートからデータ取得 件数=${response.letters.length}');
-
-    final letters = await Future.wait(
-      response.letters.map((r) async => await _toLetter(r)).toList(),
-    );
-    await _read(letterDaoProvider).saveAll(letters);
-  }
-
-  Future<String> getLatestLetterName() async {
-    final letters = await _read(letterDaoProvider).findAll();
-    if (letters.isEmpty) {
-      return RSStrings.accountLetterEmptyLabel;
-    } else {
-      final latestLetter = letters.last;
-      return '${latestLetter.year}${RSStrings.letterYearLabel}${latestLetter.month}${RSStrings.letterMonthLabel} ${latestLetter.shortTitle}';
-    }
-  }
-
   Future<Letter> _toLetter(LetterResponse response) async {
     final gifPath = await _read(letterApiProvider).findImageUrl('${response.imageName}.gif');
     final imagePath = await _read(letterApiProvider).findImageUrl('${response.imageName}_static.jpg');
@@ -83,5 +63,15 @@ class _LetterRepository {
       gifFilePath: gifPath,
       staticImagePath: imagePath,
     );
+  }
+
+  Future<String?> getLatestLetterName() async {
+    final letters = await _read(letterDaoProvider).findAll();
+    if (letters.isEmpty) {
+      return null;
+    } else {
+      final latestLetter = letters.last;
+      return '${latestLetter.year}${RSStrings.letterYearLabel}${latestLetter.month}${RSStrings.letterMonthLabel} ${latestLetter.shortTitle}';
+    }
   }
 }
