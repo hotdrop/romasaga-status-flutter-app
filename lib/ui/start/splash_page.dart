@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/start/splash_view_model.dart';
 import 'package:rsapp/ui/top_page.dart';
 import 'package:rsapp/ui/widget/rs_dialog.dart';
@@ -29,11 +28,9 @@ class SplashPage extends StatelessWidget {
         await AppDialogWithClosePage(errorMsg).show(context);
       }
     });
-    return const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Center(
-          child: CircularProgressIndicator(),
-        ));
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
   }
 
   Widget _onSuccess(BuildContext context) {

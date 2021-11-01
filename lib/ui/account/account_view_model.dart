@@ -3,8 +3,9 @@ import 'package:package_info/package_info.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/data/account_repository.dart';
 import 'package:rsapp/data/character_repository.dart';
-import 'package:rsapp/data/letter_repository.dart';
 import 'package:rsapp/data/my_status_repository.dart';
+import 'package:rsapp/data/stage_repository.dart';
+import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/base_view_model.dart';
 
@@ -26,6 +27,10 @@ class _AccountViewModel extends BaseViewModel {
   String get userName => _read(accountRepositoryProvider).getUserName() ?? RSStrings.accountNotNameLabel;
   String get email => _read(accountRepositoryProvider).getEmail() ?? RSStrings.accountNotSignInLabel;
 
+  // ステージ情報
+  late Stage _stage;
+  Stage get stage => _stage;
+
   // 前回バックアップ日付文字列
   late String _backupDateLabel;
   String get backupDateLabel => _backupDateLabel;
@@ -34,6 +39,7 @@ class _AccountViewModel extends BaseViewModel {
     try {
       _packageInfo = await PackageInfo.fromPlatform();
       _backupDateLabel = await _read(myStatusRepositoryProvider).getPreviousBackupDateStr() ?? RSStrings.accountStatusBackupNotLabel;
+      _stage = await _read(stageRepositoryProvider).find();
       onSuccess();
     } on Exception catch (e, s) {
       await RSLogger.e('アカウント画面の初期化に失敗しました。', exception: e, stackTrace: s);
@@ -56,8 +62,8 @@ class _AccountViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> refreshLetter() async {
-    await _read(letterRepositoryProvider).update();
+  Future<void> refreshStage() async {
+    _stage = await _read(stageRepositoryProvider).find();
     notifyListeners();
   }
 

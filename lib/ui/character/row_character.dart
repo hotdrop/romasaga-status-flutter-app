@@ -3,11 +3,11 @@ import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/character.dart';
-import 'package:rsapp/ui/characters/detail/char_detail_page.dart';
+import 'package:rsapp/ui/character/detail/character_detail_page.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
-class CharListRowItem extends StatelessWidget {
-  const CharListRowItem(
+class RowCharacterItem extends StatelessWidget {
+  const RowCharacterItem(
     this.character, {
     Key? key,
     required this.refreshListener,

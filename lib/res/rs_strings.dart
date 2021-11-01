@@ -63,9 +63,11 @@ class RSStrings {
   static const String accountSignOutButton = 'Googleアカウントからサインアウトする';
   static const String accountSignOutDialogMessage = 'Googleアカウントからサインアウトします。よろしいですか？';
   static const String accountCharacterUpdateLabel = 'キャラ情報更新';
-  static const String accountCharacterDetailLabel = '最新のキャラ情報を取得します';
+  static const String accountCharacterDetailLabel = '最新のキャラ情報に更新します。';
   static const String accountCharacterUpdateDialogMessage = 'サーバーから最新のキャラ情報を取得し更新します。\nよろしいですか？';
   static const String accountCharacterUpdateDialogSuccessMessage = 'キャラ情報の更新に成功しました。';
+  static const String accountStageLabel = 'ステージ情報';
+  static const String accountStageDetailLabel = 'ステージ情報を編集します。';
   static const String accountStatusBackupLabel = 'バックアップ';
   static const String accountStatusBackupDateLabel = '前回実行日:';
   static const String accountStatusBackupNotLabel = 'ー';
@@ -75,6 +77,13 @@ class RSStrings {
   static const String accountStatusRestoreDetailLabel = 'アプリ内のデータを上書きします。';
   static const String accountStatusRestoreDialogMessage = 'サーバーにバックアップしたキャラステータスを復元します。\n現在のステータスは全て消えますがよろしいですか？';
   static const String accountStatusRestoreDialogSuccessMessage = '復元に成功しました。';
+
+  // ステージ情報
+  static const String stageEditPageTitle = 'ステージ情報編集';
+  static const String stageEditPageOverview = '【ステータス上限値の補足】\nステータス上限値はVH6を0で計算しています。\n一般的なサイトの上限値を参考にする場合は-45してください。';
+  static const String stageEditPageNameLabel = 'ステージ名';
+  static const String stageEditPageStatusLimitLabel = 'ステータス上限値';
+  static const String stageEditPageSaveLabel = 'この内容で更新する';
 
   // ダイアログ
   static const String dialogTitleSuccess = '成功';

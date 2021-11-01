@@ -4,7 +4,7 @@ import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/characters/detail/char_detail_view_model.dart';
+import 'package:rsapp/ui/character/detail/character_detail_view_model.dart';
 import 'package:rsapp/ui/widget/rank_chip.dart';
 import 'package:rsapp/ui/widget/rs_dialog.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
@@ -414,42 +414,22 @@ class CharacterDetailPage extends StatelessWidget {
   }
 
   Widget _contentsStage(BuildContext context) {
+    final stage = context.read(characterDetailViewModelProvider).stage;
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _stageDropDownList(context),
+          Text(
+            '${stage.name}(+${stage.limit})',
+            style: const TextStyle(decoration: TextDecoration.underline),
+          ),
           Text(
             '(${RSStrings.characterDetailStageSelectDescLabel})',
             style: Theme.of(context).textTheme.caption,
           )
         ],
       ),
-    );
-  }
-
-  ///
-  /// ステージのドロップダウンリスト
-  ///
-  Widget _stageDropDownList(BuildContext context) {
-    final viewModel = context.read(characterDetailViewModelProvider);
-    final stages = viewModel.stages;
-
-    return DropdownButton<String>(
-      items: stages.map((stage) {
-        final showLimit = (stage.limit > 0) ? '+${stage.limit}' : stage.limit.toString();
-        return DropdownMenuItem<String>(
-          value: stage.name,
-          child: Text('${stage.name} ($showLimit)'),
-        );
-      }).toList(),
-      onChanged: (String? value) {
-        if (value != null) {
-          viewModel.onSelectStage(value);
-        }
-      },
-      value: viewModel.selectedStageName,
     );
   }
 
@@ -539,7 +519,7 @@ class CharacterDetailPage extends StatelessWidget {
     }
 
     final List<TableRow> tableRows = [];
-    final int stageStatusLimit = viewModel.selectedStageLimit;
+    final int stageStatusLimit = viewModel.stage.limit;
 
     for (final rank in allRanks) {
       final style = viewModel.character.getStyle(rank);

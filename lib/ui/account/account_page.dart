@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/account/account_view_model.dart';
+import 'package:rsapp/ui/stage/stage_edit_page.dart';
 import 'package:rsapp/ui/widget/rs_dialog.dart';
 import 'package:rsapp/ui/widget/rs_divider.dart';
 import 'package:rsapp/ui/widget/rs_progress_dialog.dart';
@@ -50,7 +51,8 @@ class AccountPage extends StatelessWidget {
         _rowAppVersion(context),
         _rowThemeSwitch(context),
         const HorizontalLine(),
-        _rowCharacterReload(context),
+        _rowRefreshCharacter(context),
+        _rowEditStage(context),
         if (loggedIn) ...[
           _rowBackUp(context),
           _rowRestore(context),
@@ -87,7 +89,7 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Widget _rowCharacterReload(BuildContext context) {
+  Widget _rowRefreshCharacter(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.people, size: _rowIconSize),
       title: const Text(RSStrings.accountCharacterUpdateLabel),
@@ -108,6 +110,22 @@ class AccountPage extends StatelessWidget {
       execute: context.read(accountViewModelProvider).refreshCharacters,
       onSuccess: (_) => AppDialog.onlyOk(message: RSStrings.accountCharacterUpdateDialogSuccessMessage).show(context),
       onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
+    );
+  }
+
+  Widget _rowEditStage(BuildContext context) {
+    final currentStage = context.read(accountViewModelProvider).stage;
+    return ListTile(
+      leading: const Icon(Icons.maps_home_work, size: _rowIconSize),
+      title: const Text(RSStrings.accountStageLabel),
+      subtitle: Text('${currentStage.name} (${currentStage.limit})'),
+      trailing: const Icon(Icons.arrow_forward_ios, size: _rowIconSize),
+      onTap: () async {
+        final isUpdate = await StageEditPage.start(context);
+        if (isUpdate) {
+          await context.read(accountViewModelProvider).refreshStage();
+        }
+      },
     );
   }
 

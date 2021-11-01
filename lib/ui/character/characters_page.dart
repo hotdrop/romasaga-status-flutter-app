@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/characters/char_list_row_item.dart';
-import 'package:rsapp/ui/characters/characters_view_model.dart';
+import 'package:rsapp/ui/character/row_character.dart';
+import 'package:rsapp/ui/character/characters_view_model.dart';
 import 'package:rsapp/ui/widget/rs_dialog.dart';
 
 class CharactersPage extends StatelessWidget {
@@ -100,7 +100,7 @@ class CharactersPage extends StatelessWidget {
       return _viewEmptyList();
     }
     return ListView.builder(itemBuilder: (context, index) {
-      return CharListRowItem(
+      return RowCharacterItem(
         characters[index],
         refreshListener: () async => await context.read(charactersViewModelProvider).refresh(),
       );
@@ -113,7 +113,7 @@ class CharactersPage extends StatelessWidget {
       return _viewEmptyList();
     }
     return ListView.builder(itemBuilder: (context, index) {
-      return CharListRowItem(
+      return RowCharacterItem(
         characters[index],
         refreshListener: () async => await context.read(charactersViewModelProvider).refresh(),
       );
@@ -126,7 +126,7 @@ class CharactersPage extends StatelessWidget {
       return _viewEmptyList();
     }
     return ListView.builder(itemBuilder: (context, index) {
-      return CharListRowItem(
+      return RowCharacterItem(
         characters[index],
         refreshListener: () async => await context.read(charactersViewModelProvider).refresh(),
       );

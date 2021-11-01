@@ -33,6 +33,22 @@ class _SharedPrefs {
     await _saveString('key003', value);
   }
 
+  ///
+  /// ステージ名
+  ///
+  Future<String?> getStageName() async => await _getString('key004');
+  Future<void> saveStageName(String value) async {
+    await _saveString('key004', value);
+  }
+
+  ///
+  /// ステージのステータス上昇値
+  ///
+  Future<int> getStageStatus() async => await _getInt('key005');
+  Future<void> saveStageStatus(int value) async {
+    await _saveInt('key005', value);
+  }
+
   // 以下は型別のデータ格納/取得処理
   Future<String?> _getString(String key) async {
     final prefs = await _read(_sharefPregerencesProvider);

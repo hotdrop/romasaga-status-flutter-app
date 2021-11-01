@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/account/account_page.dart';
-import 'package:rsapp/ui/characters/characters_page.dart';
+import 'package:rsapp/ui/character/characters_page.dart';
 import 'package:rsapp/ui/information/information_page.dart';
 import 'package:rsapp/ui/search/search_page.dart';
 

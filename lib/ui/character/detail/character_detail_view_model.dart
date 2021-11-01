@@ -21,18 +21,15 @@ class _CharacterDetailViewModel extends BaseViewModel {
   bool get haveAttribute => character.attributes?.isNotEmpty ?? false;
   int get myTotalStatus => character.myStatus?.sumWithoutHp() ?? 0;
 
-  late List<Stage> stages;
-
-  late Stage _selectedStage;
-  String get selectedStageName => _selectedStage.name;
-  int get selectedStageLimit => _selectedStage.limit;
+  late Stage _stage;
+  Stage get stage => _stage;
 
   late Style _selectedStyle;
   String get selectedIconFilePath => _selectedStyle.iconFilePath;
   String get selectedStyleTitle => _selectedStyle.title;
   String get selectedRankName => character.selectedStyleRank ?? character.styles.first.rank;
 
-  int get totalLimitStatusWithSelectedStage => (_selectedStyle.sum()) + (8 * _selectedStage.limit);
+  int get totalLimitStatusWithSelectedStage => (_selectedStyle.sum()) + (8 * _stage.limit);
 
   // 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
   // TODO このフラグはよくないのでキャラデータをStateNotifierで持って更新判定する。
@@ -42,8 +39,7 @@ class _CharacterDetailViewModel extends BaseViewModel {
   Future<void> init(Character character) async {
     try {
       character = character;
-      stages = await _read(stageRepositoryProvider).findAll();
-      _selectedStage = stages.first;
+      _stage = await _read(stageRepositoryProvider).find();
 
       if (character.styles.isEmpty) {
         RSLogger.d('キャラクターのスタイルが未取得なので取得します。id=${character.id}');
@@ -69,29 +65,24 @@ class _CharacterDetailViewModel extends BaseViewModel {
     return ranks..sort((s, t) => s.compareTo(t));
   }
 
-  void onSelectStage(String stageName) {
-    _selectedStage = stages.firstWhere((s) => s.name == stageName);
-    notifyListeners();
-  }
-
   int getStatusLimit(String statusName) {
     switch (statusName) {
       case RSStrings.strName:
-        return _selectedStyle.str + _selectedStage.limit;
+        return _selectedStyle.str + _stage.limit;
       case RSStrings.vitName:
-        return _selectedStyle.vit + _selectedStage.limit;
+        return _selectedStyle.vit + _stage.limit;
       case RSStrings.dexName:
-        return _selectedStyle.dex + _selectedStage.limit;
+        return _selectedStyle.dex + _stage.limit;
       case RSStrings.agiName:
-        return _selectedStyle.agi + _selectedStage.limit;
+        return _selectedStyle.agi + _stage.limit;
       case RSStrings.intName:
-        return _selectedStyle.intelligence + _selectedStage.limit;
+        return _selectedStyle.intelligence + _stage.limit;
       case RSStrings.spiName:
-        return _selectedStyle.spirit + _selectedStage.limit;
+        return _selectedStyle.spirit + _stage.limit;
       case RSStrings.loveName:
-        return _selectedStyle.love + _selectedStage.limit;
+        return _selectedStyle.love + _stage.limit;
       case RSStrings.attrName:
-        return _selectedStyle.attr + _selectedStage.limit;
+        return _selectedStyle.attr + _stage.limit;
       default:
         return 1;
     }
