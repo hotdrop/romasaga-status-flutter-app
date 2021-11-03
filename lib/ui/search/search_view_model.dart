@@ -1,15 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
-import 'package:rsapp/data/character_repository.dart';
-import 'package:rsapp/data/my_status_repository.dart';
 import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/production.dart';
 import 'package:rsapp/models/search_condition.dart';
-import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/ui/base_view_model.dart';
-import 'package:collection/collection.dart';
 
 final searchViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _SearchViewModel(ref.read));
 
@@ -27,35 +23,13 @@ class _SearchViewModel extends BaseViewModel {
 
   Future<void> _init() async {
     try {
-      // TODO ここstatenotifierにしたほうがいい
-      final characters = await _read(characterRepositoryProvider).findAll();
-      final myStatuses = await _read(myStatusRepositoryProvider).findAll();
-      _characters = await _merge(characters, myStatuses);
+      await _read(characterNotifierProvider.notifier).refresh();
+      _characters = _read(characterNotifierProvider);
       charactersWithFilter = _characters;
       onSuccess();
     } catch (e, s) {
       await RSLogger.e('検索画面のロードに失敗しました。', e, s);
       onError('$e');
-    }
-  }
-
-  // characters_view_modelと全く同じなのでStateNotifierにする
-  Future<List<Character>> _merge(List<Character> characters, List<MyStatus> statues) async {
-    if (statues.isNotEmpty) {
-      RSLogger.d('登録ステータス${statues.length}件をキャラ情報にマージします。');
-      List<Character> newCharacters = [];
-      for (var c in characters) {
-        final status = statues.firstWhereOrNull((s) => s.id == c.id);
-        if (status != null) {
-          newCharacters.add(c.withStatus(status));
-        } else {
-          newCharacters.add(c);
-        }
-      }
-      return newCharacters;
-    } else {
-      RSLogger.d('登録ステータスは0件です。');
-      return characters;
     }
   }
 

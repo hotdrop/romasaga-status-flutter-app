@@ -56,7 +56,7 @@ class CharacterEntity extends HiveObject {
     return CharacterEntity(
       id: id,
       name: name ?? this.name,
-      production: production ?? this.name,
+      production: production ?? this.production,
       weaponType: weaponType ?? this.weaponType,
       attributeTypes: attributeTypes ?? this.attributeTypes,
       selectedStyleRank: selectedStyleRank ?? this.selectedStyleRank,

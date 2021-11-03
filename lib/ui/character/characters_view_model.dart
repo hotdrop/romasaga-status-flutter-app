@@ -1,12 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
-import 'package:rsapp/data/character_repository.dart';
-import 'package:rsapp/data/my_status_repository.dart';
 import 'package:rsapp/models/app_settings.dart';
-import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/ui/base_view_model.dart';
-import 'package:collection/collection.dart';
 
 final charactersViewModelProvider = ChangeNotifierProvider.autoDispose((ref) {
   return _CharactersViewModel(ref.read);
@@ -33,49 +29,24 @@ class _CharactersViewModel extends BaseViewModel {
   CharacterListOrderType get selectedOrderType => _selectedOrderType;
 
   Future<void> _init() async {
-    try {
-      await _refreshAllData();
-      onSuccess();
-    } catch (e, s) {
-      RSLogger.e('キャラ一覧取得でエラー', e, s);
-      onError('$e');
-    }
+    await _refreshAllData();
+    onSuccess();
   }
 
   Future<void> refresh() async {
-    try {
-      await _refreshAllData();
-      notifyListeners();
-    } catch (e) {
-      onError('$e');
-    }
+    await _refreshAllData();
+    notifyListeners();
   }
 
   Future<void> _refreshAllData() async {
-    final characters = await _read(characterRepositoryProvider).findAll();
-    final myStatuses = await _read(myStatusRepositoryProvider).findAll();
-    _characters = await _merge(characters, myStatuses);
-
-    _selectedOrderType = _read(appSettingsProvider).characterListOrderType;
-    _charactersOrderBy(_selectedOrderType);
-  }
-
-  Future<List<Character>> _merge(List<Character> characters, List<MyStatus> statues) async {
-    if (statues.isNotEmpty) {
-      RSLogger.d('登録ステータス${statues.length}件をキャラ情報にマージします。');
-      List<Character> newCharacters = [];
-      for (var c in characters) {
-        final status = statues.firstWhereOrNull((s) => s.id == c.id);
-        if (status != null) {
-          newCharacters.add(c.withStatus(status));
-        } else {
-          newCharacters.add(c);
-        }
-      }
-      return newCharacters;
-    } else {
-      RSLogger.d('登録ステータスは0件です。');
-      return characters;
+    try {
+      await _read(characterNotifierProvider.notifier).refresh();
+      _characters = _read(characterNotifierProvider);
+      _selectedOrderType = _read(appSettingsProvider).characterListOrderType;
+      _charactersOrderBy(_selectedOrderType);
+    } catch (e, s) {
+      RSLogger.e('キャラ一覧更新でエラー', e, s);
+      onError('$e');
     }
   }
 

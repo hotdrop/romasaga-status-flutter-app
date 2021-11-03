@@ -1,8 +1,46 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rsapp/common/rs_logger.dart';
+import 'package:rsapp/data/character_repository.dart';
+import 'package:rsapp/data/my_status_repository.dart';
 import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:collection/collection.dart';
+
+final characterNotifierProvider = StateNotifierProvider<_CharacterNotifier, List<Character>>((ref) {
+  return _CharacterNotifier(ref.read);
+});
+
+class _CharacterNotifier extends StateNotifier<List<Character>> {
+  _CharacterNotifier(this._read) : super(<Character>[]);
+
+  final Reader _read;
+
+  Future<void> refresh() async {
+    final characters = await _read(characterRepositoryProvider).findAll();
+    final myStatuses = await _read(myStatusRepositoryProvider).findAll();
+    state = await _merge(characters, myStatuses);
+  }
+
+  Future<List<Character>> _merge(List<Character> characters, List<MyStatus> statues) async {
+    if (statues.isNotEmpty) {
+      RSLogger.d('登録ステータス${statues.length}件をキャラ情報にマージします。');
+      List<Character> newCharacters = [];
+      for (var c in characters) {
+        final status = statues.firstWhereOrNull((s) => s.id == c.id);
+        if (status != null) {
+          newCharacters.add(c.withStatus(status));
+        } else {
+          newCharacters.add(c);
+        }
+      }
+      return newCharacters;
+    } else {
+      return characters;
+    }
+  }
+}
 
 class Character {
   Character(

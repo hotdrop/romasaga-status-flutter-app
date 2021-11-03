@@ -42,15 +42,16 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
 
   List<Widget> _rankChips(BuildContext context) {
     return widget.ranks.map<Widget>((rank) {
+      final isSameRank = (_selectedRankChipName == rank);
       return Padding(
         padding: const EdgeInsets.only(right: 4.0),
         child: ChoiceChip(
           key: ValueKey(rank),
           selectedColor: _rankColor(rank),
           backgroundColor: Theme.of(context).disabledColor,
-          label: Text(rank),
+          label: Text(rank, style: TextStyle(color: (isSameRank) ? Colors.black : Colors.white)),
           avatar: _rankIcon(rank),
-          selected: _selectedRankChipName == rank,
+          selected: isSameRank,
           onSelected: (value) {
             setState(() {
               _selectedRankChipName = value ? rank : '';
