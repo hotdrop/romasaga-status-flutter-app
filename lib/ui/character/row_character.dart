@@ -23,12 +23,10 @@ class RowCharacterItem extends StatelessWidget {
         child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                // TODO ここflexで作らない。見直し
-                Expanded(child: _imageIcon(character), flex: 2),
-                Expanded(child: _nameOverview(character, context), flex: 5),
-                Expanded(child: _weaponTypeIcon(character), flex: 2),
-                Expanded(child: _labelStatus(character, context), flex: 3),
+                _viewLeadingArea(context),
+                _viewTrailingArea(context),
               ],
             )),
         onTap: () async {
@@ -42,53 +40,34 @@ class RowCharacterItem extends StatelessWidget {
     );
   }
 
-  Container _imageIcon(Character character) {
-    return Container(
-      margin: const EdgeInsets.only(right: 16.0),
-      child: CharacterIcon.normal(character.getShowIconPath()),
-    );
-  }
-
-  Column _nameOverview(Character character, BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          character.name,
-          style: Theme.of(context).textTheme.subtitle1,
-        ),
-        Text(
-          character.production,
-          style: Theme.of(context).textTheme.caption,
-        )
-      ],
-    );
-  }
-
-  Column _weaponTypeIcon(Character character) {
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+  Widget _viewLeadingArea(BuildContext context) {
+    return Row(
+      children: [
+        CharacterIcon.normal(character.getShowIconPath()),
+        const SizedBox(width: 8),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            WeaponIcon.small(character.weapon.type),
+            Text(character.name, style: Theme.of(context).textTheme.subtitle1),
+            Text(character.production, style: Theme.of(context).textTheme.caption),
           ],
-        )
+        ),
       ],
     );
   }
 
-  Widget _labelStatus(Character character, BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          '${RSStrings.hpName} ${character.myStatus?.hp ?? 0}',
-          style: const TextStyle(
-            color: RSColors.characterDetailHpLabel,
-          ),
+  Widget _viewTrailingArea(BuildContext context) {
+    return Row(
+      children: [
+        WeaponIcon.small(character.weapon.type),
+        const SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('${RSStrings.hpName} ${character.myStatus?.hp ?? 0}', style: const TextStyle(color: RSColors.hpOnList)),
+            Text('${RSStrings.characterTotalStatus} ${character.myStatus?.sumWithoutHp() ?? 0}'),
+          ],
         ),
-        Text('${RSStrings.characterTotalStatus} ${character.myStatus?.sumWithoutHp() ?? 0}'),
       ],
     );
   }

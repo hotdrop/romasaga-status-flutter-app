@@ -12,7 +12,7 @@ class VerticalLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48.0,
+      height: 36.0,
       width: 2,
       decoration: BoxDecoration(
         color: color,
@@ -32,14 +32,11 @@ class HorizontalLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 8),
-      child: Container(
-        height: 2,
-        decoration: BoxDecoration(
-          color: Theme.of(context).dividerColor,
-          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-        ),
+    return Container(
+      height: 2,
+      decoration: BoxDecoration(
+        color: Theme.of(context).dividerColor,
+        borderRadius: const BorderRadius.all(Radius.circular(4.0)),
       ),
     );
   }

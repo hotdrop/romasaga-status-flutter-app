@@ -48,7 +48,7 @@ class CharacterDetailPage extends StatelessWidget {
     });
     return Scaffold(
       appBar: AppBar(
-        title: const Text(RSStrings.characterDetailPageTitle),
+        title: const Text(RSStrings.detailPageTitle),
       ),
       body: const Center(
         child: CircularProgressIndicator(),
@@ -59,20 +59,20 @@ class CharacterDetailPage extends StatelessWidget {
   Widget _onSuccess(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        appBar: AppBar(title: const Text(RSStrings.characterDetailPageTitle)),
+        appBar: AppBar(title: const Text(RSStrings.detailPageTitle)),
         body: Padding(
-          padding: const EdgeInsets.only(top: 4.0, left: 16.0, right: 16.0, bottom: 16.0),
-          child: ListView(
-            children: <Widget>[
-              _contentCharacterOverview(context),
-              const SizedBox(height: 16.0),
-              _contentStatus(context),
-              const SizedBox(height: 16.0),
-              _contentsStage(context),
-              const SizedBox(height: 24.0),
-              _contentsEachStyleStatus(context),
-              const SizedBox(height: 16.0),
-            ],
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _contentCharacterOverview(context),
+                const SizedBox(height: 8),
+                _contentStatus(context),
+                const SizedBox(height: 8),
+                _contentsEachStyleStatus(context),
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -94,13 +94,19 @@ class CharacterDetailPage extends StatelessWidget {
     return Card(
       elevation: 4.0,
       color: Theme.of(context).backgroundColor,
-      child: Column(
-        children: <Widget>[
-          _contentCharacterTitle(context),
-          _contentCharacterAttribute(context),
-          const HorizontalLine(),
-          _contentsStyleChips(context),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _contentsCharacterInfo(context),
+            const SizedBox(height: 8),
+            _contentsAttribute(context),
+            const SizedBox(height: 8),
+            const HorizontalLine(),
+            _contentsStyleChips(context),
+          ],
+        ),
       ),
     );
   }
@@ -108,83 +114,68 @@ class CharacterDetailPage extends StatelessWidget {
   ///
   /// キャラクターの作品、名前、肩書き、武器情報
   ///
-  Widget _contentCharacterTitle(BuildContext context) {
-    final viewModel = context.read(characterDetailViewModelProvider);
-
+  Widget _contentsCharacterInfo(BuildContext context) {
+    final selectedIconFilePath = context.read(characterDetailViewModelProvider).selectedIconFilePath;
+    final selectedStyleTitle = context.read(characterDetailViewModelProvider).selectedStyleTitle;
+    final character = context.read(characterDetailViewModelProvider).character;
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 24.0, top: 16.0, bottom: 8.0, right: 16.0),
-          child: GestureDetector(
-            child: CharacterIcon.large(viewModel.selectedIconFilePath),
-            onTap: () async {
-              AppDialog.okAndCancel(
-                message: RSStrings.characterDetailChangeStyleIconDialogMessage,
-                onOk: () => viewModel.saveCurrentSelectStyle(),
-              ).show(context);
-            },
-            onLongPress: () async {
-              AppDialog.okAndCancel(
-                message: RSStrings.characterRefreshIconDialogDesc,
-                onOk: () async {
-                  const progressDialog = AppProgressDialog<void>();
-                  await progressDialog.show(
-                    context,
-                    execute: viewModel.refreshIcon,
-                    onSuccess: (_) => viewModel.refreshCharacterData,
-                    onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
-                  );
-                },
-              ).show(context);
-            },
-          ),
+        GestureDetector(
+          child: CharacterIcon.large(selectedIconFilePath),
+          onTap: () async => await _onTapIcon(context),
+          onLongPress: () async => await _onLongTapIcon(context),
         ),
+        const SizedBox(width: 16),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height: 8.0),
-            Text(viewModel.character.production, style: Theme.of(context).textTheme.caption),
-            Text(viewModel.character.name, style: Theme.of(context).textTheme.subtitle1),
-            Text(viewModel.selectedStyleTitle, style: Theme.of(context).textTheme.caption),
+            Text(character.production, style: Theme.of(context).textTheme.caption),
+            Text(character.name),
+            Text(selectedStyleTitle, style: Theme.of(context).textTheme.caption),
           ],
         ),
       ],
     );
   }
 
-  Widget _contentCharacterAttribute(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24.0, right: 16.0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  direction: Axis.horizontal,
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: _attributeIcons(context),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  Future<void> _onTapIcon(BuildContext context) async {
+    await AppDialog.okAndCancel(
+      message: RSStrings.detailPageChangeStyleIconDialogMessage,
+      onOk: () => context.read(characterDetailViewModelProvider).saveCurrentSelectStyle(),
+    ).show(context);
   }
 
-  List<Widget> _attributeIcons(BuildContext context) {
+  Future<void> _onLongTapIcon(BuildContext context) async {
+    await AppDialog.okAndCancel(
+      message: RSStrings.detailPageRefreshIconDialogMessage,
+      onOk: () async {
+        const progressDialog = AppProgressDialog<void>();
+        await progressDialog.show(
+          context,
+          execute: context.read(characterDetailViewModelProvider).refreshIcon,
+          onSuccess: (_) {
+            context.read(characterDetailViewModelProvider).refreshCharacterData();
+          },
+          onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
+        );
+      },
+    ).show(context);
+  }
+
+  Widget _contentsAttribute(BuildContext context) {
     final viewModel = context.read(characterDetailViewModelProvider);
-    return <Widget>[
-      WeaponIcon.normal(viewModel.character.weaponType),
-      if (viewModel.character.weaponCategory != WeaponCategory.rod) WeaponCategoryIcon.normal(viewModel.character.weaponCategory),
-      if (viewModel.haveAttribute)
-        for (final attribute in viewModel.character.attributes ?? []) AttributeIcon(type: attribute.type),
-    ];
+    return Wrap(
+      alignment: WrapAlignment.start,
+      direction: Axis.horizontal,
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: <Widget>[
+        WeaponIcon.normal(viewModel.character.weaponType),
+        if (viewModel.character.weaponCategory != WeaponCategory.rod) WeaponCategoryIcon.normal(viewModel.character.weaponCategory),
+        if (viewModel.haveAttribute)
+          for (final attribute in viewModel.character.attributes ?? []) AttributeIcon(type: attribute.type),
+      ],
+    );
   }
 
   ///
@@ -192,28 +183,16 @@ class CharacterDetailPage extends StatelessWidget {
   ///
   Widget _contentsStyleChips(BuildContext context) {
     final viewModel = context.read(characterDetailViewModelProvider);
-    return Padding(
-      padding: const EdgeInsets.only(left: 24.0, top: 4.0, right: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          // ここWrapでいいのでは？
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: RankChoiceChip(
-                  ranks: viewModel.getAllRanks(),
-                  initSelectedRank: viewModel.selectedRankName,
-                  onSelectedListener: (rank) {
-                    viewModel.onSelectRank(rank);
-                  },
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
+    return Wrap(
+      children: <Widget>[
+        RankChoiceChip(
+          ranks: viewModel.getAllRanks(),
+          initSelectedRank: viewModel.selectedRankName,
+          onSelectedListener: (rank) {
+            viewModel.onSelectRank(rank);
+          },
+        ),
+      ],
     );
   }
 
@@ -221,30 +200,22 @@ class CharacterDetailPage extends StatelessWidget {
   /// ステータス表示領域
   ///
   Widget _contentStatus(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 4.0, right: 4.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(8.0),
-          bottomLeft: Radius.circular(8.0),
-          bottomRight: Radius.circular(8.0),
-          topRight: Radius.circular(68.0),
+    return Card(
+      elevation: 4.0,
+      color: Theme.of(context).backgroundColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          children: <Widget>[
+            _contentTotalStatus(context),
+            const SizedBox(height: 8),
+            const HorizontalLine(),
+            const SizedBox(height: 8),
+            _contentsHp(context),
+            const SizedBox(height: 8),
+            ..._contentsEachStatus(context),
+          ],
         ),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: RSColors.characterDetailCardShadow.withOpacity(0.2),
-            offset: const Offset(1.1, 1.1),
-            blurRadius: 10.0,
-          ),
-        ],
-      ),
-      child: Column(
-        children: <Widget>[
-          _contentTotalStatus(context),
-          const HorizontalLine(),
-          _contentEachStatus(context),
-        ],
       ),
     );
   }
@@ -253,54 +224,42 @@ class CharacterDetailPage extends StatelessWidget {
   /// 合計ステータス表示欄
   ///
   Widget _contentTotalStatus(BuildContext context) {
-    final viewModel = context.read(characterDetailViewModelProvider);
-    int totalStatus = viewModel.myTotalStatus;
-    int limitStatus = viewModel.totalLimitStatusWithSelectedStage;
-
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        Expanded(child: _totalStatusCircle(totalStatus, limitStatus)),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 12.0),
-              _contentHp(context, viewModel.character.myStatus?.hp ?? 0),
-              const SizedBox(height: 12.0),
-              _contentUpperTotalLimitStatus(context, limitStatus),
-            ],
-          ),
+        TotalStatusCircleGraph(
+          totalStatus: context.read(characterDetailViewModelProvider).myTotalStatus,
+          limitStatus: context.read(characterDetailViewModelProvider).totalLimitStatusWithSelectedStage,
+        ),
+        const SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 12.0),
+            _contentsStageName(context),
+            const SizedBox(height: 12.0),
+            _contentsStageLimit(context),
+          ],
         ),
       ],
     );
   }
 
   ///
-  /// 合計ステータス
+  /// ステージ情報
   ///
-  Widget _totalStatusCircle(int totalStatus, int limitStatus) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: TotalStatusCircleGraph(totalStatus: totalStatus, limitStatus: limitStatus),
-    );
-  }
-
-  ///
-  /// 合計ステータス欄と一緒に表示するHP
-  ///
-  Widget _contentHp(BuildContext context, int hp) {
+  Widget _contentsStageName(BuildContext context) {
+    final stage = context.read(characterDetailViewModelProvider).stage;
     return Row(
       children: <Widget>[
-        const VerticalLine(color: RSColors.characterDetailHpLabel),
+        const VerticalLine(color: RSColors.stageNameLine),
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(RSStrings.hpName, style: Theme.of(context).textTheme.caption),
-              const SizedBox(height: 8.0),
-              Text(hp.toString(), style: Theme.of(context).textTheme.headline6),
+              Text(RSStrings.detailPageStageLabel, style: Theme.of(context).textTheme.caption),
+              Text(stage.name),
             ],
           ),
         )
@@ -308,21 +267,18 @@ class CharacterDetailPage extends StatelessWidget {
     );
   }
 
-  ///
-  /// 現スタイルの最大値
-  ///
-  Widget _contentUpperTotalLimitStatus(BuildContext context, int totalLimit) {
+  Widget _contentsStageLimit(BuildContext context) {
+    final stage = context.read(characterDetailViewModelProvider).stage;
     return Row(
       children: <Widget>[
-        const VerticalLine(color: RSColors.characterDetailStylesLabel),
+        const VerticalLine(color: RSColors.stageLimitLine),
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(RSStrings.characterDetailTotalLimitStatusLabel, style: Theme.of(context).textTheme.caption),
-              const SizedBox(height: 8.0),
-              Text(totalLimit.toString(), style: Theme.of(context).textTheme.headline6),
+              Text(RSStrings.detailPageStatusLimitLabel, style: Theme.of(context).textTheme.caption),
+              Text('+${stage.statusLimit}'),
             ],
           ),
         )
@@ -330,107 +286,44 @@ class CharacterDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _contentEachStatus(BuildContext context) {
+  Widget _contentsHp(BuildContext context) {
+    final viewModel = context.read(characterDetailViewModelProvider);
+    return HpGraph(
+      status: viewModel.character.myStatus?.hp ?? 0,
+      limit: viewModel.stage.hpLimit,
+    );
+  }
+
+  List<Widget> _contentsEachStatus(BuildContext context) {
     final viewModel = context.read(characterDetailViewModelProvider);
     final myStatus = viewModel.character.myStatus;
-
-    return Padding(
-      padding: const EdgeInsets.only(left: 24.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: StatusGraph(
-                  title: RSStrings.strName,
-                  status: myStatus?.str ?? 0,
-                  limit: viewModel.getStatusLimit(RSStrings.strName),
-                ),
-              ),
-              Expanded(
-                child: StatusGraph(
-                  title: RSStrings.vitName,
-                  status: myStatus?.vit ?? 0,
-                  limit: viewModel.getStatusLimit(RSStrings.vitName),
-                ),
-              ),
-              Expanded(
-                child: StatusGraph(
-                  title: RSStrings.dexName,
-                  status: myStatus?.dex ?? 0,
-                  limit: viewModel.getStatusLimit(RSStrings.dexName),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: StatusGraph(
-                  title: RSStrings.agiName,
-                  status: myStatus?.agi ?? 0,
-                  limit: viewModel.getStatusLimit(RSStrings.agiName),
-                ),
-              ),
-              Expanded(
-                child: StatusGraph(
-                  title: RSStrings.intName,
-                  status: myStatus?.intelligence ?? 0,
-                  limit: viewModel.getStatusLimit(RSStrings.intName),
-                ),
-              ),
-              Expanded(
-                child: StatusGraph(
-                  title: RSStrings.spiName,
-                  status: myStatus?.spirit ?? 0,
-                  limit: viewModel.getStatusLimit(RSStrings.spiName),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: StatusGraph(
-                  title: RSStrings.loveName,
-                  status: myStatus?.love ?? 0,
-                  limit: viewModel.getStatusLimit(RSStrings.loveName),
-                ),
-              ),
-              Expanded(
-                child: StatusGraph(
-                  title: RSStrings.attrName,
-                  status: myStatus?.attr ?? 0,
-                  limit: viewModel.getStatusLimit(RSStrings.attrName),
-                ),
-              ),
-              const Expanded(child: SizedBox(width: 48.0)),
-            ],
-          )
+          StatusGraph(title: RSStrings.strName, status: myStatus?.str ?? 0, limit: viewModel.getStatusLimit(RSStrings.strName)),
+          StatusGraph(title: RSStrings.vitName, status: myStatus?.vit ?? 0, limit: viewModel.getStatusLimit(RSStrings.vitName)),
+          StatusGraph(title: RSStrings.dexName, status: myStatus?.dex ?? 0, limit: viewModel.getStatusLimit(RSStrings.dexName)),
         ],
       ),
-    );
-  }
-
-  Widget _contentsStage(BuildContext context) {
-    final stage = context.read(characterDetailViewModelProvider).stage;
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Text(
-            '${stage.name}(+${stage.statusLimit})',
-            style: const TextStyle(decoration: TextDecoration.underline),
-          ),
-          Text(
-            '(${RSStrings.characterDetailStageSelectDescLabel})',
-            style: Theme.of(context).textTheme.caption,
-          )
+          StatusGraph(title: RSStrings.agiName, status: myStatus?.agi ?? 0, limit: viewModel.getStatusLimit(RSStrings.agiName)),
+          StatusGraph(title: RSStrings.intName, status: myStatus?.intelligence ?? 0, limit: viewModel.getStatusLimit(RSStrings.intName)),
+          StatusGraph(title: RSStrings.spiName, status: myStatus?.spirit ?? 0, limit: viewModel.getStatusLimit(RSStrings.spiName)),
         ],
       ),
-    );
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          StatusGraph(title: RSStrings.loveName, status: myStatus?.love ?? 0, limit: viewModel.getStatusLimit(RSStrings.loveName)),
+          StatusGraph(title: RSStrings.attrName, status: myStatus?.attr ?? 0, limit: viewModel.getStatusLimit(RSStrings.attrName)),
+          // 揃えるためにダミーでwidget加える
+          Opacity(opacity: 0, child: StatusGraph(title: RSStrings.attrName, status: myStatus?.attr ?? 0, limit: viewModel.getStatusLimit(RSStrings.attrName))),
+        ],
+      )
+    ];
   }
 
   ///
@@ -444,7 +337,7 @@ class CharacterDetailPage extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.only(bottom: 8.0),
           child: Text(
-            RSStrings.characterDetailStatusTableLabel,
+            RSStrings.detailPageStatusTableLabel,
             style: TextStyle(
               fontStyle: FontStyle.italic,
               decoration: TextDecoration.underline,

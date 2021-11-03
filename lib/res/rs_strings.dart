@@ -18,14 +18,14 @@ class RSStrings {
   static const String nothingCharactersLabel = '該当キャラはいません。';
   static const String characterTotalStatus = '計: ';
 
-  static const String characterDetailPageTitle = 'キャラ詳細';
-  static const String characterDetailTotalStatusCircleLabel = 'Total Status';
-  static const String characterDetailTotalLimitStatusLabel = 'Total Limit Status';
-  static const String characterDetailChangeStyleIconDialogMessage = 'このアイコンを一覧表示用にしますか？';
-  static const String characterRefreshIconDialogDesc = 'このアイコンをサーバーから再取得します。よろしいですか？';
-  static const String characterDetailStageSelectDescLabel = 'カッコの値はステータス上限です。';
-  static const String characterDetailStatusTableLabel = 'ステータス上限表';
-  static const String characterDetailLoadingErrorMessage = 'キャラ情報のロードに失敗しました。';
+  // キャラ詳細
+  static const String detailPageTitle = 'キャラ詳細';
+  static const String detailPageTotalStatusLabel = 'Total Status';
+  static const String detailPageStageLabel = 'ステージ情報';
+  static const String detailPageStatusLimitLabel = 'ステータス上限';
+  static const String detailPageChangeStyleIconDialogMessage = 'このアイコンを一覧表示用にしますか？';
+  static const String detailPageRefreshIconDialogMessage = 'アイコン情報をサーバーから再取得します。よろしいですか？';
+  static const String detailPageStatusTableLabel = 'ステータス上限表';
 
   static const String statusEditTitle = 'ステータス編集';
 

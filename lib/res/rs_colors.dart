@@ -15,15 +15,18 @@ class RSColors {
   // アイコン
   static final Color iconSelectedBackground = Colors.yellowAccent;
 
+  // キャラクター一覧
+  static const Color hpOnList = Color(0xFF699BFF);
+
   // キャラクター詳細
-  static const Color characterDetailCardShadow = Color(0xFF3A5160);
-  static const Color characterDetailTotalStatusIndicator = Color(0xFF699BFF);
-  static const Color characterDetailHpLabel = Color(0xFF87A0E5);
-  static const Color characterDetailStylesLabel = Color(0xFFFFF987);
-  static const Color characterDetailStatusNone = Colors.grey;
-  static const Color characterDetailStatusIndicatorBackground = Colors.white;
-  static const Color characterDetailStatusLack = Color(0xFFFF5E6A);
-  static const Color characterDetailStatusNormal = Color(0xFF74FF97);
+  static const Color cardShadow = Color(0xFF3A5160);
+  static const Color totalStatusIndicator = Color(0xFF699BFF);
+  static const Color stageNameLine = Color(0xFF87A0E5);
+  static const Color stageLimitLine = Color(0xFFFFF987);
+  static const Color statusNone = Colors.grey;
+  static const Color statusIndicatorBackground = Colors.white;
+  static const Color statusLack = Color(0xFFFF5E6A);
+  static const Color statusNormal = Color(0xFF74FF97);
   static const Color statusSufficient = Color(0xFF26BCFF);
 
   static const Color statusPlus = Colors.blue;

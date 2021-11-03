@@ -31,8 +31,8 @@ class TotalStatusCircleGraph extends StatelessWidget {
       percent: percent,
       center: _centerText(context, totalStatus),
       circularStrokeCap: strokeCap,
-      backgroundColor: RSColors.characterDetailTotalStatusIndicator.withOpacity(0.3),
-      progressColor: RSColors.characterDetailTotalStatusIndicator,
+      backgroundColor: RSColors.totalStatusIndicator.withOpacity(0.3),
+      progressColor: RSColors.totalStatusIndicator,
     );
   }
 
@@ -47,12 +47,66 @@ class TotalStatusCircleGraph extends StatelessWidget {
           style: Theme.of(context).textTheme.headline5,
         ),
         Text(
-          RSStrings.characterDetailTotalStatusCircleLabel,
+          RSStrings.detailPageTotalStatusLabel,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.caption,
         ),
       ],
     );
+  }
+}
+
+///
+/// HPのグラフ
+///
+class HpGraph extends StatelessWidget {
+  const HpGraph({
+    Key? key,
+    required this.status,
+    required this.limit,
+  }) : super(key: key);
+
+  final int status;
+  final int limit;
+
+  @override
+  Widget build(BuildContext context) {
+    Color currentStatusColor = _calcCurrentStatusColor();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+          child: Text(RSStrings.hpName, style: Theme.of(context).textTheme.subtitle1),
+        ),
+        _ContentLinearPercentIndicator(
+          width: MediaQuery.of(context).size.width * 0.8,
+          status: status,
+          limit: limit,
+          color: currentStatusColor,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, top: 4.0, bottom: 8.0),
+          child: Text(
+            '$status / $limit',
+            style: TextStyle(fontWeight: FontWeight.bold, color: currentStatusColor),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Color _calcCurrentStatusColor() {
+    int diffLimit = status - limit;
+    if (status == 0) {
+      return RSColors.statusNone;
+    } else if (diffLimit < -100) {
+      return RSColors.statusLack;
+    } else if (diffLimit >= -100 && diffLimit < -10) {
+      return RSColors.statusNormal;
+    } else {
+      return RSColors.statusSufficient;
+    }
   }
 }
 
@@ -75,14 +129,18 @@ class StatusGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     Color currentStatusColor = _calcCurrentStatusColor();
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
           child: Text(title, style: Theme.of(context).textTheme.subtitle1),
         ),
-        _ContentLinearPercentIndicator(status: status, limit: limit, color: currentStatusColor),
+        _ContentLinearPercentIndicator(
+          width: MediaQuery.of(context).size.width / 4,
+          status: status,
+          limit: limit,
+          color: currentStatusColor,
+        ),
         Padding(
           padding: const EdgeInsets.only(left: 8.0, top: 4.0, bottom: 8.0),
           child: Text(
@@ -97,11 +155,11 @@ class StatusGraph extends StatelessWidget {
   Color _calcCurrentStatusColor() {
     int diffLimit = status - limit;
     if (status == 0) {
-      return RSColors.characterDetailStatusNone;
+      return RSColors.statusNone;
     } else if (diffLimit < -6) {
-      return RSColors.characterDetailStatusLack;
+      return RSColors.statusLack;
     } else if (diffLimit >= -6 && diffLimit < -3) {
-      return RSColors.characterDetailStatusNormal;
+      return RSColors.statusNormal;
     } else {
       return RSColors.statusSufficient;
     }
@@ -111,11 +169,13 @@ class StatusGraph extends StatelessWidget {
 class _ContentLinearPercentIndicator extends StatelessWidget {
   const _ContentLinearPercentIndicator({
     Key? key,
+    required this.width,
     required this.status,
     required this.limit,
     required this.color,
   }) : super(key: key);
 
+  final double width;
   final int status;
   final int limit;
   final Color color;
@@ -128,14 +188,15 @@ class _ContentLinearPercentIndicator extends StatelessWidget {
     List<Color> graphColors = (status > 0) ? [color.withOpacity(0.6), color] : [color, color];
 
     return LinearPercentIndicator(
-      width: 80,
+      alignment: MainAxisAlignment.center,
+      width: width,
       lineHeight: 4.0,
       animation: true,
       animationDuration: 500,
       percent: percent,
       linearStrokeCap: LinearStrokeCap.roundAll,
       linearGradient: LinearGradient(colors: graphColors),
-      backgroundColor: RSColors.characterDetailStatusIndicatorBackground,
+      backgroundColor: RSColors.statusIndicatorBackground,
     );
   }
 }
