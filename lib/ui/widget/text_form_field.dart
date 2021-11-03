@@ -3,10 +3,9 @@ import 'package:rsapp/res/rs_strings.dart';
 
 ///
 /// テキスト入力フィールド
-/// TODO これStatelessWidgetでいいのでは？
 ///
-class RSTextFormField extends StatefulWidget {
-  const RSTextFormField._(this.label, this.initValue, this.onChanged);
+class RSTextFormField extends StatelessWidget {
+  const RSTextFormField._(this._label, this._initValue, this._onChanged);
 
   factory RSTextFormField.stageName({
     required String initValue,
@@ -15,38 +14,32 @@ class RSTextFormField extends StatefulWidget {
     return RSTextFormField._(RSStrings.stageEditPageNameLabel, initValue, onChanged);
   }
 
-  final String label;
-  final String initValue;
-  final void Function(String? inputVal) onChanged;
+  final String _label;
+  final String _initValue;
+  final void Function(String? inputVal) _onChanged;
 
-  @override
-  State<StatefulWidget> createState() => _RSTextFormFieldState();
-}
-
-class _RSTextFormFieldState extends State<RSTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: widget.label,
+        labelText: _label,
         counterText: '',
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
       ),
-      maxLength: 20,
-      initialValue: widget.initValue,
-      onChanged: (String? v) => widget.onChanged(v),
+      maxLength: 30,
+      initialValue: _initValue,
+      onChanged: (String? v) => _onChanged(v),
     );
   }
 }
 
 ///
 /// 数値入力フィールド
-/// TODO これStatelessWidgetでいいのでは？
 ///
-class RSNumberFormField extends StatefulWidget {
-  const RSNumberFormField._(this.label, this.initValue, this.onChanged);
+class RSNumberFormField extends StatelessWidget {
+  const RSNumberFormField._(this._label, this._initValue, this._onChanged);
 
   factory RSNumberFormField.stageHpLimit({
     required int initValue,
@@ -62,31 +55,26 @@ class RSNumberFormField extends StatefulWidget {
     return RSNumberFormField._(RSStrings.stageEditPageStatusLimitLabel, initValue, onChanged);
   }
 
-  final String label;
-  final int initValue;
-  final void Function(int? inputVal) onChanged;
+  final String _label;
+  final int _initValue;
+  final void Function(int? inputVal) _onChanged;
 
-  @override
-  State<StatefulWidget> createState() => _RSNumberFormFieldState();
-}
-
-class _RSNumberFormFieldState extends State<RSNumberFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        labelText: widget.label,
+        labelText: _label,
         counterText: '',
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
       ),
-      maxLength: 5,
-      initialValue: widget.initValue.toString(),
+      maxLength: 4,
+      initialValue: _initValue.toString(),
       onChanged: (String? v) {
         final num = (v != null) ? int.tryParse(v) : null;
-        widget.onChanged(num);
+        _onChanged(num);
       },
     );
   }
