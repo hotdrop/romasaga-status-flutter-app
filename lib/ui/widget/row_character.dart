@@ -68,6 +68,7 @@ class RowCharacterItem extends StatelessWidget {
             Text('${RSStrings.characterTotalStatus} ${character.myStatus?.sumWithoutHp() ?? 0}'),
           ],
         ),
+        const SizedBox(width: 8),
       ],
     );
   }

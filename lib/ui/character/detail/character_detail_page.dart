@@ -7,6 +7,7 @@ import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/character/detail/character_detail_view_model.dart';
+import 'package:rsapp/ui/character/detail/status_table.dart';
 import 'package:rsapp/ui/character/edit/status_edit_page.dart';
 import 'package:rsapp/ui/widget/rank_chip.dart';
 import 'package:rsapp/ui/widget/rs_dialog.dart';
@@ -72,7 +73,7 @@ class CharacterDetailPage extends StatelessWidget {
                 const SizedBox(height: 8),
                 _contentStatus(context),
                 const SizedBox(height: 8),
-                _contentsEachStyleStatus(context),
+                _contentsStyleStatusTable(context),
                 const SizedBox(height: 24),
               ],
             ),
@@ -329,134 +330,12 @@ class CharacterDetailPage extends StatelessWidget {
     ];
   }
 
-  ///
-  /// スタイル別ステータス表
-  ///
-  Widget _contentsEachStyleStatus(BuildContext context) {
-    final side = BorderSide(color: Theme.of(context).dividerColor, width: 1.0, style: BorderStyle.solid);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.only(bottom: 8.0),
-          child: Text(
-            RSStrings.detailPageStatusTableLabel,
-            style: TextStyle(
-              fontStyle: FontStyle.italic,
-              decoration: TextDecoration.underline,
-            ),
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Table(
-            border: TableBorder(bottom: side, horizontalInside: side),
-            defaultColumnWidth: const FixedColumnWidth(40.0),
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: <TableRow>[
-              _statusTableHeaderRow(context),
-              ..._statusTableContentsRow(context),
-            ],
-          ),
-        ),
-      ],
+  Widget _contentsStyleStatusTable(BuildContext context) {
+    return StatusTable(
+      character: context.read(characterDetailViewModelProvider).character,
+      ranks: context.read(characterDetailViewModelProvider).getAllRanks(),
+      stage: context.read(characterDetailViewModelProvider).stage,
     );
-  }
-
-  TableRow _statusTableHeaderRow(BuildContext context) {
-    return TableRow(
-      children: [
-        const SizedBox(),
-        _tableRowHeader(context, RSStrings.strName),
-        _tableRowHeader(context, RSStrings.vitName),
-        _tableRowHeader(context, RSStrings.agiName),
-        _tableRowHeader(context, RSStrings.dexName),
-        _tableRowHeader(context, RSStrings.intName),
-        _tableRowHeader(context, RSStrings.spiName),
-        _tableRowHeader(context, RSStrings.loveName),
-        _tableRowHeader(context, RSStrings.attrName),
-      ],
-    );
-  }
-
-  Widget _tableRowHeader(BuildContext context, String title) {
-    return Container(
-      padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-      child: Center(
-        child: Text(title, style: Theme.of(context).textTheme.caption),
-      ),
-    );
-  }
-
-  List<TableRow> _statusTableContentsRow(BuildContext context) {
-    final viewModel = context.read(characterDetailViewModelProvider);
-
-    int maxStr = 0;
-    int maxVit = 0;
-    int maxAgi = 0;
-    int maxDex = 0;
-    int maxInt = 0;
-    int maxSpi = 0;
-    int maxLove = 0;
-    int maxAttr = 0;
-
-    // 最大ステータスが欲しいので、スタイル毎のステータスを全て取得してからwidgetを作る
-    final List<String> allRanks = viewModel.getAllRanks();
-    for (final rank in allRanks) {
-      final style = viewModel.character.getStyle(rank);
-      maxStr = (style.str > maxStr) ? style.str : maxStr;
-      maxVit = (style.vit > maxVit) ? style.vit : maxVit;
-      maxAgi = (style.agi > maxAgi) ? style.agi : maxAgi;
-      maxDex = (style.dex > maxDex) ? style.dex : maxDex;
-      maxInt = (style.intelligence > maxInt) ? style.intelligence : maxInt;
-      maxSpi = (style.spirit > maxSpi) ? style.spirit : maxSpi;
-      maxLove = (style.love > maxLove) ? style.love : maxLove;
-      maxAttr = (style.attr > maxAttr) ? style.attr : maxAttr;
-    }
-
-    final List<TableRow> tableRows = [];
-    final int stageStatusLimit = viewModel.stage.statusLimit;
-
-    for (final rank in allRanks) {
-      final style = viewModel.character.getStyle(rank);
-      final tableRow = TableRow(
-        children: [
-          _tableRowIcon(style.iconFilePath),
-          _tableRowStatus(style.str, stageStatusLimit, maxStr),
-          _tableRowStatus(style.vit, stageStatusLimit, maxVit),
-          _tableRowStatus(style.agi, stageStatusLimit, maxAgi),
-          _tableRowStatus(style.dex, stageStatusLimit, maxDex),
-          _tableRowStatus(style.intelligence, stageStatusLimit, maxInt),
-          _tableRowStatus(style.spirit, stageStatusLimit, maxSpi),
-          _tableRowStatus(style.love, stageStatusLimit, maxLove),
-          _tableRowStatus(style.attr, stageStatusLimit, maxAttr),
-        ],
-      );
-      tableRows.add(tableRow);
-    }
-
-    return tableRows;
-  }
-
-  Widget _tableRowIcon(String iconFilePath) {
-    return Container(
-      padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-      child: Center(
-        child: CharacterIcon.small(iconFilePath),
-      ),
-    );
-  }
-
-  Widget _tableRowStatus(int status, int stageStatusLimit, int maxStatus) {
-    if (status >= maxStatus) {
-      return Center(
-        child: Text((status + stageStatusLimit).toString(), style: const TextStyle(color: RSColors.statusSufficient)),
-      );
-    } else {
-      return Center(
-        child: Text((status + stageStatusLimit).toString()),
-      );
-    }
   }
 
   ///
