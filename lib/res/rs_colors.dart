@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 class RSColors {
   RSColors._();
 
-  static const Color floatingActionButtonIcon = Colors.white;
-
   // Chip
   static final Color chipAvatarBackground = Colors.grey.shade300;
   static const Color chipRankA = Color.fromARGB(255, 239, 201, 191);

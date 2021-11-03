@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rsapp/res/rs_colors.dart';
 
 class RSTheme {
   RSTheme._();
@@ -35,7 +34,7 @@ class RSTheme {
       selectedItemColor: darkThemeColor,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Colors.white30,
+      backgroundColor: darkThemeColor,
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: darkThemeColor,

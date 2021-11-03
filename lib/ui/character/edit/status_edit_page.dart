@@ -148,7 +148,7 @@ class StatusEditPage extends StatelessWidget {
 
   Widget _saveFab(BuildContext context) {
     return FloatingActionButton(
-      child: const Icon(Icons.save, color: RSColors.floatingActionButtonIcon),
+      child: const Icon(Icons.save),
       onPressed: () async {
         await context.read(statusEditViewModelProvider).saveNewStatus(_myStatus);
         Navigator.pop(context, true);

@@ -13,7 +13,7 @@ import 'package:rsapp/ui/widget/rs_dialog.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 import 'package:rsapp/ui/widget/rs_progress_dialog.dart';
 import 'package:rsapp/ui/widget/status_graph.dart';
-import 'package:rsapp/ui/widget/rs_divider.dart';
+import 'package:rsapp/ui/widget/rs_line.dart';
 
 class CharacterDetailPage extends StatelessWidget {
   const CharacterDetailPage._(this.character);
@@ -466,7 +466,7 @@ class CharacterDetailPage extends StatelessWidget {
     final character = context.read(characterDetailViewModelProvider).character;
     final myStatus = character.myStatus ?? MyStatus.empty(character.id);
     return FloatingActionButton(
-      child: const Icon(Icons.edit, color: RSColors.floatingActionButtonIcon),
+      child: const Icon(Icons.edit),
       onPressed: () async {
         final isSaved = await StatusEditPage.start(context, myStatus);
         if (isSaved) {

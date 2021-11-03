@@ -5,7 +5,7 @@ import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/account/account_view_model.dart';
 import 'package:rsapp/ui/stage/stage_edit_page.dart';
 import 'package:rsapp/ui/widget/rs_dialog.dart';
-import 'package:rsapp/ui/widget/rs_divider.dart';
+import 'package:rsapp/ui/widget/rs_line.dart';
 import 'package:rsapp/ui/widget/rs_progress_dialog.dart';
 import 'package:rsapp/ui/widget/theme_switch.dart';
 
