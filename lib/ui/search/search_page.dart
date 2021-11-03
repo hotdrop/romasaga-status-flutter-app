@@ -133,7 +133,7 @@ class SearchPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Divider(color: RSColors.themeColor),
+          const Divider(),
           _viewFilterFavorite(context),
           Divider(color: Theme.of(context).primaryColor),
           _filterViewWeaponType(context),

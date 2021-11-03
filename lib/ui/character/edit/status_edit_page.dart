@@ -64,7 +64,6 @@ class StatusEditPage extends StatelessWidget {
     return ListView(
       children: <Widget>[
         _createRow(context, StatusType.hp, _myStatus.hp, context.read(statusEditViewModelProvider).editHp),
-        const Divider(color: RSColors.themeColor),
         _createRow(context, StatusType.str, _myStatus.str, context.read(statusEditViewModelProvider).editStr),
         _createRow(context, StatusType.vit, _myStatus.vit, context.read(statusEditViewModelProvider).editVit),
         _createRow(context, StatusType.dex, _myStatus.dex, context.read(statusEditViewModelProvider).editDex),
@@ -255,7 +254,7 @@ class _RowEditStatus extends StatelessWidget {
     return SizedBox(
       width: 80.0,
       child: Center(
-        child: Text('$value', style: const TextStyle(fontSize: 28.0)),
+        child: Text('$value', style: const TextStyle(fontSize: 28)),
       ),
     );
   }
@@ -273,7 +272,7 @@ class _RowEditStatus extends StatelessWidget {
     return SizedBox(
       width: 80.0,
       child: Center(
-        child: Text(diffStr, style: TextStyle(fontSize: 28.0, color: textColor)),
+        child: Text(diffStr, style: TextStyle(fontSize: 28, color: textColor)),
       ),
     );
   }

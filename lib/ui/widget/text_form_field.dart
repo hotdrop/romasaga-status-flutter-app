@@ -111,6 +111,7 @@ class StatusEditField extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
       ),
+      style: const TextStyle(fontSize: 28),
       maxLength: 5,
       initialValue: initValue.toString(),
       onChanged: (String? v) {

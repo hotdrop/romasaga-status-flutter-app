@@ -5,31 +5,40 @@ class RSTheme {
   RSTheme._();
 
   static final ThemeData light = ThemeData.light().copyWith(
-    primaryColor: RSColors.themeColor,
+    primaryColor: Colors.indigo,
     primaryColorDark: Colors.indigoAccent,
     appBarTheme: const AppBarTheme(
       centerTitle: true,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: RSColors.themeColor,
+      backgroundColor: Colors.indigo,
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: RSColors.themeColor,
+      color: Colors.indigo,
     ),
     backgroundColor: Colors.white,
   );
 
+  static const darkThemeColor = Color.fromARGB(255, 204, 153, 255);
   static final ThemeData dark = ThemeData.dark().copyWith(
-    primaryColor: RSColors.themeColor,
+    primaryColor: darkThemeColor,
+    indicatorColor: darkThemeColor,
     primaryColorDark: Colors.indigoAccent,
     appBarTheme: const AppBarTheme(
       centerTitle: true,
+    ),
+    tabBarTheme: const TabBarTheme(
+      labelColor: darkThemeColor,
+      unselectedLabelColor: Colors.white,
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      selectedItemColor: darkThemeColor,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Colors.white30,
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: RSColors.themeColor,
+      color: darkThemeColor,
     ),
     scaffoldBackgroundColor: const Color(0xFF232323),
     applyElevationOverlayColor: true,

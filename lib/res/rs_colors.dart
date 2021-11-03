@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class RSColors {
   RSColors._();
 
-  static const Color themeColor = Color.fromARGB(255, 93, 72, 151);
   static const Color floatingActionButtonIcon = Colors.white;
 
   // Chip
