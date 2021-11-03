@@ -13,7 +13,7 @@ class RSColors {
   static const Color chipRankSS = Color.fromARGB(255, 233, 217, 77);
 
   // アイコン
-  static final Color iconSelectedBackground = Colors.yellowAccent;
+  static const Color iconSelectedBackground = Colors.yellowAccent;
 
   // キャラクター一覧
   static const Color hpOnList = Color(0xFF699BFF);

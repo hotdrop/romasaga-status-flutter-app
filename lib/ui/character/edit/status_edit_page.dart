@@ -4,7 +4,6 @@ import 'package:rsapp/models/status.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/ui/character/edit/status_edit_view_model.dart';
-import 'package:rsapp/ui/widget/rs_divider.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 import 'package:rsapp/ui/widget/status_counter.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
