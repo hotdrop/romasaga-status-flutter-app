@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
+import 'package:rsapp/models/character.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/character/row_character.dart';
 import 'package:rsapp/ui/character/characters_view_model.dart';
@@ -96,43 +97,32 @@ class CharactersPage extends StatelessWidget {
 
   Widget _statusUpEventTab(BuildContext context) {
     final characters = context.read(charactersViewModelProvider).statusUpCharacters;
-    if (characters.isEmpty) {
-      return _viewEmptyList();
-    }
-    return ListView.builder(itemBuilder: (context, index) {
-      return RowCharacterItem(
-        characters[index],
-        refreshListener: () async => await context.read(charactersViewModelProvider).refresh(),
-      );
-    });
+    return _viewList(characters);
   }
 
   Widget _favoriteTab(BuildContext context) {
     final characters = context.read(charactersViewModelProvider).favoriteCharacters;
-    if (characters.isEmpty) {
-      return _viewEmptyList();
-    }
-    return ListView.builder(itemBuilder: (context, index) {
-      return RowCharacterItem(
-        characters[index],
-        refreshListener: () async => await context.read(charactersViewModelProvider).refresh(),
-      );
-    });
+    return _viewList(characters);
   }
 
   Widget _notFavoriteTab(BuildContext context) {
     final characters = context.read(charactersViewModelProvider).notFavoriteCharacters;
+    return _viewList(characters);
+  }
+
+  Widget _viewList(List<Character> characters) {
     if (characters.isEmpty) {
       return _viewEmptyList();
     }
     return ListView.builder(
-        shrinkWrap: true,
-        itemCount: characters.length,
-        itemBuilder: (context, index) {
-          return RowCharacterItem(characters[index], refreshListener: () async {
-            await context.read(charactersViewModelProvider).refresh();
-          });
+      shrinkWrap: true,
+      itemCount: characters.length,
+      itemBuilder: (context, index) {
+        return RowCharacterItem(characters[index], refreshListener: () async {
+          await context.read(charactersViewModelProvider).refresh();
         });
+      },
+    );
   }
 
   Widget _viewEmptyList() {

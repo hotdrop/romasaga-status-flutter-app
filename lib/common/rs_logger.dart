@@ -19,9 +19,9 @@ class RSLogger {
     _logger.w(message);
   }
 
-  static Future<void> e(String message, {Exception? exception, StackTrace? stackTrace}) async {
+  static Future<void> e(String message, dynamic exception, StackTrace stackTrace) async {
     if (kDebugMode) {
-      _logger.e(message, exception);
+      _logger.e(message, exception, stackTrace);
     } else {
       await RSCrashlytics.getInstance().record(message, exception: exception, stackTrace: stackTrace);
     }

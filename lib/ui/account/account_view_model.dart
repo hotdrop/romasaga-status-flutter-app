@@ -41,8 +41,8 @@ class _AccountViewModel extends BaseViewModel {
       _backupDateLabel = await _read(myStatusRepositoryProvider).getPreviousBackupDateStr() ?? RSStrings.accountStatusBackupNotLabel;
       _stage = await _read(stageRepositoryProvider).find();
       onSuccess();
-    } on Exception catch (e, s) {
-      await RSLogger.e('アカウント画面の初期化に失敗しました。', exception: e, stackTrace: s);
+    } catch (e, s) {
+      await RSLogger.e('アカウント画面の初期化に失敗しました。', e, s);
       onError('$e');
     }
   }

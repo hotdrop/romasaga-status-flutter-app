@@ -6,6 +6,7 @@ import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/ui/base_view_model.dart';
+import 'package:collection/collection.dart';
 
 final charactersViewModelProvider = ChangeNotifierProvider.autoDispose((ref) {
   return _CharactersViewModel(ref.read);
@@ -35,7 +36,8 @@ class _CharactersViewModel extends BaseViewModel {
     try {
       await _refreshAllData();
       onSuccess();
-    } catch (e) {
+    } catch (e, s) {
+      RSLogger.e('キャラ一覧取得でエラー', e, s);
       onError('$e');
     }
   }
@@ -63,8 +65,12 @@ class _CharactersViewModel extends BaseViewModel {
       RSLogger.d('登録ステータス${statues.length}件をキャラ情報にマージします。');
       List<Character> newCharacters = [];
       for (var c in characters) {
-        final status = statues.firstWhere((s) => s.id == c.id);
-        newCharacters.add(c.withStatus(status));
+        final status = statues.firstWhereOrNull((s) => s.id == c.id);
+        if (status != null) {
+          newCharacters.add(c.withStatus(status));
+        } else {
+          newCharacters.add(c);
+        }
       }
       return newCharacters;
     } else {

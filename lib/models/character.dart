@@ -22,11 +22,13 @@ class Character {
   final String production; // 登場作品
   final Weapon weapon;
   final List<Attribute>? attributes;
-  final styles = <Style>[];
   String? selectedStyleRank;
   String? selectedIconFilePath;
   bool statusUpEvent;
   MyStatus? myStatus;
+
+  // スタイル情報は後から追加するので別出ししている。
+  final styles = <Style>[];
 
   WeaponType get weaponType => weapon.type;
 
@@ -36,6 +38,10 @@ class Character {
 
   void addStyle(Style style) {
     styles.add(style);
+  }
+
+  void addAllStyle(List<Style> argStyles) {
+    styles.addAll(argStyles);
   }
 
   void refreshStyles(List<Style> argStyles) {
@@ -52,7 +58,7 @@ class Character {
   }
 
   Character withStatus(MyStatus status) {
-    return Character(
+    final newCharacter = Character(
       id,
       name,
       production,
@@ -63,5 +69,7 @@ class Character {
       statusUpEvent: statusUpEvent,
       myStatus: status,
     );
+    newCharacter.addAllStyle(styles);
+    return newCharacter;
   }
 }

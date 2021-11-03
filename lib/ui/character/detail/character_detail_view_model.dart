@@ -42,7 +42,8 @@ class _CharacterDetailViewModel extends BaseViewModel {
       _stage = await _read(stageRepositoryProvider).find();
       _selectedStyle = c.selectedStyle ?? c.styles.first;
       onSuccess();
-    } on Exception catch (e) {
+    } catch (e, s) {
+      RSLogger.e('キャラ詳細情報取得でエラー', e, s);
       onError('$e');
     }
   }
@@ -98,7 +99,7 @@ class _CharacterDetailViewModel extends BaseViewModel {
     if (character.myStatus != null) {
       character.myStatus!.favorite = favorite;
     } else {
-      character.myStatus = MyStatus(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, favorite);
+      character.myStatus = MyStatus(character.id, 0, 0, 0, 0, 0, 0, 0, 0, 0, favorite);
     }
 
     await _read(myStatusRepositoryProvider).save(character.myStatus!);
@@ -128,8 +129,8 @@ class _CharacterDetailViewModel extends BaseViewModel {
       character.refreshStyles(styles);
 
       return true;
-    } on Exception catch (e, s) {
-      await RSLogger.e('アイコン更新に失敗しました。', exception: e, stackTrace: s);
+    } catch (e, s) {
+      await RSLogger.e('アイコン更新に失敗しました。', e, s);
       return false;
     }
   }
