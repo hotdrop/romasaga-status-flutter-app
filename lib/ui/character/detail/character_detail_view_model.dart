@@ -32,7 +32,6 @@ class _CharacterDetailViewModel extends BaseViewModel {
   int get totalLimitStatusWithSelectedStage => (_selectedStyle.sum()) + (8 * _stage.statusLimit);
 
   // 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
-  // TODO このフラグはよくないのでキャラデータをStateNotifierで持って更新判定する。
   bool _isUpdateStatus = false;
   bool get isUpdate => _isUpdateStatus;
 
@@ -96,12 +95,8 @@ class _CharacterDetailViewModel extends BaseViewModel {
   }
 
   Future<void> saveFavorite(bool favorite) async {
-    if (character.myStatus != null) {
-      character.myStatus!.favorite = favorite;
-    } else {
-      character.myStatus = MyStatus(character.id, 0, 0, 0, 0, 0, 0, 0, 0, 0, favorite);
-    }
-
+    character.myStatus ??= MyStatus.empty(character.id);
+    character.myStatus!.favorite = favorite;
     await _read(myStatusRepositoryProvider).save(character.myStatus!);
 
     refreshCharacterData();

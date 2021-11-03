@@ -76,7 +76,7 @@ class HpGraph extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+          padding: const EdgeInsets.only(left: 12.0, bottom: 4.0),
           child: Text(RSStrings.hpName, style: Theme.of(context).textTheme.subtitle1),
         ),
         _ContentLinearPercentIndicator(
@@ -86,7 +86,7 @@ class HpGraph extends StatelessWidget {
           color: currentStatusColor,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 8.0, top: 4.0, bottom: 8.0),
+          padding: const EdgeInsets.only(left: 12.0, top: 4.0, bottom: 8.0),
           child: Text(
             '$status / $limit',
             style: TextStyle(fontWeight: FontWeight.bold, color: currentStatusColor),

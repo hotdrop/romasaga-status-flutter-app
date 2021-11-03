@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/character/detail/character_detail_view_model.dart';
+import 'package:rsapp/ui/character/edit/status_edit_page.dart';
 import 'package:rsapp/ui/widget/rank_chip.dart';
 import 'package:rsapp/ui/widget/rs_dialog.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
@@ -310,8 +313,8 @@ class CharacterDetailPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           StatusGraph(title: RSStrings.agiName, status: myStatus?.agi ?? 0, limit: viewModel.getStatusLimit(RSStrings.agiName)),
-          StatusGraph(title: RSStrings.intName, status: myStatus?.intelligence ?? 0, limit: viewModel.getStatusLimit(RSStrings.intName)),
-          StatusGraph(title: RSStrings.spiName, status: myStatus?.spirit ?? 0, limit: viewModel.getStatusLimit(RSStrings.spiName)),
+          StatusGraph(title: RSStrings.intName, status: myStatus?.inte ?? 0, limit: viewModel.getStatusLimit(RSStrings.intName)),
+          StatusGraph(title: RSStrings.spiName, status: myStatus?.spi ?? 0, limit: viewModel.getStatusLimit(RSStrings.spiName)),
         ],
       ),
       Row(
@@ -460,21 +463,16 @@ class CharacterDetailPage extends StatelessWidget {
   /// ステータス編集のfab
   ///
   Widget _editStatusFab(BuildContext context) {
-    // final viewModel = context.read(characterDetailViewModelProvider);
-    // final myStatus = viewModel.character.myStatus;
-
+    final character = context.read(characterDetailViewModelProvider).character;
+    final myStatus = character.myStatus ?? MyStatus.empty(character.id);
     return FloatingActionButton(
       child: const Icon(Icons.edit, color: RSColors.floatingActionButtonIcon),
       onPressed: () async {
-        // TODO ステータス編集画面に飛ぶ
-        // final bool isSaved = await Navigator.of(context).push(
-        //       RightSlidePageRoute<bool>(page: CharStatusEditPage(myStatus)),
-        //     ) ??
-        //     false;
-        // if (isSaved) {
-        //   RSLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
-        //   await viewModel.refreshStatus();
-        // }
+        final isSaved = await StatusEditPage.start(context, myStatus);
+        if (isSaved) {
+          RSLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
+          await context.read(characterDetailViewModelProvider).refreshStatus();
+        }
       },
     );
   }
@@ -503,7 +501,7 @@ class CharacterDetailPage extends StatelessWidget {
     final myStatus = viewModel.character.myStatus;
     Icon icon;
     if (myStatus?.favorite ?? false) {
-      icon = Icon(Icons.star_rounded, color: Theme.of(context).primaryColor);
+      icon = const Icon(Icons.star_rounded, color: Colors.amberAccent);
     } else {
       icon = Icon(Icons.star_border_rounded, color: Theme.of(context).disabledColor);
     }

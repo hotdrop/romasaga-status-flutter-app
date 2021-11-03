@@ -47,13 +47,13 @@ void main() {
     expect(results[1].agi, 8);
     expect(results[2].agi, 12);
 
-    expect(results[0].intelligence, 5);
-    expect(results[1].intelligence, 10);
-    expect(results[2].intelligence, 15);
+    expect(results[0].inte, 5);
+    expect(results[1].inte, 10);
+    expect(results[2].inte, 15);
 
-    expect(results[0].spirit, 6);
-    expect(results[1].spirit, 12);
-    expect(results[2].spirit, 18);
+    expect(results[0].spi, 6);
+    expect(results[1].spi, 12);
+    expect(results[2].spi, 18);
 
     expect(results[0].love, 7);
     expect(results[1].love, 14);
@@ -95,8 +95,8 @@ void main() {
     expect(result.vit, 4);
     expect(result.dex, 6);
     expect(result.agi, 8);
-    expect(result.intelligence, 10);
-    expect(result.spirit, 12);
+    expect(result.inte, 10);
+    expect(result.spi, 12);
     expect(result.love, 14);
     expect(result.attr, 16);
     expect(result.favorite, isTrue);
@@ -127,8 +127,8 @@ void main() {
     expect(result2.vit, 8);
     expect(result2.dex, 12);
     expect(result2.agi, 16);
-    expect(result2.intelligence, 20);
-    expect(result2.spirit, 24);
+    expect(result2.inte, 20);
+    expect(result2.spi, 24);
     expect(result2.love, 28);
     expect(result2.attr, 32);
     expect(result2.favorite, isFalse);
@@ -141,8 +141,8 @@ void main() {
     expect(result4.vit, 10);
     expect(result4.dex, 15);
     expect(result4.agi, 20);
-    expect(result4.intelligence, 25);
-    expect(result4.spirit, 30);
+    expect(result4.inte, 25);
+    expect(result4.spi, 30);
     expect(result4.love, 35);
     expect(result4.attr, 40);
     expect(result4.favorite, isFalse);

@@ -89,3 +89,50 @@ class _RSNumberFormFieldState extends State<RSNumberFormField> {
     );
   }
 }
+
+///
+/// ステータス入力フィールド
+///
+class StatusEditField extends StatelessWidget {
+  const StatusEditField({
+    Key? key,
+    required this.label,
+    required this.initValue,
+    required this.focusNode,
+    required this.nextFocusNode,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final String label;
+  final int initValue;
+  final FocusNode? focusNode;
+  final FocusNode? nextFocusNode;
+  final void Function(int inputVal) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      focusNode: focusNode,
+      decoration: InputDecoration(
+        labelText: label,
+        counterText: '',
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
+      ),
+      maxLength: 5,
+      initialValue: initValue.toString(),
+      onChanged: (String? v) {
+        final num = ((v != null) ? int.tryParse(v) : 0) ?? 0;
+        onChanged(num);
+      },
+      onFieldSubmitted: (_) {
+        focusNode?.unfocus();
+        if (nextFocusNode != null) {
+          FocusScope.of(context).requestFocus(nextFocusNode);
+        }
+      },
+    );
+  }
+}
