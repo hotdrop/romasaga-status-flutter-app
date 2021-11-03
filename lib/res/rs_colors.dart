@@ -14,6 +14,7 @@ class RSColors {
 
   // アイコン
   static const Color iconSelectedBackground = Colors.yellowAccent;
+  static final Color iconSelectedStar = Colors.yellow.shade700;
 
   // キャラクター一覧
   static const Color hpOnList = Color(0xFF699BFF);
@@ -29,8 +30,12 @@ class RSColors {
   static const Color statusNormal = Color(0xFF74FF97);
   static const Color statusSufficient = Color(0xFF26BCFF);
 
+  // ステータス編集
   static const Color statusPlus = Colors.blue;
   static const Color statusMinus = Colors.red;
+
+  // 検索
+  static const Color filterBackground = Color(0xFF4C4C4C);
 
   // お便り画面
   static const Color thumbnailCardBackground = Color(0xFF4C4C4C);

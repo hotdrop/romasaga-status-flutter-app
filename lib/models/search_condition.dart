@@ -8,7 +8,6 @@ class SearchCondition {
   AttributeType? attributeType;
   ProductionType? productionType;
   bool isFavorite = false;
-  bool haveChar = false;
 
   bool filterWord({required String targetName, required String targetProduction}) {
     if (keyword == null) {
@@ -26,16 +25,6 @@ class SearchCondition {
       return true;
     }
     return fav;
-  }
-
-  ///
-  /// 手持ちキャラのフィルター
-  ///
-  bool filterHave(bool hav) {
-    if (!haveChar) {
-      return true;
-    }
-    return hav;
   }
 
   ///

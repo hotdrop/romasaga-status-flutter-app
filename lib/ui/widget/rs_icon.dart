@@ -271,34 +271,6 @@ class StatusIcon extends StatelessWidget {
 }
 
 ///
-/// キャラクター所持アイコン
-///
-class HaveCharacterIcon extends StatelessWidget {
-  const HaveCharacterIcon({Key? key, required this.selected, required this.onTap}) : super(key: key);
-
-  final Function onTap;
-  final bool selected;
-
-  @override
-  Widget build(BuildContext context) {
-    final icon = selected
-        ? Icon(Icons.people, color: Theme.of(context).primaryColor, size: 20.0) //
-        : Icon(Icons.people_outline, color: Theme.of(context).disabledColor, size: 20.0);
-
-    return RawMaterialButton(
-      shape: const CircleBorder(),
-      constraints: const BoxConstraints(
-        minWidth: 40.0,
-        minHeight: 40.0,
-      ),
-      fillColor: Theme.of(context).disabledColor,
-      child: icon,
-      onPressed: () => onTap(),
-    );
-  }
-}
-
-///
 /// キャラクターお気に入りアイコン
 ///
 class FavoriteIcon extends StatelessWidget {
@@ -309,7 +281,7 @@ class FavoriteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = selected ? Theme.of(context).primaryColor : Theme.of(context).disabledColor;
+    final iconColor = selected ? RSColors.iconSelectedStar : Theme.of(context).disabledColor;
     return RawMaterialButton(
       shape: const CircleBorder(),
       constraints: const BoxConstraints(
@@ -317,7 +289,7 @@ class FavoriteIcon extends StatelessWidget {
         minHeight: 40.0,
       ),
       fillColor: Theme.of(context).disabledColor,
-      child: Icon(Icons.favorite, color: iconColor, size: 20.0),
+      child: Icon(Icons.star_rounded, color: iconColor, size: 20.0),
       onPressed: () => onTap(),
     );
   }
@@ -378,29 +350,5 @@ class ProductionLogo extends StatelessWidget {
       case ProductionType.saga2:
         return 'res/logos/Saga2.jpg';
     }
-  }
-}
-
-///
-/// ダッシュボードのランキングアイコン
-///
-class RankingIcon extends StatelessWidget {
-  const RankingIcon._(this._res);
-
-  factory RankingIcon.createFirst() => const RankingIcon._('res/icons/icon_ranking_1.png');
-
-  factory RankingIcon.createSecond() => const RankingIcon._('res/icons/icon_ranking_2.png');
-
-  factory RankingIcon.createThird() => const RankingIcon._('res/icons/icon_ranking_3.png');
-
-  factory RankingIcon.createFourth() => const RankingIcon._('res/icons/icon_ranking_4.png');
-
-  factory RankingIcon.createFifth() => const RankingIcon._('res/icons/icon_ranking_5.png');
-
-  final String _res;
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(_res, width: 30.0, height: 30.0);
   }
 }

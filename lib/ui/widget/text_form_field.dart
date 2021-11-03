@@ -3,6 +3,7 @@ import 'package:rsapp/res/rs_strings.dart';
 
 ///
 /// テキスト入力フィールド
+/// TODO これStatelessWidgetでいいのでは？
 ///
 class RSTextFormField extends StatefulWidget {
   const RSTextFormField._(this.label, this.initValue, this.onChanged);
@@ -42,6 +43,7 @@ class _RSTextFormFieldState extends State<RSTextFormField> {
 
 ///
 /// 数値入力フィールド
+/// TODO これStatelessWidgetでいいのでは？
 ///
 class RSNumberFormField extends StatefulWidget {
   const RSNumberFormField._(this.label, this.initValue, this.onChanged);

@@ -33,12 +33,10 @@ class RSStrings {
   static const String searchPageTitle = '検索';
   static const String searchListQueryHint = 'キャラ名で検索';
   static const String searchBackDropTitle = 'キャラ一覧';
-  static const String searchFilterTitleOwn = 'フィルター';
-  static const String searchFilterTitleWeapon = '武器種別';
-  static const String searchFilterTitleAttributes = '属性別';
-  static const String searchFilterTitleProduction = '作品別';
-  static const String searchFilterClear = 'クリア';
-  static const String searchFilterLoadingErrorMessage = 'キャラ情報のロードに失敗しました。';
+  static const String searchNoDataLabel = '該当キャラはいません。';
+  static const String searchFilterClearWeapon = '武器種別をクリア';
+  static const String searchFilterClearAttributes = '属性をクリア';
+  static const String searchFilterClearProduction = '作品をクリア';
 
   // お便り
   static const String letterPageTitle = '運営からのお便り';
