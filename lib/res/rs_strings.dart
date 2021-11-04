@@ -38,11 +38,14 @@ class RSStrings {
   static const String searchFilterClearAttributes = '属性をクリア';
   static const String searchFilterClearProduction = '作品をクリア';
 
-  // お便り
+  // 情報
+  static const String infoPageTitle = '色々情報';
+  static const String infoOfficialButton = '公式のお知らせページ';
+  static const String infoOfficialUrl = 'https://info.rs.aktsk.jp/info/';
   static const String letterPageTitle = '運営からのお便り';
-  static const String letterPageNotData = 'お便り情報がロードされていません。'
-      '\nアカウント画面よりお便り情報を取得してください。'
-      '\n\n（お便り情報取得時はネットワーク通信を行いますのでご注意ください。）';
+  static const String letterPageNotData = 'お便り情報がロードされていません。';
+  static const String letterPageLoadButton = 'お便り情報をロードする';
+  static const String letterPageLoadConfirmMessage = 'サーバーからお便り情報を取得します。よろしいですか？';
   static const String letterDetailPageTitle = '運営からのお便り詳細';
   static const String letterNothingMessage = '運営からのお便りデータが0件でした。';
   static const String letterLoadingErrorMessage = '運営からのお便りデータ取得に失敗しました。';
@@ -56,7 +59,7 @@ class RSStrings {
   static const String accountNotSignInLabel = '未ログイン';
   static const String accountNotNameLabel = 'ー';
   static const String accountChangeThemeLabel = 'テーマの切り替え';
-  static const String accountAppVersionLabel = 'バージョン';
+  static const String accountLicenseLabel = 'バージョンとライセンス';
   static const String accountSignInButton = 'Googleアカウントでサインインする';
   static const String accountSignOutButton = 'Googleアカウントからサインアウトする';
   static const String accountSignOutDialogMessage = 'Googleアカウントからサインアウトします。よろしいですか？';

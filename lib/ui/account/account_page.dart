@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
+import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/account/account_view_model.dart';
 import 'package:rsapp/ui/stage/stage_edit_page.dart';
@@ -48,7 +49,7 @@ class AccountPage extends StatelessWidget {
     return ListView(
       children: <Widget>[
         _rowAccountInfo(context),
-        _rowAppVersion(context),
+        _rowAppLicense(context),
         _rowThemeSwitch(context),
         const HorizontalLine(),
         _rowRefreshCharacter(context),
@@ -72,11 +73,19 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Widget _rowAppVersion(BuildContext context) {
+  Widget _rowAppLicense(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.info, size: _rowIconSize),
-      title: const Text(RSStrings.accountAppVersionLabel),
-      subtitle: Text(context.read(accountViewModelProvider).appVersion),
+      title: const Text(RSStrings.accountLicenseLabel),
+      trailing: const Icon(Icons.arrow_forward_ios),
+      onTap: () {
+        showLicensePage(
+          context: context,
+          applicationName: RSStrings.appTitle,
+          applicationVersion: context.read(accountViewModelProvider).appVersion,
+          applicationIcon: Image.asset(RSImages.icLaunch, width: 50, height: 50),
+        );
+      },
     );
   }
 
