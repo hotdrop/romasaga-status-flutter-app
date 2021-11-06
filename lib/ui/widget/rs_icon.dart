@@ -271,7 +271,7 @@ class StatusIcon extends StatelessWidget {
 }
 
 ///
-/// キャラクターお気に入りアイコン
+/// 検索画面でのキャラクターお気に入りアイコン
 ///
 class FavoriteIcon extends StatelessWidget {
   const FavoriteIcon({Key? key, required this.selected, required this.onTap}) : super(key: key);
@@ -281,7 +281,7 @@ class FavoriteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = selected ? RSColors.iconSelectedStar : Theme.of(context).disabledColor;
+    final iconColor = selected ? RSColors.favoriteSelected : Theme.of(context).disabledColor;
     return RawMaterialButton(
       shape: const CircleBorder(),
       constraints: const BoxConstraints(

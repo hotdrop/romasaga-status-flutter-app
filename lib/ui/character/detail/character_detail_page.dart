@@ -380,7 +380,7 @@ class CharacterDetailPage extends StatelessWidget {
     final myStatus = viewModel.character.myStatus;
     Icon icon;
     if (myStatus?.favorite ?? false) {
-      icon = Icon(Icons.star_rounded, color: RSColors.iconSelectedStar);
+      icon = Icon(Icons.star_rounded, color: RSColors.favoriteSelected);
     } else {
       icon = Icon(Icons.star_border_rounded, color: Theme.of(context).disabledColor);
     }
@@ -398,7 +398,7 @@ class CharacterDetailPage extends StatelessWidget {
   Widget _statusUpEventIcon(BuildContext context) {
     final viewModel = context.read(characterDetailViewModelProvider);
     final statusUpEvent = viewModel.character.statusUpEvent;
-    final color = statusUpEvent ? Theme.of(context).primaryColor : Theme.of(context).disabledColor;
+    final color = statusUpEvent ? RSColors.statusUpEventSelected : Theme.of(context).disabledColor;
 
     return IconButton(
       icon: Icon(Icons.trending_up, color: color),

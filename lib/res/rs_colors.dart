@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 class RSColors {
   RSColors._();
 
+  // common
+  static const Color itemBackground = Color(0xFF4C4C4C);
+
   // Chip
   static final Color chipAvatarBackground = Colors.grey.shade300;
   static const Color chipRankA = Color.fromARGB(255, 239, 201, 191);
@@ -11,13 +14,11 @@ class RSColors {
 
   // アイコン
   static const Color iconSelectedBackground = Colors.yellowAccent;
-  static final Color iconSelectedStar = Colors.yellow.shade700;
 
   // キャラクター一覧
   static const Color hpOnList = Color(0xFF699BFF);
 
   // キャラクター詳細
-  static const Color cardShadow = Color(0xFF3A5160);
   static const Color totalStatusIndicator = Color(0xFF699BFF);
   static const Color stageNameLine = Color(0xFF87A0E5);
   static const Color stageLimitLine = Color(0xFFFFF987);
@@ -27,15 +28,13 @@ class RSColors {
   static const Color statusNormal = Color(0xFF74FF97);
   static const Color statusSufficient = Color(0xFF26BCFF);
 
+  static const Color favoriteSelected = Colors.amber;
+  static const Color statusUpEventSelected = Colors.cyanAccent;
+
   // ステータス編集
   static const Color statusPlus = Colors.blue;
   static const Color statusMinus = Colors.red;
 
-  // 検索
-  static const Color filterBackground = Color(0xFF4C4C4C);
-
-  // お便り画面
-  static const Color thumbnailCardBackground = Color(0xFF4C4C4C);
   static const Color titleShadow = Colors.grey;
   static const Color winter = Colors.orange;
   static const Color spring = Colors.pinkAccent;

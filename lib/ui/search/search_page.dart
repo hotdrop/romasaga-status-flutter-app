@@ -115,8 +115,8 @@ class SearchPage extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           height: MediaQuery.of(ctx).size.height * 0.8,
           decoration: BoxDecoration(
-            color: RSColors.filterBackground,
-            border: Border.all(width: 1, color: RSColors.filterBackground),
+            color: RSColors.itemBackground,
+            border: Border.all(width: 1, color: RSColors.itemBackground),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(16),
               topRight: Radius.circular(16),
