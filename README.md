@@ -27,7 +27,7 @@ Firebaseを利用しています。
 `flutter build apk --split-per-abi --release`
 
 # 画面イメージ一部
-このイメージはver1のものなので差し替える
+このイメージはver1のものなので差し替える  
 ![01](/images/01_char_list.png)  
 ![02](/images/02_char_detail_1.png)
 ![03](images/03_char_input_status.png)  
