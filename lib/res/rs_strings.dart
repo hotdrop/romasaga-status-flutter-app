@@ -39,8 +39,7 @@ class RSStrings {
   static const String searchFilterClearProduction = '作品をクリア';
 
   // 情報
-  static const String infoPageTitle = '色々情報';
-  static const String infoOfficialButton = '公式のお知らせページ';
+  static const String infoPageTitle = '公式情報';
   static const String infoOfficialUrl = 'https://info.rs.aktsk.jp/info/';
   static const String letterPageTitle = '運営からのお便り';
   static const String letterPageNotData = 'お便り情報がロードされていません。';
