@@ -30,24 +30,29 @@ if (keystorePropertiesFile.exists()) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-    }
-
     defaultConfig {
         applicationId "jp.hotdrop.romansingsagaapp"
-        minSdkVersion 23
-        targetSdkVersion 29
-        multiDexEnabled true
+        minSdkVersion 28
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -62,30 +67,13 @@ android {
     }
 
     buildTypes {
-        release {
-            signingConfig signingConfigs.release
-        }
-    }
-
-    flavorDimensions("default")
-
-    productFlavors {
-        develop {
-            applicationIdSuffix = ".dev"
-            versionNameSuffix = "-dev"
-        }
-        product {
-        }
-    }
-
-    variantFilter { variant ->
-        variant.flavors*.name.each { flavorName ->
-            if ((flavorName.contains("product") && (variant.buildType.name == "develop")) ||
-                    (flavorName.contains("develop") && (variant.buildType.name == "product"))
-            ) {
-                setIgnore(true)
-            }
-        }
+      debug {
+        applicationIdSuffix = ".dev"
+        versionNameSuffix = "-dev"
+      }
+      release {
+        signingConfig signingConfigs.release
+      }
     }
 }
 
@@ -95,7 +83,4 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:multidex:1.0.3'
 }
-
-apply plugin: 'com.google.gms.google-services'

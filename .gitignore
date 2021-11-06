@@ -29,6 +29,15 @@
 .pub/
 build/
 
+# Web related
+lib/generated_plugin_registrant.dart
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
@@ -75,14 +84,14 @@ build/
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 ## add new
-/res/icons
-/res/launcher
-/res/logos
+assets/icons
+assets/logos
 
 /keystore
 **/android/**/google-services.json
 **/ios/Runner/GoogleService-Info.plist
 gen/
 ios/Frameworks/
-**/*.g.dart
-**/*.freezed.dart
+*.g.dart
+*.freezed.dart
+*.mocks.dart
