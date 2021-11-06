@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_colors.dart';
+import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/production.dart';
@@ -13,20 +14,19 @@ class CharacterIcon extends StatelessWidget {
   const CharacterIcon._(this._res, this._size);
 
   factory CharacterIcon.small(String? path) {
-    return CharacterIcon._(path ?? _defaultIconPath, 30.0);
+    return CharacterIcon._(path ?? RSImages.icDefault, 30.0);
   }
 
   factory CharacterIcon.normal(String? path) {
-    return CharacterIcon._(path ?? _defaultIconPath, 50.0);
+    return CharacterIcon._(path ?? RSImages.icDefault, 50.0);
   }
 
   factory CharacterIcon.large(String? path) {
-    return CharacterIcon._(path ?? _defaultIconPath, 80.0);
+    return CharacterIcon._(path ?? RSImages.icDefault, 80.0);
   }
 
   final String _res;
   final double _size;
-  static const _defaultIconPath = 'res/charIcons/default.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class CharacterIcon extends StatelessWidget {
       width: _size,
       height: _size,
       placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, dynamic error) => Image.asset(_defaultIconPath, width: _size, height: _size),
+      errorWidget: (context, url, dynamic error) => Image.asset(RSImages.icDefault, width: _size, height: _size),
     );
   }
 }
@@ -48,11 +48,11 @@ class StyleRankIcon extends StatelessWidget {
 
   factory StyleRankIcon.create(String rank) {
     if (rank.contains(RSStrings.rankSS)) {
-      return const StyleRankIcon._('res/icons/icon_rank_SS.png');
+      return const StyleRankIcon._(RSImages.icRankSS);
     } else if (rank.contains(RSStrings.rankS)) {
-      return const StyleRankIcon._('res/icons/icon_rank_S.png');
+      return const StyleRankIcon._(RSImages.icRankS);
     } else {
-      return const StyleRankIcon._('res/icons/icon_rank_A.png');
+      return const StyleRankIcon._(RSImages.icRankA);
     }
   }
 
@@ -112,25 +112,25 @@ class WeaponIcon extends StatelessWidget {
   String _getResourcePath() {
     switch (_type) {
       case WeaponType.sword:
-        return 'res/icons/icon_weapon_sword.png';
+        return RSImages.icWeaponSword;
       case WeaponType.largeSword:
-        return 'res/icons/icon_weapon_large_sword.png';
+        return RSImages.icWeaponLargeSword;
       case WeaponType.axe:
-        return 'res/icons/icon_weapon_axe.png';
+        return RSImages.icWeaponAxe;
       case WeaponType.hummer:
-        return 'res/icons/icon_weapon_hummer.png';
+        return RSImages.icWeaponHummer;
       case WeaponType.knuckle:
-        return 'res/icons/icon_weapon_knuckle.png';
+        return RSImages.icWeaponKnuckle;
       case WeaponType.gun:
-        return 'res/icons/icon_weapon_gun.png';
+        return RSImages.icWeaponGun;
       case WeaponType.rapier:
-        return 'res/icons/icon_weapon_rapier.png';
+        return RSImages.icWeaponRapier;
       case WeaponType.bow:
-        return 'res/icons/icon_weapon_bow.png';
+        return RSImages.icWeaponBow;
       case WeaponType.spear:
-        return 'res/icons/icon_weapon_spear.png';
+        return RSImages.icWeaponSpear;
       case WeaponType.rod:
-        return 'res/icons/icon_weapon_rod.png';
+        return RSImages.icWeaponRod;
     }
   }
 }
@@ -161,13 +161,13 @@ class WeaponCategoryIcon extends StatelessWidget {
   String _getResourcePath() {
     switch (_category) {
       case WeaponCategory.slash:
-        return 'res/icons/icon_weapon_type_slash.png';
+        return RSImages.icWeaponTypeSlash;
       case WeaponCategory.strike:
-        return 'res/icons/icon_weapon_type_strike.png';
+        return RSImages.icWeaponTypeStrike;
       case WeaponCategory.poke:
-        return 'res/icons/icon_weapon_type_poke.png';
+        return RSImages.icWeaponTypePoke;
       case WeaponCategory.rod:
-        return 'res/icons/icon_weapon_type_strike.png';
+        return RSImages.icWeaponTypeStrike;
     }
   }
 }
@@ -202,7 +202,7 @@ class AttributeIcon extends StatelessWidget {
         fit: BoxFit.cover,
         width: _size,
         height: _size,
-        colorFilter: selected ? null : ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+        colorFilter: selected ? null : ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.srcATop),
         child: InkWell(
           onTap: () => onTap!(),
           child: null,
@@ -214,19 +214,19 @@ class AttributeIcon extends StatelessWidget {
   String _getResourcePath() {
     switch (type) {
       case AttributeType.fire:
-        return 'res/icons/icon_attribute_fire.png';
+        return RSImages.icAttributeFire;
       case AttributeType.cold:
-        return 'res/icons/icon_attribute_cold.png';
+        return RSImages.icAttributeCold;
       case AttributeType.thunder:
-        return 'res/icons/icon_attribute_thunder.png';
+        return RSImages.icAttributeThunder;
       case AttributeType.soil:
-        return 'res/icons/icon_attribute_soil.png';
+        return RSImages.icAttributeSoil;
       case AttributeType.wind:
-        return 'res/icons/icon_attribute_wind.png';
+        return RSImages.icAttributeWind;
       case AttributeType.dark:
-        return 'res/icons/icon_attribute_dark.png';
+        return RSImages.icAttributeDark;
       case AttributeType.shine:
-        return 'res/icons/icon_attribute_shine.png';
+        return RSImages.icAttributeShine;
     }
   }
 }
@@ -238,28 +238,28 @@ class StatusIcon extends StatelessWidget {
   const StatusIcon._(this._res);
 
   factory StatusIcon.str() {
-    return const StatusIcon._('res/icons/icon_status_str.png');
+    return const StatusIcon._(RSImages.icStatusStr);
   }
   factory StatusIcon.vit() {
-    return const StatusIcon._('res/icons/icon_status_vit.png');
+    return const StatusIcon._(RSImages.icStatusVit);
   }
   factory StatusIcon.dex() {
-    return const StatusIcon._('res/icons/icon_status_dex.png');
+    return const StatusIcon._(RSImages.icStatusDex);
   }
   factory StatusIcon.agi() {
-    return const StatusIcon._('res/icons/icon_status_agi.png');
+    return const StatusIcon._(RSImages.icStatusAgi);
   }
   factory StatusIcon.int() {
-    return const StatusIcon._('res/icons/icon_status_int.png');
+    return const StatusIcon._(RSImages.icStatusInt);
   }
   factory StatusIcon.spirit() {
-    return const StatusIcon._('res/icons/icon_status_spi.png');
+    return const StatusIcon._(RSImages.icStatusSpi);
   }
   factory StatusIcon.love() {
-    return const StatusIcon._('res/icons/icon_status_love.png');
+    return const StatusIcon._(RSImages.icStatusLove);
   }
   factory StatusIcon.attr() {
-    return const StatusIcon._('res/icons/icon_status_attr.png');
+    return const StatusIcon._(RSImages.icStatusAttr);
   }
 
   final String _res;
@@ -328,27 +328,27 @@ class ProductionLogo extends StatelessWidget {
   String _getResourcePath() {
     switch (type) {
       case ProductionType.romasaga1:
-        return 'res/logos/RomancingSaGa1.jpg';
+        return RSImages.logoRomasaga1;
       case ProductionType.romasaga2:
-        return 'res/logos/RomancingSaGa2.jpg';
+        return RSImages.logoRomasaga2;
       case ProductionType.romasaga3:
-        return 'res/logos/RomancingSaGa3.jpg';
+        return RSImages.logoRomasaga3;
       case ProductionType.sagafro1:
-        return 'res/logos/SagaFrontier1.jpg';
+        return RSImages.logoSagaFro1;
       case ProductionType.sagafro2:
-        return 'res/logos/SagaFrontier2.jpg';
+        return RSImages.logoSagaFro2;
       case ProductionType.sagasca:
-        return 'res/logos/SagaSca.jpg';
+        return RSImages.logoSagaSca;
       case ProductionType.unlimited:
-        return 'res/logos/UnlimitedSage.jpg';
+        return RSImages.logoUnlimitedSaga;
       case ProductionType.emperorssaga:
-        return 'res/logos/EmperorsSaga.jpg';
+        return RSImages.logoEmperorsSaga;
       case ProductionType.romasagaRS:
-        return 'res/logos/RomasagaRS.jpg';
+        return RSImages.logoRomasagaRS;
       case ProductionType.saga1:
-        return 'res/logos/Saga.jpg';
+        return RSImages.logoGBSaga1;
       case ProductionType.saga2:
-        return 'res/logos/Saga2.jpg';
+        return RSImages.logoGBSaga2;
     }
   }
 }

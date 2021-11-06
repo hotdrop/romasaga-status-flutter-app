@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_colors.dart';
+import 'package:rsapp/res/rs_images.dart';
 
 class Letter {
   const Letter({
@@ -36,13 +37,13 @@ class Letter {
 
   String get loadingIcon {
     if (3 <= month && month <= 5) {
-      return 'res/icons/loading_spring.gif';
+      return RSImages.gifLoadingSpring;
     } else if (6 <= month && month <= 8) {
-      return 'res/icons/loading_summer.gif';
+      return RSImages.gifLoadingSummer;
     } else if (9 <= month && month <= 11) {
-      return 'res/icons/loading_fall.gif';
+      return RSImages.gifLoadingFall;
     } else {
-      return 'res/icons/loading_winter.gif';
+      return RSImages.gifLoadingWinter;
     }
   }
 
