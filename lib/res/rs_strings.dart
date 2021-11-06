@@ -45,7 +45,7 @@ class RSStrings {
   static const String letterPageTitle = '運営からのお便り';
   static const String letterPageNotData = 'お便り情報がロードされていません。';
   static const String letterPageLoadButton = 'お便り情報をロードする';
-  static const String letterPageLoadConfirmMessage = 'サーバーからお便り情報を取得します。よろしいですか？';
+  static const String letterPageLoadConfirmMessage = 'サーバーから最新のお便り情報を取得します。よろしいですか？';
   static const String letterDetailPageTitle = '運営からのお便り詳細';
   static const String letterNothingMessage = '運営からのお便りデータが0件でした。';
   static const String letterLoadingErrorMessage = '運営からのお便りデータ取得に失敗しました。';

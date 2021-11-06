@@ -47,7 +47,6 @@ class CharactersPage extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          centerTitle: true,
           title: const Text(RSStrings.charactersPageTitle),
           actions: <Widget>[
             _titlePopupMenu(context),

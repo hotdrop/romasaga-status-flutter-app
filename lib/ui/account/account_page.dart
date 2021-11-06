@@ -59,9 +59,14 @@ class AccountPage extends StatelessWidget {
           _rowBackUp(context),
           _rowRestore(context),
           const HorizontalLine(),
+          const SizedBox(height: 16),
           _rowSignOutButton(context),
         ],
-        if (!loggedIn) _rowSignInButton(context),
+        if (!loggedIn) ...[
+          const HorizontalLine(),
+          const SizedBox(height: 16),
+          _rowSignInButton(context),
+        ],
       ],
     );
   }
@@ -189,11 +194,14 @@ class AccountPage extends StatelessWidget {
   }
 
   Widget _rowSignInButton(BuildContext context) {
-    return AppButton(
-      label: RSStrings.accountSignInButton,
-      onTap: () async {
-        await _processSignIn(context);
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: AppButton(
+        label: RSStrings.accountSignInButton,
+        onTap: () async {
+          await _processSignIn(context);
+        },
+      ),
     );
   }
 
@@ -209,7 +217,7 @@ class AccountPage extends StatelessWidget {
 
   Widget _rowSignOutButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: OutlinedButton(
         child: const Text(RSStrings.accountSignOutButton),
         onPressed: () async {

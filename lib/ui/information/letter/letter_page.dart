@@ -99,8 +99,13 @@ class LetterPage extends StatelessWidget {
       length: years.length,
       child: Scaffold(
         appBar: AppBar(
-          centerTitle: true,
           title: const Text(RSStrings.letterPageTitle),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () async => await _processLoadData(context),
+              icon: const Icon(Icons.refresh),
+            ),
+          ],
           bottom: TabBar(
             tabs: years.map((y) => Tab(text: '$y${RSStrings.letterYearLabel}')).toList(),
           ),
