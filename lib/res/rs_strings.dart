@@ -11,7 +11,7 @@ class RSStrings {
   static const String charactersPageTitle = 'キャラ一覧';
   static const String charactersPageTabStatusUp = 'ステUP';
   static const String charactersPageTabFavorite = 'お気に入り';
-  static const String charactersPageTabNotFavorite = '全キャラ';
+  static const String charactersPageTabNotFavorite = '未育成';
   static const String charactersOrderStatus = 'ステータス';
   static const String charactersOrderHp = 'HP';
   static const String charactersOrderProduction = '作品';

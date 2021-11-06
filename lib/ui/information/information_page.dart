@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/information/letter/letter_page.dart';
 import 'package:rsapp/ui/widget/app_button.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class InformationPage extends StatelessWidget {

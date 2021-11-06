@@ -24,12 +24,11 @@ Firebaseを利用しています。
 キャラデータが全て入ったjsonをいちいち読み込んで動作確認するのが辛かったため、動作確認は`main_dev.dart`で開発用のjsonを読み込むようにしています。  
 開発はvscodeでやっているので`launch.json`のprogramにこのdartファイルを指定してデバッグしています。  
 実際に個人端末で利用しているアプリは次のコマンドで作っています。
-`flutter build apk --split-per-abi -t lib/main.dart --release`
+`flutter build apk --split-per-abi --release`
 
 # 画面イメージ一部
+このイメージはver1のものなので差し替える
 ![01](/images/01_char_list.png)  
 ![02](/images/02_char_detail_1.png)
 ![03](images/03_char_input_status.png)  
-![04](images/04_search.png)
-![0402](images/04_search_filter.png)  
 ![06](images/06_account.png)

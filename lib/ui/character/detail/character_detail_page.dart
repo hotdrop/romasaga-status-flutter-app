@@ -380,7 +380,7 @@ class CharacterDetailPage extends StatelessWidget {
     final myStatus = viewModel.character.myStatus;
     Icon icon;
     if (myStatus?.favorite ?? false) {
-      icon = Icon(Icons.star_rounded, color: RSColors.favoriteSelected);
+      icon = const Icon(Icons.star_rounded, color: RSColors.favoriteSelected);
     } else {
       icon = Icon(Icons.star_border_rounded, color: Theme.of(context).disabledColor);
     }
