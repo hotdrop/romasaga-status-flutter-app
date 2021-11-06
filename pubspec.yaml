@@ -70,7 +70,6 @@ flutter_icons:
 flutter:
   uses-material-design: true
   assets:
-    - res/icons/
-    - res/charIcons/
-    - res/launcher/
-    - res/logos/
+    - assets/icons/
+    - assets/launcher/
+    - assets/logos/

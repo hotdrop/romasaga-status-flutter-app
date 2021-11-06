@@ -1,9 +1,9 @@
 class RSImages {
   const RSImages._();
 
-  static const String _rootLauncherPath = 'res/launcher';
-  static const String _rootLogoPath = 'res/logos';
-  static const String _rootIconsPath = 'res/icons';
+  static const String _rootLauncherPath = 'assets/launcher';
+  static const String _rootLogoPath = 'assets/logos';
+  static const String _rootIconsPath = 'assets/icons';
 
   // アプリアイコン
   static const String icLaunch = '$_rootLauncherPath/ic_launcher.png';
