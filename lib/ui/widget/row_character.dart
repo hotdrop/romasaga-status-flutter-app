@@ -45,12 +45,15 @@ class RowCharacterItem extends StatelessWidget {
       children: [
         CharacterIcon.normal(character.getShowIconPath()),
         const SizedBox(width: 8),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(character.name, style: Theme.of(context).textTheme.subtitle1),
-            Text(character.production, style: Theme.of(context).textTheme.caption),
-          ],
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.45,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(character.name, style: Theme.of(context).textTheme.subtitle1),
+              Text(character.production, style: Theme.of(context).textTheme.caption),
+            ],
+          ),
         ),
       ],
     );
@@ -60,12 +63,11 @@ class RowCharacterItem extends StatelessWidget {
     return Row(
       children: [
         WeaponIcon.small(character.weapon.type),
-        const SizedBox(width: 16),
+        const SizedBox(width: 8),
         SizedBox(
-          width: 60,
+          width: MediaQuery.of(context).size.width * 0.15,
           child: _viewHpAndTotalStatus(),
         ),
-        const SizedBox(width: 8),
       ],
     );
   }
