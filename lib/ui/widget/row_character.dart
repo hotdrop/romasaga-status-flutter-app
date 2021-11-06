@@ -61,14 +61,24 @@ class RowCharacterItem extends StatelessWidget {
       children: [
         WeaponIcon.small(character.weapon.type),
         const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text('${RSStrings.hpName} ${character.myStatus?.hp ?? 0}', style: const TextStyle(color: RSColors.hpOnList)),
-            Text('${RSStrings.characterTotalStatus} ${character.myStatus?.sumWithoutHp() ?? 0}'),
-          ],
+        SizedBox(
+          width: 60,
+          child: _viewHpAndTotalStatus(),
         ),
         const SizedBox(width: 8),
+      ],
+    );
+  }
+
+  Widget _viewHpAndTotalStatus() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          '${RSStrings.hpName} ${character.myStatus?.hp ?? 0}',
+          style: const TextStyle(color: RSColors.hpOnList),
+        ),
+        Text('${RSStrings.characterTotalStatus} ${character.myStatus?.sumWithoutHp() ?? 0}'),
       ],
     );
   }
