@@ -30,6 +30,16 @@ class RSTheme {
       labelColor: darkThemeColor,
       unselectedLabelColor: Colors.white,
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: darkThemeColor,
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        primary: darkThemeColor,
+      ),
+    ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       selectedItemColor: darkThemeColor,
     ),
