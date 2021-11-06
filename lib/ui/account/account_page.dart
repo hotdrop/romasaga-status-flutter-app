@@ -5,9 +5,10 @@ import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/account/account_view_model.dart';
 import 'package:rsapp/ui/stage/stage_edit_page.dart';
-import 'package:rsapp/ui/widget/rs_dialog.dart';
-import 'package:rsapp/ui/widget/rs_line.dart';
-import 'package:rsapp/ui/widget/rs_progress_dialog.dart';
+import 'package:rsapp/ui/widget/app_button.dart';
+import 'package:rsapp/ui/widget/app_dialog.dart';
+import 'package:rsapp/ui/widget/app_line.dart';
+import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 import 'package:rsapp/ui/widget/theme_switch.dart';
 
 class AccountPage extends StatelessWidget {
@@ -188,14 +189,11 @@ class AccountPage extends StatelessWidget {
   }
 
   Widget _rowSignInButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ElevatedButton(
-        child: const Text(RSStrings.accountSignInButton),
-        onPressed: () async {
-          await _processSignIn(context);
-        },
-      ),
+    return AppButton(
+      label: RSStrings.accountSignInButton,
+      onTap: () async {
+        await _processSignIn(context);
+      },
     );
   }
 

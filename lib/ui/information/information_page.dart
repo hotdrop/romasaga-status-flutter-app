@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/information/letter/letter_page.dart';
+import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InformationPage extends StatelessWidget {
@@ -21,24 +22,18 @@ class InformationPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-            onPressed: () {
+          AppButton(
+            label: RSStrings.infoOfficialButton,
+            onTap: () {
               launch(RSStrings.infoOfficialUrl);
             },
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(RSStrings.infoOfficialButton),
-            ),
           ),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () async {
+          AppButton(
+            label: RSStrings.letterPageTitle,
+            onTap: () async {
               await LetterPage.start(context);
             },
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(RSStrings.letterPageTitle),
-            ),
           ),
         ],
       ),

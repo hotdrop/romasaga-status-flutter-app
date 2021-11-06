@@ -9,7 +9,7 @@ import 'package:rsapp/models/production.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/search/search_view_model.dart';
-import 'package:rsapp/ui/widget/rs_dialog.dart';
+import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class SearchPage extends StatelessWidget {

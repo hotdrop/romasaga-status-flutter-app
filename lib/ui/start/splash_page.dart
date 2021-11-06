@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/ui/start/splash_view_model.dart';
 import 'package:rsapp/ui/top_page.dart';
-import 'package:rsapp/ui/widget/rs_dialog.dart';
+import 'package:rsapp/ui/widget/app_dialog.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);

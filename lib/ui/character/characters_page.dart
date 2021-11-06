@@ -5,7 +5,7 @@ import 'package:rsapp/models/character.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/character/characters_view_model.dart';
-import 'package:rsapp/ui/widget/rs_dialog.dart';
+import 'package:rsapp/ui/widget/app_dialog.dart';
 
 class CharactersPage extends StatelessWidget {
   const CharactersPage({Key? key}) : super(key: key);

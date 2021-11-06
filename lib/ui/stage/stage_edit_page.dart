@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/stage/stage_edit_view_model.dart';
-import 'package:rsapp/ui/widget/rs_dialog.dart';
-import 'package:rsapp/ui/widget/rs_progress_dialog.dart';
+import 'package:rsapp/ui/widget/app_button.dart';
+import 'package:rsapp/ui/widget/app_dialog.dart';
+import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
 
 class StageEditPage extends StatelessWidget {
@@ -109,8 +110,9 @@ class StageEditPage extends StatelessWidget {
 
   Widget _viewSaveButton(BuildContext context) {
     final isSaved = context.read(stageEditViewModelProvider).isExecuteSave;
-    return ElevatedButton(
-      onPressed: isSaved
+    return AppButton(
+      label: RSStrings.stageEditPageSaveLabel,
+      onTap: isSaved
           ? () {
               const progressDialog = AppProgressDialog<void>();
               progressDialog.show(
@@ -123,10 +125,6 @@ class StageEditPage extends StatelessWidget {
               );
             }
           : null,
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Text(RSStrings.stageEditPageSaveLabel),
-      ),
     );
   }
 }

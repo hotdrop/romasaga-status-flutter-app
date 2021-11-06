@@ -10,11 +10,11 @@ import 'package:rsapp/ui/character/detail/character_detail_view_model.dart';
 import 'package:rsapp/ui/character/detail/status_table.dart';
 import 'package:rsapp/ui/character/edit/status_edit_page.dart';
 import 'package:rsapp/ui/widget/rank_chip.dart';
-import 'package:rsapp/ui/widget/rs_dialog.dart';
+import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
-import 'package:rsapp/ui/widget/rs_progress_dialog.dart';
+import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 import 'package:rsapp/ui/widget/status_graph.dart';
-import 'package:rsapp/ui/widget/rs_line.dart';
+import 'package:rsapp/ui/widget/app_line.dart';
 
 class CharacterDetailPage extends StatelessWidget {
   const CharacterDetailPage._(this.character);

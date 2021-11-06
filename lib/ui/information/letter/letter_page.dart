@@ -4,8 +4,9 @@ import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/information/letter/letter_row_item.dart';
 import 'package:rsapp/ui/information/letter/letter_view_model.dart';
-import 'package:rsapp/ui/widget/rs_dialog.dart';
-import 'package:rsapp/ui/widget/rs_progress_dialog.dart';
+import 'package:rsapp/ui/widget/app_button.dart';
+import 'package:rsapp/ui/widget/app_dialog.dart';
+import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 
 class LetterPage extends StatelessWidget {
   const LetterPage._();
@@ -67,12 +68,9 @@ class LetterPage extends StatelessWidget {
             Image.asset(RSImages.letterNotData),
             const Text(RSStrings.letterPageNotData),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async => await _processLoadData(context),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Text(RSStrings.letterPageLoadButton),
-              ),
+            AppButton(
+              label: RSStrings.letterPageLoadButton,
+              onTap: () async => await _processLoadData(context),
             ),
           ],
         ),
