@@ -43,7 +43,6 @@ dependencies:
   cached_network_image: ^3.1.0
 
   # other
-  path_provider: ^2.0.5
   package_info: ^2.0.2
   logger: ^1.1.0
   collection: ^1.15.0
@@ -57,6 +56,7 @@ dev_dependencies:
   hive_generator: ^1.1.0
   build_runner: ^2.0.1
 
+  path_provider: ^2.0.5
   mockito: ^5.0.16
 
   flutter_launcher_icons: ^0.9.2
