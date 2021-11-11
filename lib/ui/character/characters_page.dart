@@ -7,19 +7,15 @@ import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/character/characters_view_model.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 
-class CharactersPage extends StatelessWidget {
+class CharactersPage extends ConsumerWidget {
   const CharactersPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, watch, child) {
-        final uiState = watch(charactersViewModelProvider).uiState;
-        return uiState.when(
-          loading: (String? errMsg) => _onLoading(context, errMsg),
-          success: () => _onSuccess(context),
-        );
-      },
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uiState = ref.watch(charactersViewModelProvider).uiState;
+    return uiState.when(
+      loading: (String? errMsg) => _onLoading(context, errMsg),
+      success: () => _onSuccess(context, ref),
     );
   }
 
@@ -39,17 +35,17 @@ class CharactersPage extends StatelessWidget {
     );
   }
 
-  Widget _onSuccess(BuildContext context) {
-    final statusUpCnt = context.read(charactersViewModelProvider).countStatusUpCharacters;
-    final favoriteCnt = context.read(charactersViewModelProvider).countFavoriteCharacters;
-    final otherCnt = context.read(charactersViewModelProvider).countNotFavoriteCharacters;
+  Widget _onSuccess(BuildContext context, WidgetRef ref) {
+    final statusUpCnt = ref.watch(charactersViewModelProvider).countStatusUpCharacters;
+    final favoriteCnt = ref.watch(charactersViewModelProvider).countFavoriteCharacters;
+    final otherCnt = ref.watch(charactersViewModelProvider).countNotFavoriteCharacters;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: const Text(RSStrings.charactersPageTitle),
           actions: <Widget>[
-            _titlePopupMenu(context),
+            _titlePopupMenu(ref),
           ],
           bottom: TabBar(tabs: <Tab>[
             Tab(text: '${RSStrings.charactersPageTabStatusUp}($statusUpCnt)'),
@@ -59,18 +55,16 @@ class CharactersPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            _statusUpEventTab(context),
-            _favoriteTab(context),
-            _notFavoriteTab(context),
+            _statusUpEventTab(ref),
+            _favoriteTab(ref),
+            _notFavoriteTab(ref),
           ],
         ),
       ),
     );
   }
 
-  Widget _titlePopupMenu(BuildContext context) {
-    final viewModel = context.read(charactersViewModelProvider);
-
+  Widget _titlePopupMenu(WidgetRef ref) {
     return PopupMenuButton<CharacterListOrderType>(
       padding: EdgeInsets.zero,
       itemBuilder: (_) => [
@@ -87,29 +81,29 @@ class CharactersPage extends StatelessWidget {
           child: Text(RSStrings.charactersOrderProduction),
         ),
       ],
-      initialValue: viewModel.selectedOrderType,
+      initialValue: ref.watch(charactersViewModelProvider).selectedOrderType,
       onSelected: (value) {
-        viewModel.selectOrder(value);
+        ref.read(charactersViewModelProvider).selectOrder(value);
       },
     );
   }
 
-  Widget _statusUpEventTab(BuildContext context) {
-    final characters = context.read(charactersViewModelProvider).statusUpCharacters;
-    return _viewList(characters);
+  Widget _statusUpEventTab(WidgetRef ref) {
+    final characters = ref.watch(charactersViewModelProvider).statusUpCharacters;
+    return _viewList(characters, ref);
   }
 
-  Widget _favoriteTab(BuildContext context) {
-    final characters = context.read(charactersViewModelProvider).favoriteCharacters;
-    return _viewList(characters);
+  Widget _favoriteTab(WidgetRef ref) {
+    final characters = ref.watch(charactersViewModelProvider).favoriteCharacters;
+    return _viewList(characters, ref);
   }
 
-  Widget _notFavoriteTab(BuildContext context) {
-    final characters = context.read(charactersViewModelProvider).notFavoriteCharacters;
-    return _viewList(characters);
+  Widget _notFavoriteTab(WidgetRef ref) {
+    final characters = ref.watch(charactersViewModelProvider).notFavoriteCharacters;
+    return _viewList(characters, ref);
   }
 
-  Widget _viewList(List<Character> characters) {
+  Widget _viewList(List<Character> characters, WidgetRef ref) {
     if (characters.isEmpty) {
       return _viewEmptyList();
     }
@@ -118,7 +112,7 @@ class CharactersPage extends StatelessWidget {
       itemCount: characters.length,
       itemBuilder: (context, index) {
         return RowCharacterItem(characters[index], refreshListener: () async {
-          await context.read(charactersViewModelProvider).refresh();
+          await ref.read(charactersViewModelProvider).refresh();
         });
       },
     );

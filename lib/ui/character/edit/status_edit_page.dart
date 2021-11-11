@@ -8,7 +8,7 @@ import 'package:rsapp/ui/widget/rs_icon.dart';
 import 'package:rsapp/ui/widget/status_counter.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
 
-class StatusEditPage extends StatelessWidget {
+class StatusEditPage extends ConsumerWidget {
   const StatusEditPage._(this._myStatus);
 
   static Future<bool> start(BuildContext context, MyStatus status) async {
@@ -22,94 +22,143 @@ class StatusEditPage extends StatelessWidget {
   final MyStatus _myStatus;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uiState = ref.watch(statusEditViewModelProvider).uiState;
     return Scaffold(
       appBar: AppBar(
         title: const Text(RSStrings.statusEditTitle),
       ),
-      body: Consumer(
-        builder: (context, watch, child) {
-          final uiState = watch(statusEditViewModelProvider).uiState;
-          return uiState.when(
-            loading: (_) => _onLoading(context),
-            success: () => _onSuccess(context),
-          );
-        },
+      body: uiState.when(
+        loading: (_) => _onLoading(context, ref),
+        success: () => _onSuccess(context, ref),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: _saveFab(context),
-      bottomNavigationBar: _appBarContents(context),
+      floatingActionButton: _saveFab(context, ref),
+      bottomNavigationBar: _appBarContents(ref),
     );
   }
 
-  Widget _onLoading(BuildContext context) {
+  Widget _onLoading(BuildContext context, WidgetRef ref) {
     Future.delayed(Duration.zero).then((_) {
-      context.read(statusEditViewModelProvider).init(_myStatus);
+      ref.read(statusEditViewModelProvider).init(_myStatus);
     });
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _onSuccess(BuildContext context) {
-    final isEditEach = context.read(statusEditViewModelProvider).isEditEach;
+  Widget _onSuccess(BuildContext context, WidgetRef ref) {
+    final isEditEach = ref.watch(statusEditViewModelProvider).isEditEach;
     if (isEditEach) {
-      return _contentEachLayout(context);
+      return _contentEachLayout(ref);
     } else {
-      return _contentsManualLayout(context);
+      return _contentsManualLayout(ref);
     }
   }
 
-  Widget _contentEachLayout(BuildContext context) {
+  Widget _contentEachLayout(WidgetRef ref) {
     return ListView(
       children: <Widget>[
-        _createRow(context, StatusType.hp, _myStatus.hp, context.read(statusEditViewModelProvider).editHp),
-        _createRow(context, StatusType.str, _myStatus.str, context.read(statusEditViewModelProvider).editStr),
-        _createRow(context, StatusType.vit, _myStatus.vit, context.read(statusEditViewModelProvider).editVit),
-        _createRow(context, StatusType.dex, _myStatus.dex, context.read(statusEditViewModelProvider).editDex),
-        _createRow(context, StatusType.agi, _myStatus.agi, context.read(statusEditViewModelProvider).editAgi),
-        _createRow(context, StatusType.inte, _myStatus.inte, context.read(statusEditViewModelProvider).editInt),
-        _createRow(context, StatusType.spirit, _myStatus.spi, context.read(statusEditViewModelProvider).editSpi),
-        _createRow(context, StatusType.love, _myStatus.love, context.read(statusEditViewModelProvider).editLove),
-        _createRow(context, StatusType.attr, _myStatus.attr, context.read(statusEditViewModelProvider).editAttr),
+        _createRow(ref, StatusType.hp, _myStatus.hp, ref.watch(statusEditViewModelProvider).editHp),
+        _createRow(ref, StatusType.str, _myStatus.str, ref.watch(statusEditViewModelProvider).editStr),
+        _createRow(ref, StatusType.vit, _myStatus.vit, ref.watch(statusEditViewModelProvider).editVit),
+        _createRow(ref, StatusType.dex, _myStatus.dex, ref.watch(statusEditViewModelProvider).editDex),
+        _createRow(ref, StatusType.agi, _myStatus.agi, ref.watch(statusEditViewModelProvider).editAgi),
+        _createRow(ref, StatusType.inte, _myStatus.inte, ref.watch(statusEditViewModelProvider).editInt),
+        _createRow(ref, StatusType.spirit, _myStatus.spi, ref.watch(statusEditViewModelProvider).editSpi),
+        _createRow(ref, StatusType.love, _myStatus.love, ref.watch(statusEditViewModelProvider).editLove),
+        _createRow(ref, StatusType.attr, _myStatus.attr, ref.watch(statusEditViewModelProvider).editAttr),
         const SizedBox(height: 16.0)
       ],
     );
   }
 
-  Widget _createRow(BuildContext context, StatusType type, int currentStatus, int updateValue) {
+  Widget _createRow(WidgetRef ref, StatusType type, int currentStatus, int updateValue) {
     return _RowEditStatus(
       type: type,
       currentStatus: currentStatus,
       updateValue: updateValue,
-      onDecrement: context.read(statusEditViewModelProvider).decrement,
-      onIncrement: context.read(statusEditViewModelProvider).increment,
+      onDecrement: ref.read(statusEditViewModelProvider).decrement,
+      onIncrement: ref.read(statusEditViewModelProvider).increment,
     );
   }
 
   ///
   /// Manualのレイアウト
   ///
-  Widget _contentsManualLayout(BuildContext context) {
-    final viewModel = context.read(statusEditViewModelProvider);
+  Widget _contentsManualLayout(WidgetRef ref) {
     // フォーカスが必要なので末尾のステータスから順に作成していく
     final attrFocus = FocusNode();
-    final attrField = StatusEditField(label: RSStrings.attrName, initValue: _myStatus.attr, focusNode: attrFocus, nextFocusNode: null, onChanged: (v) => viewModel.update(StatusType.attr, v));
+    final attrField = StatusEditField(
+      label: RSStrings.attrName,
+      initValue: _myStatus.attr,
+      focusNode: attrFocus,
+      nextFocusNode: null,
+      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.attr, v),
+    );
     final loveFocus = FocusNode();
-    final loveField = StatusEditField(label: RSStrings.loveName, initValue: _myStatus.love, focusNode: loveFocus, nextFocusNode: attrFocus, onChanged: (v) => viewModel.update(StatusType.love, v));
+    final loveField = StatusEditField(
+      label: RSStrings.loveName,
+      initValue: _myStatus.love,
+      focusNode: loveFocus,
+      nextFocusNode: attrFocus,
+      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.love, v),
+    );
     final spiFocus = FocusNode();
-    final spiField = StatusEditField(label: RSStrings.spiName, initValue: _myStatus.spi, focusNode: spiFocus, nextFocusNode: loveFocus, onChanged: (v) => viewModel.update(StatusType.spirit, v));
+    final spiField = StatusEditField(
+      label: RSStrings.spiName,
+      initValue: _myStatus.spi,
+      focusNode: spiFocus,
+      nextFocusNode: loveFocus,
+      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.spirit, v),
+    );
     final intFocus = FocusNode();
-    final intField = StatusEditField(label: RSStrings.intName, initValue: _myStatus.inte, focusNode: intFocus, nextFocusNode: spiFocus, onChanged: (v) => viewModel.update(StatusType.inte, v));
+    final intField = StatusEditField(
+      label: RSStrings.intName,
+      initValue: _myStatus.inte,
+      focusNode: intFocus,
+      nextFocusNode: spiFocus,
+      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.inte, v),
+    );
     final agiFocus = FocusNode();
-    final agiField = StatusEditField(label: RSStrings.agiName, initValue: _myStatus.agi, focusNode: agiFocus, nextFocusNode: intFocus, onChanged: (v) => viewModel.update(StatusType.agi, v));
+    final agiField = StatusEditField(
+      label: RSStrings.agiName,
+      initValue: _myStatus.agi,
+      focusNode: agiFocus,
+      nextFocusNode: intFocus,
+      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.agi, v),
+    );
     final dexFocus = FocusNode();
-    final dexField = StatusEditField(label: RSStrings.dexName, initValue: _myStatus.dex, focusNode: dexFocus, nextFocusNode: agiFocus, onChanged: (v) => viewModel.update(StatusType.dex, v));
+    final dexField = StatusEditField(
+      label: RSStrings.dexName,
+      initValue: _myStatus.dex,
+      focusNode: dexFocus,
+      nextFocusNode: agiFocus,
+      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.dex, v),
+    );
     final vidFocus = FocusNode();
-    final vitField = StatusEditField(label: RSStrings.vitName, initValue: _myStatus.vit, focusNode: vidFocus, nextFocusNode: dexFocus, onChanged: (v) => viewModel.update(StatusType.vit, v));
+    final vitField = StatusEditField(
+      label: RSStrings.vitName,
+      initValue: _myStatus.vit,
+      focusNode: vidFocus,
+      nextFocusNode: dexFocus,
+      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.vit, v),
+    );
     final strFocus = FocusNode();
-    final strField = StatusEditField(label: RSStrings.strName, initValue: _myStatus.str, focusNode: strFocus, nextFocusNode: vidFocus, onChanged: (v) => viewModel.update(StatusType.str, v));
-    final hpField = StatusEditField(label: RSStrings.hpName, initValue: _myStatus.hp, focusNode: null, nextFocusNode: strFocus, onChanged: (v) => viewModel.update(StatusType.hp, v));
+    final strField = StatusEditField(
+      label: RSStrings.strName,
+      initValue: _myStatus.str,
+      focusNode: strFocus,
+      nextFocusNode: vidFocus,
+      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.str, v),
+    );
+    final hpField = StatusEditField(
+      label: RSStrings.hpName,
+      initValue: _myStatus.hp,
+      focusNode: null,
+      nextFocusNode: strFocus,
+      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.hp, v),
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -146,11 +195,11 @@ class StatusEditPage extends StatelessWidget {
     );
   }
 
-  Widget _saveFab(BuildContext context) {
+  Widget _saveFab(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
       child: const Icon(Icons.save),
       onPressed: () async {
-        await context.read(statusEditViewModelProvider).saveNewStatus(_myStatus);
+        await ref.read(statusEditViewModelProvider).saveNewStatus(_myStatus);
         Navigator.pop(context, true);
       },
     );
@@ -159,7 +208,7 @@ class StatusEditPage extends StatelessWidget {
   ///
   /// ボトムメニュー
   ///
-  Widget _appBarContents(BuildContext context) {
+  Widget _appBarContents(WidgetRef ref) {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 4.0,
@@ -171,7 +220,7 @@ class StatusEditPage extends StatelessWidget {
             icon: const Icon(Icons.compare_arrows),
             iconSize: 28.0,
             onPressed: () {
-              context.read(statusEditViewModelProvider).changeEditMode();
+              ref.read(statusEditViewModelProvider).changeEditMode();
             },
           ),
           const SizedBox(width: 16),

@@ -7,7 +7,7 @@ import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
 
-class StageEditPage extends StatelessWidget {
+class StageEditPage extends ConsumerWidget {
   const StageEditPage._();
 
   static Future<bool> start(BuildContext context) async {
@@ -19,21 +19,17 @@ class StageEditPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uiState = ref.watch(stageEditViewModelProvider).uiState;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text(RSStrings.stageEditPageTitle),
         ),
-        body: Consumer(
-          builder: (context, watch, child) {
-            final uiState = watch(stageEditViewModelProvider).uiState;
-            return uiState.when(
-              loading: (errMsg) => _onLoading(context, errMsg),
-              success: () => _onSuccess(context),
-            );
-          },
+        body: uiState.when(
+          loading: (errMsg) => _onLoading(context, errMsg),
+          success: () => _onSuccess(context, ref),
         ),
       ),
     );
@@ -50,66 +46,66 @@ class StageEditPage extends StatelessWidget {
     );
   }
 
-  Widget _onSuccess(BuildContext context) {
+  Widget _onSuccess(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          _viewNameTextField(context),
+          _viewNameTextField(ref),
           const SizedBox(height: 16),
-          _viewStatusLimits(context),
+          _viewStatusLimits(ref),
           const SizedBox(height: 8),
           const Text(RSStrings.stageEditPageOverview),
           const SizedBox(height: 16),
-          _viewSaveButton(context),
+          _viewSaveButton(context, ref),
         ],
       ),
     );
   }
 
-  Widget _viewNameTextField(BuildContext context) {
-    final currentStage = context.read(stageEditViewModelProvider).currentStage;
+  Widget _viewNameTextField(WidgetRef ref) {
+    final currentStage = ref.watch(stageEditViewModelProvider).currentStage;
     return RSTextFormField.stageName(
       initValue: currentStage.name,
       onChanged: (String? input) {
-        context.read(stageEditViewModelProvider).inputName(input);
+        ref.read(stageEditViewModelProvider).inputName(input);
       },
     );
   }
 
-  Widget _viewStatusLimits(BuildContext context) {
+  Widget _viewStatusLimits(WidgetRef ref) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(width: 150, child: _viewHpLimitNumberField(context)),
+        SizedBox(width: 150, child: _viewHpLimitNumberField(ref)),
         const SizedBox(width: 48),
-        SizedBox(width: 100, child: _viewStatusLimitNumberField(context)),
+        SizedBox(width: 100, child: _viewStatusLimitNumberField(ref)),
       ],
     );
   }
 
-  Widget _viewHpLimitNumberField(BuildContext context) {
-    final currentStage = context.read(stageEditViewModelProvider).currentStage;
+  Widget _viewHpLimitNumberField(WidgetRef ref) {
+    final currentStage = ref.watch(stageEditViewModelProvider).currentStage;
     return RSNumberFormField.stageHpLimit(
       initValue: currentStage.hpLimit,
       onChanged: (int? input) {
-        context.read(stageEditViewModelProvider).inputHpLimit(input);
+        ref.read(stageEditViewModelProvider).inputHpLimit(input);
       },
     );
   }
 
-  Widget _viewStatusLimitNumberField(BuildContext context) {
-    final currentStage = context.read(stageEditViewModelProvider).currentStage;
+  Widget _viewStatusLimitNumberField(WidgetRef ref) {
+    final currentStage = ref.watch(stageEditViewModelProvider).currentStage;
     return RSNumberFormField.stageStatusLimit(
       initValue: currentStage.statusLimit,
       onChanged: (int? input) {
-        context.read(stageEditViewModelProvider).inputLimit(input);
+        ref.read(stageEditViewModelProvider).inputLimit(input);
       },
     );
   }
 
-  Widget _viewSaveButton(BuildContext context) {
-    final isSaved = context.read(stageEditViewModelProvider).isExecuteSave;
+  Widget _viewSaveButton(BuildContext context, WidgetRef ref) {
+    final isSaved = ref.watch(stageEditViewModelProvider).isExecuteSave;
     return AppButton(
       label: RSStrings.stageEditPageSaveLabel,
       onTap: isSaved
@@ -117,7 +113,7 @@ class StageEditPage extends StatelessWidget {
               const progressDialog = AppProgressDialog<void>();
               progressDialog.show(
                 context,
-                execute: context.read(stageEditViewModelProvider).save,
+                execute: ref.read(stageEditViewModelProvider).save,
                 onSuccess: (_) async {
                   Navigator.pop(context, true);
                 },

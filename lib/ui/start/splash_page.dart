@@ -4,20 +4,16 @@ import 'package:rsapp/ui/start/splash_view_model.dart';
 import 'package:rsapp/ui/top_page.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends ConsumerWidget {
   const SplashPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uiState = ref.watch(splashViewModelProvider).uiState;
     return Scaffold(
-      body: Consumer(
-        builder: (context, watch, child) {
-          final uiState = watch(splashViewModelProvider).uiState;
-          return uiState.when(
-            loading: (String? errorMsg) => _onLoading(context, errorMsg),
-            success: () => _onSuccess(context),
-          );
-        },
+      body: uiState.when(
+        loading: (String? errorMsg) => _onLoading(context, errorMsg),
+        success: () => _onSuccess(context),
       ),
     );
   }

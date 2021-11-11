@@ -12,19 +12,15 @@ import 'package:rsapp/ui/search/search_view_model.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends ConsumerWidget {
   const SearchPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, watch, child) {
-        final uiState = watch(searchViewModelProvider).uiState;
-        return uiState.when(
-          loading: (errMsg) => _onLoading(context, errMsg),
-          success: () => _onSuccess(context),
-        );
-      },
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uiState = ref.watch(searchViewModelProvider).uiState;
+    return uiState.when(
+      loading: (errMsg) => _onLoading(context, errMsg),
+      success: () => _onSuccess(context, ref),
     );
   }
 
@@ -44,24 +40,24 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  Widget _onSuccess(BuildContext context) {
+  Widget _onSuccess(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: _headerTitle(context),
-        actions: [_headerIconSearchWord(context)],
+        title: _headerTitle(ref),
+        actions: [_headerIconSearchWord(ref)],
       ),
-      body: _viewCharacters(context),
+      body: _viewCharacters(ref),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.filter_list),
         onPressed: () {
-          _showBottomSheet(context);
+          _showBottomSheet(context, ref);
         },
       ),
     );
   }
 
-  Widget _headerTitle(BuildContext context) {
-    final isKeywordSearch = context.read(searchViewModelProvider).isKeywordSearch;
+  Widget _headerTitle(WidgetRef ref) {
+    final isKeywordSearch = ref.watch(searchViewModelProvider).isKeywordSearch;
     if (isKeywordSearch) {
       return TextField(
         decoration: const InputDecoration(
@@ -69,7 +65,7 @@ class SearchPage extends StatelessWidget {
           hintText: RSStrings.searchListQueryHint,
         ),
         onSubmitted: (v) {
-          context.read(searchViewModelProvider).findByKeyword(v);
+          ref.read(searchViewModelProvider).findByKeyword(v);
         },
       );
     } else {
@@ -77,19 +73,19 @@ class SearchPage extends StatelessWidget {
     }
   }
 
-  Widget _headerIconSearchWord(BuildContext context) {
-    final isKeywordSearch = context.read(searchViewModelProvider).isKeywordSearch;
+  Widget _headerIconSearchWord(WidgetRef ref) {
+    final isKeywordSearch = ref.watch(searchViewModelProvider).isKeywordSearch;
     final searchIcon = isKeywordSearch ? const Icon(Icons.close) : const Icon(Icons.search);
     return IconButton(
       icon: searchIcon,
       onPressed: () {
-        context.read(searchViewModelProvider).changeSearchMode();
+        ref.read(searchViewModelProvider).changeSearchMode();
       },
     );
   }
 
-  Widget _viewCharacters(BuildContext context) {
-    final characters = context.read(searchViewModelProvider).charactersWithFilter;
+  Widget _viewCharacters(WidgetRef ref) {
+    final characters = ref.watch(searchViewModelProvider).charactersWithFilter;
     if (characters.isEmpty) {
       return const Center(
         child: Text(RSStrings.searchNoDataLabel),
@@ -98,15 +94,15 @@ class SearchPage extends StatelessWidget {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: characters.length,
-      itemBuilder: (context, index) {
+      itemBuilder: (_, index) {
         return RowCharacterItem(characters[index], refreshListener: () async {
-          await context.read(characterNotifierProvider.notifier).refresh();
+          await ref.read(characterNotifierProvider.notifier).refresh();
         });
       },
     );
   }
 
-  void _showBottomSheet(BuildContext context) {
+  void _showBottomSheet(BuildContext context, WidgetRef ref) {
     showMaterialModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -122,57 +118,57 @@ class SearchPage extends StatelessWidget {
               topRight: Radius.circular(16),
             ),
           ),
-          child: _viewFilterContents(ctx),
+          child: _viewFilterContents(ctx, ref),
         );
       },
     );
   }
 
-  Widget _viewFilterContents(BuildContext context) {
+  Widget _viewFilterContents(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _viewFilterFavorite(context),
+          _viewFilterFavorite(context, ref),
           Divider(color: Theme.of(context).primaryColor),
-          _filterViewWeaponType(context),
+          _filterViewWeaponType(context, ref),
           const SizedBox(height: 8),
-          _viewFilterWeaponClearButton(context),
+          _viewFilterWeaponClearButton(context, ref),
           Divider(color: Theme.of(context).primaryColor),
-          _filterViewAttributes(context),
+          _filterViewAttributes(context, ref),
           const SizedBox(height: 8),
-          _viewFilterAttributeClearButton(context),
+          _viewFilterAttributeClearButton(context, ref),
           Divider(color: Theme.of(context).primaryColor),
-          _filterViewProduct(context),
+          _filterViewProduct(context, ref),
           const SizedBox(height: 8),
-          _viewFilterProductionClearButton(context),
+          _viewFilterProductionClearButton(context, ref),
           const SizedBox(height: 16),
         ],
       ),
     );
   }
 
-  Widget _viewFilterFavorite(BuildContext context) {
-    bool selectedFavorite = context.read(searchViewModelProvider).isFilterFavorite();
+  Widget _viewFilterFavorite(BuildContext context, WidgetRef ref) {
+    bool selectedFavorite = ref.watch(searchViewModelProvider).isFilterFavorite();
     return FavoriteIcon(
       selected: selectedFavorite,
       onTap: () {
-        context.read(searchViewModelProvider).filterFavorite(!selectedFavorite);
+        ref.read(searchViewModelProvider).filterFavorite(!selectedFavorite);
         Navigator.pop(context);
       },
     );
   }
 
-  Widget _filterViewWeaponType(BuildContext context) {
+  Widget _filterViewWeaponType(BuildContext context, WidgetRef ref) {
     return Wrap(
       spacing: 16.0,
       runSpacing: 16.0,
       children: WeaponType.values.map<Widget>((type) {
         return WeaponIcon.normal(
           type,
-          selected: context.read(searchViewModelProvider).isSelectWeaponType(type),
+          selected: ref.read(searchViewModelProvider).isSelectWeaponType(type),
           onTap: () {
-            context.read(searchViewModelProvider).findByWeaponType(type);
+            ref.read(searchViewModelProvider).findByWeaponType(type);
             Navigator.pop(context);
           },
         );
@@ -180,26 +176,26 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  Widget _viewFilterWeaponClearButton(BuildContext context) {
+  Widget _viewFilterWeaponClearButton(BuildContext context, WidgetRef ref) {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearWeapon),
       onPressed: () {
-        context.read(searchViewModelProvider).clearFilterWeapon();
+        ref.read(searchViewModelProvider).clearFilterWeapon();
         Navigator.pop(context);
       },
     );
   }
 
-  Widget _filterViewAttributes(BuildContext context) {
+  Widget _filterViewAttributes(BuildContext context, WidgetRef ref) {
     return Wrap(
       spacing: 16.0,
       runSpacing: 16.0,
       children: AttributeType.values.map<Widget>((type) {
         return AttributeIcon(
           type: type,
-          selected: context.read(searchViewModelProvider).isSelectAttributeType(type),
+          selected: ref.read(searchViewModelProvider).isSelectAttributeType(type),
           onTap: () {
-            context.read(searchViewModelProvider).findByAttributeType(type);
+            ref.read(searchViewModelProvider).findByAttributeType(type);
             Navigator.pop(context);
           },
         );
@@ -207,26 +203,26 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  Widget _viewFilterAttributeClearButton(BuildContext context) {
+  Widget _viewFilterAttributeClearButton(BuildContext context, WidgetRef ref) {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearAttributes),
       onPressed: () {
-        context.read(searchViewModelProvider).clearFilterAttribute();
+        ref.read(searchViewModelProvider).clearFilterAttribute();
         Navigator.pop(context);
       },
     );
   }
 
-  Widget _filterViewProduct(BuildContext context) {
+  Widget _filterViewProduct(BuildContext context, WidgetRef ref) {
     return Wrap(
       spacing: 16.0,
       runSpacing: 16.0,
       children: ProductionType.values.map<Widget>((type) {
         return ProductionLogo(
           type: type,
-          selected: context.read(searchViewModelProvider).isSelectProductType(type),
+          selected: ref.read(searchViewModelProvider).isSelectProductType(type),
           onTap: () {
-            context.read(searchViewModelProvider).findByProduction(type);
+            ref.read(searchViewModelProvider).findByProduction(type);
             Navigator.pop(context);
           },
         );
@@ -234,11 +230,11 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  Widget _viewFilterProductionClearButton(BuildContext context) {
+  Widget _viewFilterProductionClearButton(BuildContext context, WidgetRef ref) {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearProduction),
       onPressed: () {
-        context.read(searchViewModelProvider).clearFilterProduction();
+        ref.read(searchViewModelProvider).clearFilterProduction();
         Navigator.pop(context);
       },
     );
