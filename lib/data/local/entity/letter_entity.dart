@@ -10,7 +10,7 @@ class LetterEntity extends HiveObject {
     required this.month,
     required this.title,
     required this.shortTitle,
-    this.gifFilePath,
+    this.videoFilePath,
     this.staticImagePath,
   });
 
@@ -32,7 +32,7 @@ class LetterEntity extends HiveObject {
   final String shortTitle;
 
   @HiveField(5)
-  final String? gifFilePath;
+  final String? videoFilePath;
 
   @HiveField(6)
   final String? staticImagePath;

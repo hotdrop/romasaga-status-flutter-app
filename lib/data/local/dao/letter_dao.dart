@@ -37,7 +37,7 @@ class _LetterDao {
       month: entity.month,
       title: entity.title,
       shortTitle: entity.shortTitle,
-      gifFilePath: entity.gifFilePath,
+      videoFilePath: entity.videoFilePath,
       staticImagePath: entity.staticImagePath,
     );
   }
@@ -49,7 +49,7 @@ class _LetterDao {
       month: letter.month,
       title: letter.title,
       shortTitle: letter.shortTitle,
-      gifFilePath: letter.gifFilePath,
+      videoFilePath: letter.videoFilePath,
       staticImagePath: letter.staticImagePath,
     );
   }

@@ -51,16 +51,16 @@ class _LetterRepository {
   }
 
   Future<Letter> _toLetter(LetterResponse response) async {
-    final gifPath = await _read(letterApiProvider).findImageUrl('${response.imageName}.gif');
+    final videoPath = await _read(letterApiProvider).findImageUrl('${response.imageName}.mp4');
     final imagePath = await _read(letterApiProvider).findImageUrl('${response.imageName}_static.jpg');
-    RSLogger.d('お便り letters/${response.imageName} のフルパスを取得しました。\n gifPath=$gifPath staticPath=$imagePath');
+    RSLogger.d('お便り letters/${response.imageName} のフルパスを取得しました。\n videoPath=$videoPath staticPath=$imagePath');
 
     return Letter(
       year: response.year,
       month: response.month,
       title: response.title,
       shortTitle: response.shortTitle,
-      gifFilePath: gifPath,
+      videoFilePath: videoPath,
       staticImagePath: imagePath,
     );
   }

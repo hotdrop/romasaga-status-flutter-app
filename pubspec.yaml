@@ -29,9 +29,9 @@ dependencies:
   # UI
   percent_indicator: ^3.4.0
   progress_dialog: ^1.2.4
-  flutter_radar_chart: ^0.2.0
   modal_bottom_sheet: ^2.0.0
   webview_flutter: ^2.0.10
+  cached_video_player: ^2.0.0-dev.1
 
   # local storage
   hive: ^2.0.4
