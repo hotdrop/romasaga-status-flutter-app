@@ -82,8 +82,8 @@ class CharactersPage extends ConsumerWidget {
         ),
       ],
       initialValue: ref.watch(charactersViewModelProvider).selectedOrderType,
-      onSelected: (value) {
-        ref.read(charactersViewModelProvider).selectOrder(value);
+      onSelected: (value) async {
+        await ref.read(charactersViewModelProvider).selectOrder(value);
       },
     );
   }
