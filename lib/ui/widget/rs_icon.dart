@@ -30,6 +30,7 @@ class CharacterIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO ここfirebase_imageにしたほうが良さそう
     return CachedNetworkImage(
       imageUrl: _res,
       width: _size,
