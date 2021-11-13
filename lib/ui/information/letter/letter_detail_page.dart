@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:rsapp/models/letter.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/res/rs_colors.dart';
@@ -53,7 +53,7 @@ class _LetterDetailPage extends StatelessWidget {
           const SizedBox(height: 16),
           _viewTitle(),
           const SizedBox(height: 16),
-          _viewGifImage(),
+          _VideoView(letter),
         ],
       ),
     );
@@ -75,41 +75,69 @@ class _LetterDetailPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _viewGifImage() {
-    final imagePath = letter.gifFilePath;
-    if (imagePath != null) {
-      return CachedNetworkImage(
-        imageUrl: imagePath,
-        placeholder: (context, url) => _loadingIcon(letter.loadingIcon),
-        errorWidget: (context, url, dynamic error) => _errorIcon(letter.loadingIcon),
+class _VideoView extends StatefulWidget {
+  const _VideoView(this.letter, {Key? key}) : super(key: key);
+
+  final Letter letter;
+
+  @override
+  _VideoViewState createState() => _VideoViewState();
+}
+
+class _VideoViewState extends State<_VideoView> {
+  VideoPlayerController? _controller;
+
+  @override
+  void initState() {
+    String? videoFilePath = widget.letter.videoFilePath;
+    if (videoFilePath != null) {
+      _controller = VideoPlayerController.network(videoFilePath);
+      _controller!.initialize().then((_) {
+        setState(() {});
+        _controller!.setLooping(true);
+        _controller!.play();
+      });
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.letter.videoFilePath == null) {
+      return _viewProcess(RSStrings.letterLoadingFailure, isError: true);
+    }
+    if (isInitialized()) {
+      return AspectRatio(
+        child: VideoPlayer(_controller!),
+        aspectRatio: _controller!.value.aspectRatio,
       );
     } else {
-      return _errorIcon(letter.loadingIcon);
+      return _viewProcess(RSStrings.letterNowLoading);
     }
   }
 
-  Widget _loadingIcon(String res) {
+  Widget _viewProcess(String label, {bool isError = false}) {
+    final textWidget = (isError) ? Text(label, style: const TextStyle(color: Colors.red)) : Text(label);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         const SizedBox(height: 108),
-        Image.asset(res),
+        Image.asset(widget.letter.loadingIcon),
         const SizedBox(height: 8),
-        const Text(RSStrings.letterNowLoading),
+        textWidget,
       ],
     );
   }
 
-  Widget _errorIcon(String res) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const SizedBox(height: 108),
-        Image.asset(res),
-        const SizedBox(height: 8),
-        const Text(RSStrings.letterLoadingFailure, style: TextStyle(color: Colors.red)),
-      ],
-    );
+  bool isInitialized() {
+    return (_controller?.value != null && (_controller?.value.isInitialized ?? false));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller?.dispose();
   }
 }

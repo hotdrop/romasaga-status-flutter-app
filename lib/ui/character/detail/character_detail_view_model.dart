@@ -17,19 +17,14 @@ class _CharacterDetailViewModel extends BaseViewModel {
 
   final Reader _read;
 
-  late Character character;
-  bool get haveAttribute => character.attributes?.isNotEmpty ?? false;
-  int get myTotalStatus => character.myStatus?.sumWithoutHp() ?? 0;
+  late Character _character;
+  Character get character => _character;
 
   late Stage _stage;
   Stage get stage => _stage;
 
   late Style _selectedStyle;
-  String get selectedIconFilePath => _selectedStyle.iconFilePath;
-  String get selectedStyleTitle => _selectedStyle.title;
-  String get selectedRankName => character.selectedStyleRank ?? character.styles.first.rank;
-
-  int get totalLimitStatusWithSelectedStage => (_selectedStyle.sum()) + (8 * _stage.statusLimit);
+  Style get selectedStyle => _selectedStyle;
 
   // 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
   bool _isUpdateStatus = false;
@@ -37,7 +32,7 @@ class _CharacterDetailViewModel extends BaseViewModel {
 
   Future<void> init(Character c) async {
     try {
-      character = c;
+      _character = c;
       _stage = await _read(stageRepositoryProvider).find();
       _selectedStyle = c.selectedStyle ?? c.styles.first;
       onSuccess();
@@ -48,12 +43,12 @@ class _CharacterDetailViewModel extends BaseViewModel {
   }
 
   void onSelectRank(String rank) {
-    _selectedStyle = character.getStyle(rank);
+    _selectedStyle = _character.getStyle(rank);
     notifyListeners();
   }
 
   List<String> getAllRanks() {
-    final ranks = character.styles.map((style) => style.rank).toList();
+    final ranks = _character.styles.map((style) => style.rank).toList();
     return ranks..sort((s, t) => s.compareTo(t));
   }
 
@@ -81,29 +76,29 @@ class _CharacterDetailViewModel extends BaseViewModel {
   }
 
   Future<void> refreshStatus() async {
-    character.myStatus = await _read(myStatusRepositoryProvider).find(character.id);
+    _character.myStatus = await _read(myStatusRepositoryProvider).find(_character.id);
     refreshCharacterData();
   }
 
   Future<void> saveCurrentSelectStyle() async {
     RSLogger.d('表示ランクを ${_selectedStyle.rank} にします。');
-    character.selectedStyleRank = _selectedStyle.rank;
-    character.selectedIconFilePath = _selectedStyle.iconFilePath;
-    await _read(characterRepositoryProvider).saveSelectedRank(character.id, _selectedStyle.rank, _selectedStyle.iconFilePath);
+    _character.selectedStyleRank = _selectedStyle.rank;
+    _character.selectedIconFilePath = _selectedStyle.iconFilePath;
+    await _read(characterRepositoryProvider).saveSelectedRank(_character.id, _selectedStyle.rank, _selectedStyle.iconFilePath);
 
     _isUpdateStatus = true;
   }
 
   Future<void> saveFavorite(bool favorite) async {
-    character.myStatus ??= MyStatus.empty(character.id);
-    character.myStatus!.favorite = favorite;
-    await _read(myStatusRepositoryProvider).save(character.myStatus!);
+    _character.myStatus ??= MyStatus.empty(_character.id);
+    _character.myStatus!.favorite = favorite;
+    await _read(myStatusRepositoryProvider).save(_character.myStatus!);
 
     refreshCharacterData();
   }
 
   Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
-    character.statusUpEvent = statusUpEvent;
+    _character.statusUpEvent = statusUpEvent;
     await _read(characterRepositoryProvider).saveStatusUpEvent(id, statusUpEvent);
 
     refreshCharacterData();
@@ -115,13 +110,13 @@ class _CharacterDetailViewModel extends BaseViewModel {
   ///
   Future<bool> refreshIcon() async {
     try {
-      final isSelectedIcon = _selectedStyle.rank == character.selectedStyleRank;
+      final isSelectedIcon = _selectedStyle.rank == _character.selectedStyleRank;
       RSLogger.d('アイコンをサーバーから再取得します。（このアイコンをデフォルトにしているか？ $isSelectedIcon)');
       await _read(characterRepositoryProvider).refreshIcon(_selectedStyle, isSelectedIcon);
 
       RSLogger.d('アイコン情報をキャラ情報に反映します。');
-      final styles = await _read(characterRepositoryProvider).findStyles(character.id);
-      character.refreshStyles(styles);
+      final styles = await _read(characterRepositoryProvider).findStyles(_character.id);
+      _character.refreshStyles(styles);
 
       return true;
     } catch (e, s) {

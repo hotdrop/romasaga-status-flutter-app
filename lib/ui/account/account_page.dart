@@ -11,25 +11,21 @@ import 'package:rsapp/ui/widget/app_line.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 import 'package:rsapp/ui/widget/theme_switch.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends ConsumerWidget {
   const AccountPage({Key? key}) : super(key: key);
 
   static const double _rowIconSize = 32;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uiState = ref.watch(accountViewModelProvider).uiState;
     return Scaffold(
       appBar: AppBar(
         title: const Text(RSStrings.accountPageTitle),
       ),
-      body: Consumer(
-        builder: (context, watch, child) {
-          final uiState = watch(accountViewModelProvider).uiState;
-          return uiState.when(
-            loading: (errMsg) => _onLoading(context, errMsg),
-            success: () => _onSuccess(context),
-          );
-        },
+      body: uiState.when(
+        loading: (errMsg) => _onLoading(context, errMsg),
+        success: () => _onSuccess(context, ref),
       ),
     );
   }
@@ -45,41 +41,41 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Widget _onSuccess(BuildContext context) {
-    final loggedIn = context.read(accountViewModelProvider).isLoggedIn;
+  Widget _onSuccess(BuildContext context, WidgetRef ref) {
+    final loggedIn = ref.watch(accountViewModelProvider).isLoggedIn;
     return ListView(
       children: <Widget>[
-        _rowAccountInfo(context),
-        _rowAppLicense(context),
-        _rowThemeSwitch(context),
+        _rowAccountInfo(ref),
+        _rowAppLicense(context, ref),
+        _rowThemeSwitch(ref),
         const HorizontalLine(),
-        _rowRefreshCharacter(context),
-        _rowEditStage(context),
+        _rowRefreshCharacter(context, ref),
+        _rowEditStage(context, ref),
         if (loggedIn) ...[
-          _rowBackUp(context),
-          _rowRestore(context),
+          _rowBackUp(context, ref),
+          _rowRestore(context, ref),
           const HorizontalLine(),
           const SizedBox(height: 16),
-          _rowSignOutButton(context),
+          _rowSignOutButton(context, ref),
         ],
         if (!loggedIn) ...[
           const HorizontalLine(),
           const SizedBox(height: 16),
-          _rowSignInButton(context),
+          _rowSignInButton(context, ref),
         ],
       ],
     );
   }
 
-  Widget _rowAccountInfo(BuildContext context) {
+  Widget _rowAccountInfo(WidgetRef ref) {
     return ListTile(
       leading: const Icon(Icons.account_circle, size: _rowIconSize),
-      title: Text(context.read(accountViewModelProvider).userName),
-      subtitle: Text(context.read(accountViewModelProvider).email),
+      title: Text(ref.watch(accountViewModelProvider).userName),
+      subtitle: Text(ref.watch(accountViewModelProvider).email),
     );
   }
 
-  Widget _rowAppLicense(BuildContext context) {
+  Widget _rowAppLicense(BuildContext context, WidgetRef ref) {
     return ListTile(
       leading: const Icon(Icons.info, size: _rowIconSize),
       title: const Text(RSStrings.accountLicenseLabel),
@@ -88,15 +84,15 @@ class AccountPage extends StatelessWidget {
         showLicensePage(
           context: context,
           applicationName: RSStrings.appTitle,
-          applicationVersion: context.read(accountViewModelProvider).appVersion,
+          applicationVersion: ref.watch(accountViewModelProvider).appVersion,
           applicationIcon: Image.asset(RSImages.icLaunch, width: 50, height: 50),
         );
       },
     );
   }
 
-  Widget _rowThemeSwitch(BuildContext context) {
-    final isDarkMode = context.read(appSettingsProvider).isDarkMode;
+  Widget _rowThemeSwitch(WidgetRef ref) {
+    final isDarkMode = ref.watch(appSettingsProvider).isDarkMode;
     return ListTile(
       leading: Icon(isDarkMode ? Icons.brightness_7 : Icons.brightness_4, size: _rowIconSize),
       title: const Text(RSStrings.accountChangeThemeLabel),
@@ -104,7 +100,7 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Widget _rowRefreshCharacter(BuildContext context) {
+  Widget _rowRefreshCharacter(BuildContext context, WidgetRef ref) {
     return ListTile(
       leading: const Icon(Icons.people, size: _rowIconSize),
       title: const Text(RSStrings.accountCharacterUpdateLabel),
@@ -112,24 +108,24 @@ class AccountPage extends StatelessWidget {
       onTap: () async {
         AppDialog.okAndCancel(
           message: RSStrings.accountCharacterUpdateDialogMessage,
-          onOk: () async => await _processRefreshCharacter(context),
+          onOk: () async => await _processRefreshCharacter(context, ref),
         ).show(context);
       },
     );
   }
 
-  Future<void> _processRefreshCharacter(BuildContext context) async {
+  Future<void> _processRefreshCharacter(BuildContext context, WidgetRef ref) async {
     const progressDialog = AppProgressDialog<void>();
     progressDialog.show(
       context,
-      execute: context.read(accountViewModelProvider).refreshCharacters,
+      execute: ref.read(accountViewModelProvider).refreshCharacters,
       onSuccess: (_) => AppDialog.onlyOk(message: RSStrings.accountCharacterUpdateDialogSuccessMessage).show(context),
       onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
     );
   }
 
-  Widget _rowEditStage(BuildContext context) {
-    final currentStage = context.read(accountViewModelProvider).stage;
+  Widget _rowEditStage(BuildContext context, WidgetRef ref) {
+    final currentStage = ref.watch(accountViewModelProvider).stage;
     return ListTile(
       leading: const Icon(Icons.maps_home_work, size: _rowIconSize),
       title: const Text(RSStrings.accountStageLabel),
@@ -138,14 +134,14 @@ class AccountPage extends StatelessWidget {
       onTap: () async {
         final isUpdate = await StageEditPage.start(context);
         if (isUpdate) {
-          await context.read(accountViewModelProvider).refreshStage();
+          await ref.read(accountViewModelProvider).refreshStage();
         }
       },
     );
   }
 
-  Widget _rowBackUp(BuildContext context) {
-    final backupDateLabel = context.read(accountViewModelProvider).backupDateLabel;
+  Widget _rowBackUp(BuildContext context, WidgetRef ref) {
+    final backupDateLabel = ref.watch(accountViewModelProvider).backupDateLabel;
     return ListTile(
       leading: const Icon(Icons.backup, size: _rowIconSize),
       title: const Text(RSStrings.accountStatusBackupLabel),
@@ -153,23 +149,23 @@ class AccountPage extends StatelessWidget {
       onTap: () async {
         AppDialog.okAndCancel(
           message: RSStrings.accountStatusBackupDialogMessage,
-          onOk: () async => await _processBackUp(context),
+          onOk: () async => await _processBackUp(context, ref),
         ).show(context);
       },
     );
   }
 
-  Future<void> _processBackUp(BuildContext context) async {
+  Future<void> _processBackUp(BuildContext context, WidgetRef ref) async {
     const progressDialog = AppProgressDialog<void>();
     progressDialog.show(
       context,
-      execute: context.read(accountViewModelProvider).backup,
+      execute: ref.read(accountViewModelProvider).backup,
       onSuccess: (_) => AppDialog.onlyOk(message: RSStrings.accountStatusBackupDialogSuccessMessage).show(context),
       onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
     );
   }
 
-  Widget _rowRestore(BuildContext context) {
+  Widget _rowRestore(BuildContext context, WidgetRef ref) {
     return ListTile(
       leading: const Icon(Icons.settings_backup_restore, size: _rowIconSize),
       title: const Text(RSStrings.accountStatusRestoreLabel),
@@ -177,45 +173,45 @@ class AccountPage extends StatelessWidget {
       onTap: () async {
         AppDialog.okAndCancel(
           message: RSStrings.accountStatusRestoreDialogMessage,
-          onOk: () async => await _processRestore(context),
+          onOk: () async => await _processRestore(context, ref),
         ).show(context);
       },
     );
   }
 
-  Future<void> _processRestore(BuildContext context) async {
+  Future<void> _processRestore(BuildContext context, WidgetRef ref) async {
     const progressDialog = AppProgressDialog<void>();
     progressDialog.show(
       context,
-      execute: context.read(accountViewModelProvider).restore,
+      execute: ref.read(accountViewModelProvider).restore,
       onSuccess: (_) => AppDialog.onlyOk(message: RSStrings.accountStatusRestoreDialogSuccessMessage).show(context),
       onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
     );
   }
 
-  Widget _rowSignInButton(BuildContext context) {
+  Widget _rowSignInButton(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: AppButton(
         label: RSStrings.accountSignInButton,
         onTap: () async {
-          await _processSignIn(context);
+          await _processSignIn(context, ref);
         },
       ),
     );
   }
 
-  Future<void> _processSignIn(BuildContext context) async {
+  Future<void> _processSignIn(BuildContext context, WidgetRef ref) async {
     const progressDialog = AppProgressDialog<void>();
     progressDialog.show(
       context,
-      execute: context.read(accountViewModelProvider).signIn,
+      execute: ref.read(accountViewModelProvider).signIn,
       onSuccess: (_) {/* 成功時は何もしない */},
       onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
     );
   }
 
-  Widget _rowSignOutButton(BuildContext context) {
+  Widget _rowSignOutButton(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: OutlinedButton(
@@ -223,18 +219,18 @@ class AccountPage extends StatelessWidget {
         onPressed: () async {
           await AppDialog.okAndCancel(
             message: RSStrings.accountSignOutDialogMessage,
-            onOk: () async => await _processSignOut(context),
+            onOk: () async => await _processSignOut(context, ref),
           ).show(context);
         },
       ),
     );
   }
 
-  Future<void> _processSignOut(BuildContext context) async {
+  Future<void> _processSignOut(BuildContext context, WidgetRef ref) async {
     const progressDialog = AppProgressDialog<void>();
     progressDialog.show(
       context,
-      execute: context.read(accountViewModelProvider).signOut,
+      execute: ref.read(accountViewModelProvider).signOut,
       onSuccess: (_) {/* 成功時は何もしない */},
       onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
     );

@@ -18,7 +18,8 @@ class _SearchViewModel extends BaseViewModel {
 
   late List<Character> _characters;
   late List<Character> charactersWithFilter;
-  final SearchCondition _condition = SearchCondition();
+
+  final _condition = SearchCondition();
   bool isKeywordSearch = false;
 
   Future<void> _init() async {

@@ -9,16 +9,16 @@ class Letter {
     required this.title,
     required this.shortTitle,
     this.fileName,
-    this.gifFilePath,
+    this.videoFilePath,
     this.staticImagePath,
-  }) : assert(fileName != null || (gifFilePath != null && staticImagePath != null));
+  }) : assert(fileName != null || (videoFilePath != null && staticImagePath != null));
 
   final int year;
   final int month;
   final String title;
   final String shortTitle;
   final String? fileName;
-  final String? gifFilePath;
+  final String? videoFilePath;
   final String? staticImagePath;
 
   int get id => int.parse('$year${month.toString().padLeft(2, '0')}');
@@ -53,7 +53,7 @@ class Letter {
     String? title,
     String? shortTitle,
     String? fileName,
-    String? gifFilePath,
+    String? videoFilePath,
     String? staticImagePath,
   }) {
     return Letter(
@@ -62,7 +62,7 @@ class Letter {
       title: title ?? this.title,
       shortTitle: shortTitle ?? this.shortTitle,
       fileName: fileName ?? this.fileName,
-      gifFilePath: gifFilePath ?? this.gifFilePath,
+      videoFilePath: videoFilePath ?? this.videoFilePath,
       staticImagePath: staticImagePath ?? this.staticImagePath,
     );
   }

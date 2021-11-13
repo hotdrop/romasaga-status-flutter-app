@@ -14,8 +14,8 @@ void main() {
     final dao = container.read(letterDaoProvider);
 
     const letters = [
-      Letter(year: 2020, month: 1, title: 'Test1', shortTitle: 'short1', gifFilePath: 'gif/test1', staticImagePath: 'static/test1'),
-      Letter(year: 2021, month: 10, title: 'Test2', shortTitle: 'short2', gifFilePath: 'gif/test2', staticImagePath: 'static/test2'),
+      Letter(year: 2020, month: 1, title: 'Test1', shortTitle: 'short1', videoFilePath: 'mp4/test1', staticImagePath: 'static/test1'),
+      Letter(year: 2021, month: 10, title: 'Test2', shortTitle: 'short2', videoFilePath: 'mp4/test2', staticImagePath: 'static/test2'),
     ];
 
     // テスト開始
@@ -33,8 +33,8 @@ void main() {
     expect(results[1].title, 'Test2');
     expect(results[0].shortTitle, 'short1');
     expect(results[1].shortTitle, 'short2');
-    expect(results[0].gifFilePath, 'gif/test1');
-    expect(results[1].gifFilePath, 'gif/test2');
+    expect(results[0].videoFilePath, 'mp4/test1');
+    expect(results[1].videoFilePath, 'mp4/test2');
     expect(results[0].staticImagePath, 'static/test1');
     expect(results[1].staticImagePath, 'static/test2');
   });

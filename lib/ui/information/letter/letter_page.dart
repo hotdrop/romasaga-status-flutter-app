@@ -8,7 +8,7 @@ import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 
-class LetterPage extends StatelessWidget {
+class LetterPage extends ConsumerWidget {
   const LetterPage._();
 
   static Future<void> start(BuildContext context) async {
@@ -19,15 +19,11 @@ class LetterPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, watch, child) {
-        final uiState = watch(letterViewModelProvider).uiState;
-        return uiState.when(
-          loading: (errMsg) => _onLoading(context, errMsg),
-          success: () => _onSuccess(context),
-        );
-      },
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uiState = ref.watch(letterViewModelProvider).uiState;
+    return uiState.when(
+      loading: (errMsg) => _onLoading(context, errMsg),
+      success: () => _onSuccess(context, ref),
     );
   }
 
@@ -47,16 +43,16 @@ class LetterPage extends StatelessWidget {
     );
   }
 
-  Widget _onSuccess(BuildContext context) {
-    final isEmpty = context.read(letterViewModelProvider).isEmpty;
+  Widget _onSuccess(BuildContext context, WidgetRef ref) {
+    final isEmpty = ref.watch(letterViewModelProvider).isEmpty;
     if (isEmpty) {
-      return _viewNothingData(context);
+      return _viewNothingData(context, ref);
     } else {
-      return _viewLetters(context);
+      return _viewLetters(context, ref);
     }
   }
 
-  Widget _viewNothingData(BuildContext context) {
+  Widget _viewNothingData(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(RSStrings.letterPageTitle),
@@ -70,7 +66,7 @@ class LetterPage extends StatelessWidget {
             const SizedBox(height: 16),
             AppButton(
               label: RSStrings.letterPageLoadButton,
-              onTap: () async => await _processLoadData(context),
+              onTap: () async => await _processLoadData(context, ref),
             ),
           ],
         ),
@@ -78,14 +74,14 @@ class LetterPage extends StatelessWidget {
     );
   }
 
-  Future<void> _processLoadData(BuildContext context) async {
+  Future<void> _processLoadData(BuildContext context, WidgetRef ref) async {
     await AppDialog.okAndCancel(
       message: RSStrings.letterPageLoadConfirmMessage,
       onOk: () {
         const progressDialog = AppProgressDialog<void>();
         progressDialog.show(
           context,
-          execute: context.read(letterViewModelProvider).refresh,
+          execute: ref.read(letterViewModelProvider).refresh,
           onSuccess: (_) {/* 成功時は何もしない */},
           onError: (err) => AppDialog.onlyOk(message: err).show(context),
         );
@@ -93,8 +89,8 @@ class LetterPage extends StatelessWidget {
     ).show(context);
   }
 
-  Widget _viewLetters(BuildContext context) {
-    final years = context.read(letterViewModelProvider).findDistinctYears();
+  Widget _viewLetters(BuildContext context, WidgetRef ref) {
+    final years = ref.read(letterViewModelProvider).findDistinctYears();
     return DefaultTabController(
       length: years.length,
       child: Scaffold(
@@ -102,7 +98,7 @@ class LetterPage extends StatelessWidget {
           title: const Text(RSStrings.letterPageTitle),
           actions: <Widget>[
             IconButton(
-              onPressed: () async => await _processLoadData(context),
+              onPressed: () async => await _processLoadData(context, ref),
               icon: const Icon(Icons.refresh),
             ),
           ],
@@ -111,14 +107,14 @@ class LetterPage extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: years.map((y) => _createLetterTab(context, y)).toList(),
+          children: years.map((y) => _createLetterTab(ref, y)).toList(),
         ),
       ),
     );
   }
 
-  Widget _createLetterTab(BuildContext context, int year) {
-    final letters = context.read(letterViewModelProvider).findByYear(year);
+  Widget _createLetterTab(WidgetRef ref, int year) {
+    final letters = ref.read(letterViewModelProvider).findByYear(year);
     return GridView.count(
       crossAxisCount: 2,
       childAspectRatio: 2 / 3,

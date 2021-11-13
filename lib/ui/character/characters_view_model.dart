@@ -25,8 +25,7 @@ class _CharactersViewModel extends BaseViewModel {
   List<Character> get notFavoriteCharacters => _characters.where((c) => !(c.myStatus?.favorite ?? false)).toList();
   int get countNotFavoriteCharacters => notFavoriteCharacters.length;
 
-  late CharacterListOrderType _selectedOrderType;
-  CharacterListOrderType get selectedOrderType => _selectedOrderType;
+  CharacterListOrderType get selectedOrderType => _read(appSettingsProvider).characterListOrderType;
 
   Future<void> _init() async {
     await _refreshAllData();
@@ -42,16 +41,16 @@ class _CharactersViewModel extends BaseViewModel {
     try {
       await _read(characterNotifierProvider.notifier).refresh();
       _characters = _read(characterNotifierProvider);
-      _selectedOrderType = _read(appSettingsProvider).characterListOrderType;
-      _charactersOrderBy(_selectedOrderType);
+      final orderType = _read(appSettingsProvider).characterListOrderType;
+      _charactersOrderBy(orderType);
     } catch (e, s) {
       RSLogger.e('キャラ一覧更新でエラー', e, s);
       onError('$e');
     }
   }
 
-  void selectOrder(CharacterListOrderType type) {
-    _selectedOrderType = type;
+  Future<void> selectOrder(CharacterListOrderType type) async {
+    await _read(appSettingsProvider.notifier).setCharacterListOrder(type);
     _charactersOrderBy(type);
     notifyListeners();
   }
