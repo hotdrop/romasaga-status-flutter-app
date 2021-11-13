@@ -32,8 +32,7 @@ Firebaseで利用しているサービスは次の通りです。
 実際に個人端末で利用しているアプリは次のコマンドで作っています。  
 `flutter build apk --split-per-abi --release`
 
-# 画面イメージ一部
-このイメージはver1のものなので差し替えます  
+# 画面イメージ一部 
 ![01](/images/01_char_list.png)
 ![02](/images/02_char_detail.png)
 ![03](images/03_search.png)
