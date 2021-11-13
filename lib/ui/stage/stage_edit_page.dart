@@ -67,40 +67,31 @@ class StageEditPage extends ConsumerWidget {
     final currentStage = ref.watch(stageEditViewModelProvider).currentStage;
     return RSTextFormField.stageName(
       initValue: currentStage.name,
-      onChanged: (String? input) {
-        ref.read(stageEditViewModelProvider).inputName(input);
-      },
+      onChanged: (String? input) => ref.read(stageEditViewModelProvider).inputName(input),
     );
   }
 
   Widget _viewStatusLimits(WidgetRef ref) {
+    final currentStage = ref.watch(stageEditViewModelProvider).currentStage;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(width: 150, child: _viewHpLimitNumberField(ref)),
+        SizedBox(
+          width: 150,
+          child: RSNumberFormField.stageHpLimit(
+            initValue: currentStage.hpLimit,
+            onChanged: (int? input) => ref.read(stageEditViewModelProvider).inputHpLimit(input),
+          ),
+        ),
         const SizedBox(width: 48),
-        SizedBox(width: 100, child: _viewStatusLimitNumberField(ref)),
+        SizedBox(
+          width: 100,
+          child: RSNumberFormField.stageStatusLimit(
+            initValue: currentStage.statusLimit,
+            onChanged: (int? input) => ref.read(stageEditViewModelProvider).inputLimit(input),
+          ),
+        ),
       ],
-    );
-  }
-
-  Widget _viewHpLimitNumberField(WidgetRef ref) {
-    final currentStage = ref.watch(stageEditViewModelProvider).currentStage;
-    return RSNumberFormField.stageHpLimit(
-      initValue: currentStage.hpLimit,
-      onChanged: (int? input) {
-        ref.read(stageEditViewModelProvider).inputHpLimit(input);
-      },
-    );
-  }
-
-  Widget _viewStatusLimitNumberField(WidgetRef ref) {
-    final currentStage = ref.watch(stageEditViewModelProvider).currentStage;
-    return RSNumberFormField.stageStatusLimit(
-      initValue: currentStage.statusLimit,
-      onChanged: (int? input) {
-        ref.read(stageEditViewModelProvider).inputLimit(input);
-      },
     );
   }
 
@@ -109,9 +100,9 @@ class StageEditPage extends ConsumerWidget {
     return AppButton(
       label: RSStrings.stageEditPageSaveLabel,
       onTap: isSaved
-          ? () {
+          ? () async {
               const progressDialog = AppProgressDialog<void>();
-              progressDialog.show(
+              await progressDialog.show(
                 context,
                 execute: ref.read(stageEditViewModelProvider).save,
                 onSuccess: (_) async {
