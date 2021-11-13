@@ -34,7 +34,7 @@ Firebaseで利用しているサービスは次の通りです。
 
 # 画面イメージ一部
 このイメージはver1のものなので差し替えます  
-![01](/images/01_char_list.png)  
+![01](/images/01_char_list.png)
 ![02](/images/02_char_detail_1.png)
-![03](images/03_char_input_status.png)  
+![03](images/03_char_input_status.png)
 ![06](images/06_account.png)
