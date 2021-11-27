@@ -84,7 +84,7 @@ class AccountPage extends ConsumerWidget {
         showLicensePage(
           context: context,
           applicationName: RSStrings.appTitle,
-          applicationVersion: ref.watch(accountViewModelProvider).appVersion,
+          applicationVersion: ref.read(accountViewModelProvider).appVersion,
           applicationIcon: Image.asset(RSImages.icLaunch, width: 50, height: 50),
         );
       },

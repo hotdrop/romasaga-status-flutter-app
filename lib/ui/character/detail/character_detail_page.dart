@@ -80,7 +80,7 @@ class CharacterDetailPage extends ConsumerWidget {
         bottomNavigationBar: _appBarContent(context, ref),
       ),
       onWillPop: () async {
-        final isUpdate = ref.watch(characterDetailViewModelProvider).isUpdate;
+        final isUpdate = ref.read(characterDetailViewModelProvider).isUpdate;
         Navigator.pop(context, isUpdate);
         return true;
       },
@@ -346,7 +346,7 @@ class CharacterDetailPage extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.edit),
       onPressed: () async {
-        final character = ref.watch(characterDetailViewModelProvider).character;
+        final character = ref.read(characterDetailViewModelProvider).character;
         final myStatus = character.myStatus ?? MyStatus.empty(character.id);
         final isSaved = await StatusEditPage.start(context, myStatus);
         if (isSaved) {
