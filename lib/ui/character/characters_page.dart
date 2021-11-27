@@ -55,9 +55,9 @@ class CharactersPage extends ConsumerWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            _statusUpEventTab(ref),
-            _favoriteTab(ref),
-            _notFavoriteTab(ref),
+            _tabStatusUpEvent(ref),
+            _tabFavorite(ref),
+            _tabNotFavorite(ref),
           ],
         ),
       ),
@@ -88,17 +88,17 @@ class CharactersPage extends ConsumerWidget {
     );
   }
 
-  Widget _statusUpEventTab(WidgetRef ref) {
+  Widget _tabStatusUpEvent(WidgetRef ref) {
     final characters = ref.watch(charactersViewModelProvider).statusUpCharacters;
     return _viewList(characters, ref);
   }
 
-  Widget _favoriteTab(WidgetRef ref) {
+  Widget _tabFavorite(WidgetRef ref) {
     final characters = ref.watch(charactersViewModelProvider).favoriteCharacters;
     return _viewList(characters, ref);
   }
 
-  Widget _notFavoriteTab(WidgetRef ref) {
+  Widget _tabNotFavorite(WidgetRef ref) {
     final characters = ref.watch(charactersViewModelProvider).notFavoriteCharacters;
     return _viewList(characters, ref);
   }
