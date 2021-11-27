@@ -65,19 +65,19 @@ class CharacterDetailPage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _contentCharacterOverview(context, ref),
+                _viewCharacterOverview(context, ref),
                 const SizedBox(height: 8),
-                _contentStatus(context, ref),
+                _viewStatus(context, ref),
                 const SizedBox(height: 8),
-                _contentsStyleStatusTable(ref),
+                _viewStyleStatusTable(ref),
                 const SizedBox(height: 24),
               ],
             ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: _editStatusFab(context, ref),
-        bottomNavigationBar: _appBarContent(context, ref),
+        floatingActionButton: _viewEditStatusFab(context, ref),
+        bottomNavigationBar: _viewBottomNavigationBar(context, ref),
       ),
       onWillPop: () async {
         final isUpdate = ref.read(characterDetailViewModelProvider).isUpdate;
@@ -90,7 +90,7 @@ class CharacterDetailPage extends ConsumerWidget {
   ///
   /// キャラクター概要の表示領域
   ///
-  Widget _contentCharacterOverview(BuildContext context, WidgetRef ref) {
+  Widget _viewCharacterOverview(BuildContext context, WidgetRef ref) {
     return Card(
       elevation: 4.0,
       color: Theme.of(context).backgroundColor,
@@ -99,12 +99,12 @@ class CharacterDetailPage extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _contentsCharacterInfo(context, ref),
+            _viewCharacterInfo(context, ref),
             const SizedBox(height: 8),
-            _contentsAttribute(ref),
+            _viewAttribute(ref),
             const SizedBox(height: 8),
             const HorizontalLine(),
-            _contentsStyleChips(ref),
+            _viewStyleChips(ref),
           ],
         ),
       ),
@@ -114,15 +114,15 @@ class CharacterDetailPage extends ConsumerWidget {
   ///
   /// キャラクターの作品、名前、肩書き、武器情報
   ///
-  Widget _contentsCharacterInfo(BuildContext context, WidgetRef ref) {
+  Widget _viewCharacterInfo(BuildContext context, WidgetRef ref) {
     final character = ref.watch(characterDetailViewModelProvider).character;
     final selectedStyle = ref.watch(characterDetailViewModelProvider).selectedStyle;
     return Row(
       children: <Widget>[
         GestureDetector(
           child: CharacterIcon.large(selectedStyle.iconFilePath),
-          onTap: () async => await _onTapIcon(context, ref),
-          onLongPress: () async => await _onLongTapIcon(context, ref),
+          onTap: () async => await _processOnTapCharacterIcon(context, ref),
+          onLongPress: () async => await _processOnLongTapCharacterIcon(context, ref),
         ),
         const SizedBox(width: 16),
         Column(
@@ -137,14 +137,14 @@ class CharacterDetailPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _onTapIcon(BuildContext context, WidgetRef ref) async {
+  Future<void> _processOnTapCharacterIcon(BuildContext context, WidgetRef ref) async {
     await AppDialog.okAndCancel(
       message: RSStrings.detailPageChangeStyleIconDialogMessage,
       onOk: () => ref.read(characterDetailViewModelProvider).saveCurrentSelectStyle(),
     ).show(context);
   }
 
-  Future<void> _onLongTapIcon(BuildContext context, WidgetRef ref) async {
+  Future<void> _processOnLongTapCharacterIcon(BuildContext context, WidgetRef ref) async {
     await AppDialog.okAndCancel(
       message: RSStrings.detailPageRefreshIconDialogMessage,
       onOk: () async {
@@ -152,16 +152,18 @@ class CharacterDetailPage extends ConsumerWidget {
         await progressDialog.show(
           context,
           execute: ref.read(characterDetailViewModelProvider).refreshIcon,
-          onSuccess: (_) {
+          onSuccess: (_) async {
             ref.read(characterDetailViewModelProvider).refreshCharacterData();
           },
-          onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
+          onError: (errMsg) async {
+            await AppDialog.onlyOk(message: errMsg).show(context);
+          },
         );
       },
     ).show(context);
   }
 
-  Widget _contentsAttribute(WidgetRef ref) {
+  Widget _viewAttribute(WidgetRef ref) {
     final character = ref.watch(characterDetailViewModelProvider).character;
     final haveAttribute = character.attributes?.isNotEmpty ?? false;
     return Wrap(
@@ -181,7 +183,7 @@ class CharacterDetailPage extends ConsumerWidget {
   ///
   /// スタイルChips
   ///
-  Widget _contentsStyleChips(WidgetRef ref) {
+  Widget _viewStyleChips(WidgetRef ref) {
     final character = ref.watch(characterDetailViewModelProvider).character;
     return Wrap(
       children: <Widget>[
@@ -199,7 +201,7 @@ class CharacterDetailPage extends ConsumerWidget {
   ///
   /// ステータス表示領域
   ///
-  Widget _contentStatus(BuildContext context, WidgetRef ref) {
+  Widget _viewStatus(BuildContext context, WidgetRef ref) {
     return Card(
       elevation: 4.0,
       color: Theme.of(context).backgroundColor,
@@ -207,13 +209,13 @@ class CharacterDetailPage extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           children: <Widget>[
-            _contentTotalStatus(context, ref),
+            _viewTotalStatus(context, ref),
             const SizedBox(height: 8),
             const HorizontalLine(),
             const SizedBox(height: 8),
-            _contentsHp(ref),
+            _viewHpArea(ref),
             const SizedBox(height: 8),
-            ..._contentsEachStatus(ref),
+            ..._viewEachStatus(ref),
           ],
         ),
       ),
@@ -223,7 +225,7 @@ class CharacterDetailPage extends ConsumerWidget {
   ///
   /// 合計ステータス表示欄
   ///
-  Widget _contentTotalStatus(BuildContext context, WidgetRef ref) {
+  Widget _viewTotalStatus(BuildContext context, WidgetRef ref) {
     final character = ref.watch(characterDetailViewModelProvider).character;
     final stage = ref.watch(characterDetailViewModelProvider).stage;
     final selectedStyle = ref.watch(characterDetailViewModelProvider).selectedStyle;
@@ -240,9 +242,9 @@ class CharacterDetailPage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 12.0),
-            _contentsStageName(context, stage.name),
+            _viewStageName(context, stage.name),
             const SizedBox(height: 12.0),
-            _contentsStageLimit(context, stage.statusLimit),
+            _viewStageLimit(context, stage.statusLimit),
           ],
         ),
       ],
@@ -252,7 +254,7 @@ class CharacterDetailPage extends ConsumerWidget {
   ///
   /// ステージ情報
   ///
-  Widget _contentsStageName(BuildContext context, String stageName) {
+  Widget _viewStageName(BuildContext context, String stageName) {
     return Row(
       children: <Widget>[
         const VerticalLine(color: RSColors.stageNameLine),
@@ -270,7 +272,7 @@ class CharacterDetailPage extends ConsumerWidget {
     );
   }
 
-  Widget _contentsStageLimit(BuildContext context, int statusLimit) {
+  Widget _viewStageLimit(BuildContext context, int statusLimit) {
     return Row(
       children: <Widget>[
         const VerticalLine(color: RSColors.stageLimitLine),
@@ -288,7 +290,7 @@ class CharacterDetailPage extends ConsumerWidget {
     );
   }
 
-  Widget _contentsHp(WidgetRef ref) {
+  Widget _viewHpArea(WidgetRef ref) {
     final character = ref.watch(characterDetailViewModelProvider).character;
     final stage = ref.watch(characterDetailViewModelProvider).stage;
 
@@ -298,7 +300,7 @@ class CharacterDetailPage extends ConsumerWidget {
     );
   }
 
-  List<Widget> _contentsEachStatus(WidgetRef ref) {
+  List<Widget> _viewEachStatus(WidgetRef ref) {
     final myStatus = ref.watch(characterDetailViewModelProvider).character.myStatus;
     return [
       Row(
@@ -329,7 +331,7 @@ class CharacterDetailPage extends ConsumerWidget {
     ];
   }
 
-  Widget _contentsStyleStatusTable(WidgetRef ref) {
+  Widget _viewStyleStatusTable(WidgetRef ref) {
     final character = ref.watch(characterDetailViewModelProvider).character;
     final stage = ref.watch(characterDetailViewModelProvider).stage;
     return StatusTable(
@@ -342,7 +344,7 @@ class CharacterDetailPage extends ConsumerWidget {
   ///
   /// ステータス編集のfab
   ///
-  Widget _editStatusFab(BuildContext context, WidgetRef ref) {
+  Widget _viewEditStatusFab(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
       child: const Icon(Icons.edit),
       onPressed: () async {
@@ -360,7 +362,7 @@ class CharacterDetailPage extends ConsumerWidget {
   ///
   /// ボトムメニュー
   ///
-  Widget _appBarContent(BuildContext context, WidgetRef ref) {
+  Widget _viewBottomNavigationBar(BuildContext context, WidgetRef ref) {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 4.0,

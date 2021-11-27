@@ -46,13 +46,13 @@ class StatusTable extends StatelessWidget {
       defaultColumnWidth: const FixedColumnWidth(40.0),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: <TableRow>[
-        _statusTableHeaderRow(context),
-        ..._statusTableContentsRow(context),
+        _rowHeader(context),
+        ..._rowStatus(context),
       ],
     );
   }
 
-  TableRow _statusTableHeaderRow(BuildContext context) {
+  TableRow _rowHeader(BuildContext context) {
     return const TableRow(
       children: [
         SizedBox(),
@@ -68,7 +68,7 @@ class StatusTable extends StatelessWidget {
     );
   }
 
-  List<TableRow> _statusTableContentsRow(BuildContext context) {
+  List<TableRow> _rowStatus(BuildContext context) {
     int maxStr = 0;
     int maxVit = 0;
     int maxAgi = 0;

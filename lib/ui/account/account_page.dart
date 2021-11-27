@@ -106,7 +106,7 @@ class AccountPage extends ConsumerWidget {
       title: const Text(RSStrings.accountCharacterUpdateLabel),
       subtitle: const Text(RSStrings.accountCharacterDetailLabel),
       onTap: () async {
-        AppDialog.okAndCancel(
+        await AppDialog.okAndCancel(
           message: RSStrings.accountCharacterUpdateDialogMessage,
           onOk: () async => await _processRefreshCharacter(context, ref),
         ).show(context);
@@ -116,11 +116,15 @@ class AccountPage extends ConsumerWidget {
 
   Future<void> _processRefreshCharacter(BuildContext context, WidgetRef ref) async {
     const progressDialog = AppProgressDialog<void>();
-    progressDialog.show(
+    await progressDialog.show(
       context,
       execute: ref.read(accountViewModelProvider).refreshCharacters,
-      onSuccess: (_) => AppDialog.onlyOk(message: RSStrings.accountCharacterUpdateDialogSuccessMessage).show(context),
-      onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
+      onSuccess: (_) async {
+        await AppDialog.onlyOk(message: RSStrings.accountCharacterUpdateDialogSuccessMessage).show(context);
+      },
+      onError: (errMsg) async {
+        await AppDialog.onlyOk(message: errMsg).show(context);
+      },
     );
   }
 
@@ -147,7 +151,7 @@ class AccountPage extends ConsumerWidget {
       title: const Text(RSStrings.accountStatusBackupLabel),
       subtitle: Text('${RSStrings.accountStatusBackupDateLabel} $backupDateLabel'),
       onTap: () async {
-        AppDialog.okAndCancel(
+        await AppDialog.okAndCancel(
           message: RSStrings.accountStatusBackupDialogMessage,
           onOk: () async => await _processBackUp(context, ref),
         ).show(context);
@@ -157,11 +161,15 @@ class AccountPage extends ConsumerWidget {
 
   Future<void> _processBackUp(BuildContext context, WidgetRef ref) async {
     const progressDialog = AppProgressDialog<void>();
-    progressDialog.show(
+    await progressDialog.show(
       context,
       execute: ref.read(accountViewModelProvider).backup,
-      onSuccess: (_) => AppDialog.onlyOk(message: RSStrings.accountStatusBackupDialogSuccessMessage).show(context),
-      onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
+      onSuccess: (_) async {
+        await AppDialog.onlyOk(message: RSStrings.accountStatusBackupDialogSuccessMessage).show(context);
+      },
+      onError: (errMsg) async {
+        await AppDialog.onlyOk(message: errMsg).show(context);
+      },
     );
   }
 
@@ -171,7 +179,7 @@ class AccountPage extends ConsumerWidget {
       title: const Text(RSStrings.accountStatusRestoreLabel),
       subtitle: const Text(RSStrings.accountStatusRestoreDetailLabel),
       onTap: () async {
-        AppDialog.okAndCancel(
+        await AppDialog.okAndCancel(
           message: RSStrings.accountStatusRestoreDialogMessage,
           onOk: () async => await _processRestore(context, ref),
         ).show(context);
@@ -181,11 +189,15 @@ class AccountPage extends ConsumerWidget {
 
   Future<void> _processRestore(BuildContext context, WidgetRef ref) async {
     const progressDialog = AppProgressDialog<void>();
-    progressDialog.show(
+    await progressDialog.show(
       context,
       execute: ref.read(accountViewModelProvider).restore,
-      onSuccess: (_) => AppDialog.onlyOk(message: RSStrings.accountStatusRestoreDialogSuccessMessage).show(context),
-      onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
+      onSuccess: (_) async {
+        await AppDialog.onlyOk(message: RSStrings.accountStatusRestoreDialogSuccessMessage).show(context);
+      },
+      onError: (errMsg) async {
+        await AppDialog.onlyOk(message: errMsg).show(context);
+      },
     );
   }
 
@@ -203,11 +215,11 @@ class AccountPage extends ConsumerWidget {
 
   Future<void> _processSignIn(BuildContext context, WidgetRef ref) async {
     const progressDialog = AppProgressDialog<void>();
-    progressDialog.show(
+    await progressDialog.show(
       context,
       execute: ref.read(accountViewModelProvider).signIn,
       onSuccess: (_) {/* 成功時は何もしない */},
-      onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
+      onError: (errMsg) async => await AppDialog.onlyOk(message: errMsg).show(context),
     );
   }
 
@@ -228,11 +240,11 @@ class AccountPage extends ConsumerWidget {
 
   Future<void> _processSignOut(BuildContext context, WidgetRef ref) async {
     const progressDialog = AppProgressDialog<void>();
-    progressDialog.show(
+    await progressDialog.show(
       context,
       execute: ref.read(accountViewModelProvider).signOut,
       onSuccess: (_) {/* 成功時は何もしない */},
-      onError: (errMsg) => AppDialog.onlyOk(message: errMsg).show(context),
+      onError: (errMsg) async => await AppDialog.onlyOk(message: errMsg).show(context),
     );
   }
 }

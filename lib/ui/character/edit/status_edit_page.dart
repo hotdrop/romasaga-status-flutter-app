@@ -34,7 +34,7 @@ class StatusEditPage extends ConsumerWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: _saveFab(context, ref),
-      bottomNavigationBar: _appBarContents(ref),
+      bottomNavigationBar: _viewBottomNavigationBar(ref),
     );
   }
 
@@ -50,30 +50,30 @@ class StatusEditPage extends ConsumerWidget {
   Widget _onSuccess(BuildContext context, WidgetRef ref) {
     final isEditEach = ref.watch(statusEditViewModelProvider).isEditEach;
     if (isEditEach) {
-      return _contentEachLayout(ref);
+      return _viewCountLayout(ref);
     } else {
-      return _contentsManualLayout(ref);
+      return _viewManualLayout(ref);
     }
   }
 
-  Widget _contentEachLayout(WidgetRef ref) {
+  Widget _viewCountLayout(WidgetRef ref) {
     return ListView(
       children: <Widget>[
-        _createRow(ref, StatusType.hp, _myStatus.hp, ref.watch(statusEditViewModelProvider).editHp),
-        _createRow(ref, StatusType.str, _myStatus.str, ref.watch(statusEditViewModelProvider).editStr),
-        _createRow(ref, StatusType.vit, _myStatus.vit, ref.watch(statusEditViewModelProvider).editVit),
-        _createRow(ref, StatusType.dex, _myStatus.dex, ref.watch(statusEditViewModelProvider).editDex),
-        _createRow(ref, StatusType.agi, _myStatus.agi, ref.watch(statusEditViewModelProvider).editAgi),
-        _createRow(ref, StatusType.inte, _myStatus.inte, ref.watch(statusEditViewModelProvider).editInt),
-        _createRow(ref, StatusType.spirit, _myStatus.spi, ref.watch(statusEditViewModelProvider).editSpi),
-        _createRow(ref, StatusType.love, _myStatus.love, ref.watch(statusEditViewModelProvider).editLove),
-        _createRow(ref, StatusType.attr, _myStatus.attr, ref.watch(statusEditViewModelProvider).editAttr),
+        _rowStatus(ref, StatusType.hp, _myStatus.hp, ref.watch(statusEditViewModelProvider).editHp),
+        _rowStatus(ref, StatusType.str, _myStatus.str, ref.watch(statusEditViewModelProvider).editStr),
+        _rowStatus(ref, StatusType.vit, _myStatus.vit, ref.watch(statusEditViewModelProvider).editVit),
+        _rowStatus(ref, StatusType.dex, _myStatus.dex, ref.watch(statusEditViewModelProvider).editDex),
+        _rowStatus(ref, StatusType.agi, _myStatus.agi, ref.watch(statusEditViewModelProvider).editAgi),
+        _rowStatus(ref, StatusType.inte, _myStatus.inte, ref.watch(statusEditViewModelProvider).editInt),
+        _rowStatus(ref, StatusType.spirit, _myStatus.spi, ref.watch(statusEditViewModelProvider).editSpi),
+        _rowStatus(ref, StatusType.love, _myStatus.love, ref.watch(statusEditViewModelProvider).editLove),
+        _rowStatus(ref, StatusType.attr, _myStatus.attr, ref.watch(statusEditViewModelProvider).editAttr),
         const SizedBox(height: 16.0)
       ],
     );
   }
 
-  Widget _createRow(WidgetRef ref, StatusType type, int currentStatus, int updateValue) {
+  Widget _rowStatus(WidgetRef ref, StatusType type, int currentStatus, int updateValue) {
     return _RowEditStatus(
       type: type,
       currentStatus: currentStatus,
@@ -86,7 +86,7 @@ class StatusEditPage extends ConsumerWidget {
   ///
   /// Manualのレイアウト
   ///
-  Widget _contentsManualLayout(WidgetRef ref) {
+  Widget _viewManualLayout(WidgetRef ref) {
     // フォーカスが必要なので末尾のステータスから順に作成していく
     final attrFocus = FocusNode();
     final attrField = StatusEditField(
@@ -208,7 +208,7 @@ class StatusEditPage extends ConsumerWidget {
   ///
   /// ボトムメニュー
   ///
-  Widget _appBarContents(WidgetRef ref) {
+  Widget _viewBottomNavigationBar(WidgetRef ref) {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 4.0,
@@ -256,11 +256,11 @@ class _RowEditStatus extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _statusIcon(),
+          _viewStatusIcon(),
           const SizedBox(width: 16.0),
-          _statusLabel(updateValue),
+          _viewStatusLabel(updateValue),
           const SizedBox(width: 16.0),
-          _diffLabel(currentStatus, updateValue),
+          _viewDiffLabel(currentStatus, updateValue),
           const SizedBox(width: 16.0),
           DecrementCounter(onTap: () => onDecrement(type)),
           const SizedBox(width: 24.0),
@@ -270,7 +270,7 @@ class _RowEditStatus extends StatelessWidget {
     );
   }
 
-  Widget _statusIcon() {
+  Widget _viewStatusIcon() {
     switch (type) {
       case StatusType.hp:
         return const Padding(
@@ -299,7 +299,7 @@ class _RowEditStatus extends StatelessWidget {
     }
   }
 
-  Widget _statusLabel(int value) {
+  Widget _viewStatusLabel(int value) {
     return SizedBox(
       width: 80.0,
       child: Center(
@@ -308,7 +308,7 @@ class _RowEditStatus extends StatelessWidget {
     );
   }
 
-  Widget _diffLabel(int nowStatus, int newStatus) {
+  Widget _viewDiffLabel(int nowStatus, int newStatus) {
     int diff = newStatus - nowStatus;
     String diffStr = '  $diff';
     Color textColor = Colors.grey;

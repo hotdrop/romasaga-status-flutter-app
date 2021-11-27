@@ -77,13 +77,13 @@ class LetterPage extends ConsumerWidget {
   Future<void> _processLoadData(BuildContext context, WidgetRef ref) async {
     await AppDialog.okAndCancel(
       message: RSStrings.letterPageLoadConfirmMessage,
-      onOk: () {
+      onOk: () async {
         const progressDialog = AppProgressDialog<void>();
-        progressDialog.show(
+        await progressDialog.show(
           context,
           execute: ref.read(letterViewModelProvider).refresh,
           onSuccess: (_) {/* 成功時は何もしない */},
-          onError: (err) => AppDialog.onlyOk(message: err).show(context),
+          onError: (err) async => await AppDialog.onlyOk(message: err).show(context),
         );
       },
     ).show(context);
