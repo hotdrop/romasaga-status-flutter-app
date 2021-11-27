@@ -43,20 +43,20 @@ class SearchPage extends ConsumerWidget {
   Widget _onSuccess(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: _headerTitle(ref),
-        actions: [_headerIconSearchWord(ref)],
+        title: _viewHeaderTitle(ref),
+        actions: [_viewHeaderIconSearchWord(ref)],
       ),
       body: _viewCharacters(ref),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.filter_list),
         onPressed: () {
-          _showBottomSheet(context, ref);
+          _viewBottomSheet(context, ref);
         },
       ),
     );
   }
 
-  Widget _headerTitle(WidgetRef ref) {
+  Widget _viewHeaderTitle(WidgetRef ref) {
     final isKeywordSearch = ref.watch(searchViewModelProvider).isKeywordSearch;
     if (isKeywordSearch) {
       return TextField(
@@ -73,7 +73,7 @@ class SearchPage extends ConsumerWidget {
     }
   }
 
-  Widget _headerIconSearchWord(WidgetRef ref) {
+  Widget _viewHeaderIconSearchWord(WidgetRef ref) {
     final isKeywordSearch = ref.watch(searchViewModelProvider).isKeywordSearch;
     final searchIcon = isKeywordSearch ? const Icon(Icons.close) : const Icon(Icons.search);
     return IconButton(
@@ -102,7 +102,7 @@ class SearchPage extends ConsumerWidget {
     );
   }
 
-  void _showBottomSheet(BuildContext context, WidgetRef ref) {
+  void _viewBottomSheet(BuildContext context, WidgetRef ref) {
     showMaterialModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -118,28 +118,28 @@ class SearchPage extends ConsumerWidget {
               topRight: Radius.circular(16),
             ),
           ),
-          child: _viewFilterContents(ctx, ref),
+          child: _viewFilter(ctx, ref),
         );
       },
     );
   }
 
-  Widget _viewFilterContents(BuildContext context, WidgetRef ref) {
+  Widget _viewFilter(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _viewFilterFavorite(context, ref),
           Divider(color: Theme.of(context).primaryColor),
-          _filterViewWeaponType(context, ref),
+          _viewFilterWeaponType(context, ref),
           const SizedBox(height: 8),
           _viewFilterWeaponClearButton(context, ref),
           Divider(color: Theme.of(context).primaryColor),
-          _filterViewAttributes(context, ref),
+          _viewFilterAttributes(context, ref),
           const SizedBox(height: 8),
           _viewFilterAttributeClearButton(context, ref),
           Divider(color: Theme.of(context).primaryColor),
-          _filterViewProduct(context, ref),
+          _viewFilterProduct(context, ref),
           const SizedBox(height: 8),
           _viewFilterProductionClearButton(context, ref),
           const SizedBox(height: 16),
@@ -159,7 +159,7 @@ class SearchPage extends ConsumerWidget {
     );
   }
 
-  Widget _filterViewWeaponType(BuildContext context, WidgetRef ref) {
+  Widget _viewFilterWeaponType(BuildContext context, WidgetRef ref) {
     return Wrap(
       spacing: 16.0,
       runSpacing: 16.0,
@@ -186,7 +186,7 @@ class SearchPage extends ConsumerWidget {
     );
   }
 
-  Widget _filterViewAttributes(BuildContext context, WidgetRef ref) {
+  Widget _viewFilterAttributes(BuildContext context, WidgetRef ref) {
     return Wrap(
       spacing: 16.0,
       runSpacing: 16.0,
@@ -213,7 +213,7 @@ class SearchPage extends ConsumerWidget {
     );
   }
 
-  Widget _filterViewProduct(BuildContext context, WidgetRef ref) {
+  Widget _viewFilterProduct(BuildContext context, WidgetRef ref) {
     return Wrap(
       spacing: 16.0,
       runSpacing: 16.0,

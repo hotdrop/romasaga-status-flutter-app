@@ -108,7 +108,7 @@ class StageEditPage extends ConsumerWidget {
                 onSuccess: (_) async {
                   Navigator.pop(context, true);
                 },
-                onError: (err) => AppDialog.onlyOk(message: err).show(context),
+                onError: (err) async => await AppDialog.onlyOk(message: err).show(context),
               );
             }
           : null,
