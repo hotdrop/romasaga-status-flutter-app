@@ -8,7 +8,7 @@ Flutter学習用として定期的にいじっているロマサガRSのステ�
 
 <hooksを使っていない理由>  
 単にHookWidgetをextendsするのが嫌だったのでhook使ってなかったのですが、Riverpodv1.0.0でConsumerWidgetをextendsしないといけなくなったので、私の中でもはやhooksを使わない理由がなくなりました。  
-近いうちにhooksを使う可能性が高いです。  
+ただ、hooksもuseProviderがなくなって書き方が同じようになったので使うかどうかは微妙です。
 
 <Riverpodの使い方>  
 DIとして使っている箇所は、全てref.readでProvider同士を参照しています。これは公式のMarvelアプリでも同じようにしていたので問題ないはず。多分・・  
@@ -31,6 +31,9 @@ Firebaseで利用しているサービスは次の通りです。
 開発はvscodeでやっているので`launch.json`のprogramにこのdartファイルを指定してデバッグしています。  
 実際に個人端末で利用しているアプリは次のコマンドで作っています。  
 `flutter build apk --split-per-abi --release`
+
+# TODO
+- [ ] 処理中のプログレスバーが微妙なのでいい感じにしたい
 
 # 画面イメージ一部 
 ![01](/images/01_char_list.png)
