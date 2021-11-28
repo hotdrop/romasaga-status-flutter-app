@@ -149,12 +149,11 @@ class SearchPage extends ConsumerWidget {
   }
 
   Widget _viewFilterFavorite(BuildContext context, WidgetRef ref) {
-    bool selectedFavorite = ref.watch(searchViewModelProvider).isFilterFavorite();
+    bool selectedFavorite = ref.watch(searchViewModelProvider).isFilterFavorite;
     return FavoriteIcon(
-      selected: selectedFavorite,
+      isSelected: selectedFavorite,
       onTap: () {
         ref.read(searchViewModelProvider).filterFavorite(!selectedFavorite);
-        Navigator.pop(context);
       },
     );
   }

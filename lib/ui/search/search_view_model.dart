@@ -45,9 +45,7 @@ class _SearchViewModel extends BaseViewModel {
     }
   }
 
-  bool isFilterFavorite() {
-    return _condition.isFavorite;
-  }
+  bool get isFilterFavorite => _condition.isFavorite;
 
   bool isSelectWeaponType(WeaponType type) {
     return type == _condition.weaponType;
@@ -68,7 +66,6 @@ class _SearchViewModel extends BaseViewModel {
 
   void filterFavorite(bool favorite) {
     _condition.isFavorite = favorite;
-    _search();
   }
 
   void findByWeaponType(WeaponType type) {
@@ -105,7 +102,7 @@ class _SearchViewModel extends BaseViewModel {
     charactersWithFilter = _characters
         .where((c) => _condition.filterWord(targetName: c.name, targetProduction: c.production))
         .where((c) => _condition.filterFavorite(c.myStatus?.favorite ?? false))
-        .where((c) => _condition.filterWeaponType(c.weapon))
+        .where((c) => _condition.filterWeaponType(c.weapons))
         .where((e) => _condition.filterAttributesType(e.attributes))
         .where((e) => _condition.filterProductionType(e.production))
         .toList();

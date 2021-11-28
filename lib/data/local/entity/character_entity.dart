@@ -8,7 +8,7 @@ class CharacterEntity extends HiveObject {
     required this.id,
     required this.name,
     required this.production,
-    required this.weaponType,
+    required this.weaponTypes,
     required this.attributeTypes,
     required this.selectedStyleRank,
     required this.selectedIconFilePath,
@@ -27,7 +27,7 @@ class CharacterEntity extends HiveObject {
   final String production;
 
   @HiveField(3)
-  final int weaponType;
+  final String weaponTypes;
 
   @HiveField(4)
   final String attributeTypes;
@@ -47,7 +47,7 @@ class CharacterEntity extends HiveObject {
   CharacterEntity copyWith({
     String? name,
     String? production,
-    int? weaponType,
+    String? weaponTypes,
     String? attributeTypes,
     String? selectedStyleRank,
     String? selectedIconFilePath,
@@ -57,7 +57,7 @@ class CharacterEntity extends HiveObject {
       id: id,
       name: name ?? this.name,
       production: production ?? this.production,
-      weaponType: weaponType ?? this.weaponType,
+      weaponTypes: weaponTypes ?? this.weaponTypes,
       attributeTypes: attributeTypes ?? this.attributeTypes,
       selectedStyleRank: selectedStyleRank ?? this.selectedStyleRank,
       selectedIconFilePath: selectedIconFilePath ?? this.selectedIconFilePath,

@@ -273,15 +273,32 @@ class StatusIcon extends StatelessWidget {
 ///
 /// 検索画面でのキャラクターお気に入りアイコン
 ///
-class FavoriteIcon extends StatelessWidget {
-  const FavoriteIcon({Key? key, required this.selected, required this.onTap}) : super(key: key);
+class FavoriteIcon extends StatefulWidget {
+  const FavoriteIcon({
+    Key? key,
+    required this.isSelected,
+    required this.onTap,
+  }) : super(key: key);
 
   final Function onTap;
-  final bool selected;
+  final bool isSelected;
+
+  @override
+  State<StatefulWidget> createState() => _FavoriteIconState();
+}
+
+class _FavoriteIconState extends State<FavoriteIcon> {
+  bool _isSelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = widget.isSelected;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = selected ? RSColors.favoriteSelected : Theme.of(context).disabledColor;
+    final iconColor = _isSelected ? RSColors.favoriteSelected : Theme.of(context).disabledColor;
     return RawMaterialButton(
       shape: const CircleBorder(),
       constraints: const BoxConstraints(
@@ -290,7 +307,10 @@ class FavoriteIcon extends StatelessWidget {
       ),
       fillColor: Theme.of(context).disabledColor,
       child: Icon(Icons.star_rounded, color: iconColor, size: 20.0),
-      onPressed: () => onTap(),
+      onPressed: () {
+        setState(() => _isSelected = !_isSelected);
+        widget.onTap();
+      },
     );
   }
 }

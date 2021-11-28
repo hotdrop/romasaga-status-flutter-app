@@ -24,17 +24,32 @@ void main() {
     final repository = container.read(characterRepositoryProvider);
 
     final response = [
-      CharacterResponse(id: 1001, name: 'Test1', weaponTypeName: RSStrings.sword, production: 'Prod1', styles: [
-        StyleResponse(rank: 's', title: 'Title1', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
-      ]),
-      CharacterResponse(id: 1002, name: 'Test2', weaponTypeName: RSStrings.rod, production: 'Prod2', styles: [
-        StyleResponse(rank: 'a', title: 'Title2', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
-        StyleResponse(rank: 'ss', title: 'Title3', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
-      ]),
-      CharacterResponse(id: 1003, name: 'Test3', weaponTypeName: RSStrings.bow, production: 'Prod3', styles: [
-        StyleResponse(rank: 'ss', title: 'Title4', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
-        StyleResponse(rank: 's', title: 'Title5', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
-      ]),
+      CharacterResponse(
+          id: 1001,
+          name: 'Test1',
+          weaponTypeNames: [RSStrings.sword],
+          production: 'Prod1',
+          styles: [
+            StyleResponse(rank: 's', title: 'Title1', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
+          ]),
+      CharacterResponse(
+          id: 1002,
+          name: 'Test2',
+          weaponTypeNames: [RSStrings.rod],
+          production: 'Prod2',
+          styles: [
+            StyleResponse(rank: 'a', title: 'Title2', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
+            StyleResponse(rank: 'ss', title: 'Title3', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
+          ]),
+      CharacterResponse(
+          id: 1003,
+          name: 'Test3',
+          weaponTypeNames: [RSStrings.bow, RSStrings.gun],
+          production: 'Prod3',
+          styles: [
+            StyleResponse(rank: 'ss', title: 'Title4', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
+            StyleResponse(rank: 's', title: 'Title5', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
+          ]),
     ];
 
     // テスト開始
@@ -65,23 +80,38 @@ void main() {
     final repository = container.read(characterRepositoryProvider);
 
     final response = [
-      CharacterResponse(id: 1001, name: 'Test1', weaponTypeName: RSStrings.sword, production: 'Prod1', styles: [
-        StyleResponse(rank: 's', title: 'Title1', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
-      ]),
-      CharacterResponse(id: 1002, name: 'Test2', weaponTypeName: RSStrings.rod, production: 'Prod2', styles: [
-        StyleResponse(rank: 'a', title: 'Title2', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
-        StyleResponse(rank: 'ss', title: 'Title3', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
-      ]),
-      CharacterResponse(id: 1003, name: 'Test3', weaponTypeName: RSStrings.bow, production: 'Prod3', styles: [
-        StyleResponse(rank: 'ss', title: 'Title4', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
-        StyleResponse(rank: 's', title: 'Title5', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
-      ]),
+      CharacterResponse(
+          id: 1001,
+          name: 'Test1',
+          weaponTypeNames: [RSStrings.sword],
+          production: 'Prod1',
+          styles: [
+            StyleResponse(rank: 's', title: 'Title1', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
+          ]),
+      CharacterResponse(
+          id: 1002,
+          name: 'Test2',
+          weaponTypeNames: [RSStrings.rod],
+          production: 'Prod2',
+          styles: [
+            StyleResponse(rank: 'a', title: 'Title2', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
+            StyleResponse(rank: 'ss', title: 'Title3', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
+          ]),
+      CharacterResponse(
+          id: 1003,
+          name: 'Test3',
+          weaponTypeNames: [RSStrings.bow],
+          production: 'Prod3',
+          styles: [
+            StyleResponse(rank: 'ss', title: 'Title4', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
+            StyleResponse(rank: 's', title: 'Title5', str: 1, vit: 2, dex: 3, agi: 4, intelligence: 5, spi: 6, love: 7, attr: 8, iconFileName: 'file1'),
+          ]),
     ];
 
     final localCharacters = [
-      Character(1001, 'Test1', 'prd', Weapon(name: RSStrings.sword), null, selectedStyleRank: 's')
+      Character(1001, 'Test1', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')
         ..addStyle(Style(1001001, 1001, 's', 'local', 'file1', 'image/path1.png', 91, 92, 93, 94, 95, 96, 97, 98)),
-      Character(1002, 'Test2', 'prd', Weapon(name: RSStrings.sword), null, selectedStyleRank: 'a')
+      Character(1002, 'Test2', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 'a')
         ..addStyle(Style(1002001, 1002, 'a', 'local', 'file1', 'image/path2.png', 100, 101, 102, 103, 104, 105, 106, 107))
     ];
 

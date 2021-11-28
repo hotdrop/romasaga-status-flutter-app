@@ -62,7 +62,7 @@ class RowCharacterItem extends StatelessWidget {
   Widget _viewTrailingArea(BuildContext context) {
     return Row(
       children: [
-        WeaponIcon.small(character.weapon.type),
+        WeaponIcon.small(character.weapons.first.type),
         const SizedBox(width: 8),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.15,
