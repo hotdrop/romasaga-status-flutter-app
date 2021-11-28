@@ -45,9 +45,7 @@ class _SearchViewModel extends BaseViewModel {
     }
   }
 
-  bool isFilterFavorite() {
-    return _condition.isFavorite;
-  }
+  bool get isFilterFavorite => _condition.isFavorite;
 
   bool isSelectWeaponType(WeaponType type) {
     return type == _condition.weaponType;
@@ -68,7 +66,6 @@ class _SearchViewModel extends BaseViewModel {
 
   void filterFavorite(bool favorite) {
     _condition.isFavorite = favorite;
-    _search();
   }
 
   void findByWeaponType(WeaponType type) {
