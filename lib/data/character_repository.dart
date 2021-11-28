@@ -75,7 +75,7 @@ class _CharacterRepository {
       response.id,
       response.name,
       response.production,
-      Weapon(name: response.weaponTypeName),
+      response.weaponTypeNames.map((e) => Weapon(name: e)).toList(),
       response.attributeNames?.map((e) => Attribute(name: e)).toList(),
       selectedStyleRank: currentCharacter?.selectedStyleRank,
       selectedIconFilePath: currentCharacter?.selectedIconFilePath,

@@ -47,7 +47,7 @@ class Character {
     this.id,
     this.name,
     this.production,
-    this.weapon,
+    this.weapons,
     this.attributes, {
     this.selectedStyleRank,
     this.selectedIconFilePath,
@@ -58,7 +58,7 @@ class Character {
   final int id;
   final String name;
   final String production; // 登場作品
-  final Weapon weapon;
+  final List<Weapon> weapons;
   final List<Attribute>? attributes;
   String? selectedStyleRank;
   String? selectedIconFilePath;
@@ -68,9 +68,9 @@ class Character {
   // スタイル情報は後から追加するので別出ししている。
   final styles = <Style>[];
 
-  WeaponType get weaponType => weapon.type;
+  List<WeaponType> get weaponTypes => weapons.map((e) => e.type).toList();
 
-  WeaponCategory get weaponCategory => weapon.category;
+  List<WeaponCategory> get weaponCategories => weapons.map((e) => e.category).toList();
 
   Style? get selectedStyle => styles.firstWhereOrNull((style) => style.rank == selectedStyleRank);
 
@@ -100,7 +100,7 @@ class Character {
       id,
       name,
       production,
-      weapon,
+      weapons,
       attributes,
       selectedStyleRank: selectedStyleRank,
       selectedIconFilePath: selectedIconFilePath,

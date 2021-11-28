@@ -164,20 +164,40 @@ class CharacterDetailPage extends ConsumerWidget {
   }
 
   Widget _viewAttribute(WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
-    final haveAttribute = character.attributes?.isNotEmpty ?? false;
     return Wrap(
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
       spacing: 8.0,
       runSpacing: 8.0,
-      children: <Widget>[
-        WeaponIcon.normal(character.weaponType),
-        if (character.weaponCategory != WeaponCategory.rod) WeaponCategoryIcon.normal(character.weaponCategory),
-        if (haveAttribute)
-          for (final attribute in character.attributes ?? []) AttributeIcon(type: attribute.type),
-      ],
+      children: _viewIconsAttr(ref),
     );
+  }
+
+  List<Widget> _viewIconsAttr(WidgetRef ref) {
+    final c = ref.watch(characterDetailViewModelProvider).character;
+
+    final widgets = <Widget>[];
+    for (var w in c.weapons) {
+      widgets.add(WeaponIcon.normal(w.type));
+    }
+
+    for (var w in c.weapons) {
+      if (w.category != WeaponCategory.rod) {
+        widgets.add(WeaponCategoryIcon.normal(w.category));
+      }
+    }
+
+    final attrs = c.attributes;
+    if (attrs == null || attrs.isEmpty) {
+      return widgets;
+    }
+
+    for (var a in attrs) {
+      if (a.type != null) {
+        widgets.add(AttributeIcon(type: a.type!));
+      }
+    }
+    return widgets;
   }
 
   ///

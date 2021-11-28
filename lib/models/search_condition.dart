@@ -30,11 +30,11 @@ class SearchCondition {
   ///
   /// 武器種別でのフィルタ
   ///
-  bool filterWeaponType(Weapon weapon) {
+  bool filterWeaponType(List<Weapon> weapon) {
     if (weaponType == null) {
       return true;
     }
-    return weapon.type == weaponType;
+    return weapon.any((w) => w.type == weaponType);
   }
 
   ///
