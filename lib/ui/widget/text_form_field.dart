@@ -113,7 +113,7 @@ class StatusEditField extends StatelessWidget {
       ),
       style: const TextStyle(fontSize: 28),
       maxLength: 5,
-      initialValue: initValue.toString(),
+      initialValue: _initValue(),
       onChanged: (String? v) {
         final num = ((v != null) ? int.tryParse(v) : 0) ?? 0;
         onChanged(num);
@@ -125,5 +125,13 @@ class StatusEditField extends StatelessWidget {
         }
       },
     );
+  }
+
+  String _initValue() {
+    if (initValue <= 0) {
+      return '';
+    } else {
+      return initValue.toString();
+    }
   }
 }
