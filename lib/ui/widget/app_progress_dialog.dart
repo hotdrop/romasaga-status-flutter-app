@@ -17,7 +17,7 @@ class AppProgressDialog<T> {
       final result = await execute();
       _closeDialog(context);
       onSuccess(result);
-    } on Exception catch (e) {
+    } catch (e) {
       _closeDialog(context);
       onError('$e');
     }
