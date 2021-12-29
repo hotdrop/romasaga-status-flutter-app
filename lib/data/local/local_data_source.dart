@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rsapp/data/local/entity/character_entity.dart';
 import 'package:rsapp/data/local/entity/letter_entity.dart';

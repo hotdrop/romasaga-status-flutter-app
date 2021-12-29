@@ -390,11 +390,44 @@ class CharacterDetailPage extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           const Padding(padding: EdgeInsets.only(left: 16.0)),
-          _favoriteIcon(context, ref),
-          const Padding(padding: EdgeInsets.only(left: 16.0)),
           _statusUpEventIcon(context, ref),
+          const Padding(padding: EdgeInsets.only(left: 16.0)),
+          _highLevelIcon(context, ref),
+          const Padding(padding: EdgeInsets.only(left: 16.0)),
+          _favoriteIcon(context, ref),
         ],
       ),
+    );
+  }
+
+  Widget _statusUpEventIcon(BuildContext context, WidgetRef ref) {
+    final character = ref.watch(characterDetailViewModelProvider).character;
+    final color = character.statusUpEvent ? RSColors.statusUpEventSelected : Theme.of(context).disabledColor;
+
+    return IconButton(
+      icon: Icon(Icons.trending_up, color: color),
+      iconSize: 28.0,
+      onPressed: () async {
+        await ref.read(characterDetailViewModelProvider).saveStatusUpEvent(character.id, !character.statusUpEvent);
+      },
+    );
+  }
+
+  Widget _highLevelIcon(BuildContext context, WidgetRef ref) {
+    final character = ref.watch(characterDetailViewModelProvider).character;
+    Text text;
+    if (character.myStatus?.useHighLevel ?? false) {
+      text = const Text(RSStrings.detailPageHighLevelLabel, style: TextStyle(color: Colors.deepPurple));
+    } else {
+      text = const Text(RSStrings.detailPageAroundLabel, style: TextStyle(color: Colors.deepOrange));
+    }
+
+    return InkWell(
+      child: text,
+      onTap: () async {
+        final value = character.myStatus?.useHighLevel ?? false;
+        await ref.read(characterDetailViewModelProvider).saveHighLevel(!value);
+      },
     );
   }
 
@@ -413,19 +446,6 @@ class CharacterDetailPage extends ConsumerWidget {
       onPressed: () async {
         final value = character.myStatus?.favorite ?? false;
         await ref.read(characterDetailViewModelProvider).saveFavorite(!value);
-      },
-    );
-  }
-
-  Widget _statusUpEventIcon(BuildContext context, WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
-    final color = character.statusUpEvent ? RSColors.statusUpEventSelected : Theme.of(context).disabledColor;
-
-    return IconButton(
-      icon: Icon(Icons.trending_up, color: color),
-      iconSize: 28.0,
-      onPressed: () async {
-        await ref.read(characterDetailViewModelProvider).saveStatusUpEvent(character.id, !character.statusUpEvent);
       },
     );
   }

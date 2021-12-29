@@ -37,25 +37,35 @@ class CharactersPage extends ConsumerWidget {
 
   Widget _onSuccess(BuildContext context, WidgetRef ref) {
     final statusUpCnt = ref.watch(charactersViewModelProvider).countStatusUpCharacters;
+    final highLevelCount = ref.watch(charactersViewModelProvider).countForHighLevelCharacters;
+    final roundCount = ref.watch(charactersViewModelProvider).countForRoundCharacters;
     final favoriteCnt = ref.watch(charactersViewModelProvider).countFavoriteCharacters;
     final otherCnt = ref.watch(charactersViewModelProvider).countNotFavoriteCharacters;
+
     return DefaultTabController(
-      length: 3,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           title: const Text(RSStrings.charactersPageTitle),
           actions: <Widget>[
             _titlePopupMenu(ref),
           ],
-          bottom: TabBar(tabs: <Tab>[
-            Tab(text: '${RSStrings.charactersPageTabStatusUp}($statusUpCnt)'),
-            Tab(text: '${RSStrings.charactersPageTabFavorite}($favoriteCnt)'),
-            Tab(text: '${RSStrings.charactersPageTabNotFavorite}($otherCnt)'),
-          ]),
+          bottom: TabBar(
+            isScrollable: true,
+            tabs: <Tab>[
+              Tab(text: '${RSStrings.charactersPageTabStatusUp}($statusUpCnt)'),
+              Tab(text: '${RSStrings.charactersPageTabHighLevel}($highLevelCount)'),
+              Tab(text: '${RSStrings.charactersPageTabAround}($roundCount)'),
+              Tab(text: '${RSStrings.charactersPageTabFavorite}($favoriteCnt)'),
+              Tab(text: '${RSStrings.charactersPageTabNotFavorite}($otherCnt)'),
+            ],
+          ),
         ),
         body: TabBarView(
           children: <Widget>[
             _tabStatusUpEvent(ref),
+            _tabHighLevel(ref),
+            _tabAround(ref),
             _tabFavorite(ref),
             _tabNotFavorite(ref),
           ],
@@ -90,6 +100,16 @@ class CharactersPage extends ConsumerWidget {
 
   Widget _tabStatusUpEvent(WidgetRef ref) {
     final characters = ref.watch(charactersViewModelProvider).statusUpCharacters;
+    return _viewList(characters, ref);
+  }
+
+  Widget _tabHighLevel(WidgetRef ref) {
+    final characters = ref.watch(charactersViewModelProvider).forHighLevelCharacters;
+    return _viewList(characters, ref);
+  }
+
+  Widget _tabAround(WidgetRef ref) {
+    final characters = ref.watch(charactersViewModelProvider).forRoundCharacters;
     return _viewList(characters, ref);
   }
 

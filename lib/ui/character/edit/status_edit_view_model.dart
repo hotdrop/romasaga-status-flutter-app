@@ -144,7 +144,20 @@ class _StatusEditViewModel extends BaseViewModel {
   }
 
   Future<void> saveNewStatus(MyStatus currentStatus) async {
-    final newStatus = MyStatus(currentStatus.id, editHp, editStr, editVit, editDex, editAgi, editInt, editSpi, editLove, editAttr, currentStatus.favorite);
+    final newStatus = MyStatus(
+      currentStatus.id,
+      editHp,
+      editStr,
+      editVit,
+      editDex,
+      editAgi,
+      editInt,
+      editSpi,
+      editLove,
+      editAttr,
+      currentStatus.favorite,
+      currentStatus.useHighLevel,
+    );
     await _read(myStatusRepositoryProvider).save(newStatus);
   }
 }

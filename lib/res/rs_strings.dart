@@ -10,7 +10,9 @@ class RSStrings {
 
   static const String charactersPageTitle = 'キャラ一覧';
   static const String charactersPageTabStatusUp = 'ステUP';
-  static const String charactersPageTabFavorite = 'お気に入り';
+  static const String charactersPageTabHighLevel = '高難';
+  static const String charactersPageTabAround = '周回用';
+  static const String charactersPageTabFavorite = 'お気入';
   static const String charactersPageTabNotFavorite = '未育成';
   static const String charactersOrderStatus = 'ステータス';
   static const String charactersOrderHp = 'HP';
@@ -26,6 +28,8 @@ class RSStrings {
   static const String detailPageChangeStyleIconDialogMessage = 'このアイコンを一覧表示用にしますか？';
   static const String detailPageRefreshIconDialogMessage = 'アイコン情報をサーバーから再取得します。よろしいですか？';
   static const String detailPageStatusTableLabel = 'ステータス上限表';
+  static const String detailPageHighLevelLabel = '高';
+  static const String detailPageAroundLabel = '周';
 
   static const String statusEditTitle = 'ステータス編集';
 
