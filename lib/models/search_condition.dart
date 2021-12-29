@@ -7,7 +7,9 @@ class SearchCondition {
   WeaponType? weaponType;
   AttributeType? attributeType;
   ProductionType? productionType;
-  bool isFavorite = false;
+  bool _isFavorite = false;
+  bool _isHighLevel = false;
+  bool _isAround = false;
 
   bool filterWord({required String targetName, required String targetProduction}) {
     if (keyword == null) {
@@ -16,15 +18,34 @@ class SearchCondition {
     return targetName.contains(keyword!) || targetProduction.contains(keyword!);
   }
 
+  bool get isFilterFavorite => _isFavorite;
+  bool get isFilterHighLevel => _isHighLevel;
+  bool get isFilterAround => _isAround;
+
+  void setFilterCategory({required bool favorite, required bool highLevel, required bool around}) {
+    _isFavorite = favorite;
+    _isHighLevel = highLevel;
+    _isAround = around;
+  }
+
   ///
-  /// お気に入りフィルター可能
-  /// お気に入りでないものはフィルターする価値ないのでしない。
+  /// カテゴリーフィルター
   ///
-  bool filterFavorite(bool fav) {
-    if (!isFavorite) {
-      return true;
+  bool filterCategory(bool fav, bool isHighLevel) {
+    if (_isFavorite) {
+      return fav;
     }
-    return fav;
+
+    if (_isHighLevel) {
+      return fav && isHighLevel;
+    }
+
+    if (_isAround) {
+      return fav && !isHighLevel;
+    }
+
+    // どのフィルターもかかっていない場合はフィルターかけない
+    return true;
   }
 
   ///

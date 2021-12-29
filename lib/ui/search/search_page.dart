@@ -129,7 +129,7 @@ class SearchPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _viewFilterFavorite(context, ref),
+          _viewFilterKind(context, ref),
           Divider(color: Theme.of(context).primaryColor),
           _viewFilterWeaponType(context, ref),
           const SizedBox(height: 8),
@@ -148,12 +148,13 @@ class SearchPage extends ConsumerWidget {
     );
   }
 
-  Widget _viewFilterFavorite(BuildContext context, WidgetRef ref) {
-    bool selectedFavorite = ref.watch(searchViewModelProvider).isFilterFavorite;
-    return FavoriteIcon(
-      isSelected: selectedFavorite,
-      onTap: () {
-        ref.read(searchViewModelProvider).filterFavorite(!selectedFavorite);
+  Widget _viewFilterKind(BuildContext context, WidgetRef ref) {
+    return CategoryIcons(
+      isFavSelected: ref.watch(searchViewModelProvider).isFilterFavorite,
+      isHighLevelSelected: ref.watch(searchViewModelProvider).isFilterHighLevel,
+      isAroundSelected: ref.watch(searchViewModelProvider).isFilterAround,
+      onTap: (bool fav, bool high, bool around) {
+        ref.read(searchViewModelProvider).filterCategory(favorite: fav, highLevel: high, around: around);
       },
     );
   }

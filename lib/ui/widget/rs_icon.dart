@@ -270,51 +270,6 @@ class StatusIcon extends StatelessWidget {
   }
 }
 
-///
-/// 検索画面でのキャラクターお気に入りアイコン
-///
-class FavoriteIcon extends StatefulWidget {
-  const FavoriteIcon({
-    Key? key,
-    required this.isSelected,
-    required this.onTap,
-  }) : super(key: key);
-
-  final Function onTap;
-  final bool isSelected;
-
-  @override
-  State<StatefulWidget> createState() => _FavoriteIconState();
-}
-
-class _FavoriteIconState extends State<FavoriteIcon> {
-  bool _isSelected = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _isSelected = widget.isSelected;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final iconColor = _isSelected ? RSColors.favoriteSelected : Theme.of(context).disabledColor;
-    return RawMaterialButton(
-      shape: const CircleBorder(),
-      constraints: const BoxConstraints(
-        minWidth: 40.0,
-        minHeight: 40.0,
-      ),
-      fillColor: Theme.of(context).disabledColor,
-      child: Icon(Icons.star_rounded, color: iconColor, size: 20.0),
-      onPressed: () {
-        setState(() => _isSelected = !_isSelected);
-        widget.onTap();
-      },
-    );
-  }
-}
-
 class ProductionLogo extends StatelessWidget {
   const ProductionLogo({
     Key? key,
@@ -370,5 +325,112 @@ class ProductionLogo extends StatelessWidget {
       case ProductionType.saga2:
         return RSImages.logoGBSaga2;
     }
+  }
+}
+
+///
+/// 検索画面でのカテゴリーアイコン（お気に入り、高難易度、周回の3つ）
+/// これらはいずれかひとつしか選べないようにしているのでまとめてここで定義する。
+///
+class CategoryIcons extends StatefulWidget {
+  const CategoryIcons({
+    Key? key,
+    required this.isFavSelected,
+    required this.isHighLevelSelected,
+    required this.isAroundSelected,
+    required this.onTap,
+  }) : super(key: key);
+
+  final bool isFavSelected;
+  final bool isHighLevelSelected;
+  final bool isAroundSelected;
+  final Function(bool, bool, bool) onTap;
+
+  @override
+  State<StatefulWidget> createState() => _CategoryIconsState();
+}
+
+class _CategoryIconsState extends State<CategoryIcons> {
+  bool _isFavSelected = false;
+  bool _isHighLevelSelected = false;
+  bool _isAroundSelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavSelected = widget.isFavSelected;
+    _isHighLevelSelected = widget.isHighLevelSelected;
+    _isAroundSelected = widget.isAroundSelected;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 16.0,
+      runSpacing: 16.0,
+      children: [
+        _favoriteIcon(),
+        _highLevelIcon(),
+        _aroundIcon(),
+      ],
+    );
+  }
+
+  Widget _favoriteIcon() {
+    final iconColor = _isFavSelected ? RSColors.favoriteSelected : Theme.of(context).disabledColor;
+    return _createIconButton(
+      child: Icon(Icons.star_rounded, color: iconColor, size: 20.0),
+      onChangeState: () {
+        setState(() {
+          _isFavSelected = !_isFavSelected;
+          _isHighLevelSelected = false;
+          _isAroundSelected = false;
+        });
+      },
+    );
+  }
+
+  Widget _highLevelIcon() {
+    final color = _isHighLevelSelected ? RSColors.highLevelSelected : Theme.of(context).disabledColor;
+    return _createIconButton(
+      child: Text(RSStrings.highLevelLabel, style: TextStyle(color: color)),
+      onChangeState: () {
+        setState(() {
+          _isFavSelected = false;
+          _isHighLevelSelected = !_isHighLevelSelected;
+          _isAroundSelected = false;
+        });
+      },
+    );
+  }
+
+  Widget _aroundIcon() {
+    final color = _isAroundSelected ? RSColors.aroundSelected : Theme.of(context).disabledColor;
+    return _createIconButton(
+      child: Text(RSStrings.aroundLabel, style: TextStyle(color: color)),
+      onChangeState: () {
+        setState(() {
+          _isFavSelected = false;
+          _isHighLevelSelected = false;
+          _isAroundSelected = !_isAroundSelected;
+        });
+      },
+    );
+  }
+
+  Widget _createIconButton({required Widget child, required Function onChangeState}) {
+    return RawMaterialButton(
+      shape: const CircleBorder(),
+      constraints: const BoxConstraints(
+        minWidth: 40.0,
+        minHeight: 40.0,
+      ),
+      fillColor: Theme.of(context).disabledColor,
+      child: child,
+      onPressed: () {
+        onChangeState();
+        widget.onTap(_isFavSelected, _isHighLevelSelected, _isAroundSelected);
+      },
+    );
   }
 }

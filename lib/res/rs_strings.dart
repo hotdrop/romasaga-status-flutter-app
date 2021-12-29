@@ -28,9 +28,9 @@ class RSStrings {
   static const String detailPageChangeStyleIconDialogMessage = 'このアイコンを一覧表示用にしますか？';
   static const String detailPageRefreshIconDialogMessage = 'アイコン情報をサーバーから再取得します。よろしいですか？';
   static const String detailPageStatusTableLabel = 'ステータス上限表';
-  static const String detailPageHighLevelLabel = '高';
-  static const String detailPageAroundLabel = '周';
 
+  static const String highLevelLabel = '高';
+  static const String aroundLabel = '周';
   static const String statusEditTitle = 'ステータス編集';
 
   // 検索

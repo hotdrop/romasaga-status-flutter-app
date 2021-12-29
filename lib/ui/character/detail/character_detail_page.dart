@@ -417,14 +417,16 @@ class CharacterDetailPage extends ConsumerWidget {
     final character = ref.watch(characterDetailViewModelProvider).character;
     Text text;
     if (character.myStatus?.useHighLevel ?? false) {
-      text = const Text(RSStrings.detailPageHighLevelLabel, style: TextStyle(color: Colors.deepPurple));
+      text = const Text(RSStrings.highLevelLabel, style: TextStyle(color: RSColors.highLevelSelected, fontSize: 20));
     } else {
-      text = const Text(RSStrings.detailPageAroundLabel, style: TextStyle(color: Colors.deepOrange));
+      text = const Text(RSStrings.aroundLabel, style: TextStyle(color: RSColors.aroundSelected, fontSize: 20));
     }
 
-    return InkWell(
+    return RawMaterialButton(
+      shape: const CircleBorder(),
+      constraints: const BoxConstraints(minWidth: 40.0, minHeight: 40.0),
       child: text,
-      onTap: () async {
+      onPressed: () async {
         final value = character.myStatus?.useHighLevel ?? false;
         await ref.read(characterDetailViewModelProvider).saveHighLevel(!value);
       },
