@@ -73,7 +73,8 @@ class _MyStatusDao {
       entity.spirit,
       entity.love,
       entity.attr,
-      entity.favorite == MyStatusEntity.isFavorite ? true : false,
+      entity.favorite == MyStatusEntity.on ? true : false,
+      entity.useHighLevel == MyStatusEntity.on ? true : false,
     );
   }
 
@@ -89,7 +90,8 @@ class _MyStatusDao {
       spirit: myStatus.spi,
       love: myStatus.love,
       attr: myStatus.attr,
-      favorite: myStatus.favorite ? MyStatusEntity.isFavorite : MyStatusEntity.notFavorite,
+      favorite: myStatus.favorite ? MyStatusEntity.on : MyStatusEntity.off,
+      useHighLevel: myStatus.useHighLevel ? MyStatusEntity.on : MyStatusEntity.off,
     );
   }
 }

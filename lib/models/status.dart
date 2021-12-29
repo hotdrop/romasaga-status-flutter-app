@@ -11,10 +11,11 @@ class MyStatus {
     this.love,
     this.attr,
     this.favorite,
+    this.useHighLevel,
   );
 
   factory MyStatus.empty(int id) {
-    return MyStatus(id, 0, 0, 0, 0, 0, 0, 0, 0, 0, false);
+    return MyStatus(id, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false);
   }
 
   final int id;
@@ -28,6 +29,7 @@ class MyStatus {
   final int love;
   final int attr;
   bool favorite;
+  bool useHighLevel;
 
   int sumWithoutHp() {
     return str + vit + dex + agi + inte + spi + love + attr;

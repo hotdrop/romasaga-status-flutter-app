@@ -19,6 +19,16 @@ class _CharactersViewModel extends BaseViewModel {
   List<Character> get statusUpCharacters => _characters.where((c) => c.statusUpEvent).toList();
   int get countStatusUpCharacters => statusUpCharacters.length;
 
+  List<Character> get forHighLevelCharacters => _characters.where((c) {
+        return (c.myStatus?.favorite ?? false) && (c.myStatus?.useHighLevel ?? false);
+      }).toList();
+  int get countForHighLevelCharacters => forHighLevelCharacters.length;
+
+  List<Character> get forRoundCharacters => _characters.where((c) {
+        return (c.myStatus?.favorite ?? false) && !(c.myStatus?.useHighLevel ?? false);
+      }).toList();
+  int get countForRoundCharacters => forRoundCharacters.length;
+
   List<Character> get favoriteCharacters => _characters.where((c) => c.myStatus?.favorite ?? false).toList();
   int get countFavoriteCharacters => favoriteCharacters.length;
 

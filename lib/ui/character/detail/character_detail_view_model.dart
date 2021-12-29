@@ -104,6 +104,14 @@ class _CharacterDetailViewModel extends BaseViewModel {
     refreshCharacterData();
   }
 
+  Future<void> saveHighLevel(bool useHighLevel) async {
+    _character.myStatus ??= MyStatus.empty(_character.id);
+    _character.myStatus!.useHighLevel = useHighLevel;
+    await _read(myStatusRepositoryProvider).save(_character.myStatus!);
+
+    refreshCharacterData();
+  }
+
   ///
   /// アイコンの更新処理ではrefreshCharacterDataを実行しないので画面状態はそのままになる。
   /// そのため呼び元でrefreshCharacterDataを実行する
