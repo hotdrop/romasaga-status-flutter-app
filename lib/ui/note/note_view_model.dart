@@ -25,7 +25,10 @@ class _NoteViewModel extends BaseViewModel {
   }
 
   Future<void> save() async {
-    await _read(noteRepositoryProvider).save(_inputNote ?? '');
+    // 更新されていれば保存する
+    if (_note != _inputNote) {
+      await _read(noteRepositoryProvider).save(_inputNote ?? '');
+    }
   }
 
   @override
