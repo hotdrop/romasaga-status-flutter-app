@@ -93,6 +93,7 @@ class SearchPage extends ConsumerWidget {
     }
     return ListView.builder(
       shrinkWrap: true,
+      padding: const EdgeInsets.only(bottom: 24),
       itemCount: characters.length,
       itemBuilder: (_, index) {
         return RowCharacterItem(characters[index], refreshListener: () async {

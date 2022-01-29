@@ -3,6 +3,7 @@ import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/account/account_page.dart';
 import 'package:rsapp/ui/character/characters_page.dart';
 import 'package:rsapp/ui/information/information_page.dart';
+import 'package:rsapp/ui/note/note_page.dart';
 import 'package:rsapp/ui/search/search_page.dart';
 
 class TopPage extends StatefulWidget {
@@ -59,8 +60,10 @@ class _TopPageState extends State<TopPage> {
       case 1:
         return const SearchPage();
       case 2:
-        return const InformationPage();
+        return const NotePage();
       case 3:
+        return const InformationPage();
+      case 4:
         return const AccountPage();
       default:
         return null;
@@ -77,6 +80,7 @@ class Destination {
 const _allDestinations = <Destination>[
   Destination(RSStrings.bottomMenuCharacter, Icons.view_list),
   Destination(RSStrings.bottomMenuSearch, Icons.search),
+  Destination(RSStrings.bottomMenuNote, Icons.note_alt),
   Destination(RSStrings.bottomMenuInformation, Icons.info),
   Destination(RSStrings.bottomMenuAccount, Icons.person),
 ];
