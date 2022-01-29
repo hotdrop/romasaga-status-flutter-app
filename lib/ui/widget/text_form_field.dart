@@ -135,3 +135,48 @@ class StatusEditField extends StatelessWidget {
     }
   }
 }
+
+// 複数行テキストフィールド
+class RSMultiLineTextField extends StatefulWidget {
+  const RSMultiLineTextField({
+    Key? key,
+    required this.initValue,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final String? initValue;
+  final void Function(String) onChanged;
+
+  @override
+  _RSMultiLineTextFieldState createState() => _RSMultiLineTextFieldState();
+}
+
+class _RSMultiLineTextFieldState extends State<RSMultiLineTextField> {
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = widget.initValue?.toString() ?? '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _controller,
+      maxLines: null,
+      expands: true,
+      textAlignVertical: TextAlignVertical.top,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+      ),
+      onChanged: (String value) => widget.onChanged(value),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+}

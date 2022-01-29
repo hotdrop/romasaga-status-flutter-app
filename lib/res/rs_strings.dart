@@ -5,6 +5,7 @@ class RSStrings {
 
   static const String bottomMenuCharacter = 'キャラ';
   static const String bottomMenuSearch = '検索';
+  static const String bottomMenuNote = 'メモ';
   static const String bottomMenuInformation = '情報';
   static const String bottomMenuAccount = 'アカウント';
 
@@ -41,6 +42,9 @@ class RSStrings {
   static const String searchFilterClearWeapon = '武器種別をクリア';
   static const String searchFilterClearAttributes = '属性をクリア';
   static const String searchFilterClearProduction = '作品をクリア';
+
+  // ノート
+  static const String notePageTitle = '簡易メモ';
 
   // 情報
   static const String infoPageTitle = '公式情報';

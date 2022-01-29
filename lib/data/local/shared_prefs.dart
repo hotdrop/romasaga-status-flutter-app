@@ -57,6 +57,14 @@ class _SharedPrefs {
     await _saveInt('key006', value);
   }
 
+  ///
+  /// 簡易ノート
+  ///
+  Future<String?> getNote() async => await _getString('key007');
+  Future<void> saveNote(String value) async {
+    await _saveString('key007', value);
+  }
+
   // 以下は型別のデータ格納/取得処理
   Future<String?> _getString(String key) async {
     final prefs = await _read(_sharefPregerencesProvider);
