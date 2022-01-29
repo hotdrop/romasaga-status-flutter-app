@@ -17,6 +17,7 @@ class _NoteViewModel extends BaseViewModel {
 
   Future<void> _init() async {
     _note = await _read(noteRepositoryProvider).find();
+    _inputNote = _note;
     onSuccess();
   }
 
