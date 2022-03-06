@@ -324,6 +324,8 @@ class ProductionLogo extends StatelessWidget {
         return RSImages.logoGBSaga1;
       case ProductionType.saga2:
         return RSImages.logoGBSaga2;
+      case ProductionType.saga3:
+        return RSImages.logoGBSaga3;
     }
   }
 }

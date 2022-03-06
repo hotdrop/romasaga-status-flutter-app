@@ -20,6 +20,7 @@ class RSImages {
   static const String logoRomasagaRS = '$_rootLogoPath/RomasagaRS.jpg';
   static const String logoGBSaga1 = '$_rootLogoPath/Saga.jpg';
   static const String logoGBSaga2 = '$_rootLogoPath/Saga2.jpg';
+  static const String logoGBSaga3 = '$_rootLogoPath/Saga3.jpg';
 
   // アイコン
   static const String icDefault = '$_rootIconsPath/default.jpg';

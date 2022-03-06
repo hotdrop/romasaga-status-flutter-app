@@ -33,6 +33,8 @@ class Production {
         return ProductionType.saga1;
       case RSStrings.productSaga2:
         return ProductionType.saga2;
+      case RSStrings.productSaga3:
+        return ProductionType.saga3;
       default:
         throw FormatException('不正なProductionNameです。name=$name');
     }
@@ -51,4 +53,5 @@ enum ProductionType {
   romasagaRS,
   saga1,
   saga2,
+  saga3,
 }
