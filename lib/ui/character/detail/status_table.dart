@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/stage.dart';
+import 'package:rsapp/models/style.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class StatusTable extends StatelessWidget {
-  const StatusTable({
-    Key? key,
-    required this.character,
-    required this.ranks,
-    required this.stage,
-  }) : super(key: key);
+  const StatusTable({Key? key, required this.character, required this.ranks, required this.stage}) : super(key: key);
 
   final Character character;
   final List<String> ranks;
@@ -22,95 +18,102 @@ class StatusTable extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        _viewTitle(),
+        const Text(
+          RSStrings.detailPageStatusTableLabel,
+          style: TextStyle(fontStyle: FontStyle.italic, decoration: TextDecoration.underline),
+        ),
         const SizedBox(height: 8),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: _viewTable(context),
+          child: _ViewTable(character, ranks, stage),
         ),
       ],
     );
   }
+}
 
-  Widget _viewTitle() {
-    return const Text(
-      RSStrings.detailPageStatusTableLabel,
-      style: TextStyle(fontStyle: FontStyle.italic, decoration: TextDecoration.underline),
-    );
-  }
+class _ViewTable extends StatelessWidget {
+  const _ViewTable(this.character, this.ranks, this.stage, {Key? key}) : super(key: key);
 
-  Widget _viewTable(BuildContext context) {
+  final Character character;
+  final List<String> ranks;
+  final Stage stage;
+
+  @override
+  Widget build(BuildContext context) {
     final side = BorderSide(color: Theme.of(context).dividerColor, width: 1.0, style: BorderStyle.solid);
+
     return Table(
       border: TableBorder(bottom: side, horizontalInside: side),
       defaultColumnWidth: const FixedColumnWidth(40.0),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: <TableRow>[
-        _rowHeader(context),
+        const TableRow(
+          children: [
+            SizedBox(),
+            _TableRowHeader(RSStrings.strName),
+            _TableRowHeader(RSStrings.vitName),
+            _TableRowHeader(RSStrings.agiName),
+            _TableRowHeader(RSStrings.dexName),
+            _TableRowHeader(RSStrings.intName),
+            _TableRowHeader(RSStrings.spiName),
+            _TableRowHeader(RSStrings.loveName),
+            _TableRowHeader(RSStrings.attrName),
+          ],
+        ),
         ..._rowStatus(context),
       ],
     );
   }
 
-  TableRow _rowHeader(BuildContext context) {
-    return const TableRow(
+  List<TableRow> _rowStatus(BuildContext context) {
+    _MaxStatus maxState = _MaxStatus();
+    for (var rank in ranks) {
+      final style = character.getStyle(rank);
+      maxState.update(style);
+    }
+
+    return ranks.map((r) => character.getStyle(r)).map((s) => _toTableRow(s, stage.statusLimit, maxState)).toList();
+  }
+
+  TableRow _toTableRow(Style style, int stageStatusLimit, _MaxStatus maxStatus) {
+    return TableRow(
       children: [
-        SizedBox(),
-        _TableRowHeader(RSStrings.strName),
-        _TableRowHeader(RSStrings.vitName),
-        _TableRowHeader(RSStrings.agiName),
-        _TableRowHeader(RSStrings.dexName),
-        _TableRowHeader(RSStrings.intName),
-        _TableRowHeader(RSStrings.spiName),
-        _TableRowHeader(RSStrings.loveName),
-        _TableRowHeader(RSStrings.attrName),
+        _TableRowIcon(style.iconFilePath),
+        _TableRowStatus(style.str, stageStatusLimit, maxStatus.str),
+        _TableRowStatus(style.vit, stageStatusLimit, maxStatus.vit),
+        _TableRowStatus(style.agi, stageStatusLimit, maxStatus.agi),
+        _TableRowStatus(style.dex, stageStatusLimit, maxStatus.dex),
+        _TableRowStatus(style.intelligence, stageStatusLimit, maxStatus.inte),
+        _TableRowStatus(style.spirit, stageStatusLimit, maxStatus.spi),
+        _TableRowStatus(style.love, stageStatusLimit, maxStatus.love),
+        _TableRowStatus(style.attr, stageStatusLimit, maxStatus.attr),
       ],
     );
   }
+}
 
-  List<TableRow> _rowStatus(BuildContext context) {
-    int maxStr = 0;
-    int maxVit = 0;
-    int maxAgi = 0;
-    int maxDex = 0;
-    int maxInt = 0;
-    int maxSpi = 0;
-    int maxLove = 0;
-    int maxAttr = 0;
+class _MaxStatus {
+  _MaxStatus();
 
-    for (var rank in ranks) {
-      final style = character.getStyle(rank);
-      maxStr = (style.str > maxStr) ? style.str : maxStr;
-      maxVit = (style.vit > maxVit) ? style.vit : maxVit;
-      maxAgi = (style.agi > maxAgi) ? style.agi : maxAgi;
-      maxDex = (style.dex > maxDex) ? style.dex : maxDex;
-      maxInt = (style.intelligence > maxInt) ? style.intelligence : maxInt;
-      maxSpi = (style.spirit > maxSpi) ? style.spirit : maxSpi;
-      maxLove = (style.love > maxLove) ? style.love : maxLove;
-      maxAttr = (style.attr > maxAttr) ? style.attr : maxAttr;
-    }
+  int str = 0;
+  int vit = 0;
+  int agi = 0;
+  int dex = 0;
+  int inte = 0;
+  int spi = 0;
+  int love = 0;
+  int attr = 0;
 
-    final List<TableRow> tableRows = [];
-    final int stageStatusLimit = stage.statusLimit;
-
-    for (var rank in ranks) {
-      final style = character.getStyle(rank);
-      final tableRow = TableRow(
-        children: [
-          _TableRowIcon(style.iconFilePath),
-          _TableRowStatus(style.str, stageStatusLimit, maxStr),
-          _TableRowStatus(style.vit, stageStatusLimit, maxVit),
-          _TableRowStatus(style.agi, stageStatusLimit, maxAgi),
-          _TableRowStatus(style.dex, stageStatusLimit, maxDex),
-          _TableRowStatus(style.intelligence, stageStatusLimit, maxInt),
-          _TableRowStatus(style.spirit, stageStatusLimit, maxSpi),
-          _TableRowStatus(style.love, stageStatusLimit, maxLove),
-          _TableRowStatus(style.attr, stageStatusLimit, maxAttr),
-        ],
-      );
-      tableRows.add(tableRow);
-    }
-    return tableRows;
+  void update(Style style) {
+    str = (style.str > str) ? style.str : str;
+    vit = (style.vit > vit) ? style.vit : vit;
+    agi = (style.agi > agi) ? style.agi : agi;
+    dex = (style.dex > dex) ? style.dex : dex;
+    inte = (style.intelligence > inte) ? style.intelligence : inte;
+    spi = (style.spirit > spi) ? style.spirit : spi;
+    love = (style.love > love) ? style.love : love;
+    attr = (style.attr > attr) ? style.attr : attr;
   }
 }
 

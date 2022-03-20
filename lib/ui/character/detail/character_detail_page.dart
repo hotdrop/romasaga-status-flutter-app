@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/models/status.dart';
+import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
+import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/character/detail/character_detail_view_model.dart';
 import 'package:rsapp/ui/character/detail/status_table.dart';
 import 'package:rsapp/ui/character/edit/status_edit_page.dart';
@@ -42,17 +45,11 @@ class CharacterDetailPage extends ConsumerWidget {
     Future.delayed(Duration.zero).then((_) {
       if (errMsg == null) {
         ref.read(characterDetailViewModelProvider).init(character);
-      } else {
-        AppDialog.onlyOk(message: errMsg).show(context);
       }
     });
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(RSStrings.detailPageTitle),
-      ),
-      body: const Center(
-        child: CircularProgressIndicator(),
-      ),
+    return OnViewLoading(
+      title: RSStrings.detailPageTitle,
+      errorMessage: errMsg,
     );
   }
 
@@ -65,19 +62,34 @@ class CharacterDetailPage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _viewCharacterOverview(context, ref),
+                _ViewCharacterOverview(
+                  character: character,
+                  selectedStyle: ref.watch(characterDetailViewModelProvider).selectedStyle,
+                ),
                 const SizedBox(height: 8),
-                _viewStatus(context, ref),
+                _ViewStatusArea(
+                  character: ref.watch(characterDetailViewModelProvider).character,
+                  selectedStyle: ref.watch(characterDetailViewModelProvider).selectedStyle,
+                  stage: ref.read(characterDetailViewModelProvider).stage,
+                ),
                 const SizedBox(height: 8),
-                _viewStyleStatusTable(ref),
+                StatusTable(
+                  character: character,
+                  ranks: ref.read(characterDetailViewModelProvider).getAllRanks(),
+                  stage: ref.read(characterDetailViewModelProvider).stage,
+                ),
                 const SizedBox(height: 24),
               ],
             ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: _viewEditStatusFab(context, ref),
-        bottomNavigationBar: _viewBottomNavigationBar(context, ref),
+        floatingActionButton: const _ViewEditStatusFab(),
+        bottomNavigationBar: _ViewBottomNavigationBar(
+          initStatusUpEvent: character.statusUpEvent,
+          initHighLevel: character.myStatus?.useHighLevel ?? false,
+          initFavorite: character.myStatus?.favorite ?? false,
+        ),
       ),
       onWillPop: () async {
         final isUpdate = ref.read(characterDetailViewModelProvider).isUpdate;
@@ -86,11 +98,19 @@ class CharacterDetailPage extends ConsumerWidget {
       },
     );
   }
+}
 
-  ///
-  /// キャラクター概要の表示領域
-  ///
-  Widget _viewCharacterOverview(BuildContext context, WidgetRef ref) {
+///
+/// キャラクター概要の表示領域
+///
+class _ViewCharacterOverview extends StatelessWidget {
+  const _ViewCharacterOverview({Key? key, required this.character, required this.selectedStyle}) : super(key: key);
+
+  final Character character;
+  final Style selectedStyle;
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
       color: Theme.of(context).backgroundColor,
@@ -99,24 +119,30 @@ class CharacterDetailPage extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _viewCharacterInfo(context, ref),
+            _ViewCharacterInfo(character: character, selectedStyle: selectedStyle),
             const SizedBox(height: 8),
-            _viewAttribute(ref),
+            _ViewIconsAttr(character: character),
             const SizedBox(height: 8),
             const HorizontalLine(),
-            _viewStyleChips(ref),
+            _ViewStyleChips(character: character),
           ],
         ),
       ),
     );
   }
+}
 
-  ///
-  /// キャラクターの作品、名前、肩書き、武器情報
-  ///
-  Widget _viewCharacterInfo(BuildContext context, WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
-    final selectedStyle = ref.watch(characterDetailViewModelProvider).selectedStyle;
+///
+/// キャラクターの作品、名前、肩書き、武器情報
+///
+class _ViewCharacterInfo extends ConsumerWidget {
+  const _ViewCharacterInfo({Key? key, required this.character, required this.selectedStyle}) : super(key: key);
+
+  final Character character;
+  final Style selectedStyle;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: <Widget>[
         GestureDetector(
@@ -162,32 +188,40 @@ class CharacterDetailPage extends ConsumerWidget {
       },
     ).show(context);
   }
+}
 
-  Widget _viewAttribute(WidgetRef ref) {
+///
+/// 属性アイコン
+///
+class _ViewIconsAttr extends StatelessWidget {
+  const _ViewIconsAttr({Key? key, required this.character}) : super(key: key);
+
+  final Character character;
+
+  @override
+  Widget build(BuildContext context) {
     return Wrap(
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
       spacing: 8.0,
       runSpacing: 8.0,
-      children: _viewIconsAttr(ref),
+      children: _viewIconsAttr(),
     );
   }
 
-  List<Widget> _viewIconsAttr(WidgetRef ref) {
-    final c = ref.watch(characterDetailViewModelProvider).character;
-
+  List<Widget> _viewIconsAttr() {
     final widgets = <Widget>[];
-    for (var w in c.weapons) {
+    for (var w in character.weapons) {
       widgets.add(WeaponIcon.normal(w.type));
     }
 
-    for (var w in c.weapons) {
+    for (var w in character.weapons) {
       if (w.category != WeaponCategory.rod) {
         widgets.add(WeaponCategoryIcon.normal(w.category));
       }
     }
 
-    final attrs = c.attributes;
+    final attrs = character.attributes;
     if (attrs == null || attrs.isEmpty) {
       return widgets;
     }
@@ -199,12 +233,18 @@ class CharacterDetailPage extends ConsumerWidget {
     }
     return widgets;
   }
+}
 
-  ///
-  /// スタイルChips
-  ///
-  Widget _viewStyleChips(WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
+///
+/// スタイルChips
+///
+class _ViewStyleChips extends ConsumerWidget {
+  const _ViewStyleChips({Key? key, required this.character}) : super(key: key);
+
+  final Character character;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return Wrap(
       children: <Widget>[
         RankChoiceChip(
@@ -217,11 +257,20 @@ class CharacterDetailPage extends ConsumerWidget {
       ],
     );
   }
+}
 
-  ///
-  /// ステータス表示領域
-  ///
-  Widget _viewStatus(BuildContext context, WidgetRef ref) {
+///
+/// ステータス表示領域
+///
+class _ViewStatusArea extends StatelessWidget {
+  const _ViewStatusArea({Key? key, required this.character, required this.selectedStyle, required this.stage}) : super(key: key);
+
+  final Character character;
+  final Style selectedStyle;
+  final Stage stage;
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
       color: Theme.of(context).backgroundColor,
@@ -229,27 +278,32 @@ class CharacterDetailPage extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           children: <Widget>[
-            _viewTotalStatus(context, ref),
+            _ViewTotalStatus(character: character, selectedStyle: selectedStyle, stage: stage),
             const SizedBox(height: 8),
             const HorizontalLine(),
             const SizedBox(height: 8),
-            _viewHpArea(ref),
+            HpGraph(status: character.myStatus?.hp ?? 0, limit: stage.hpLimit),
             const SizedBox(height: 8),
-            ..._viewEachStatus(ref),
+            _ViewEachStatus(myStatus: character.myStatus),
           ],
         ),
       ),
     );
   }
+}
 
-  ///
-  /// 合計ステータス表示欄
-  ///
-  Widget _viewTotalStatus(BuildContext context, WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
-    final stage = ref.watch(characterDetailViewModelProvider).stage;
-    final selectedStyle = ref.watch(characterDetailViewModelProvider).selectedStyle;
+///
+/// 合計ステータス表示欄
+///
+class _ViewTotalStatus extends StatelessWidget {
+  const _ViewTotalStatus({Key? key, required this.character, required this.selectedStyle, required this.stage}) : super(key: key);
 
+  final Character character;
+  final Style selectedStyle;
+  final Stage stage;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -262,19 +316,26 @@ class CharacterDetailPage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 12.0),
-            _viewStageName(context, stage.name),
+            _ViewStageName(stageName: stage.name),
             const SizedBox(height: 12.0),
-            _viewStageLimit(context, stage.statusLimit),
+            _ViewStageLimit(statusLimit: stage.statusLimit),
           ],
         ),
       ],
     );
   }
+}
 
-  ///
-  /// ステージ情報
-  ///
-  Widget _viewStageName(BuildContext context, String stageName) {
+///
+/// ステージ情報
+///
+class _ViewStageName extends StatelessWidget {
+  const _ViewStageName({Key? key, required this.stageName}) : super(key: key);
+
+  final String stageName;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         const VerticalLine(color: RSColors.stageNameLine),
@@ -291,8 +352,15 @@ class CharacterDetailPage extends ConsumerWidget {
       ],
     );
   }
+}
 
-  Widget _viewStageLimit(BuildContext context, int statusLimit) {
+class _ViewStageLimit extends StatelessWidget {
+  const _ViewStageLimit({Key? key, required this.statusLimit}) : super(key: key);
+
+  final int statusLimit;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         const VerticalLine(color: RSColors.stageLimitLine),
@@ -309,62 +377,91 @@ class CharacterDetailPage extends ConsumerWidget {
       ],
     );
   }
+}
 
-  Widget _viewHpArea(WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
-    final stage = ref.watch(characterDetailViewModelProvider).stage;
+class _ViewEachStatus extends ConsumerWidget {
+  const _ViewEachStatus({Key? key, required this.myStatus}) : super(key: key);
 
-    return HpGraph(
-      status: character.myStatus?.hp ?? 0,
-      limit: stage.hpLimit,
+  final MyStatus? myStatus;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            StatusGraph(
+              title: RSStrings.strName,
+              status: myStatus?.str ?? 0,
+              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.strName),
+            ),
+            StatusGraph(
+              title: RSStrings.vitName,
+              status: myStatus?.vit ?? 0,
+              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.vitName),
+            ),
+            StatusGraph(
+              title: RSStrings.dexName,
+              status: myStatus?.dex ?? 0,
+              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.dexName),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            StatusGraph(
+              title: RSStrings.agiName,
+              status: myStatus?.agi ?? 0,
+              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.agiName),
+            ),
+            StatusGraph(
+              title: RSStrings.intName,
+              status: myStatus?.inte ?? 0,
+              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.intName),
+            ),
+            StatusGraph(
+              title: RSStrings.spiName,
+              status: myStatus?.spi ?? 0,
+              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.spiName),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            StatusGraph(
+              title: RSStrings.loveName,
+              status: myStatus?.love ?? 0,
+              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.loveName),
+            ),
+            StatusGraph(
+              title: RSStrings.attrName,
+              status: myStatus?.attr ?? 0,
+              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.attrName),
+            ),
+            // 揃えるためにダミーでwidget加える
+            Opacity(
+              opacity: 0,
+              child: StatusGraph(
+                title: RSStrings.attrName,
+                status: myStatus?.attr ?? 0,
+                limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.attrName),
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
+}
 
-  List<Widget> _viewEachStatus(WidgetRef ref) {
-    final myStatus = ref.watch(characterDetailViewModelProvider).character.myStatus;
-    return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          StatusGraph(title: RSStrings.strName, status: myStatus?.str ?? 0, limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.strName)),
-          StatusGraph(title: RSStrings.vitName, status: myStatus?.vit ?? 0, limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.vitName)),
-          StatusGraph(title: RSStrings.dexName, status: myStatus?.dex ?? 0, limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.dexName)),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          StatusGraph(title: RSStrings.agiName, status: myStatus?.agi ?? 0, limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.agiName)),
-          StatusGraph(title: RSStrings.intName, status: myStatus?.inte ?? 0, limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.intName)),
-          StatusGraph(title: RSStrings.spiName, status: myStatus?.spi ?? 0, limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.spiName)),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          StatusGraph(title: RSStrings.loveName, status: myStatus?.love ?? 0, limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.loveName)),
-          StatusGraph(title: RSStrings.attrName, status: myStatus?.attr ?? 0, limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.attrName)),
-          // 揃えるためにダミーでwidget加える
-          Opacity(opacity: 0, child: StatusGraph(title: RSStrings.attrName, status: myStatus?.attr ?? 0, limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.attrName))),
-        ],
-      )
-    ];
-  }
+class _ViewEditStatusFab extends ConsumerWidget {
+  const _ViewEditStatusFab({Key? key}) : super(key: key);
 
-  Widget _viewStyleStatusTable(WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
-    final stage = ref.watch(characterDetailViewModelProvider).stage;
-    return StatusTable(
-      character: character,
-      ranks: ref.read(characterDetailViewModelProvider).getAllRanks(),
-      stage: stage,
-    );
-  }
-
-  ///
-  /// ステータス編集のfab
-  ///
-  Widget _viewEditStatusFab(BuildContext context, WidgetRef ref) {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
       child: const Icon(Icons.edit),
       onPressed: () async {
@@ -378,11 +475,22 @@ class CharacterDetailPage extends ConsumerWidget {
       },
     );
   }
+}
 
-  ///
-  /// ボトムメニュー
-  ///
-  Widget _viewBottomNavigationBar(BuildContext context, WidgetRef ref) {
+class _ViewBottomNavigationBar extends ConsumerWidget {
+  const _ViewBottomNavigationBar({
+    Key? key,
+    required this.initStatusUpEvent,
+    required this.initHighLevel,
+    required this.initFavorite,
+  }) : super(key: key);
+
+  final bool initStatusUpEvent;
+  final bool initHighLevel;
+  final bool initFavorite;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 4.0,
@@ -390,33 +498,95 @@ class CharacterDetailPage extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           const Padding(padding: EdgeInsets.only(left: 16.0)),
-          _statusUpEventIcon(context, ref),
+          _StatusUpEventIcon(
+            initValue: initStatusUpEvent,
+            onPressed: (newVal) async {
+              await ref.read(characterDetailViewModelProvider).saveStatusUpEvent(newVal);
+            },
+          ),
           const Padding(padding: EdgeInsets.only(left: 16.0)),
-          _highLevelIcon(context, ref),
+          _HighLevelIcon(
+            initValue: initHighLevel,
+            onPressed: (newVal) async {
+              await ref.read(characterDetailViewModelProvider).saveHighLevel(newVal);
+            },
+          ),
           const Padding(padding: EdgeInsets.only(left: 16.0)),
-          _favoriteIcon(context, ref),
+          _FavoriteIcon(
+            initValue: initFavorite,
+            onPressed: (newVal) async {
+              await ref.read(characterDetailViewModelProvider).saveFavorite(newVal);
+            },
+          ),
         ],
       ),
     );
   }
+}
 
-  Widget _statusUpEventIcon(BuildContext context, WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
-    final color = character.statusUpEvent ? RSColors.statusUpEventSelected : Theme.of(context).disabledColor;
+///
+/// ステータスアップイベントアイコン
+///
+class _StatusUpEventIcon extends StatefulWidget {
+  const _StatusUpEventIcon({Key? key, required this.initValue, required this.onPressed}) : super(key: key);
 
+  final bool initValue;
+  final Function(bool) onPressed;
+
+  @override
+  State<StatefulWidget> createState() => _StatusUpEventIconState();
+}
+
+class _StatusUpEventIconState extends State<_StatusUpEventIcon> {
+  bool _isSelected = false;
+
+  @override
+  void initState() {
+    _isSelected = widget.initValue;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.trending_up, color: color),
+      icon: Icon(
+        Icons.trending_up,
+        color: _isSelected ? RSColors.statusUpEventSelected : Theme.of(context).disabledColor,
+      ),
       iconSize: 28.0,
-      onPressed: () async {
-        await ref.read(characterDetailViewModelProvider).saveStatusUpEvent(character.id, !character.statusUpEvent);
+      onPressed: () {
+        widget.onPressed(!_isSelected);
+        setState(() => _isSelected = !_isSelected);
       },
     );
   }
+}
 
-  Widget _highLevelIcon(BuildContext context, WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
+///
+/// 高難易度/周回アイコン
+class _HighLevelIcon extends StatefulWidget {
+  const _HighLevelIcon({Key? key, required this.initValue, required this.onPressed}) : super(key: key);
+
+  final bool initValue;
+  final Function(bool) onPressed;
+
+  @override
+  State<StatefulWidget> createState() => _HighLevelIconState();
+}
+
+class _HighLevelIconState extends State<_HighLevelIcon> {
+  bool _isSelected = false;
+
+  @override
+  void initState() {
+    _isSelected = widget.initValue;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     Text text;
-    if (character.myStatus?.useHighLevel ?? false) {
+    if (_isSelected) {
       text = const Text(RSStrings.highLevelLabel, style: TextStyle(color: RSColors.highLevelSelected, fontSize: 20));
     } else {
       text = const Text(RSStrings.aroundLabel, style: TextStyle(color: RSColors.aroundSelected, fontSize: 20));
@@ -426,17 +596,40 @@ class CharacterDetailPage extends ConsumerWidget {
       shape: const CircleBorder(),
       constraints: const BoxConstraints(minWidth: 40.0, minHeight: 40.0),
       child: text,
-      onPressed: () async {
-        final value = character.myStatus?.useHighLevel ?? false;
-        await ref.read(characterDetailViewModelProvider).saveHighLevel(!value);
+      onPressed: () {
+        widget.onPressed(!_isSelected);
+        setState(() => _isSelected = !_isSelected);
       },
     );
   }
+}
 
-  Widget _favoriteIcon(BuildContext context, WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
+///
+/// お気に入りアイコン
+///
+class _FavoriteIcon extends StatefulWidget {
+  const _FavoriteIcon({Key? key, required this.initValue, required this.onPressed}) : super(key: key);
+
+  final bool initValue;
+  final Function(bool) onPressed;
+
+  @override
+  State<StatefulWidget> createState() => _FavoriteIconState();
+}
+
+class _FavoriteIconState extends State<_FavoriteIcon> {
+  bool _isSelected = false;
+
+  @override
+  void initState() {
+    _isSelected = widget.initValue;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     Icon icon;
-    if (character.myStatus?.favorite ?? false) {
+    if (_isSelected) {
       icon = const Icon(Icons.star_rounded, color: RSColors.favoriteSelected);
     } else {
       icon = Icon(Icons.star_border_rounded, color: Theme.of(context).disabledColor);
@@ -445,9 +638,9 @@ class CharacterDetailPage extends ConsumerWidget {
     return IconButton(
       icon: icon,
       iconSize: 28.0,
-      onPressed: () async {
-        final value = character.myStatus?.favorite ?? false;
-        await ref.read(characterDetailViewModelProvider).saveFavorite(!value);
+      onPressed: () {
+        widget.onPressed(!_isSelected);
+        setState(() => _isSelected = !_isSelected);
       },
     );
   }

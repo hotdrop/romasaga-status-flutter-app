@@ -93,23 +93,20 @@ class _CharacterDetailViewModel extends BaseViewModel {
     _character.myStatus ??= MyStatus.empty(_character.id);
     _character.myStatus!.favorite = favorite;
     await _read(myStatusRepositoryProvider).save(_character.myStatus!);
-
-    refreshCharacterData();
+    _isUpdateStatus = true;
   }
 
-  Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
+  Future<void> saveStatusUpEvent(bool statusUpEvent) async {
     _character.statusUpEvent = statusUpEvent;
-    await _read(characterRepositoryProvider).saveStatusUpEvent(id, statusUpEvent);
-
-    refreshCharacterData();
+    await _read(characterRepositoryProvider).saveStatusUpEvent(_character.id, statusUpEvent);
+    _isUpdateStatus = true;
   }
 
   Future<void> saveHighLevel(bool useHighLevel) async {
     _character.myStatus ??= MyStatus.empty(_character.id);
     _character.myStatus!.useHighLevel = useHighLevel;
     await _read(myStatusRepositoryProvider).save(_character.myStatus!);
-
-    refreshCharacterData();
+    _isUpdateStatus = true;
   }
 
   ///

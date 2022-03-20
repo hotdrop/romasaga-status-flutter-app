@@ -19,6 +19,7 @@ class _CharactersViewModel extends BaseViewModel {
   List<Character> get statusUpCharacters => _characters.where((c) => c.statusUpEvent).toList();
   int get countStatusUpCharacters => statusUpCharacters.length;
 
+  // TODO これらはStateProviderで流した方がいいかも
   List<Character> get forHighLevelCharacters => _characters.where((c) {
         return (c.myStatus?.favorite ?? false) && (c.myStatus?.useHighLevel ?? false);
       }).toList();

@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/res/rs_strings.dart';
+import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/character/characters_view_model.dart';
-import 'package:rsapp/ui/widget/app_dialog.dart';
 
 class CharactersPage extends ConsumerWidget {
   const CharactersPage({Key? key}) : super(key: key);
@@ -14,24 +14,11 @@ class CharactersPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(charactersViewModelProvider).uiState;
     return uiState.when(
-      loading: (String? errMsg) => _onLoading(context, errMsg),
+      loading: (String? errMsg) => OnViewLoading(
+        title: RSStrings.charactersPageTitle,
+        errorMessage: errMsg,
+      ),
       success: () => _onSuccess(context, ref),
-    );
-  }
-
-  Widget _onLoading(BuildContext context, String? errMsg) {
-    Future.delayed(Duration.zero).then((_) async {
-      if (errMsg != null) {
-        await AppDialog.onlyOk(message: errMsg).show(context);
-      }
-    });
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(RSStrings.charactersPageTitle),
-      ),
-      body: const Center(
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 
@@ -48,7 +35,12 @@ class CharactersPage extends ConsumerWidget {
         appBar: AppBar(
           title: const Text(RSStrings.charactersPageTitle),
           actions: <Widget>[
-            _titlePopupMenu(ref),
+            _TitlePopupMenu(
+              initType: ref.watch(charactersViewModelProvider).selectedOrderType,
+              onSelected: (value) async {
+                await ref.read(charactersViewModelProvider).selectOrder(value);
+              },
+            ),
           ],
           bottom: TabBar(
             isScrollable: true,
@@ -63,18 +55,51 @@ class CharactersPage extends ConsumerWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            _tabStatusUpEvent(ref),
-            _tabHighLevel(ref),
-            _tabAround(ref),
-            _tabFavorite(ref),
-            _tabNotFavorite(ref),
+            _ViewList(
+              characters: ref.watch(charactersViewModelProvider).statusUpCharacters,
+              onRefresh: () async {
+                await ref.read(charactersViewModelProvider).refresh();
+              },
+            ),
+            _ViewList(
+              characters: ref.watch(charactersViewModelProvider).forHighLevelCharacters,
+              onRefresh: () async {
+                await ref.read(charactersViewModelProvider).refresh();
+              },
+            ),
+            _ViewList(
+              characters: ref.watch(charactersViewModelProvider).forRoundCharacters,
+              onRefresh: () async {
+                await ref.read(charactersViewModelProvider).refresh();
+              },
+            ),
+            _ViewList(
+              characters: ref.watch(charactersViewModelProvider).favoriteCharacters,
+              onRefresh: () async {
+                await ref.read(charactersViewModelProvider).refresh();
+              },
+            ),
+            _ViewList(
+              characters: ref.watch(charactersViewModelProvider).notFavoriteCharacters,
+              onRefresh: () async {
+                await ref.read(charactersViewModelProvider).refresh();
+              },
+            ),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _titlePopupMenu(WidgetRef ref) {
+class _TitlePopupMenu extends StatelessWidget {
+  const _TitlePopupMenu({Key? key, required this.initType, required this.onSelected}) : super(key: key);
+
+  final CharacterListOrderType initType;
+  final Function(CharacterListOrderType) onSelected;
+
+  @override
+  Widget build(BuildContext context) {
     return PopupMenuButton<CharacterListOrderType>(
       padding: EdgeInsets.zero,
       itemBuilder: (_) => [
@@ -91,54 +116,40 @@ class CharactersPage extends ConsumerWidget {
           child: Text(RSStrings.charactersOrderProduction),
         ),
       ],
-      initialValue: ref.watch(charactersViewModelProvider).selectedOrderType,
-      onSelected: (value) async {
-        await ref.read(charactersViewModelProvider).selectOrder(value);
-      },
+      initialValue: initType,
+      onSelected: onSelected,
     );
   }
+}
 
-  Widget _tabStatusUpEvent(WidgetRef ref) {
-    final characters = ref.watch(charactersViewModelProvider).statusUpCharacters;
-    return _viewList(characters, ref);
-  }
+class _ViewList extends StatelessWidget {
+  const _ViewList({Key? key, required this.characters, required this.onRefresh}) : super(key: key);
 
-  Widget _tabHighLevel(WidgetRef ref) {
-    final characters = ref.watch(charactersViewModelProvider).forHighLevelCharacters;
-    return _viewList(characters, ref);
-  }
+  final List<Character> characters;
+  final Function onRefresh;
 
-  Widget _tabAround(WidgetRef ref) {
-    final characters = ref.watch(charactersViewModelProvider).forRoundCharacters;
-    return _viewList(characters, ref);
-  }
-
-  Widget _tabFavorite(WidgetRef ref) {
-    final characters = ref.watch(charactersViewModelProvider).favoriteCharacters;
-    return _viewList(characters, ref);
-  }
-
-  Widget _tabNotFavorite(WidgetRef ref) {
-    final characters = ref.watch(charactersViewModelProvider).notFavoriteCharacters;
-    return _viewList(characters, ref);
-  }
-
-  Widget _viewList(List<Character> characters, WidgetRef ref) {
+  @override
+  Widget build(BuildContext context) {
     if (characters.isEmpty) {
-      return _viewEmptyList();
+      return const _ViewEmptyList();
     }
+
+    // TODO ここSliverListにする
     return ListView.builder(
       shrinkWrap: true,
       itemCount: characters.length,
       itemBuilder: (context, index) {
-        return RowCharacterItem(characters[index], refreshListener: () async {
-          await ref.read(charactersViewModelProvider).refresh();
-        });
+        return RowCharacterItem(characters[index], refreshListener: onRefresh);
       },
     );
   }
+}
 
-  Widget _viewEmptyList() {
+class _ViewEmptyList extends StatelessWidget {
+  const _ViewEmptyList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: const [
