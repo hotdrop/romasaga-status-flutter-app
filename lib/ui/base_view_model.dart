@@ -31,9 +31,9 @@ class UIState with _$UIState {
 }
 
 class OnViewLoading extends StatelessWidget {
-  const OnViewLoading({Key? key, required this.title, required this.errorMessage}) : super(key: key);
+  const OnViewLoading({Key? key, this.title, required this.errorMessage}) : super(key: key);
 
-  final String title;
+  final String? title;
   final String? errorMessage;
 
   @override
@@ -44,11 +44,17 @@ class OnViewLoading extends StatelessWidget {
       }
     });
 
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: const Center(
+    if (title != null) {
+      return Scaffold(
+        appBar: AppBar(title: Text(title!)),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return const Center(
         child: CircularProgressIndicator(),
-      ),
-    );
+      );
+    }
   }
 }

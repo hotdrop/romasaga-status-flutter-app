@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/status.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/res/rs_colors.dart';
+import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/character/edit/status_edit_view_model.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 import 'package:rsapp/ui/widget/status_counter.dart';
@@ -24,208 +25,70 @@ class StatusEditPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(statusEditViewModelProvider).uiState;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(RSStrings.statusEditTitle),
+
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(RSStrings.statusEditTitle),
+        ),
+        body: uiState.when(
+          loading: (errMsg) => _onLoading(ref, errMsg),
+          success: () => _onSuccess(context, ref),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.save),
+          onPressed: () async {
+            await ref.read(statusEditViewModelProvider).saveNewStatus(_myStatus);
+            Navigator.pop(context, true);
+          },
+        ),
+        bottomNavigationBar: const _ViewBottomNavigationBar(),
       ),
-      body: uiState.when(
-        loading: (_) => _onLoading(context, ref),
-        success: () => _onSuccess(context, ref),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: _saveFab(context, ref),
-      bottomNavigationBar: _viewBottomNavigationBar(ref),
     );
   }
 
-  Widget _onLoading(BuildContext context, WidgetRef ref) {
-    Future.delayed(Duration.zero).then((_) {
+  Widget _onLoading(WidgetRef ref, String? errMsg) {
+    Future<void>.delayed(Duration.zero).then((_) {
       ref.read(statusEditViewModelProvider).init(_myStatus);
     });
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
+    return OnViewLoading(errorMessage: errMsg);
   }
 
   Widget _onSuccess(BuildContext context, WidgetRef ref) {
     final isEditEach = ref.watch(statusEditViewModelProvider).isEditEach;
     if (isEditEach) {
-      return _viewCountLayout(ref);
+      return _ViewCountLayout(myStatus: _myStatus);
     } else {
-      return _viewManualLayout(ref);
+      return _ViewManualLayout(myStatus: _myStatus);
     }
   }
+}
 
-  Widget _viewCountLayout(WidgetRef ref) {
+///
+/// ボタン入力時のレイアウト
+///
+class _ViewCountLayout extends ConsumerWidget {
+  const _ViewCountLayout({Key? key, required this.myStatus}) : super(key: key);
+
+  final MyStatus myStatus;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView(
       children: <Widget>[
-        _rowStatus(ref, StatusType.hp, _myStatus.hp, ref.watch(statusEditViewModelProvider).editHp),
-        _rowStatus(ref, StatusType.str, _myStatus.str, ref.watch(statusEditViewModelProvider).editStr),
-        _rowStatus(ref, StatusType.vit, _myStatus.vit, ref.watch(statusEditViewModelProvider).editVit),
-        _rowStatus(ref, StatusType.dex, _myStatus.dex, ref.watch(statusEditViewModelProvider).editDex),
-        _rowStatus(ref, StatusType.agi, _myStatus.agi, ref.watch(statusEditViewModelProvider).editAgi),
-        _rowStatus(ref, StatusType.inte, _myStatus.inte, ref.watch(statusEditViewModelProvider).editInt),
-        _rowStatus(ref, StatusType.spirit, _myStatus.spi, ref.watch(statusEditViewModelProvider).editSpi),
-        _rowStatus(ref, StatusType.love, _myStatus.love, ref.watch(statusEditViewModelProvider).editLove),
-        _rowStatus(ref, StatusType.attr, _myStatus.attr, ref.watch(statusEditViewModelProvider).editAttr),
+        _RowEditStatus(StatusType.hp, myStatus.hp, ref.watch(statusEditViewModelProvider).editHp),
+        _RowEditStatus(StatusType.str, myStatus.str, ref.watch(statusEditViewModelProvider).editStr),
+        _RowEditStatus(StatusType.vit, myStatus.vit, ref.watch(statusEditViewModelProvider).editVit),
+        _RowEditStatus(StatusType.dex, myStatus.dex, ref.watch(statusEditViewModelProvider).editDex),
+        _RowEditStatus(StatusType.agi, myStatus.agi, ref.watch(statusEditViewModelProvider).editAgi),
+        _RowEditStatus(StatusType.inte, myStatus.inte, ref.watch(statusEditViewModelProvider).editInt),
+        _RowEditStatus(StatusType.spirit, myStatus.spi, ref.watch(statusEditViewModelProvider).editSpi),
+        _RowEditStatus(StatusType.love, myStatus.love, ref.watch(statusEditViewModelProvider).editLove),
+        _RowEditStatus(StatusType.attr, myStatus.attr, ref.watch(statusEditViewModelProvider).editAttr),
         const SizedBox(height: 16.0)
       ],
-    );
-  }
-
-  Widget _rowStatus(WidgetRef ref, StatusType type, int currentStatus, int updateValue) {
-    return _RowEditStatus(
-      type: type,
-      currentStatus: currentStatus,
-      updateValue: updateValue,
-      onDecrement: ref.read(statusEditViewModelProvider).decrement,
-      onIncrement: ref.read(statusEditViewModelProvider).increment,
-    );
-  }
-
-  ///
-  /// Manualのレイアウト
-  ///
-  Widget _viewManualLayout(WidgetRef ref) {
-    // フォーカスが必要なので末尾のステータスから順に作成していく
-    final attrFocus = FocusNode();
-    final attrField = StatusEditField(
-      label: RSStrings.attrName,
-      initValue: _myStatus.attr,
-      focusNode: attrFocus,
-      nextFocusNode: null,
-      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.attr, v),
-    );
-    final loveFocus = FocusNode();
-    final loveField = StatusEditField(
-      label: RSStrings.loveName,
-      initValue: _myStatus.love,
-      focusNode: loveFocus,
-      nextFocusNode: attrFocus,
-      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.love, v),
-    );
-    final spiFocus = FocusNode();
-    final spiField = StatusEditField(
-      label: RSStrings.spiName,
-      initValue: _myStatus.spi,
-      focusNode: spiFocus,
-      nextFocusNode: loveFocus,
-      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.spirit, v),
-    );
-    final intFocus = FocusNode();
-    final intField = StatusEditField(
-      label: RSStrings.intName,
-      initValue: _myStatus.inte,
-      focusNode: intFocus,
-      nextFocusNode: spiFocus,
-      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.inte, v),
-    );
-    final agiFocus = FocusNode();
-    final agiField = StatusEditField(
-      label: RSStrings.agiName,
-      initValue: _myStatus.agi,
-      focusNode: agiFocus,
-      nextFocusNode: intFocus,
-      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.agi, v),
-    );
-    final dexFocus = FocusNode();
-    final dexField = StatusEditField(
-      label: RSStrings.dexName,
-      initValue: _myStatus.dex,
-      focusNode: dexFocus,
-      nextFocusNode: agiFocus,
-      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.dex, v),
-    );
-    final vidFocus = FocusNode();
-    final vitField = StatusEditField(
-      label: RSStrings.vitName,
-      initValue: _myStatus.vit,
-      focusNode: vidFocus,
-      nextFocusNode: dexFocus,
-      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.vit, v),
-    );
-    final strFocus = FocusNode();
-    final strField = StatusEditField(
-      label: RSStrings.strName,
-      initValue: _myStatus.str,
-      focusNode: strFocus,
-      nextFocusNode: vidFocus,
-      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.str, v),
-    );
-    final hpField = StatusEditField(
-      label: RSStrings.hpName,
-      initValue: _myStatus.hp,
-      focusNode: null,
-      nextFocusNode: strFocus,
-      onChanged: (v) => ref.read(statusEditViewModelProvider).update(StatusType.hp, v),
-    );
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(42),
-            child: hpField,
-          ),
-          Wrap(
-            runSpacing: 24,
-            spacing: 24,
-            children: [
-              _viewTextField(strField),
-              _viewTextField(vitField),
-              _viewTextField(dexField),
-              _viewTextField(agiField),
-              _viewTextField(intField),
-              _viewTextField(spiField),
-              _viewTextField(loveField),
-              _viewTextField(attrField),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _viewTextField(Widget textField) {
-    return SizedBox(
-      width: 80,
-      child: textField,
-    );
-  }
-
-  Widget _saveFab(BuildContext context, WidgetRef ref) {
-    return FloatingActionButton(
-      child: const Icon(Icons.save),
-      onPressed: () async {
-        await ref.read(statusEditViewModelProvider).saveNewStatus(_myStatus);
-        Navigator.pop(context, true);
-      },
-    );
-  }
-
-  ///
-  /// ボトムメニュー
-  ///
-  Widget _viewBottomNavigationBar(WidgetRef ref) {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 4.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          const SizedBox(width: 16),
-          IconButton(
-            icon: const Icon(Icons.compare_arrows),
-            iconSize: 28.0,
-            onPressed: () {
-              ref.read(statusEditViewModelProvider).changeEditMode();
-            },
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
     );
   }
 }
@@ -233,44 +96,42 @@ class StatusEditPage extends ConsumerWidget {
 ///
 /// eachモードでのステータスの各行Widget
 ///
-class _RowEditStatus extends StatelessWidget {
-  const _RowEditStatus({
-    Key? key,
-    required this.type,
-    required this.currentStatus,
-    required this.updateValue,
-    required this.onDecrement,
-    required this.onIncrement,
-  }) : super(key: key);
+class _RowEditStatus extends ConsumerWidget {
+  const _RowEditStatus(this.type, this.currentStatus, this.updateValue, {Key? key}) : super(key: key);
 
   final StatusType type;
   final int currentStatus;
   final int updateValue;
-  final Function(StatusType) onDecrement;
-  final Function(StatusType) onIncrement;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, top: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _viewStatusIcon(),
+          _ViewStatusIcon(type: type),
           const SizedBox(width: 16.0),
-          _viewStatusLabel(updateValue),
+          _ViewStatusLabel(updateValue),
           const SizedBox(width: 16.0),
-          _viewDiffLabel(currentStatus, updateValue),
+          _ViewDiffLabel(nowStatus: currentStatus, newStatus: updateValue),
           const SizedBox(width: 16.0),
-          DecrementCounter(onTap: () => onDecrement(type)),
+          DecrementCounter(onTap: () => ref.read(statusEditViewModelProvider).decrement(type)),
           const SizedBox(width: 24.0),
-          IncrementCounter(onTap: () => onIncrement(type)),
+          IncrementCounter(onTap: () => ref.read(statusEditViewModelProvider).increment(type)),
         ],
       ),
     );
   }
+}
 
-  Widget _viewStatusIcon() {
+class _ViewStatusIcon extends StatelessWidget {
+  const _ViewStatusIcon({Key? key, required this.type}) : super(key: key);
+
+  final StatusType type;
+
+  @override
+  Widget build(BuildContext context) {
     switch (type) {
       case StatusType.hp:
         return const Padding(
@@ -298,30 +159,198 @@ class _RowEditStatus extends StatelessWidget {
         return StatusIcon.attr();
     }
   }
+}
 
-  Widget _viewStatusLabel(int value) {
+class _ViewStatusLabel extends StatelessWidget {
+  const _ViewStatusLabel(this.status, {Key? key}) : super(key: key);
+
+  final int status;
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       width: 80.0,
       child: Center(
-        child: Text('$value', style: const TextStyle(fontSize: 28)),
+        child: Text('$status', style: const TextStyle(fontSize: 28)),
       ),
     );
   }
+}
 
-  Widget _viewDiffLabel(int nowStatus, int newStatus) {
-    int diff = newStatus - nowStatus;
-    String diffStr = '  $diff';
-    Color textColor = Colors.grey;
-    if (diff > 0) {
-      diffStr = ' +$diff';
-      textColor = RSColors.statusPlus;
-    } else if (diff < 0) {
-      textColor = RSColors.statusMinus;
-    }
+class _ViewDiffLabel extends StatelessWidget {
+  const _ViewDiffLabel({Key? key, required this.nowStatus, required this.newStatus}) : super(key: key);
+
+  final int nowStatus;
+  final int newStatus;
+
+  @override
+  Widget build(BuildContext context) {
+    final diffStr = _textDiffStr();
+    final textColor = _textColor();
+
     return SizedBox(
       width: 80.0,
       child: Center(
         child: Text(diffStr, style: TextStyle(fontSize: 28, color: textColor)),
+      ),
+    );
+  }
+
+  String _textDiffStr() {
+    int diff = newStatus - nowStatus;
+    if (diff > 0) {
+      return ' +$diff';
+    } else {
+      return '  $diff';
+    }
+  }
+
+  Color _textColor() {
+    int diff = newStatus - nowStatus;
+    Color textColor = Colors.grey;
+    if (diff > 0) {
+      textColor = RSColors.statusPlus;
+    } else if (diff < 0) {
+      textColor = RSColors.statusMinus;
+    }
+    return textColor;
+  }
+}
+
+///
+/// 数値入力時のレイアウト
+///
+class _ViewManualLayout extends StatelessWidget {
+  const _ViewManualLayout({Key? key, required this.myStatus}) : super(key: key);
+
+  final MyStatus myStatus;
+
+  @override
+  Widget build(BuildContext context) {
+    final attrFocus = FocusNode();
+    final loveFocus = FocusNode();
+    final spiFocus = FocusNode();
+    final intFocus = FocusNode();
+    final agiFocus = FocusNode();
+    final dexFocus = FocusNode();
+    final vidFocus = FocusNode();
+    final strFocus = FocusNode();
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: _ViewStatusEdit(type: StatusType.hp, status: myStatus.hp, focusNode: null, nextFocusNode: strFocus),
+            ),
+            Wrap(
+              runSpacing: 24,
+              spacing: 24,
+              children: [
+                _ViewStatusEdit(type: StatusType.str, status: myStatus.str, focusNode: strFocus, nextFocusNode: vidFocus),
+                _ViewStatusEdit(type: StatusType.vit, status: myStatus.vit, focusNode: vidFocus, nextFocusNode: dexFocus),
+                _ViewStatusEdit(type: StatusType.dex, status: myStatus.dex, focusNode: dexFocus, nextFocusNode: agiFocus),
+                _ViewStatusEdit(type: StatusType.agi, status: myStatus.agi, focusNode: agiFocus, nextFocusNode: intFocus),
+                _ViewStatusEdit(type: StatusType.inte, status: myStatus.inte, focusNode: intFocus, nextFocusNode: spiFocus),
+                _ViewStatusEdit(type: StatusType.spirit, status: myStatus.spi, focusNode: spiFocus, nextFocusNode: loveFocus),
+                _ViewStatusEdit(type: StatusType.love, status: myStatus.love, focusNode: loveFocus, nextFocusNode: attrFocus),
+                _ViewStatusEdit(type: StatusType.attr, status: myStatus.attr, focusNode: attrFocus, nextFocusNode: null),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ViewStatusEdit extends ConsumerWidget {
+  const _ViewStatusEdit({
+    Key? key,
+    required this.type,
+    required this.status,
+    required this.focusNode,
+    required this.nextFocusNode,
+  }) : super(key: key);
+
+  final StatusType type;
+  final int status;
+  final FocusNode? focusNode;
+  final FocusNode? nextFocusNode;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SizedBox(
+      width: _width(context),
+      child: StatusEditField(
+        label: _statusName(),
+        initValue: status,
+        focusNode: focusNode,
+        nextFocusNode: nextFocusNode,
+        onChanged: (v) => ref.read(statusEditViewModelProvider).update(type, v),
+      ),
+    );
+  }
+
+  double _width(BuildContext context) {
+    if (type == StatusType.hp) {
+      return MediaQuery.of(context).size.width - 48;
+    } else {
+      return MediaQuery.of(context).size.width / 4;
+    }
+  }
+
+  String _statusName() {
+    switch (type) {
+      case StatusType.hp:
+        return RSStrings.hpName;
+      case StatusType.str:
+        return RSStrings.strName;
+      case StatusType.vit:
+        return RSStrings.vitName;
+      case StatusType.dex:
+        return RSStrings.dexName;
+      case StatusType.agi:
+        return RSStrings.agiName;
+      case StatusType.inte:
+        return RSStrings.intName;
+      case StatusType.spirit:
+        return RSStrings.spiName;
+      case StatusType.love:
+        return RSStrings.loveName;
+      case StatusType.attr:
+        return RSStrings.attrName;
+    }
+  }
+}
+
+///
+/// ボトムメニュー
+///
+class _ViewBottomNavigationBar extends ConsumerWidget {
+  const _ViewBottomNavigationBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 4.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          const SizedBox(width: 16),
+          IconButton(
+            icon: const Icon(Icons.compare_arrows),
+            iconSize: 28.0,
+            onPressed: () {
+              ref.read(statusEditViewModelProvider).changeEditMode();
+            },
+          ),
+          const SizedBox(width: 16),
+        ],
       ),
     );
   }

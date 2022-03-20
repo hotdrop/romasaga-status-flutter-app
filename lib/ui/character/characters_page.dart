@@ -134,7 +134,6 @@ class _ViewList extends StatelessWidget {
       return const _ViewEmptyList();
     }
 
-    // TODO ここSliverListにする
     return ListView.builder(
       shrinkWrap: true,
       itemCount: characters.length,

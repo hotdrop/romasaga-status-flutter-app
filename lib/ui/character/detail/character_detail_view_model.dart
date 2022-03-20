@@ -85,7 +85,6 @@ class _CharacterDetailViewModel extends BaseViewModel {
     _character.selectedStyleRank = _selectedStyle.rank;
     _character.selectedIconFilePath = _selectedStyle.iconFilePath;
     await _read(characterRepositoryProvider).saveSelectedRank(_character.id, _selectedStyle.rank, _selectedStyle.iconFilePath);
-
     _isUpdateStatus = true;
   }
 
