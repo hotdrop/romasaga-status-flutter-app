@@ -7,9 +7,9 @@ import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/production.dart';
 import 'package:rsapp/models/weapon.dart';
+import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/search/search_view_model.dart';
-import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class SearchPage extends ConsumerWidget {
@@ -19,78 +19,83 @@ class SearchPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(searchViewModelProvider).uiState;
     return uiState.when(
-      loading: (errMsg) => _onLoading(context, errMsg),
+      loading: (errMsg) => OnViewLoading(errorMessage: errMsg),
       success: () => _onSuccess(context, ref),
-    );
-  }
-
-  Widget _onLoading(BuildContext context, String? errMsg) {
-    Future.delayed(Duration.zero).then((_) async {
-      if (errMsg != null) {
-        await AppDialog.onlyOk(message: errMsg).show(context);
-      }
-    });
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(RSStrings.searchPageTitle),
-      ),
-      body: const Center(
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 
   Widget _onSuccess(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: _viewHeaderTitle(ref),
-        actions: [_viewHeaderIconSearchWord(ref)],
+        title: const _ViewHeaderTitle(),
+        actions: const [
+          _ViewHeaderIconSearchWord(),
+        ],
       ),
-      body: _viewCharacters(ref),
+      body: const _ViewCharacters(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.filter_list),
         onPressed: () {
-          _viewBottomSheet(context, ref);
+          showMaterialModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (_) => const _BottomSheet(),
+          );
         },
       ),
     );
   }
+}
 
-  Widget _viewHeaderTitle(WidgetRef ref) {
+class _ViewHeaderTitle extends ConsumerWidget {
+  const _ViewHeaderTitle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final isKeywordSearch = ref.watch(searchViewModelProvider).isKeywordSearch;
-    if (isKeywordSearch) {
-      return TextField(
-        decoration: const InputDecoration(
-          prefixIcon: Icon(Icons.search),
-          hintText: RSStrings.searchListQueryHint,
-        ),
-        onSubmitted: (v) {
-          ref.read(searchViewModelProvider).findByKeyword(v);
-        },
-      );
-    } else {
+    if (!isKeywordSearch) {
       return const Text(RSStrings.searchPageTitle);
     }
-  }
 
-  Widget _viewHeaderIconSearchWord(WidgetRef ref) {
+    return TextField(
+      decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.search),
+        hintText: RSStrings.searchListQueryHint,
+      ),
+      onSubmitted: (v) => ref.read(searchViewModelProvider).findByKeyword(v),
+    );
+  }
+}
+
+class _ViewHeaderIconSearchWord extends ConsumerWidget {
+  const _ViewHeaderIconSearchWord({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final isKeywordSearch = ref.watch(searchViewModelProvider).isKeywordSearch;
-    final searchIcon = isKeywordSearch ? const Icon(Icons.close) : const Icon(Icons.search);
+
     return IconButton(
-      icon: searchIcon,
+      icon: isKeywordSearch ? const Icon(Icons.close) : const Icon(Icons.search),
       onPressed: () {
         ref.read(searchViewModelProvider).changeSearchMode();
       },
     );
   }
+}
 
-  Widget _viewCharacters(WidgetRef ref) {
+class _ViewCharacters extends ConsumerWidget {
+  const _ViewCharacters({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final characters = ref.watch(searchViewModelProvider).charactersWithFilter;
+
     if (characters.isEmpty) {
       return const Center(
         child: Text(RSStrings.searchNoDataLabel),
       );
     }
+
     return ListView.builder(
       shrinkWrap: true,
       padding: const EdgeInsets.only(bottom: 24),
@@ -102,54 +107,54 @@ class SearchPage extends ConsumerWidget {
       },
     );
   }
+}
 
-  void _viewBottomSheet(BuildContext context, WidgetRef ref) {
-    showMaterialModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (ctx) {
-        return Container(
-          padding: const EdgeInsets.all(8),
-          height: MediaQuery.of(ctx).size.height * 0.8,
-          decoration: BoxDecoration(
-            color: RSColors.itemBackground,
-            border: Border.all(width: 1, color: RSColors.itemBackground),
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-            ),
-          ),
-          child: _viewFilter(ctx, ref),
-        );
-      },
-    );
-  }
+class _BottomSheet extends StatelessWidget {
+  const _BottomSheet({Key? key}) : super(key: key);
 
-  Widget _viewFilter(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _viewFilterKind(context, ref),
-          Divider(color: Theme.of(context).primaryColor),
-          _viewFilterWeaponClearButton(context, ref),
-          const SizedBox(height: 8),
-          _viewFilterWeaponType(context, ref),
-          Divider(color: Theme.of(context).primaryColor),
-          _viewFilterAttributeClearButton(context, ref),
-          const SizedBox(height: 8),
-          _viewFilterAttributes(context, ref),
-          Divider(color: Theme.of(context).primaryColor),
-          _viewFilterProductionClearButton(context, ref),
-          const SizedBox(height: 8),
-          _viewFilterProduct(context, ref),
-          const SizedBox(height: 16),
-        ],
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      height: MediaQuery.of(context).size.height * 0.8,
+      decoration: BoxDecoration(
+        color: RSColors.itemBackground,
+        border: Border.all(width: 1, color: RSColors.itemBackground),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const _ViewFilterKind(),
+            Divider(color: Theme.of(context).primaryColor),
+            const _ViewFilterWeaponClearButton(),
+            const SizedBox(height: 8),
+            const _ViewFilterWeaponType(),
+            Divider(color: Theme.of(context).primaryColor),
+            const _ViewFilterAttributeClearButton(),
+            const SizedBox(height: 8),
+            const _ViewFilterAttributes(),
+            Divider(color: Theme.of(context).primaryColor),
+            const _ViewFilterProductionClearButton(),
+            const SizedBox(height: 8),
+            const _ViewFilterProduct(),
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }
+}
 
-  Widget _viewFilterKind(BuildContext context, WidgetRef ref) {
+class _ViewFilterKind extends ConsumerWidget {
+  const _ViewFilterKind({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return CategoryIcons(
       isFavSelected: ref.watch(searchViewModelProvider).isFilterFavorite,
       isHighLevelSelected: ref.watch(searchViewModelProvider).isFilterHighLevel,
@@ -159,8 +164,13 @@ class SearchPage extends ConsumerWidget {
       },
     );
   }
+}
 
-  Widget _viewFilterWeaponType(BuildContext context, WidgetRef ref) {
+class _ViewFilterWeaponType extends ConsumerWidget {
+  const _ViewFilterWeaponType({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return Wrap(
       spacing: 16.0,
       runSpacing: 16.0,
@@ -176,8 +186,13 @@ class SearchPage extends ConsumerWidget {
       }).toList(),
     );
   }
+}
 
-  Widget _viewFilterWeaponClearButton(BuildContext context, WidgetRef ref) {
+class _ViewFilterWeaponClearButton extends ConsumerWidget {
+  const _ViewFilterWeaponClearButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearWeapon),
       onPressed: () {
@@ -186,8 +201,13 @@ class SearchPage extends ConsumerWidget {
       },
     );
   }
+}
 
-  Widget _viewFilterAttributes(BuildContext context, WidgetRef ref) {
+class _ViewFilterAttributes extends ConsumerWidget {
+  const _ViewFilterAttributes({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return Wrap(
       spacing: 16.0,
       runSpacing: 16.0,
@@ -203,8 +223,13 @@ class SearchPage extends ConsumerWidget {
       }).toList(),
     );
   }
+}
 
-  Widget _viewFilterAttributeClearButton(BuildContext context, WidgetRef ref) {
+class _ViewFilterAttributeClearButton extends ConsumerWidget {
+  const _ViewFilterAttributeClearButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearAttributes),
       onPressed: () {
@@ -213,8 +238,13 @@ class SearchPage extends ConsumerWidget {
       },
     );
   }
+}
 
-  Widget _viewFilterProduct(BuildContext context, WidgetRef ref) {
+class _ViewFilterProduct extends ConsumerWidget {
+  const _ViewFilterProduct({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return Wrap(
       spacing: 16.0,
       runSpacing: 16.0,
@@ -230,8 +260,13 @@ class SearchPage extends ConsumerWidget {
       }).toList(),
     );
   }
+}
 
-  Widget _viewFilterProductionClearButton(BuildContext context, WidgetRef ref) {
+class _ViewFilterProductionClearButton extends ConsumerWidget {
+  const _ViewFilterProductionClearButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearProduction),
       onPressed: () {

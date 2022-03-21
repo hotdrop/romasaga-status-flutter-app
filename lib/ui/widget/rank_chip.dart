@@ -42,25 +42,41 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
 
   List<Widget> _rankChips(BuildContext context) {
     return widget.ranks.map<Widget>((rank) {
-      final isSameRank = (_selectedRankChipName == rank);
-      return Padding(
-        padding: const EdgeInsets.only(right: 4.0),
-        child: ChoiceChip(
-          key: ValueKey(rank),
-          selectedColor: _rankColor(rank),
-          backgroundColor: Theme.of(context).disabledColor,
-          label: Text(rank, style: TextStyle(color: (isSameRank) ? Colors.black : Colors.white)),
-          avatar: _rankIcon(rank),
-          selected: isSameRank,
-          onSelected: (value) {
-            setState(() {
-              _selectedRankChipName = value ? rank : '';
-            });
-            widget.onSelectedListener(rank);
-          },
-        ),
+      return _RankChip(
+        rank,
+        isSameRank: (_selectedRankChipName == rank),
+        onSelected: (value) {
+          setState(() {
+            _selectedRankChipName = value ? rank : '';
+          });
+          widget.onSelectedListener(rank);
+        },
       );
     }).toList();
+  }
+}
+
+class _RankChip extends StatelessWidget {
+  const _RankChip(this.rank, {Key? key, required this.isSameRank, required this.onSelected}) : super(key: key);
+
+  final String rank;
+  final bool isSameRank;
+  final Function(bool) onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 4.0),
+      child: ChoiceChip(
+        key: ValueKey(rank),
+        selectedColor: _rankColor(rank),
+        backgroundColor: Theme.of(context).disabledColor,
+        label: Text(rank, style: TextStyle(color: (isSameRank) ? Colors.black : Colors.white)),
+        avatar: _RankIcon(rank),
+        selected: isSameRank,
+        onSelected: onSelected,
+      ),
+    );
   }
 
   Color _rankColor(String rank) {
@@ -72,8 +88,15 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
       return RSColors.chipRankA;
     }
   }
+}
 
-  CircleAvatar _rankIcon(String rank) {
+class _RankIcon extends StatelessWidget {
+  const _RankIcon(this.rank, {Key? key}) : super(key: key);
+
+  final String rank;
+
+  @override
+  Widget build(BuildContext context) {
     return CircleAvatar(
       backgroundColor: RSColors.chipAvatarBackground,
       child: StyleRankIcon.create(rank),

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/res/rs_theme.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/start/splash_page.dart';
+import 'package:rsapp/ui/top_page.dart';
 
 class App extends ConsumerWidget {
   const App({Key? key}) : super(key: key);
@@ -21,7 +21,18 @@ class App extends ConsumerWidget {
       supportedLocales: const [Locale('ja', '')],
       title: RSStrings.appTitle,
       theme: isDarkMode ? RSTheme.dark : RSTheme.light,
-      home: const SplashPage(),
+      home: FutureBuilder(
+        future: ref.read(appSettingsProvider.notifier).init(),
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return const TopPage();
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }),
+      ),
     );
   }
 }

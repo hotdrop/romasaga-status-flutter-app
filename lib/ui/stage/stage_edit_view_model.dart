@@ -31,17 +31,14 @@ class _StageEditViewModel extends BaseViewModel {
 
   void inputName(String? input) {
     _inputName = input;
-    notifyListeners();
   }
 
   void inputHpLimit(int? input) {
     _inputHpLimit = input;
-    notifyListeners();
   }
 
   void inputLimit(int? input) {
     _inputLimit = input;
-    notifyListeners();
   }
 
   Future<void> save() async {

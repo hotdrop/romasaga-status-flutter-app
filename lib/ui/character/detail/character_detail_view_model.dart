@@ -4,7 +4,6 @@ import 'package:rsapp/data/character_repository.dart';
 import 'package:rsapp/data/my_status_repository.dart';
 import 'package:rsapp/data/stage_repository.dart';
 import 'package:rsapp/models/status.dart';
-import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/models/style.dart';
@@ -30,6 +29,17 @@ class _CharacterDetailViewModel extends BaseViewModel {
   bool _isUpdateStatus = false;
   bool get isUpdate => _isUpdateStatus;
 
+  int get statusLimitStr => _selectedStyle.str + _stage.statusLimit;
+  int get statusLimitVit => _selectedStyle.vit + _stage.statusLimit;
+  int get statusLimitDex => _selectedStyle.dex + _stage.statusLimit;
+  int get statusLimitAgi => _selectedStyle.agi + _stage.statusLimit;
+  int get statusLimitInt => _selectedStyle.intelligence + _stage.statusLimit;
+  int get statusLimitSpi => _selectedStyle.spirit + _stage.statusLimit;
+  int get statusLimitLove => _selectedStyle.love + _stage.statusLimit;
+  int get statusLimitAttr => _selectedStyle.attr + _stage.statusLimit;
+
+  List<String> get allRanks => _character.styles.map((style) => style.rank).toList()..sort((s, t) => s.compareTo(t));
+
   Future<void> init(Character c) async {
     try {
       _character = c;
@@ -47,34 +57,6 @@ class _CharacterDetailViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  List<String> getAllRanks() {
-    final ranks = _character.styles.map((style) => style.rank).toList();
-    return ranks..sort((s, t) => s.compareTo(t));
-  }
-
-  int getStatusLimit(String statusName) {
-    switch (statusName) {
-      case RSStrings.strName:
-        return _selectedStyle.str + _stage.statusLimit;
-      case RSStrings.vitName:
-        return _selectedStyle.vit + _stage.statusLimit;
-      case RSStrings.dexName:
-        return _selectedStyle.dex + _stage.statusLimit;
-      case RSStrings.agiName:
-        return _selectedStyle.agi + _stage.statusLimit;
-      case RSStrings.intName:
-        return _selectedStyle.intelligence + _stage.statusLimit;
-      case RSStrings.spiName:
-        return _selectedStyle.spirit + _stage.statusLimit;
-      case RSStrings.loveName:
-        return _selectedStyle.love + _stage.statusLimit;
-      case RSStrings.attrName:
-        return _selectedStyle.attr + _stage.statusLimit;
-      default:
-        return 1;
-    }
-  }
-
   Future<void> refreshStatus() async {
     _character.myStatus = await _read(myStatusRepositoryProvider).find(_character.id);
     refreshCharacterData();
@@ -85,7 +67,6 @@ class _CharacterDetailViewModel extends BaseViewModel {
     _character.selectedStyleRank = _selectedStyle.rank;
     _character.selectedIconFilePath = _selectedStyle.iconFilePath;
     await _read(characterRepositoryProvider).saveSelectedRank(_character.id, _selectedStyle.rank, _selectedStyle.iconFilePath);
-
     _isUpdateStatus = true;
   }
 
@@ -93,23 +74,20 @@ class _CharacterDetailViewModel extends BaseViewModel {
     _character.myStatus ??= MyStatus.empty(_character.id);
     _character.myStatus!.favorite = favorite;
     await _read(myStatusRepositoryProvider).save(_character.myStatus!);
-
-    refreshCharacterData();
+    _isUpdateStatus = true;
   }
 
-  Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
+  Future<void> saveStatusUpEvent(bool statusUpEvent) async {
     _character.statusUpEvent = statusUpEvent;
-    await _read(characterRepositoryProvider).saveStatusUpEvent(id, statusUpEvent);
-
-    refreshCharacterData();
+    await _read(characterRepositoryProvider).saveStatusUpEvent(_character.id, statusUpEvent);
+    _isUpdateStatus = true;
   }
 
   Future<void> saveHighLevel(bool useHighLevel) async {
     _character.myStatus ??= MyStatus.empty(_character.id);
     _character.myStatus!.useHighLevel = useHighLevel;
     await _read(myStatusRepositoryProvider).save(_character.myStatus!);
-
-    refreshCharacterData();
+    _isUpdateStatus = true;
   }
 
   ///

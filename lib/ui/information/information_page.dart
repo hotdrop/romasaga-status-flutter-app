@@ -15,27 +15,23 @@ class InformationPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(RSStrings.infoPageTitle),
       ),
-      body: _onSuccess(context),
-    );
-  }
-
-  Widget _onSuccess(BuildContext context) {
-    return Column(
-      children: [
-        const Expanded(
-          child: _OfficialSiteWebView(),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-          child: AppIconButton(
-            label: RSStrings.letterPageTitle,
-            icon: Icons.mail_rounded,
-            onTap: () async {
-              await LetterPage.start(context);
-            },
+      body: Column(
+        children: [
+          const Expanded(
+            child: _OfficialSiteWebView(),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            child: AppIconButton(
+              label: RSStrings.letterPageTitle,
+              icon: Icons.mail_rounded,
+              onTap: () async {
+                await LetterPage.start(context);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

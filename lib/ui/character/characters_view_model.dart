@@ -4,9 +4,7 @@ import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/ui/base_view_model.dart';
 
-final charactersViewModelProvider = ChangeNotifierProvider.autoDispose((ref) {
-  return _CharactersViewModel(ref.read);
-});
+final charactersViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _CharactersViewModel(ref.read));
 
 class _CharactersViewModel extends BaseViewModel {
   _CharactersViewModel(this._read) {
@@ -19,6 +17,7 @@ class _CharactersViewModel extends BaseViewModel {
   List<Character> get statusUpCharacters => _characters.where((c) => c.statusUpEvent).toList();
   int get countStatusUpCharacters => statusUpCharacters.length;
 
+  // TODO ここのデータの持ち方は改善の余地あり
   List<Character> get forHighLevelCharacters => _characters.where((c) {
         return (c.myStatus?.favorite ?? false) && (c.myStatus?.useHighLevel ?? false);
       }).toList();

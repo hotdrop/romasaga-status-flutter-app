@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/res/rs_strings.dart';
+import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/stage/stage_edit_view_model.dart';
 import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
@@ -28,21 +29,10 @@ class StageEditPage extends ConsumerWidget {
           title: const Text(RSStrings.stageEditPageTitle),
         ),
         body: uiState.when(
-          loading: (errMsg) => _onLoading(context, errMsg),
+          loading: (errMsg) => OnViewLoading(errorMessage: errMsg),
           success: () => _onSuccess(context, ref),
         ),
       ),
-    );
-  }
-
-  Widget _onLoading(BuildContext context, String? errMsg) {
-    Future.delayed(Duration.zero).then((_) async {
-      if (errMsg != null) {
-        await AppDialog.onlyOk(message: errMsg).show(context);
-      }
-    });
-    return const Center(
-      child: CircularProgressIndicator(),
     );
   }
 
@@ -50,28 +40,38 @@ class StageEditPage extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
-        children: [
-          _viewNameTextField(ref),
-          const SizedBox(height: 16),
-          _viewStatusLimits(ref),
-          const SizedBox(height: 8),
-          const Text(RSStrings.stageEditPageOverview),
-          const SizedBox(height: 16),
-          _viewSaveButton(context, ref),
+        children: const [
+          _ViewNameTextField(),
+          SizedBox(height: 16),
+          _ViewStatusLimits(),
+          SizedBox(height: 8),
+          Text(RSStrings.stageEditPageOverview),
+          SizedBox(height: 16),
+          _ViewSaveButton(),
         ],
       ),
     );
   }
+}
 
-  Widget _viewNameTextField(WidgetRef ref) {
+class _ViewNameTextField extends ConsumerWidget {
+  const _ViewNameTextField({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final currentStage = ref.watch(stageEditViewModelProvider).currentStage;
     return RSTextFormField.stageName(
       initValue: currentStage.name,
       onChanged: (String? input) => ref.read(stageEditViewModelProvider).inputName(input),
     );
   }
+}
 
-  Widget _viewStatusLimits(WidgetRef ref) {
+class _ViewStatusLimits extends ConsumerWidget {
+  const _ViewStatusLimits({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final currentStage = ref.watch(stageEditViewModelProvider).currentStage;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -94,8 +94,13 @@ class StageEditPage extends ConsumerWidget {
       ],
     );
   }
+}
 
-  Widget _viewSaveButton(BuildContext context, WidgetRef ref) {
+class _ViewSaveButton extends ConsumerWidget {
+  const _ViewSaveButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final isSaved = ref.watch(stageEditViewModelProvider).isExecuteSave;
     return AppButton(
       label: RSStrings.stageEditPageSaveLabel,

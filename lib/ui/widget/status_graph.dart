@@ -8,11 +8,7 @@ import 'package:rsapp/res/rs_strings.dart';
 /// ステータスの合計を示すサークルグラフ
 ///
 class TotalStatusCircleGraph extends StatelessWidget {
-  const TotalStatusCircleGraph({
-    Key? key,
-    required this.totalStatus,
-    required this.limitStatus,
-  }) : super(key: key);
+  const TotalStatusCircleGraph({Key? key, required this.totalStatus, required this.limitStatus}) : super(key: key);
 
   final int totalStatus;
   final int limitStatus;
@@ -29,14 +25,21 @@ class TotalStatusCircleGraph extends StatelessWidget {
       animation: true,
       animationDuration: 500,
       percent: percent,
-      center: _centerText(context, totalStatus),
+      center: _CenterText(currentTotal: totalStatus),
       circularStrokeCap: strokeCap,
       backgroundColor: RSColors.totalStatusIndicator.withOpacity(0.3),
       progressColor: RSColors.totalStatusIndicator,
     );
   }
+}
 
-  Widget _centerText(BuildContext context, int currentTotal) {
+class _CenterText extends StatelessWidget {
+  const _CenterText({Key? key, required this.currentTotal}) : super(key: key);
+
+  final int currentTotal;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,6 +131,7 @@ class StatusGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color currentStatusColor = _calcCurrentStatusColor();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -139,7 +143,7 @@ class StatusGraph extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 4,
           status: status,
           limit: limit,
-          color: currentStatusColor,
+          color: _calcCurrentStatusColor(),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 8.0, top: 4.0, bottom: 8.0),

@@ -17,12 +17,15 @@ class LetterRowItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentLetter = _allLetters[_selectedIndex];
+    final imagePath = currentLetter.staticImagePath;
+
     return Card(
       child: InkWell(
         child: Column(
           children: <Widget>[
-            _viewImage(context, currentLetter),
-            _viewImageTitle(context, currentLetter),
+            if (imagePath != null) _ViewImage(imagePath: imagePath, letter: currentLetter),
+            if (imagePath == null) _ErrorIcon(res: currentLetter.loadingIcon),
+            _ViewImageTitle(letter: currentLetter),
           ],
         ),
         onTap: () async {
@@ -31,22 +34,32 @@ class LetterRowItem extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _viewImage(BuildContext context, Letter letter) {
-    final imagePath = letter.staticImagePath;
-    if (imagePath != null) {
-      return CachedNetworkImage(
-        imageUrl: imagePath,
-        fit: BoxFit.fill,
-        placeholder: (context, url) => _loadingIcon(letter.loadingIcon),
-        errorWidget: (context, url, dynamic error) => _errorIcon(letter.loadingIcon),
-      );
-    } else {
-      return _errorIcon(letter.loadingIcon);
-    }
+class _ViewImage extends StatelessWidget {
+  const _ViewImage({Key? key, required this.imagePath, required this.letter}) : super(key: key);
+
+  final String imagePath;
+  final Letter letter;
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: imagePath,
+      fit: BoxFit.fill,
+      placeholder: (context, url) => _LoadingIcon(res: letter.loadingIcon),
+      errorWidget: (context, url, dynamic error) => _ErrorIcon(res: letter.loadingIcon),
+    );
   }
+}
 
-  Widget _loadingIcon(String res) {
+class _LoadingIcon extends StatelessWidget {
+  const _LoadingIcon({Key? key, required this.res}) : super(key: key);
+
+  final String res;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -55,8 +68,15 @@ class LetterRowItem extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _errorIcon(String res) {
+class _ErrorIcon extends StatelessWidget {
+  const _ErrorIcon({Key? key, required this.res}) : super(key: key);
+
+  final String res;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -66,8 +86,15 @@ class LetterRowItem extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _viewImageTitle(BuildContext context, Letter letter) {
+class _ViewImageTitle extends StatelessWidget {
+  const _ViewImageTitle({Key? key, required this.letter}) : super(key: key);
+
+  final Letter letter;
+
+  @override
+  Widget build(BuildContext context) {
     return Text(
       '${letter.month}${RSStrings.letterMonthLabel} ${letter.shortTitle}',
       style: TextStyle(color: letter.themeColor),
