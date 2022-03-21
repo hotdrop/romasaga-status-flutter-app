@@ -131,6 +131,7 @@ class StatusGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color currentStatusColor = _calcCurrentStatusColor();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

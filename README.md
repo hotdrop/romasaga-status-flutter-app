@@ -28,8 +28,6 @@ Firebaseで利用しているサービスは次の通りです。
 実際に使っているアプリとデバッグ用のアプリはBuildTypeで分割しています。
 キャラデータが全て入ったjsonをいちいち読み込んで動作確認するのが辛かったため、動作確認は`main_dev.dart`で開発用のjsonを読み込むようにしています。
 開発はvscodeでやっているので`launch.json`のprogramにこのdartファイルを指定してデバッグしています。
-実際に個人端末で利用しているアプリは次のコマンドで作っています。
-`flutter build apk --split-per-abi --release`
 
 # 画面イメージ一部
 ![01](/images/01_char_list.png)

@@ -4,9 +4,7 @@ import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/ui/base_view_model.dart';
 
-final charactersViewModelProvider = ChangeNotifierProvider.autoDispose((ref) {
-  return _CharactersViewModel(ref.read);
-});
+final charactersViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _CharactersViewModel(ref.read));
 
 class _CharactersViewModel extends BaseViewModel {
   _CharactersViewModel(this._read) {
@@ -39,6 +37,8 @@ class _CharactersViewModel extends BaseViewModel {
   CharacterListOrderType get selectedOrderType => _read(appSettingsProvider).characterListOrderType;
 
   Future<void> _init() async {
+    // ここでアプリに必要な初期処理を行う
+    await _read(appSettingsProvider.notifier).init();
     await _refreshAllData();
     onSuccess();
   }
