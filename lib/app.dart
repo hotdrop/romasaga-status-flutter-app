@@ -21,7 +21,18 @@ class App extends ConsumerWidget {
       supportedLocales: const [Locale('ja', '')],
       title: RSStrings.appTitle,
       theme: isDarkMode ? RSTheme.dark : RSTheme.light,
-      home: const TopPage(),
+      home: FutureBuilder(
+        future: ref.read(appSettingsProvider.notifier).init(),
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return const TopPage();
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }),
+      ),
     );
   }
 }
