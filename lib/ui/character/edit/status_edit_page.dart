@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/status.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/ui/base_view_model.dart';
+import 'package:rsapp/ui/character/edit/row_status_counter.dart';
 import 'package:rsapp/ui/character/edit/status_edit_view_model.dart';
-import 'package:rsapp/ui/widget/rs_icon.dart';
-import 'package:rsapp/ui/widget/status_counter.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
 
 class StatusEditPage extends ConsumerWidget {
@@ -78,142 +76,18 @@ class _ViewCountLayout extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView(
       children: <Widget>[
-        _RowEditStatus(StatusType.hp, myStatus.hp, ref.watch(statusEditViewModelProvider).editHp),
-        _RowEditStatus(StatusType.str, myStatus.str, ref.watch(statusEditViewModelProvider).editStr),
-        _RowEditStatus(StatusType.vit, myStatus.vit, ref.watch(statusEditViewModelProvider).editVit),
-        _RowEditStatus(StatusType.dex, myStatus.dex, ref.watch(statusEditViewModelProvider).editDex),
-        _RowEditStatus(StatusType.agi, myStatus.agi, ref.watch(statusEditViewModelProvider).editAgi),
-        _RowEditStatus(StatusType.inte, myStatus.inte, ref.watch(statusEditViewModelProvider).editInt),
-        _RowEditStatus(StatusType.spirit, myStatus.spi, ref.watch(statusEditViewModelProvider).editSpi),
-        _RowEditStatus(StatusType.love, myStatus.love, ref.watch(statusEditViewModelProvider).editLove),
-        _RowEditStatus(StatusType.attr, myStatus.attr, ref.watch(statusEditViewModelProvider).editAttr),
+        RowStatusCounter(type: StatusType.hp, currentStatus: myStatus.hp, onChangeValue: ref.read(statusEditViewModelProvider).updateHp),
+        RowStatusCounter(type: StatusType.str, currentStatus: myStatus.str, onChangeValue: ref.read(statusEditViewModelProvider).updateStr),
+        RowStatusCounter(type: StatusType.vit, currentStatus: myStatus.vit, onChangeValue: ref.read(statusEditViewModelProvider).updateVit),
+        RowStatusCounter(type: StatusType.dex, currentStatus: myStatus.dex, onChangeValue: ref.read(statusEditViewModelProvider).updateDex),
+        RowStatusCounter(type: StatusType.agi, currentStatus: myStatus.agi, onChangeValue: ref.read(statusEditViewModelProvider).updateAgi),
+        RowStatusCounter(type: StatusType.inte, currentStatus: myStatus.inte, onChangeValue: ref.read(statusEditViewModelProvider).updateInt),
+        RowStatusCounter(type: StatusType.spirit, currentStatus: myStatus.spi, onChangeValue: ref.read(statusEditViewModelProvider).updateSpi),
+        RowStatusCounter(type: StatusType.love, currentStatus: myStatus.love, onChangeValue: ref.read(statusEditViewModelProvider).updateLove),
+        RowStatusCounter(type: StatusType.attr, currentStatus: myStatus.attr, onChangeValue: ref.read(statusEditViewModelProvider).updateAttr),
         const SizedBox(height: 16.0)
       ],
     );
-  }
-}
-
-///
-/// eachモードでのステータスの各行Widget
-///
-class _RowEditStatus extends ConsumerWidget {
-  const _RowEditStatus(this.type, this.currentStatus, this.updateValue, {Key? key}) : super(key: key);
-
-  final StatusType type;
-  final int currentStatus;
-  final int updateValue;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, top: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          _ViewStatusIcon(type: type),
-          const SizedBox(width: 16.0),
-          _ViewStatusLabel(updateValue),
-          const SizedBox(width: 16.0),
-          _ViewDiffLabel(nowStatus: currentStatus, newStatus: updateValue),
-          const SizedBox(width: 16.0),
-          DecrementCounter(onTap: () => ref.read(statusEditViewModelProvider).decrement(type)),
-          const SizedBox(width: 24.0),
-          IncrementCounter(onTap: () => ref.read(statusEditViewModelProvider).increment(type)),
-        ],
-      ),
-    );
-  }
-}
-
-class _ViewStatusIcon extends StatelessWidget {
-  const _ViewStatusIcon({Key? key, required this.type}) : super(key: key);
-
-  final StatusType type;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (type) {
-      case StatusType.hp:
-        return const Padding(
-          padding: EdgeInsets.all(4),
-          child: Text(
-            RSStrings.hpName,
-            style: TextStyle(fontSize: 30, color: Colors.yellowAccent),
-          ),
-        );
-      case StatusType.str:
-        return StatusIcon.str();
-      case StatusType.vit:
-        return StatusIcon.vit();
-      case StatusType.dex:
-        return StatusIcon.dex();
-      case StatusType.agi:
-        return StatusIcon.agi();
-      case StatusType.inte:
-        return StatusIcon.int();
-      case StatusType.spirit:
-        return StatusIcon.spirit();
-      case StatusType.love:
-        return StatusIcon.love();
-      case StatusType.attr:
-        return StatusIcon.attr();
-    }
-  }
-}
-
-class _ViewStatusLabel extends StatelessWidget {
-  const _ViewStatusLabel(this.status, {Key? key}) : super(key: key);
-
-  final int status;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 80.0,
-      child: Center(
-        child: Text('$status', style: const TextStyle(fontSize: 28)),
-      ),
-    );
-  }
-}
-
-class _ViewDiffLabel extends StatelessWidget {
-  const _ViewDiffLabel({Key? key, required this.nowStatus, required this.newStatus}) : super(key: key);
-
-  final int nowStatus;
-  final int newStatus;
-
-  @override
-  Widget build(BuildContext context) {
-    final diffStr = _textDiffStr();
-    final textColor = _textColor();
-
-    return SizedBox(
-      width: 80.0,
-      child: Center(
-        child: Text(diffStr, style: TextStyle(fontSize: 28, color: textColor)),
-      ),
-    );
-  }
-
-  String _textDiffStr() {
-    int diff = newStatus - nowStatus;
-    if (diff > 0) {
-      return ' +$diff';
-    } else {
-      return '  $diff';
-    }
-  }
-
-  Color _textColor() {
-    int diff = newStatus - nowStatus;
-    Color textColor = Colors.grey;
-    if (diff > 0) {
-      textColor = RSColors.statusPlus;
-    } else if (diff < 0) {
-      textColor = RSColors.statusMinus;
-    }
-    return textColor;
   }
 }
 

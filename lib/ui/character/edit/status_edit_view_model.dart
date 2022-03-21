@@ -13,6 +13,7 @@ class _StatusEditViewModel extends BaseViewModel {
   EditMode _editMode = EditMode.each;
   bool get isEditEach => _editMode == EditMode.each;
 
+  late MyStatus _status;
   int editHp = 0;
   int editStr = 0;
   int editVit = 0;
@@ -24,6 +25,7 @@ class _StatusEditViewModel extends BaseViewModel {
   int editAttr = 0;
 
   void init(MyStatus status) {
+    _status = status;
     editHp = status.hp;
     editStr = status.str;
     editVit = status.vit;
@@ -36,70 +38,40 @@ class _StatusEditViewModel extends BaseViewModel {
     onSuccess();
   }
 
-  void increment(StatusType type) {
-    switch (type) {
-      case StatusType.hp:
-        editHp++;
-        break;
-      case StatusType.str:
-        editStr++;
-        break;
-      case StatusType.vit:
-        editVit++;
-        break;
-      case StatusType.dex:
-        editDex++;
-        break;
-      case StatusType.agi:
-        editAgi++;
-        break;
-      case StatusType.inte:
-        editInt++;
-        break;
-      case StatusType.spirit:
-        editSpi++;
-        break;
-      case StatusType.love:
-        editLove++;
-        break;
-      case StatusType.attr:
-        editAttr++;
-        break;
-    }
-    notifyListeners();
+  void updateHp(int newVal) {
+    editHp = _status.hp + newVal;
   }
 
-  void decrement(StatusType type) {
-    switch (type) {
-      case StatusType.hp:
-        (editHp > 0) ? editHp-- : editHp = 0;
-        break;
-      case StatusType.str:
-        (editStr > 0) ? editStr-- : editStr = 0;
-        break;
-      case StatusType.vit:
-        (editVit > 0) ? editVit-- : editVit = 0;
-        break;
-      case StatusType.dex:
-        (editDex > 0) ? editDex-- : editDex = 0;
-        break;
-      case StatusType.agi:
-        (editAgi > 0) ? editAgi-- : editAgi = 0;
-        break;
-      case StatusType.inte:
-        (editInt > 0) ? editInt-- : editInt = 0;
-        break;
-      case StatusType.spirit:
-        (editSpi > 0) ? editSpi-- : editSpi = 0;
-        break;
-      case StatusType.love:
-        (editLove > 0) ? editLove-- : editLove = 0;
-        break;
-      case StatusType.attr:
-        (editAttr > 0) ? editAttr-- : editAttr = 0;
-        break;
-    }
-    notifyListeners();
+  void updateStr(int newVal) {
+    editStr = _status.str + newVal;
+  }
+
+  void updateVit(int newVal) {
+    editVit = _status.vit + newVal;
+  }
+
+  void updateDex(int newVal) {
+    editDex = _status.dex + newVal;
+  }
+
+  void updateAgi(int newVal) {
+    editAgi = _status.agi + newVal;
+  }
+
+  void updateInt(int newVal) {
+    editInt = _status.inte + newVal;
+  }
+
+  void updateSpi(int newVal) {
+    editSpi = _status.spi + newVal;
+  }
+
+  void updateLove(int newVal) {
+    editLove = _status.love + newVal;
+  }
+
+  void updateAttr(int newVal) {
+    editAttr = _status.attr + newVal;
   }
 
   void update(StatusType type, int newVal) {
