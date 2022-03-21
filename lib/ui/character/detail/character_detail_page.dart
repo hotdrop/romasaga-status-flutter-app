@@ -62,16 +62,9 @@ class CharacterDetailPage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _ViewCharacterOverview(
-                  character: character,
-                  selectedStyle: ref.watch(characterDetailViewModelProvider).selectedStyle,
-                ),
+                const _ViewCharacterOverview(),
                 const SizedBox(height: 8),
-                _ViewStatusArea(
-                  character: ref.watch(characterDetailViewModelProvider).character,
-                  selectedStyle: ref.watch(characterDetailViewModelProvider).selectedStyle,
-                  stage: ref.watch(characterDetailViewModelProvider).stage,
-                ),
+                const _ViewStatusArea(),
                 const SizedBox(height: 8),
                 StatusTable(
                   character: character,
@@ -85,11 +78,7 @@ class CharacterDetailPage extends ConsumerWidget {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: const _ViewEditStatusFab(),
-        bottomNavigationBar: _ViewBottomNavigationBar(
-          initStatusUpEvent: character.statusUpEvent,
-          initHighLevel: character.myStatus?.useHighLevel ?? false,
-          initFavorite: character.myStatus?.favorite ?? false,
-        ),
+        bottomNavigationBar: const _ViewBottomNavigationBar(),
       ),
       onWillPop: () async {
         final isUpdate = ref.read(characterDetailViewModelProvider).isUpdate;
@@ -104,10 +93,7 @@ class CharacterDetailPage extends ConsumerWidget {
 /// キャラクター概要の表示領域
 ///
 class _ViewCharacterOverview extends StatelessWidget {
-  const _ViewCharacterOverview({Key? key, required this.character, required this.selectedStyle}) : super(key: key);
-
-  final Character character;
-  final Style selectedStyle;
+  const _ViewCharacterOverview({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -118,13 +104,13 @@ class _ViewCharacterOverview extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _ViewCharacterInfo(character: character, selectedStyle: selectedStyle),
-            const SizedBox(height: 8),
-            _ViewIconsAttr(character: character),
-            const SizedBox(height: 8),
-            const HorizontalLine(),
-            _ViewStyleChips(character: character),
+          children: const <Widget>[
+            _ViewCharacterInfo(),
+            SizedBox(height: 8),
+            _ViewIconsAttr(),
+            SizedBox(height: 8),
+            HorizontalLine(),
+            _ViewStyleChips(),
           ],
         ),
       ),
@@ -136,13 +122,13 @@ class _ViewCharacterOverview extends StatelessWidget {
 /// キャラクターの作品、名前、肩書き、武器情報
 ///
 class _ViewCharacterInfo extends ConsumerWidget {
-  const _ViewCharacterInfo({Key? key, required this.character, required this.selectedStyle}) : super(key: key);
-
-  final Character character;
-  final Style selectedStyle;
+  const _ViewCharacterInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final character = ref.watch(characterDetailViewModelProvider).character;
+    final selectedStyle = ref.watch(characterDetailViewModelProvider).selectedStyle;
+
     return Row(
       children: <Widget>[
         GestureDetector(
@@ -193,24 +179,25 @@ class _ViewCharacterInfo extends ConsumerWidget {
 ///
 /// 属性アイコン
 ///
-class _ViewIconsAttr extends StatelessWidget {
-  const _ViewIconsAttr({Key? key, required this.character}) : super(key: key);
-
-  final Character character;
+class _ViewIconsAttr extends ConsumerWidget {
+  const _ViewIconsAttr({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final character = ref.watch(characterDetailViewModelProvider).character;
+
     return Wrap(
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
       spacing: 8.0,
       runSpacing: 8.0,
-      children: _viewIconsAttr(),
+      children: _viewIconsAttr(character),
     );
   }
 
-  List<Widget> _viewIconsAttr() {
+  List<Widget> _viewIconsAttr(Character character) {
     final widgets = <Widget>[];
+
     for (var w in character.weapons) {
       widgets.add(WeaponIcon.normal(w.type));
     }
@@ -239,12 +226,12 @@ class _ViewIconsAttr extends StatelessWidget {
 /// スタイルChips
 ///
 class _ViewStyleChips extends ConsumerWidget {
-  const _ViewStyleChips({Key? key, required this.character}) : super(key: key);
-
-  final Character character;
+  const _ViewStyleChips({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final character = ref.watch(characterDetailViewModelProvider).character;
+
     return Wrap(
       children: <Widget>[
         RankChoiceChip(
@@ -262,15 +249,11 @@ class _ViewStyleChips extends ConsumerWidget {
 ///
 /// ステータス表示領域
 ///
-class _ViewStatusArea extends StatelessWidget {
-  const _ViewStatusArea({Key? key, required this.character, required this.selectedStyle, required this.stage}) : super(key: key);
-
-  final Character character;
-  final Style selectedStyle;
-  final Stage stage;
+class _ViewStatusArea extends ConsumerWidget {
+  const _ViewStatusArea({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       elevation: 4.0,
       color: Theme.of(context).backgroundColor,
@@ -278,13 +261,16 @@ class _ViewStatusArea extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           children: <Widget>[
-            _ViewTotalStatus(character: character, selectedStyle: selectedStyle, stage: stage),
+            const _ViewTotalStatus(),
             const SizedBox(height: 8),
             const HorizontalLine(),
             const SizedBox(height: 8),
-            HpGraph(status: character.myStatus?.hp ?? 0, limit: stage.hpLimit),
+            HpGraph(
+              status: ref.watch(characterDetailViewModelProvider).character.myStatus?.hp ?? 0,
+              limit: ref.watch(characterDetailViewModelProvider).stage.hpLimit,
+            ),
             const SizedBox(height: 8),
-            _ViewEachStatus(myStatus: character.myStatus),
+            const _ViewEachStatus(),
           ],
         ),
       ),
@@ -295,30 +281,29 @@ class _ViewStatusArea extends StatelessWidget {
 ///
 /// 合計ステータス表示欄
 ///
-class _ViewTotalStatus extends StatelessWidget {
-  const _ViewTotalStatus({Key? key, required this.character, required this.selectedStyle, required this.stage}) : super(key: key);
-
-  final Character character;
-  final Style selectedStyle;
-  final Stage stage;
+class _ViewTotalStatus extends ConsumerWidget {
+  const _ViewTotalStatus({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedStyle = ref.watch(characterDetailViewModelProvider).selectedStyle;
+    final stage = ref.watch(characterDetailViewModelProvider).stage;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         TotalStatusCircleGraph(
-          totalStatus: character.myStatus?.sumWithoutHp() ?? 0,
+          totalStatus: ref.watch(characterDetailViewModelProvider).character.myStatus?.sumWithoutHp() ?? 0,
           limitStatus: (selectedStyle.sum()) + (8 * stage.statusLimit),
         ),
         const SizedBox(width: 16),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 12.0),
-            _ViewStageName(stageName: stage.name),
-            const SizedBox(height: 12.0),
-            _ViewStageLimit(statusLimit: stage.statusLimit),
+          children: const <Widget>[
+            SizedBox(height: 12.0),
+            _ViewStageName(),
+            SizedBox(height: 12.0),
+            _ViewStageLimit(),
           ],
         ),
       ],
@@ -329,13 +314,11 @@ class _ViewTotalStatus extends StatelessWidget {
 ///
 /// ステージ情報
 ///
-class _ViewStageName extends StatelessWidget {
-  const _ViewStageName({Key? key, required this.stageName}) : super(key: key);
-
-  final String stageName;
+class _ViewStageName extends ConsumerWidget {
+  const _ViewStageName({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: <Widget>[
         const VerticalLine(color: RSColors.stageNameLine),
@@ -345,7 +328,7 @@ class _ViewStageName extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(RSStrings.detailPageStageLabel, style: Theme.of(context).textTheme.caption),
-              Text(stageName),
+              Text(ref.watch(characterDetailViewModelProvider).stage.name),
             ],
           ),
         )
@@ -354,13 +337,11 @@ class _ViewStageName extends StatelessWidget {
   }
 }
 
-class _ViewStageLimit extends StatelessWidget {
-  const _ViewStageLimit({Key? key, required this.statusLimit}) : super(key: key);
-
-  final int statusLimit;
+class _ViewStageLimit extends ConsumerWidget {
+  const _ViewStageLimit({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: <Widget>[
         const VerticalLine(color: RSColors.stageLimitLine),
@@ -370,7 +351,7 @@ class _ViewStageLimit extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(RSStrings.detailPageStatusLimitLabel, style: Theme.of(context).textTheme.caption),
-              Text('+$statusLimit'),
+              Text('+${ref.watch(characterDetailViewModelProvider).stage.statusLimit}'),
             ],
           ),
         )
@@ -380,12 +361,12 @@ class _ViewStageLimit extends StatelessWidget {
 }
 
 class _ViewEachStatus extends ConsumerWidget {
-  const _ViewEachStatus({Key? key, required this.myStatus}) : super(key: key);
-
-  final MyStatus? myStatus;
+  const _ViewEachStatus({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final myStatus = ref.watch(characterDetailViewModelProvider).character.myStatus;
+
     return Column(
       children: [
         Row(
@@ -478,19 +459,12 @@ class _ViewEditStatusFab extends ConsumerWidget {
 }
 
 class _ViewBottomNavigationBar extends ConsumerWidget {
-  const _ViewBottomNavigationBar({
-    Key? key,
-    required this.initStatusUpEvent,
-    required this.initHighLevel,
-    required this.initFavorite,
-  }) : super(key: key);
-
-  final bool initStatusUpEvent;
-  final bool initHighLevel;
-  final bool initFavorite;
+  const _ViewBottomNavigationBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final character = ref.watch(characterDetailViewModelProvider).character;
+
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 4.0,
@@ -499,21 +473,21 @@ class _ViewBottomNavigationBar extends ConsumerWidget {
         children: <Widget>[
           const Padding(padding: EdgeInsets.only(left: 16.0)),
           _StatusUpEventIcon(
-            initValue: initStatusUpEvent,
+            initValue: character.statusUpEvent,
             onPressed: (newVal) async {
               await ref.read(characterDetailViewModelProvider).saveStatusUpEvent(newVal);
             },
           ),
           const Padding(padding: EdgeInsets.only(left: 16.0)),
           _HighLevelIcon(
-            initValue: initHighLevel,
+            initValue: character.myStatus?.useHighLevel ?? false,
             onPressed: (newVal) async {
               await ref.read(characterDetailViewModelProvider).saveHighLevel(newVal);
             },
           ),
           const Padding(padding: EdgeInsets.only(left: 16.0)),
           _FavoriteIcon(
-            initValue: initFavorite,
+            initValue: character.myStatus?.favorite ?? false,
             onPressed: (newVal) async {
               await ref.read(characterDetailViewModelProvider).saveFavorite(newVal);
             },

@@ -19,21 +19,17 @@ class LetterDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = PageController(initialPage: _selectedIndex, keepPage: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text(RSStrings.letterDetailPageTitle),
       ),
-      body: _viewBody(context),
-    );
-  }
-
-  Widget _viewBody(BuildContext context) {
-    final controller = PageController(initialPage: _selectedIndex, keepPage: false);
-    return Center(
-      child: PageView.builder(
-        controller: controller,
-        itemCount: _letters.length,
-        itemBuilder: (context, index) => _LetterDetailPage(_letters[index]),
+      body: Center(
+        child: PageView.builder(
+          controller: controller,
+          itemCount: _letters.length,
+          itemBuilder: (context, index) => _LetterDetailPage(_letters[index]),
+        ),
       ),
     );
   }
@@ -51,15 +47,22 @@ class _LetterDetailPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           const SizedBox(height: 16),
-          _viewTitle(),
+          _LetterTitle(letter),
           const SizedBox(height: 16),
           _VideoView(letter),
         ],
       ),
     );
   }
+}
 
-  Widget _viewTitle() {
+class _LetterTitle extends StatelessWidget {
+  const _LetterTitle(this.letter, {Key? key}) : super(key: key);
+
+  final Letter letter;
+
+  @override
+  Widget build(BuildContext context) {
     return Text(
       '${letter.month}${RSStrings.letterMonthLabel} ${letter.title}',
       style: TextStyle(

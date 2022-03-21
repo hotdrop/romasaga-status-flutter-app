@@ -14,10 +14,7 @@ class CharactersPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(charactersViewModelProvider).uiState;
     return uiState.when(
-      loading: (String? errMsg) => OnViewLoading(
-        title: RSStrings.charactersPageTitle,
-        errorMessage: errMsg,
-      ),
+      loading: (String? errMsg) => OnViewLoading(title: RSStrings.charactersPageTitle, errorMessage: errMsg),
       success: () => _onSuccess(context, ref),
     );
   }
@@ -34,13 +31,8 @@ class CharactersPage extends ConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(RSStrings.charactersPageTitle),
-          actions: <Widget>[
-            _TitlePopupMenu(
-              initType: ref.watch(charactersViewModelProvider).selectedOrderType,
-              onSelected: (value) async {
-                await ref.read(charactersViewModelProvider).selectOrder(value);
-              },
-            ),
+          actions: const <Widget>[
+            _TitlePopupMenu(),
           ],
           bottom: TabBar(
             isScrollable: true,
@@ -55,36 +47,11 @@ class CharactersPage extends ConsumerWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            _ViewList(
-              characters: ref.watch(charactersViewModelProvider).statusUpCharacters,
-              onRefresh: () async {
-                await ref.read(charactersViewModelProvider).refresh();
-              },
-            ),
-            _ViewList(
-              characters: ref.watch(charactersViewModelProvider).forHighLevelCharacters,
-              onRefresh: () async {
-                await ref.read(charactersViewModelProvider).refresh();
-              },
-            ),
-            _ViewList(
-              characters: ref.watch(charactersViewModelProvider).forRoundCharacters,
-              onRefresh: () async {
-                await ref.read(charactersViewModelProvider).refresh();
-              },
-            ),
-            _ViewList(
-              characters: ref.watch(charactersViewModelProvider).favoriteCharacters,
-              onRefresh: () async {
-                await ref.read(charactersViewModelProvider).refresh();
-              },
-            ),
-            _ViewList(
-              characters: ref.watch(charactersViewModelProvider).notFavoriteCharacters,
-              onRefresh: () async {
-                await ref.read(charactersViewModelProvider).refresh();
-              },
-            ),
+            _ViewList(characters: ref.watch(charactersViewModelProvider).statusUpCharacters),
+            _ViewList(characters: ref.watch(charactersViewModelProvider).forHighLevelCharacters),
+            _ViewList(characters: ref.watch(charactersViewModelProvider).forRoundCharacters),
+            _ViewList(characters: ref.watch(charactersViewModelProvider).favoriteCharacters),
+            _ViewList(characters: ref.watch(charactersViewModelProvider).notFavoriteCharacters),
           ],
         ),
       ),
@@ -92,14 +59,12 @@ class CharactersPage extends ConsumerWidget {
   }
 }
 
-class _TitlePopupMenu extends StatelessWidget {
-  const _TitlePopupMenu({Key? key, required this.initType, required this.onSelected}) : super(key: key);
-
-  final CharacterListOrderType initType;
-  final Function(CharacterListOrderType) onSelected;
+class _TitlePopupMenu extends ConsumerWidget {
+  const _TitlePopupMenu({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final initType = ref.watch(charactersViewModelProvider).selectedOrderType;
     return PopupMenuButton<CharacterListOrderType>(
       padding: EdgeInsets.zero,
       itemBuilder: (_) => [
@@ -117,19 +82,20 @@ class _TitlePopupMenu extends StatelessWidget {
         ),
       ],
       initialValue: initType,
-      onSelected: onSelected,
+      onSelected: (value) async {
+        await ref.read(charactersViewModelProvider).selectOrder(value);
+      },
     );
   }
 }
 
-class _ViewList extends StatelessWidget {
-  const _ViewList({Key? key, required this.characters, required this.onRefresh}) : super(key: key);
+class _ViewList extends ConsumerWidget {
+  const _ViewList({Key? key, required this.characters}) : super(key: key);
 
   final List<Character> characters;
-  final Function onRefresh;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     if (characters.isEmpty) {
       return const _ViewEmptyList();
     }
@@ -138,7 +104,12 @@ class _ViewList extends StatelessWidget {
       shrinkWrap: true,
       itemCount: characters.length,
       itemBuilder: (context, index) {
-        return RowCharacterItem(characters[index], refreshListener: onRefresh);
+        return RowCharacterItem(
+          characters[index],
+          refreshListener: () async {
+            await ref.read(charactersViewModelProvider).refresh();
+          },
+        );
       },
     );
   }

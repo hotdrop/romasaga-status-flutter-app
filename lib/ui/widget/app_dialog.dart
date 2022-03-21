@@ -23,7 +23,12 @@ class AppDialog {
     this._isShowCancelButton,
   );
 
-  factory AppDialog.onlyOk({String? title, required String message, String? okLabel, Function? onOk}) {
+  factory AppDialog.onlyOk({
+    String? title,
+    required String message,
+    String? okLabel,
+    Function? onOk,
+  }) {
     return AppDialog._(
       title,
       message,
@@ -35,7 +40,14 @@ class AppDialog {
     );
   }
 
-  factory AppDialog.okAndCancel({String? title, required String message, String? okLabel, required Function onOk, String? cancelLabel, Function? onCancel}) {
+  factory AppDialog.okAndCancel({
+    String? title,
+    required String message,
+    String? okLabel,
+    required Function onOk,
+    String? cancelLabel,
+    Function? onCancel,
+  }) {
     return AppDialog._(
       title,
       message,

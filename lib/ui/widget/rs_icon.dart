@@ -371,56 +371,100 @@ class _CategoryIconsState extends State<CategoryIcons> {
       spacing: 16.0,
       runSpacing: 16.0,
       children: [
-        _favoriteIcon(),
-        _highLevelIcon(),
-        _aroundIcon(),
+        _FavoriteIcon(
+          isSelected: _isFavSelected,
+          onPressed: () {
+            setState(() {
+              _isFavSelected = !_isFavSelected;
+              _isHighLevelSelected = false;
+              _isAroundSelected = false;
+            });
+            widget.onTap(_isFavSelected, _isHighLevelSelected, _isAroundSelected);
+          },
+        ),
+        _HighLevelIcon(
+          isSelected: _isHighLevelSelected,
+          onPressed: () {
+            setState(() {
+              _isFavSelected = false;
+              _isHighLevelSelected = !_isHighLevelSelected;
+              _isAroundSelected = false;
+            });
+            widget.onTap(_isFavSelected, _isHighLevelSelected, _isAroundSelected);
+          },
+        ),
+        _AroundIcon(
+          isSelected: _isAroundSelected,
+          onPressed: () {
+            setState(() {
+              _isFavSelected = false;
+              _isHighLevelSelected = false;
+              _isAroundSelected = !_isAroundSelected;
+            });
+            widget.onTap(_isFavSelected, _isHighLevelSelected, _isAroundSelected);
+          },
+        ),
       ],
     );
   }
+}
 
-  Widget _favoriteIcon() {
-    final iconColor = _isFavSelected ? RSColors.favoriteSelected : Theme.of(context).disabledColor;
-    return _createIconButton(
-      child: Icon(Icons.star_rounded, color: iconColor, size: 20.0),
-      onChangeState: () {
-        setState(() {
-          _isFavSelected = !_isFavSelected;
-          _isHighLevelSelected = false;
-          _isAroundSelected = false;
-        });
-      },
+class _FavoriteIcon extends StatelessWidget {
+  const _FavoriteIcon({Key? key, required this.isSelected, required this.onPressed}) : super(key: key);
+
+  final bool isSelected;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isSelected ? RSColors.favoriteSelected : Theme.of(context).disabledColor;
+    return _IconButton(
+      child: Icon(Icons.star_rounded, color: color, size: 20.0),
+      onPressed: onPressed,
     );
   }
+}
 
-  Widget _highLevelIcon() {
-    final color = _isHighLevelSelected ? RSColors.highLevelSelected : Theme.of(context).disabledColor;
-    return _createIconButton(
+class _HighLevelIcon extends StatelessWidget {
+  const _HighLevelIcon({Key? key, required this.isSelected, required this.onPressed}) : super(key: key);
+
+  final bool isSelected;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isSelected ? RSColors.highLevelSelected : Theme.of(context).disabledColor;
+    return _IconButton(
       child: Text(RSStrings.highLevelLabel, style: TextStyle(color: color)),
-      onChangeState: () {
-        setState(() {
-          _isFavSelected = false;
-          _isHighLevelSelected = !_isHighLevelSelected;
-          _isAroundSelected = false;
-        });
-      },
+      onPressed: onPressed,
     );
   }
+}
 
-  Widget _aroundIcon() {
-    final color = _isAroundSelected ? RSColors.aroundSelected : Theme.of(context).disabledColor;
-    return _createIconButton(
+class _AroundIcon extends StatelessWidget {
+  const _AroundIcon({Key? key, required this.isSelected, required this.onPressed}) : super(key: key);
+
+  final bool isSelected;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isSelected ? RSColors.aroundSelected : Theme.of(context).disabledColor;
+    return _IconButton(
       child: Text(RSStrings.aroundLabel, style: TextStyle(color: color)),
-      onChangeState: () {
-        setState(() {
-          _isFavSelected = false;
-          _isHighLevelSelected = false;
-          _isAroundSelected = !_isAroundSelected;
-        });
-      },
+      onPressed: onPressed,
     );
   }
+}
 
-  Widget _createIconButton({required Widget child, required Function onChangeState}) {
+class _IconButton extends StatelessWidget {
+  const _IconButton({Key? key, required this.child, required this.onPressed}) : super(key: key);
+
+  final Widget child;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
     return RawMaterialButton(
       shape: const CircleBorder(),
       constraints: const BoxConstraints(
@@ -429,10 +473,7 @@ class _CategoryIconsState extends State<CategoryIcons> {
       ),
       fillColor: Theme.of(context).disabledColor,
       child: child,
-      onPressed: () {
-        onChangeState();
-        widget.onTap(_isFavSelected, _isHighLevelSelected, _isAroundSelected);
-      },
+      onPressed: onPressed,
     );
   }
 }
