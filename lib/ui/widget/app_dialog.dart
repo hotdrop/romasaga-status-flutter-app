@@ -93,7 +93,7 @@ class AppDialog {
 
   AlertDialog _createMaterialDialog(BuildContext context) {
     return AlertDialog(
-      title: _viewTitle(),
+      title: (_title != null) ? Text(_title!) : null,
       content: Text(_message),
       actions: <Widget>[
         if (_isShowCancelButton)
@@ -111,7 +111,7 @@ class AppDialog {
 
   Widget _createCupertinoDialog(BuildContext context) {
     return cupertino.CupertinoAlertDialog(
-      title: _viewTitle(),
+      title: (_title != null) ? Text(_title!) : null,
       content: Text(_message),
       actions: <Widget>[
         if (_isShowCancelButton)
@@ -125,10 +125,6 @@ class AppDialog {
         ),
       ],
     );
-  }
-
-  Widget? _viewTitle() {
-    return (_title != null) ? Text(_title!) : null;
   }
 
   void _onActionOk(BuildContext context) {

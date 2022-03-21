@@ -17,11 +17,14 @@ class LetterRowItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentLetter = _allLetters[_selectedIndex];
+    final imagePath = currentLetter.staticImagePath;
+
     return Card(
       child: InkWell(
         child: Column(
           children: <Widget>[
-            _viewImage(context, currentLetter),
+            if (imagePath != null) _ViewImage(imagePath: imagePath, letter: currentLetter),
+            if (imagePath == null) _ErrorIcon(res: currentLetter.loadingIcon),
             _ViewImageTitle(letter: currentLetter),
           ],
         ),
@@ -30,15 +33,6 @@ class LetterRowItem extends StatelessWidget {
         },
       ),
     );
-  }
-
-  Widget _viewImage(BuildContext context, Letter currentLetter) {
-    final imagePath = currentLetter.staticImagePath;
-    if (imagePath != null) {
-      return _ViewImage(imagePath: imagePath, letter: currentLetter);
-    } else {
-      return _ErrorIcon(res: currentLetter.loadingIcon);
-    }
   }
 }
 

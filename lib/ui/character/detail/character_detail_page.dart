@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/models/character.dart';
-import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/models/status.dart';
-import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
@@ -36,12 +34,12 @@ class CharacterDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(characterDetailViewModelProvider).uiState;
     return uiState.when(
-      loading: (String? errMsg) => _onLoading(context, ref, errMsg),
+      loading: (String? errMsg) => _onLoading(ref, errMsg),
       success: () => _onSuccess(context, ref),
     );
   }
 
-  Widget _onLoading(BuildContext context, WidgetRef ref, String? errMsg) {
+  Widget _onLoading(WidgetRef ref, String? errMsg) {
     Future.delayed(Duration.zero).then((_) {
       if (errMsg == null) {
         ref.read(characterDetailViewModelProvider).init(character);

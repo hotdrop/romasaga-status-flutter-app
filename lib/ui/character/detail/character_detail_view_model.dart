@@ -4,7 +4,6 @@ import 'package:rsapp/data/character_repository.dart';
 import 'package:rsapp/data/my_status_repository.dart';
 import 'package:rsapp/data/stage_repository.dart';
 import 'package:rsapp/models/status.dart';
-import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/models/style.dart';

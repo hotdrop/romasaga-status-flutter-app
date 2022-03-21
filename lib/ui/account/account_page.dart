@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
-import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/account/account_view_model.dart';
@@ -37,24 +36,14 @@ class AccountPage extends ConsumerWidget {
 
     return ListView(
       children: <Widget>[
-        _RowAccountInfo(
-          userName: ref.watch(accountViewModelProvider).userName,
-          email: ref.watch(accountViewModelProvider).email,
-          iconSize: _rowIconSize,
-        ),
+        const _RowAccountInfo(iconSize: _rowIconSize),
         const _RowAppLicense(iconSize: _rowIconSize),
         const _RowThemeSwitch(iconSize: _rowIconSize),
         const HorizontalLine(),
         const _RowRefreshCharacters(iconSize: _rowIconSize),
-        _RowEditStage(
-          currentStage: ref.watch(accountViewModelProvider).stage,
-          iconSize: _rowIconSize,
-        ),
+        const _RowEditStage(iconSize: _rowIconSize),
         if (loggedIn) ...[
-          _RowBackup(
-            dateLabel: ref.watch(accountViewModelProvider).backupDateLabel,
-            iconSize: _rowIconSize,
-          ),
+          const _RowBackup(iconSize: _rowIconSize),
           const _RowRestore(iconSize: _rowIconSize),
           const HorizontalLine(),
           const SizedBox(height: 16),
@@ -74,18 +63,16 @@ class AccountPage extends ConsumerWidget {
 /// アカウント情報
 ///
 class _RowAccountInfo extends ConsumerWidget {
-  const _RowAccountInfo({Key? key, required this.userName, required this.email, required this.iconSize}) : super(key: key);
+  const _RowAccountInfo({Key? key, required this.iconSize}) : super(key: key);
 
   final double iconSize;
-  final String userName;
-  final String email;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       leading: Icon(Icons.account_circle, size: iconSize),
-      title: Text(userName),
-      subtitle: Text(email),
+      title: Text(ref.watch(accountViewModelProvider).userName),
+      subtitle: Text(ref.watch(accountViewModelProvider).email),
     );
   }
 }
@@ -177,13 +164,14 @@ class _RowRefreshCharacters extends ConsumerWidget {
 /// ステージ編集
 ///
 class _RowEditStage extends ConsumerWidget {
-  const _RowEditStage({Key? key, required this.currentStage, required this.iconSize}) : super(key: key);
+  const _RowEditStage({Key? key, required this.iconSize}) : super(key: key);
 
-  final Stage currentStage;
   final double iconSize;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentStage = ref.watch(accountViewModelProvider).stage;
+
     return ListTile(
       leading: Icon(Icons.maps_home_work, size: iconSize),
       title: const Text(RSStrings.accountStageLabel),
@@ -203,13 +191,14 @@ class _RowEditStage extends ConsumerWidget {
 /// データバックアップ
 ///
 class _RowBackup extends ConsumerWidget {
-  const _RowBackup({Key? key, required this.dateLabel, required this.iconSize}) : super(key: key);
+  const _RowBackup({Key? key, required this.iconSize}) : super(key: key);
 
-  final String dateLabel;
   final double iconSize;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final dateLabel = ref.watch(accountViewModelProvider).backupDateLabel;
+
     return ListTile(
       leading: Icon(Icons.backup, size: iconSize),
       title: const Text(RSStrings.accountStatusBackupLabel),

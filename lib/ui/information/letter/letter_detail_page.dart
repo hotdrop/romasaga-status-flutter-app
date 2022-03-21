@@ -19,14 +19,13 @@ class LetterDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = PageController(initialPage: _selectedIndex, keepPage: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text(RSStrings.letterDetailPageTitle),
       ),
       body: Center(
         child: PageView.builder(
-          controller: controller,
+          controller: PageController(initialPage: _selectedIndex, keepPage: false),
           itemCount: _letters.length,
           itemBuilder: (context, index) => _LetterDetailPage(_letters[index]),
         ),
@@ -109,29 +108,17 @@ class _VideoViewState extends State<_VideoView> {
   @override
   Widget build(BuildContext context) {
     if (widget.letter.videoFilePath == null) {
-      return _viewProcess(RSStrings.letterLoadingFailure, isError: true);
+      return _ViewProcessError(loadingIcon: widget.letter.loadingIcon);
     }
+
     if (isInitialized()) {
       return AspectRatio(
         child: VideoPlayer(_controller!),
         aspectRatio: _controller!.value.aspectRatio,
       );
     } else {
-      return _viewProcess(RSStrings.letterNowLoading);
+      return _ViewProcessLoading(loadingIcon: widget.letter.loadingIcon);
     }
-  }
-
-  Widget _viewProcess(String label, {bool isError = false}) {
-    final textWidget = (isError) ? Text(label, style: const TextStyle(color: Colors.red)) : Text(label);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const SizedBox(height: 108),
-        Image.asset(widget.letter.loadingIcon),
-        const SizedBox(height: 8),
-        textWidget,
-      ],
-    );
   }
 
   bool isInitialized() {
@@ -142,5 +129,46 @@ class _VideoViewState extends State<_VideoView> {
   void dispose() {
     super.dispose();
     _controller?.dispose();
+  }
+}
+
+class _ViewProcessLoading extends StatelessWidget {
+  const _ViewProcessLoading({Key? key, required this.loadingIcon}) : super(key: key);
+
+  final String loadingIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        const SizedBox(height: 108),
+        Image.asset(loadingIcon),
+        const SizedBox(height: 8),
+        const Text(RSStrings.letterNowLoading),
+      ],
+    );
+  }
+}
+
+class _ViewProcessError extends StatelessWidget {
+  const _ViewProcessError({Key? key, required this.loadingIcon}) : super(key: key);
+
+  final String loadingIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        const SizedBox(height: 108),
+        Image.asset(loadingIcon),
+        const SizedBox(height: 8),
+        const Text(
+          RSStrings.letterLoadingFailure,
+          style: TextStyle(color: Colors.red),
+        ),
+      ],
+    );
   }
 }

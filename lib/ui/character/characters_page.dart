@@ -65,6 +65,7 @@ class _TitlePopupMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final initType = ref.watch(charactersViewModelProvider).selectedOrderType;
+
     return PopupMenuButton<CharacterListOrderType>(
       padding: EdgeInsets.zero,
       itemBuilder: (_) => [

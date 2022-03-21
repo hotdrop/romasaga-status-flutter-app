@@ -24,29 +24,24 @@ class LetterPage extends ConsumerWidget {
     final uiState = ref.watch(letterViewModelProvider).uiState;
     return uiState.when(
       loading: (errMsg) => OnViewLoading(title: RSStrings.letterPageTitle, errorMessage: errMsg),
-      success: () => _onSuccess(context, ref),
+      success: () {
+        if (ref.watch(letterViewModelProvider).isEmpty) {
+          return const _ViewNothingLetterPage();
+        } else {
+          return const _ViewLettersPage();
+        }
+      },
     );
-  }
-
-  Widget _onSuccess(BuildContext context, WidgetRef ref) {
-    final isEmpty = ref.watch(letterViewModelProvider).isEmpty;
-    if (isEmpty) {
-      return const _ViewNothingLetterPage();
-    } else {
-      return _ViewLettersPage(
-        years: ref.read(letterViewModelProvider).findDistinctYears(),
-      );
-    }
   }
 }
 
 class _ViewLettersPage extends ConsumerWidget {
-  const _ViewLettersPage({Key? key, required this.years}) : super(key: key);
-
-  final List<int> years;
+  const _ViewLettersPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final years = ref.read(letterViewModelProvider).findDistinctYears();
+
     return DefaultTabController(
       length: years.length,
       child: Scaffold(
