@@ -7,20 +7,7 @@ import 'package:rsapp/ui/note/note_page.dart';
 import 'package:rsapp/ui/search/search_page.dart';
 
 class TopPage extends StatefulWidget {
-  const TopPage._();
-
-  static Future<void> start(BuildContext context) async {
-    Navigator.popUntil(context, (route) => route.isFirst);
-    await Navigator.pushReplacement<void, void>(
-      context,
-      MaterialPageRoute(
-        settings: const RouteSettings(name: routeName),
-        builder: (_) => const TopPage._(),
-      ),
-    );
-  }
-
-  static const String routeName = '/top';
+  const TopPage({Key? key}) : super(key: key);
 
   @override
   State<TopPage> createState() => _TopPageState();
@@ -32,7 +19,9 @@ class _TopPageState extends State<TopPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: _menuView(_currentIndex)),
+      body: Center(
+        child: _menuView(_currentIndex),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         elevation: 4,
