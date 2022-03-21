@@ -70,13 +70,13 @@ class CharacterDetailPage extends ConsumerWidget {
                 _ViewStatusArea(
                   character: ref.watch(characterDetailViewModelProvider).character,
                   selectedStyle: ref.watch(characterDetailViewModelProvider).selectedStyle,
-                  stage: ref.read(characterDetailViewModelProvider).stage,
+                  stage: ref.watch(characterDetailViewModelProvider).stage,
                 ),
                 const SizedBox(height: 8),
                 StatusTable(
                   character: character,
-                  ranks: ref.read(characterDetailViewModelProvider).getAllRanks(),
-                  stage: ref.read(characterDetailViewModelProvider).stage,
+                  ranks: ref.watch(characterDetailViewModelProvider).allRanks,
+                  stage: ref.watch(characterDetailViewModelProvider).stage,
                 ),
                 const SizedBox(height: 24),
               ],
@@ -248,7 +248,7 @@ class _ViewStyleChips extends ConsumerWidget {
     return Wrap(
       children: <Widget>[
         RankChoiceChip(
-          ranks: ref.read(characterDetailViewModelProvider).getAllRanks(),
+          ranks: ref.watch(characterDetailViewModelProvider).allRanks,
           initSelectedRank: character.selectedStyleRank ?? character.styles.first.rank,
           onSelectedListener: (rank) {
             ref.read(characterDetailViewModelProvider).onSelectRank(rank);
@@ -394,17 +394,17 @@ class _ViewEachStatus extends ConsumerWidget {
             StatusGraph(
               title: RSStrings.strName,
               status: myStatus?.str ?? 0,
-              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.strName),
+              limit: ref.watch(characterDetailViewModelProvider).statusLimitStr,
             ),
             StatusGraph(
               title: RSStrings.vitName,
               status: myStatus?.vit ?? 0,
-              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.vitName),
+              limit: ref.watch(characterDetailViewModelProvider).statusLimitVit,
             ),
             StatusGraph(
               title: RSStrings.dexName,
               status: myStatus?.dex ?? 0,
-              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.dexName),
+              limit: ref.watch(characterDetailViewModelProvider).statusLimitDex,
             ),
           ],
         ),
@@ -414,17 +414,17 @@ class _ViewEachStatus extends ConsumerWidget {
             StatusGraph(
               title: RSStrings.agiName,
               status: myStatus?.agi ?? 0,
-              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.agiName),
+              limit: ref.watch(characterDetailViewModelProvider).statusLimitAgi,
             ),
             StatusGraph(
               title: RSStrings.intName,
               status: myStatus?.inte ?? 0,
-              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.intName),
+              limit: ref.watch(characterDetailViewModelProvider).statusLimitInt,
             ),
             StatusGraph(
               title: RSStrings.spiName,
               status: myStatus?.spi ?? 0,
-              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.spiName),
+              limit: ref.watch(characterDetailViewModelProvider).statusLimitSpi,
             ),
           ],
         ),
@@ -434,12 +434,12 @@ class _ViewEachStatus extends ConsumerWidget {
             StatusGraph(
               title: RSStrings.loveName,
               status: myStatus?.love ?? 0,
-              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.loveName),
+              limit: ref.watch(characterDetailViewModelProvider).statusLimitLove,
             ),
             StatusGraph(
               title: RSStrings.attrName,
               status: myStatus?.attr ?? 0,
-              limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.attrName),
+              limit: ref.watch(characterDetailViewModelProvider).statusLimitAttr,
             ),
             // 揃えるためにダミーでwidget加える
             Opacity(
@@ -447,7 +447,7 @@ class _ViewEachStatus extends ConsumerWidget {
               child: StatusGraph(
                 title: RSStrings.attrName,
                 status: myStatus?.attr ?? 0,
-                limit: ref.read(characterDetailViewModelProvider).getStatusLimit(RSStrings.attrName),
+                limit: ref.watch(characterDetailViewModelProvider).statusLimitAttr,
               ),
             ),
           ],

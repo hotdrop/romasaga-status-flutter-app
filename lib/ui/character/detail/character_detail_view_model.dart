@@ -30,6 +30,17 @@ class _CharacterDetailViewModel extends BaseViewModel {
   bool _isUpdateStatus = false;
   bool get isUpdate => _isUpdateStatus;
 
+  int get statusLimitStr => _selectedStyle.str + _stage.statusLimit;
+  int get statusLimitVit => _selectedStyle.vit + _stage.statusLimit;
+  int get statusLimitDex => _selectedStyle.dex + _stage.statusLimit;
+  int get statusLimitAgi => _selectedStyle.agi + _stage.statusLimit;
+  int get statusLimitInt => _selectedStyle.intelligence + _stage.statusLimit;
+  int get statusLimitSpi => _selectedStyle.spirit + _stage.statusLimit;
+  int get statusLimitLove => _selectedStyle.love + _stage.statusLimit;
+  int get statusLimitAttr => _selectedStyle.attr + _stage.statusLimit;
+
+  List<String> get allRanks => _character.styles.map((style) => style.rank).toList()..sort((s, t) => s.compareTo(t));
+
   Future<void> init(Character c) async {
     try {
       _character = c;
@@ -45,34 +56,6 @@ class _CharacterDetailViewModel extends BaseViewModel {
   void onSelectRank(String rank) {
     _selectedStyle = _character.getStyle(rank);
     notifyListeners();
-  }
-
-  List<String> getAllRanks() {
-    final ranks = _character.styles.map((style) => style.rank).toList();
-    return ranks..sort((s, t) => s.compareTo(t));
-  }
-
-  int getStatusLimit(String statusName) {
-    switch (statusName) {
-      case RSStrings.strName:
-        return _selectedStyle.str + _stage.statusLimit;
-      case RSStrings.vitName:
-        return _selectedStyle.vit + _stage.statusLimit;
-      case RSStrings.dexName:
-        return _selectedStyle.dex + _stage.statusLimit;
-      case RSStrings.agiName:
-        return _selectedStyle.agi + _stage.statusLimit;
-      case RSStrings.intName:
-        return _selectedStyle.intelligence + _stage.statusLimit;
-      case RSStrings.spiName:
-        return _selectedStyle.spirit + _stage.statusLimit;
-      case RSStrings.loveName:
-        return _selectedStyle.love + _stage.statusLimit;
-      case RSStrings.attrName:
-        return _selectedStyle.attr + _stage.statusLimit;
-      default:
-        return 1;
-    }
   }
 
   Future<void> refreshStatus() async {
