@@ -31,7 +31,7 @@ class _CharacterNotifier extends StateNotifier<List<Character>> {
       for (var c in characters) {
         final status = statues.firstWhereOrNull((s) => s.id == c.id);
         if (status != null) {
-          newCharacters.add(c.withStatus(status));
+          newCharacters.add(c.copyWith(myStatus: status));
         } else {
           newCharacters.add(c);
         }
@@ -75,6 +75,9 @@ class Character {
 
   Style? get selectedStyle => styles.firstWhereOrNull((style) => style.rank == selectedStyleRank);
 
+  bool get favorite => myStatus?.favorite ?? false;
+  bool get useHighLevel => myStatus?.useHighLevel ?? false;
+
   void addStyle(Style style) {
     styles.add(style);
   }
@@ -107,6 +110,37 @@ class Character {
       selectedIconFilePath: selectedIconFilePath,
       statusUpEvent: statusUpEvent,
       myStatus: status,
+    );
+    newCharacter.addAllStyle(styles);
+    return newCharacter;
+  }
+
+  Character copyWith({
+    String? selectedStyleRank,
+    String? selectedIconFilePath,
+    MyStatus? myStatus,
+    bool? favorite,
+    bool? statusUpEvent,
+    bool? highLevel,
+  }) {
+    final newStatus = myStatus ?? this.myStatus ?? MyStatus.empty(id);
+    if (favorite != null) {
+      newStatus.favorite = favorite;
+    }
+    if (highLevel != null) {
+      newStatus.useHighLevel = highLevel;
+    }
+
+    final newCharacter = Character(
+      id,
+      name,
+      production,
+      weapons,
+      attributes,
+      selectedStyleRank: selectedStyleRank ?? this.selectedStyleRank,
+      selectedIconFilePath: selectedIconFilePath ?? this.selectedIconFilePath,
+      statusUpEvent: statusUpEvent ?? this.statusUpEvent,
+      myStatus: newStatus,
     );
     newCharacter.addAllStyle(styles);
     return newCharacter;

@@ -3,13 +3,79 @@ import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/data/character_repository.dart';
 import 'package:rsapp/data/my_status_repository.dart';
 import 'package:rsapp/data/stage_repository.dart';
-import 'package:rsapp/models/status.dart';
+import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/stage.dart';
+import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/style.dart';
+import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/ui/base_view_model.dart';
 
 final characterDetailViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _CharacterDetailViewModel(ref.read));
+
+// キャラ自身のステータス
+final characterDetailStatusStateProvider = StateProvider<MyStatus?>((ref) => null);
+
+final characterDetailStatusUpEventStateProvider = StateProvider((ref) => false);
+final characterDetailHighLevelStateProvider = StateProvider((ref) => false);
+final characterDetailFavoriteStateProvider = StateProvider((ref) => false);
+
+// 現在選択しているスタイル
+final characterDetailSelectStyleStateProvider = StateProvider<Style?>((_) => null);
+
+// 現在登録されているステージのステータス上限値
+final characterDetailLimitStatus = StateProvider((ref) => 0);
+
+final characterDetailLimitStr = StateProvider((ref) {
+  final status = ref.watch(characterDetailSelectStyleStateProvider)?.str ?? 0;
+  final limit = ref.watch(characterDetailLimitStatus);
+  return status + limit;
+});
+
+final characterDetailLimitVit = StateProvider((ref) {
+  final status = ref.watch(characterDetailSelectStyleStateProvider)?.vit ?? 0;
+  final limit = ref.watch(characterDetailLimitStatus);
+  return status + limit;
+});
+
+final characterDetailLimitDex = StateProvider((ref) {
+  final status = ref.watch(characterDetailSelectStyleStateProvider)?.dex ?? 0;
+  final limit = ref.watch(characterDetailLimitStatus);
+  return status + limit;
+});
+
+final characterDetailLimitAgi = StateProvider((ref) {
+  final status = ref.watch(characterDetailSelectStyleStateProvider)?.agi ?? 0;
+  final limit = ref.watch(characterDetailLimitStatus);
+  return status + limit;
+});
+
+final characterDetailLimitInt = StateProvider((ref) {
+  final status = ref.watch(characterDetailSelectStyleStateProvider)?.intelligence ?? 0;
+  final limit = ref.watch(characterDetailLimitStatus);
+  return status + limit;
+});
+
+final characterDetailLimitSpi = StateProvider((ref) {
+  final status = ref.watch(characterDetailSelectStyleStateProvider)?.spirit ?? 0;
+  final limit = ref.watch(characterDetailLimitStatus);
+  return status + limit;
+});
+
+final characterDetailLimitLove = StateProvider((ref) {
+  final status = ref.watch(characterDetailSelectStyleStateProvider)?.love ?? 0;
+  final limit = ref.watch(characterDetailLimitStatus);
+  return status + limit;
+});
+
+final characterDetailLimitAttr = StateProvider((ref) {
+  final status = ref.watch(characterDetailSelectStyleStateProvider)?.attr ?? 0;
+  final limit = ref.watch(characterDetailLimitStatus);
+  return status + limit;
+});
+
+// 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
+final characterDetailIsUpdateStatus = StateProvider((ref) => false);
 
 class _CharacterDetailViewModel extends BaseViewModel {
   _CharacterDetailViewModel(this._read);
@@ -17,34 +83,27 @@ class _CharacterDetailViewModel extends BaseViewModel {
   final Reader _read;
 
   late Character _character;
-  Character get character => _character;
+  String get production => _character.production;
+  String get name => _character.name;
+  List<Weapon> get weapons => _character.weapons;
+  List<Attribute>? get attributes => _character.attributes;
 
-  late Stage _stage;
-  Stage get stage => _stage;
-
-  late Style _selectedStyle;
-  Style get selectedStyle => _selectedStyle;
-
-  // 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
-  bool _isUpdateStatus = false;
-  bool get isUpdate => _isUpdateStatus;
-
-  int get statusLimitStr => _selectedStyle.str + _stage.statusLimit;
-  int get statusLimitVit => _selectedStyle.vit + _stage.statusLimit;
-  int get statusLimitDex => _selectedStyle.dex + _stage.statusLimit;
-  int get statusLimitAgi => _selectedStyle.agi + _stage.statusLimit;
-  int get statusLimitInt => _selectedStyle.intelligence + _stage.statusLimit;
-  int get statusLimitSpi => _selectedStyle.spirit + _stage.statusLimit;
-  int get statusLimitLove => _selectedStyle.love + _stage.statusLimit;
-  int get statusLimitAttr => _selectedStyle.attr + _stage.statusLimit;
-
-  List<String> get allRanks => _character.styles.map((style) => style.rank).toList()..sort((s, t) => s.compareTo(t));
+  late final Stage _stage;
+  String get stageName => _stage.name;
+  int get stageHpLimit => _stage.hpLimit;
 
   Future<void> init(Character c) async {
     try {
       _character = c;
       _stage = await _read(stageRepositoryProvider).find();
-      _selectedStyle = c.selectedStyle ?? c.styles.first;
+
+      _read(characterDetailLimitStatus.state).state = _stage.statusLimit;
+      _read(characterDetailSelectStyleStateProvider.state).state = c.selectedStyle ?? c.styles.first;
+
+      _read(characterDetailStatusStateProvider.state).state = c.myStatus;
+      _read(characterDetailStatusUpEventStateProvider.state).state = c.statusUpEvent;
+      _read(characterDetailHighLevelStateProvider.state).state = c.useHighLevel;
+      _read(characterDetailFavoriteStateProvider.state).state = c.favorite;
       onSuccess();
     } catch (e, s) {
       RSLogger.e('キャラ詳細情報取得でエラー', e, s);
@@ -52,67 +111,75 @@ class _CharacterDetailViewModel extends BaseViewModel {
     }
   }
 
+  List<String> getAllRanks() {
+    return _character.styles.map((style) => style.rank).toList()..sort((s, t) => s.compareTo(t));
+  }
+
   void onSelectRank(String rank) {
-    _selectedStyle = _character.getStyle(rank);
-    notifyListeners();
+    _read(characterDetailSelectStyleStateProvider.state).state = _character.getStyle(rank);
   }
 
   Future<void> refreshStatus() async {
-    _character.myStatus = await _read(myStatusRepositoryProvider).find(_character.id);
-    refreshCharacterData();
+    final newStatus = await _read(myStatusRepositoryProvider).find(_character.id);
+    if (newStatus == null) {
+      return;
+    }
+
+    // 自身のステータスを更新
+    _character = _character.copyWith(myStatus: newStatus);
+    _read(characterDetailStatusStateProvider.state).state = newStatus;
+    _read(characterDetailIsUpdateStatus.state).state = true;
   }
 
   Future<void> saveCurrentSelectStyle() async {
-    RSLogger.d('表示ランクを ${_selectedStyle.rank} にします。');
-    _character.selectedStyleRank = _selectedStyle.rank;
-    _character.selectedIconFilePath = _selectedStyle.iconFilePath;
-    await _read(characterRepositoryProvider).saveSelectedRank(_character.id, _selectedStyle.rank, _selectedStyle.iconFilePath);
-    _isUpdateStatus = true;
-  }
+    final selectedStyle = _read(characterDetailSelectStyleStateProvider)!;
+    RSLogger.d('表示ランクを ${selectedStyle.rank} にします。');
 
-  Future<void> saveFavorite(bool favorite) async {
-    _character.myStatus ??= MyStatus.empty(_character.id);
-    _character.myStatus!.favorite = favorite;
-    await _read(myStatusRepositoryProvider).save(_character.myStatus!);
-    _isUpdateStatus = true;
+    await _read(characterRepositoryProvider).saveSelectedRank(_character.id, selectedStyle.rank, selectedStyle.iconFilePath);
+
+    _character = _character.copyWith(
+      selectedStyleRank: selectedStyle.rank,
+      selectedIconFilePath: selectedStyle.iconFilePath,
+    );
+    _read(characterDetailIsUpdateStatus.state).state = true;
   }
 
   Future<void> saveStatusUpEvent(bool statusUpEvent) async {
-    _character.statusUpEvent = statusUpEvent;
     await _read(characterRepositoryProvider).saveStatusUpEvent(_character.id, statusUpEvent);
-    _isUpdateStatus = true;
+    _read(characterDetailStatusUpEventStateProvider.state).state = statusUpEvent;
+    _read(characterDetailIsUpdateStatus.state).state = true;
   }
 
   Future<void> saveHighLevel(bool useHighLevel) async {
-    _character.myStatus ??= MyStatus.empty(_character.id);
-    _character.myStatus!.useHighLevel = useHighLevel;
-    await _read(myStatusRepositoryProvider).save(_character.myStatus!);
-    _isUpdateStatus = true;
+    await _read(characterRepositoryProvider).saveHighLevel(_character.id, useHighLevel);
+    _read(characterDetailHighLevelStateProvider.state).state = useHighLevel;
+    _read(characterDetailIsUpdateStatus.state).state = true;
+  }
+
+  Future<void> saveFavorite(bool favorite) async {
+    await _read(characterRepositoryProvider).saveFavorite(_character.id, favorite);
+    _read(characterDetailFavoriteStateProvider.state).state = favorite;
+    _read(characterDetailIsUpdateStatus.state).state = true;
   }
 
   ///
-  /// アイコンの更新処理ではrefreshCharacterDataを実行しないので画面状態はそのままになる。
-  /// そのため呼び元でrefreshCharacterDataを実行する
+  /// サーバーから最新のアイコンパスを取得し画像データを更新する
+  /// 画像はキャッシュしているのでこの処理が必要
   ///
-  Future<bool> refreshIcon() async {
+  Future<void> refreshIcon() async {
     try {
-      final isSelectedIcon = _selectedStyle.rank == _character.selectedStyleRank;
+      final selectedStyle = _read(characterDetailSelectStyleStateProvider)!;
+      final isSelectedIcon = (_character.selectedStyleRank == selectedStyle.rank);
       RSLogger.d('アイコンをサーバーから再取得します。（このアイコンをデフォルトにしているか？ $isSelectedIcon)');
-      await _read(characterRepositoryProvider).refreshIcon(_selectedStyle, isSelectedIcon);
+      await _read(characterRepositoryProvider).refreshIcon(selectedStyle, isSelectedIcon);
 
       RSLogger.d('アイコン情報をキャラ情報に反映します。');
       final styles = await _read(characterRepositoryProvider).findStyles(_character.id);
       _character.refreshStyles(styles);
 
-      return true;
+      _read(characterDetailIsUpdateStatus.state).state = true;
     } catch (e, s) {
       await RSLogger.e('アイコン更新に失敗しました。', e, s);
-      return false;
     }
-  }
-
-  void refreshCharacterData() {
-    _isUpdateStatus = true;
-    notifyListeners();
   }
 }

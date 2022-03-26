@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/models/character.dart';
-import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/models/style.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class StatusTable extends StatelessWidget {
-  const StatusTable({Key? key, required this.character, required this.ranks, required this.stage}) : super(key: key);
+  const StatusTable({Key? key, required this.character, required this.ranks, required this.statusLimit}) : super(key: key);
 
   final Character character;
   final List<String> ranks;
-  final Stage stage;
+  final int statusLimit;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class StatusTable extends StatelessWidget {
         const SizedBox(height: 8),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: _ViewTable(character, ranks, stage),
+          child: _ViewTable(character, ranks, statusLimit),
         ),
       ],
     );
@@ -33,11 +32,11 @@ class StatusTable extends StatelessWidget {
 }
 
 class _ViewTable extends StatelessWidget {
-  const _ViewTable(this.character, this.ranks, this.stage, {Key? key}) : super(key: key);
+  const _ViewTable(this.character, this.ranks, this.statusLimit, {Key? key}) : super(key: key);
 
   final Character character;
   final List<String> ranks;
-  final Stage stage;
+  final int statusLimit;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +72,7 @@ class _ViewTable extends StatelessWidget {
       maxState.update(style);
     }
 
-    return ranks.map((r) => character.getStyle(r)).map((s) => _toTableRow(s, stage.statusLimit, maxState)).toList();
+    return ranks.map((r) => character.getStyle(r)).map((s) => _toTableRow(s, statusLimit, maxState)).toList();
   }
 
   TableRow _toTableRow(Style style, int stageStatusLimit, _MaxStatus maxStatus) {

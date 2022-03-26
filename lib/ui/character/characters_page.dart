@@ -100,6 +100,7 @@ class _ViewList extends ConsumerWidget {
         return RowCharacterItem(
           characters[index],
           refreshListener: () async {
+            // ここ全部更新しないでcharacters[index]だけ更新すればいい
             await ref.read(charactersViewModelProvider).refresh();
           },
         );
