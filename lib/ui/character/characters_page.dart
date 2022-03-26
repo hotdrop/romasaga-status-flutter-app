@@ -20,12 +20,6 @@ class CharactersPage extends ConsumerWidget {
   }
 
   Widget _onSuccess(BuildContext context, WidgetRef ref) {
-    final statusUpCnt = ref.watch(charactersViewModelProvider).countStatusUpCharacters;
-    final highLevelCount = ref.watch(charactersViewModelProvider).countForHighLevelCharacters;
-    final roundCount = ref.watch(charactersViewModelProvider).countForRoundCharacters;
-    final favoriteCnt = ref.watch(charactersViewModelProvider).countFavoriteCharacters;
-    final otherCnt = ref.watch(charactersViewModelProvider).countNotFavoriteCharacters;
-
     return DefaultTabController(
       length: 5,
       child: Scaffold(
@@ -37,21 +31,21 @@ class CharactersPage extends ConsumerWidget {
           bottom: TabBar(
             isScrollable: true,
             tabs: <Tab>[
-              Tab(text: '${RSStrings.charactersPageTabStatusUp}($statusUpCnt)'),
-              Tab(text: '${RSStrings.charactersPageTabHighLevel}($highLevelCount)'),
-              Tab(text: '${RSStrings.charactersPageTabAround}($roundCount)'),
-              Tab(text: '${RSStrings.charactersPageTabFavorite}($favoriteCnt)'),
-              Tab(text: '${RSStrings.charactersPageTabNotFavorite}($otherCnt)'),
+              Tab(text: '${RSStrings.charactersPageTabStatusUp}(${ref.watch(charactersStatusUpStateProvider).length})'),
+              Tab(text: '${RSStrings.charactersPageTabHighLevel}(${ref.watch(charactersHighLevelStateProvider).length})'),
+              Tab(text: '${RSStrings.charactersPageTabAround}(${ref.watch(charactersForRoundStateProvider).length})'),
+              Tab(text: '${RSStrings.charactersPageTabFavorite}(${ref.watch(charactersFavoriteStateProvider).length})'),
+              Tab(text: '${RSStrings.charactersPageTabNotFavorite}(${ref.watch(charactersNotFavoriteStateProvider).length})'),
             ],
           ),
         ),
         body: TabBarView(
           children: <Widget>[
-            _ViewList(characters: ref.watch(charactersViewModelProvider).statusUpCharacters),
-            _ViewList(characters: ref.watch(charactersViewModelProvider).forHighLevelCharacters),
-            _ViewList(characters: ref.watch(charactersViewModelProvider).forRoundCharacters),
-            _ViewList(characters: ref.watch(charactersViewModelProvider).favoriteCharacters),
-            _ViewList(characters: ref.watch(charactersViewModelProvider).notFavoriteCharacters),
+            _ViewList(characters: ref.watch(charactersStatusUpStateProvider)),
+            _ViewList(characters: ref.watch(charactersHighLevelStateProvider)),
+            _ViewList(characters: ref.watch(charactersForRoundStateProvider)),
+            _ViewList(characters: ref.watch(charactersFavoriteStateProvider)),
+            _ViewList(characters: ref.watch(charactersNotFavoriteStateProvider)),
           ],
         ),
       ),
@@ -64,8 +58,6 @@ class _TitlePopupMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final initType = ref.watch(charactersViewModelProvider).selectedOrderType;
-
     return PopupMenuButton<CharacterListOrderType>(
       padding: EdgeInsets.zero,
       itemBuilder: (_) => [
@@ -82,7 +74,7 @@ class _TitlePopupMenu extends ConsumerWidget {
           child: Text(RSStrings.charactersOrderProduction),
         ),
       ],
-      initialValue: initType,
+      initialValue: ref.watch(appSettingsProvider).characterListOrderType,
       onSelected: (value) async {
         await ref.read(charactersViewModelProvider).selectOrder(value);
       },

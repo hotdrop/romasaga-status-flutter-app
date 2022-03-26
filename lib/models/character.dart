@@ -18,6 +18,7 @@ class _CharacterNotifier extends StateNotifier<List<Character>> {
   final Reader _read;
 
   Future<void> refresh() async {
+    RSLogger.d('StateNotifierで保持しているキャラ情報を更新します。');
     final characters = await _read(characterRepositoryProvider).findAll();
     final myStatuses = await _read(myStatusRepositoryProvider).findAll();
     state = await _merge(characters, myStatuses);
