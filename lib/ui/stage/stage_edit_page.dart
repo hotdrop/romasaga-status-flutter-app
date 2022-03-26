@@ -37,18 +37,27 @@ class StageEditPage extends ConsumerWidget {
   }
 
   Widget _onSuccess(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: const [
-          _ViewNameTextField(),
-          SizedBox(height: 16),
-          _ViewStatusLimits(),
-          SizedBox(height: 8),
-          Text(RSStrings.stageEditPageOverview),
-          SizedBox(height: 16),
-          _ViewSaveButton(),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const _ViewNameTextField(),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: const [
+                _ViewHpLimitField(),
+                SizedBox(width: 48),
+                _ViewStatusLimitFiled(),
+              ],
+            ),
+            const SizedBox(height: 8),
+            const Text(RSStrings.stageEditPageOverview),
+            const SizedBox(height: 16),
+            const _ViewSaveButton(),
+          ],
+        ),
       ),
     );
   }
@@ -67,31 +76,32 @@ class _ViewNameTextField extends ConsumerWidget {
   }
 }
 
-class _ViewStatusLimits extends ConsumerWidget {
-  const _ViewStatusLimits({Key? key}) : super(key: key);
+class _ViewHpLimitField extends ConsumerWidget {
+  const _ViewHpLimitField({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentStage = ref.watch(stageEditViewModelProvider).currentStage;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 150,
-          child: RSNumberFormField.stageHpLimit(
-            initValue: currentStage.hpLimit,
-            onChanged: (int? input) => ref.read(stageEditViewModelProvider).inputHpLimit(input),
-          ),
-        ),
-        const SizedBox(width: 48),
-        SizedBox(
-          width: 100,
-          child: RSNumberFormField.stageStatusLimit(
-            initValue: currentStage.statusLimit,
-            onChanged: (int? input) => ref.read(stageEditViewModelProvider).inputLimit(input),
-          ),
-        ),
-      ],
+    return SizedBox(
+      width: 150,
+      child: RSNumberFormField.stageHpLimit(
+        initValue: ref.read(stageEditInputHpStateProvider) ?? 0,
+        onChanged: (int? input) => ref.read(stageEditViewModelProvider).inputHpLimit(input),
+      ),
+    );
+  }
+}
+
+class _ViewStatusLimitFiled extends ConsumerWidget {
+  const _ViewStatusLimitFiled({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SizedBox(
+      width: 100,
+      child: RSNumberFormField.stageStatusLimit(
+        initValue: ref.read(stageEditInputStatusStateProvider) ?? 0,
+        onChanged: (int? input) => ref.read(stageEditViewModelProvider).inputLimit(input),
+      ),
     );
   }
 }
@@ -101,7 +111,7 @@ class _ViewSaveButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSaved = ref.watch(stageEditViewModelProvider).isExecuteSave;
+    final isSaved = ref.watch(stageEditIsExecuteSave);
     return AppButton(
       label: RSStrings.stageEditPageSaveLabel,
       onTap: isSaved
