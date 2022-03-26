@@ -10,7 +10,6 @@ import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/app_line.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
-import 'package:rsapp/ui/widget/theme_switch.dart';
 
 class AccountPage extends ConsumerWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -32,7 +31,7 @@ class AccountPage extends ConsumerWidget {
   }
 
   Widget _onSuccess(BuildContext context, WidgetRef ref) {
-    final loggedIn = ref.watch(accountViewModelProvider).isLoggedIn;
+    final loggedIn = ref.watch(accountIsLoggedInStateProvider);
 
     return ListView(
       children: <Widget>[
@@ -71,8 +70,8 @@ class _RowAccountInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       leading: Icon(Icons.account_circle, size: iconSize),
-      title: Text(ref.watch(accountViewModelProvider).userName),
-      subtitle: Text(ref.watch(accountViewModelProvider).email),
+      title: Text(ref.watch(accountUserNameStateProvider)),
+      subtitle: Text(ref.watch(accountEmailStateProvider)),
     );
   }
 }
@@ -117,7 +116,12 @@ class _RowThemeSwitch extends ConsumerWidget {
     return ListTile(
       leading: Icon(isDarkMode ? Icons.brightness_7 : Icons.brightness_4, size: iconSize),
       title: const Text(RSStrings.accountChangeThemeLabel),
-      trailing: const ThemeSwitch(),
+      trailing: Switch(
+        value: isDarkMode,
+        onChanged: (isDark) async {
+          await ref.read(appSettingsProvider.notifier).setDarkMode(isDark);
+        },
+      ),
     );
   }
 }
@@ -170,7 +174,7 @@ class _RowEditStage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentStage = ref.watch(accountViewModelProvider).stage;
+    final currentStage = ref.watch(accountStageStateProvider);
 
     return ListTile(
       leading: Icon(Icons.maps_home_work, size: iconSize),
@@ -197,7 +201,7 @@ class _RowBackup extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dateLabel = ref.watch(accountViewModelProvider).backupDateLabel;
+    final dateLabel = ref.watch(accountBackupDateLabel);
 
     return ListTile(
       leading: Icon(Icons.backup, size: iconSize),
