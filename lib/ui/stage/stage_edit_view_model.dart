@@ -33,7 +33,7 @@ class _StageEditViewModel extends BaseViewModel {
     _currentStage = await _read(stageRepositoryProvider).find();
     _read(stageEditInputNameStateProvider.state).state = _currentStage.name;
     _read(stageEditInputHpStateProvider.state).state = _currentStage.hpLimit;
-    _read(stageEditInputHpStateProvider.state).state = _currentStage.statusLimit;
+    _read(stageEditInputStatusStateProvider.state).state = _currentStage.statusLimit;
     onSuccess();
   }
 

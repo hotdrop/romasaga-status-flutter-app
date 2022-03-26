@@ -12,7 +12,7 @@ class _StageRepository {
   Future<Stage> find() async {
     final stageName = await _read(sharedPrefsProvider).getStageName();
     if (stageName == null) {
-      return const Stage(name: '1章VH6', hpLimit: 790, statusLimit: 0);
+      return Stage.empty();
     } else {
       return Stage(
         name: stageName,
