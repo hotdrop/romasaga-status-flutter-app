@@ -5,13 +5,13 @@ import 'package:rsapp/ui/base_view_model.dart';
 
 final stageEditViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _StageEditViewModel(ref.read));
 
-final stageEditInputNameStateProvider = StateProvider<String?>((_) => null);
+final stageEditInputNameStateProvider = StateProvider<String?>((ref) => null);
 
 final stageEditInputHpStateProvider = StateProvider<int?>((_) => null);
 
 final stageEditInputStatusStateProvider = StateProvider<int?>((_) => null);
 
-final stageEditIsExecuteSave = StateProvider<bool>((ref) {
+final stageEditIsExecuteSaveStateProvider = StateProvider<bool>((ref) {
   final inputName = ref.watch(stageEditInputNameStateProvider);
   final inputHp = ref.watch(stageEditInputHpStateProvider);
   final inputStatus = ref.watch(stageEditInputStatusStateProvider);
@@ -31,22 +31,23 @@ class _StageEditViewModel extends BaseViewModel {
 
   Future<void> _init() async {
     _currentStage = await _read(stageRepositoryProvider).find();
-    _read(stageEditInputNameStateProvider.state).state = _currentStage.name;
-    _read(stageEditInputHpStateProvider.state).state = _currentStage.hpLimit;
-    _read(stageEditInputStatusStateProvider.state).state = _currentStage.statusLimit;
+
+    _read(stageEditInputNameStateProvider.notifier).state = _currentStage.name;
+    _read(stageEditInputHpStateProvider.notifier).state = _currentStage.hpLimit;
+    _read(stageEditInputStatusStateProvider.notifier).state = _currentStage.statusLimit;
     onSuccess();
   }
 
   void inputName(String? input) {
-    _read(stageEditInputNameStateProvider.state).state = input;
+    _read(stageEditInputNameStateProvider.notifier).state = input;
   }
 
   void inputHpLimit(int? input) {
-    _read(stageEditInputHpStateProvider.state).state = input;
+    _read(stageEditInputHpStateProvider.notifier).state = input;
   }
 
   void inputLimit(int? input) {
-    _read(stageEditInputStatusStateProvider.state).state = input;
+    _read(stageEditInputStatusStateProvider.notifier).state = input;
   }
 
   Future<void> save() async {

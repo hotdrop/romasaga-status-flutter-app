@@ -13,6 +13,7 @@ class _StatusEditViewModel extends BaseViewModel {
   EditMode _editMode = EditMode.each;
   bool get isEditEach => _editMode == EditMode.each;
 
+  // TODO ここ全部StateProviderにする
   late MyStatus _status;
   int editHp = 0;
   int editStr = 0;

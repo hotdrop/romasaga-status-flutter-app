@@ -55,9 +55,9 @@ class _AccountViewModel extends BaseViewModel {
   Future<void> _init() async {
     try {
       _packageInfo = await PackageInfo.fromPlatform();
-      _read(accountIsLoggedInStateProvider.state).state = _read(accountRepositoryProvider).isLogIn;
+      _read(accountIsLoggedInStateProvider.notifier).state = _read(accountRepositoryProvider).isLogIn;
 
-      _read(accountStageStateProvider.state).state = await _read(stageRepositoryProvider).find();
+      _read(accountStageStateProvider.notifier).state = await _read(stageRepositoryProvider).find();
 
       await _refreshBakupDateLabel();
 
@@ -70,12 +70,12 @@ class _AccountViewModel extends BaseViewModel {
 
   Future<void> signIn() async {
     await _read(accountRepositoryProvider).signIn();
-    _read(accountIsLoggedInStateProvider.state).state = _read(accountRepositoryProvider).isLogIn;
+    _read(accountIsLoggedInStateProvider.notifier).state = _read(accountRepositoryProvider).isLogIn;
   }
 
   Future<void> signOut() async {
     await _read(accountRepositoryProvider).signOut();
-    _read(accountIsLoggedInStateProvider.state).state = _read(accountRepositoryProvider).isLogIn;
+    _read(accountIsLoggedInStateProvider.notifier).state = _read(accountRepositoryProvider).isLogIn;
   }
 
   Future<void> refreshCharacters() async {
@@ -84,7 +84,7 @@ class _AccountViewModel extends BaseViewModel {
   }
 
   Future<void> refreshStage() async {
-    _read(accountStageStateProvider.state).state = await _read(stageRepositoryProvider).find();
+    _read(accountStageStateProvider.notifier).state = await _read(stageRepositoryProvider).find();
   }
 
   Future<void> backup() async {
@@ -98,6 +98,6 @@ class _AccountViewModel extends BaseViewModel {
 
   Future<void> _refreshBakupDateLabel() async {
     final backupDateStr = await _read(myStatusRepositoryProvider).getPreviousBackupDateStr();
-    _read(accountBackupDateLabel.state).state = backupDateStr ?? RSStrings.accountStatusBackupNotLabel;
+    _read(accountBackupDateLabel.notifier).state = backupDateStr ?? RSStrings.accountStatusBackupNotLabel;
   }
 }

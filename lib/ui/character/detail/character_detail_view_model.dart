@@ -97,13 +97,13 @@ class _CharacterDetailViewModel extends BaseViewModel {
       _character = c;
       _stage = await _read(stageRepositoryProvider).find();
 
-      _read(characterDetailLimitStatus.state).state = _stage.statusLimit;
-      _read(characterDetailSelectStyleStateProvider.state).state = c.selectedStyle ?? c.styles.first;
+      _read(characterDetailLimitStatus.notifier).state = _stage.statusLimit;
+      _read(characterDetailSelectStyleStateProvider.notifier).state = c.selectedStyle ?? c.styles.first;
 
-      _read(characterDetailStatusStateProvider.state).state = c.myStatus;
-      _read(characterDetailStatusUpEventStateProvider.state).state = c.statusUpEvent;
-      _read(characterDetailHighLevelStateProvider.state).state = c.useHighLevel;
-      _read(characterDetailFavoriteStateProvider.state).state = c.favorite;
+      _read(characterDetailStatusStateProvider.notifier).state = c.myStatus;
+      _read(characterDetailStatusUpEventStateProvider.notifier).state = c.statusUpEvent;
+      _read(characterDetailHighLevelStateProvider.notifier).state = c.useHighLevel;
+      _read(characterDetailFavoriteStateProvider.notifier).state = c.favorite;
       onSuccess();
     } catch (e, s) {
       RSLogger.e('キャラ詳細情報取得でエラー', e, s);
@@ -116,7 +116,7 @@ class _CharacterDetailViewModel extends BaseViewModel {
   }
 
   void onSelectRank(String rank) {
-    _read(characterDetailSelectStyleStateProvider.state).state = _character.getStyle(rank);
+    _read(characterDetailSelectStyleStateProvider.notifier).state = _character.getStyle(rank);
   }
 
   Future<void> refreshStatus() async {
@@ -127,8 +127,8 @@ class _CharacterDetailViewModel extends BaseViewModel {
 
     // 自身のステータスを更新
     _character = _character.copyWith(myStatus: newStatus);
-    _read(characterDetailStatusStateProvider.state).state = newStatus;
-    _read(characterDetailIsUpdateStatus.state).state = true;
+    _read(characterDetailStatusStateProvider.notifier).state = newStatus;
+    _read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   Future<void> saveCurrentSelectStyle() async {
@@ -141,25 +141,25 @@ class _CharacterDetailViewModel extends BaseViewModel {
       selectedStyleRank: selectedStyle.rank,
       selectedIconFilePath: selectedStyle.iconFilePath,
     );
-    _read(characterDetailIsUpdateStatus.state).state = true;
+    _read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   Future<void> saveStatusUpEvent(bool statusUpEvent) async {
     await _read(characterRepositoryProvider).saveStatusUpEvent(_character.id, statusUpEvent);
-    _read(characterDetailStatusUpEventStateProvider.state).state = statusUpEvent;
-    _read(characterDetailIsUpdateStatus.state).state = true;
+    _read(characterDetailStatusUpEventStateProvider.notifier).state = statusUpEvent;
+    _read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   Future<void> saveHighLevel(bool useHighLevel) async {
     await _read(characterRepositoryProvider).saveHighLevel(_character.id, useHighLevel);
-    _read(characterDetailHighLevelStateProvider.state).state = useHighLevel;
-    _read(characterDetailIsUpdateStatus.state).state = true;
+    _read(characterDetailHighLevelStateProvider.notifier).state = useHighLevel;
+    _read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   Future<void> saveFavorite(bool favorite) async {
     await _read(characterRepositoryProvider).saveFavorite(_character.id, favorite);
-    _read(characterDetailFavoriteStateProvider.state).state = favorite;
-    _read(characterDetailIsUpdateStatus.state).state = true;
+    _read(characterDetailFavoriteStateProvider.notifier).state = favorite;
+    _read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   ///
@@ -177,7 +177,7 @@ class _CharacterDetailViewModel extends BaseViewModel {
       final styles = await _read(characterRepositoryProvider).findStyles(_character.id);
       _character.refreshStyles(styles);
 
-      _read(characterDetailIsUpdateStatus.state).state = true;
+      _read(characterDetailIsUpdateStatus.notifier).state = true;
     } catch (e, s) {
       await RSLogger.e('アイコン更新に失敗しました。', e, s);
     }
