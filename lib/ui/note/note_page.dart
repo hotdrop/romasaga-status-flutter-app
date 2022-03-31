@@ -11,29 +11,28 @@ class NotePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(noteViewModelProvider).uiState;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(RSStrings.notePageTitle),
       ),
       body: uiState.when(
         loading: (errMsg) => OnViewLoading(errorMessage: errMsg),
-        success: () => _onSuccess(context, ref),
-      ),
-    );
-  }
-
-  Widget _onSuccess(context, WidgetRef ref) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Expanded(
-            child: RSMultiLineTextField(
-              initValue: ref.watch(noteViewModelProvider).note,
-              onChanged: (String v) => ref.read(noteViewModelProvider).input(v),
+        success: () {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Expanded(
+                  child: RSMultiLineTextField(
+                    initValue: ref.watch(noteViewModelProvider).note,
+                    onChanged: (String v) => ref.read(noteViewModelProvider).input(v),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

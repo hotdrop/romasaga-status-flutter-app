@@ -79,7 +79,23 @@ class AppDialog {
     await showDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => _createMaterialDialog(context),
+      builder: (_) {
+        return AlertDialog(
+          title: (_title != null) ? Text(_title!) : null,
+          content: Text(_message),
+          actions: <Widget>[
+            if (_isShowCancelButton)
+              TextButton(
+                onPressed: () => _onActionCancel(context),
+                child: Text(_cancelButtonLabel),
+              ),
+            TextButton(
+              onPressed: () => _onActionOk(context),
+              child: Text(_okButtonLabel),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -87,43 +103,23 @@ class AppDialog {
     await cupertino.showCupertinoDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => _createCupertinoDialog(context),
-    );
-  }
-
-  AlertDialog _createMaterialDialog(BuildContext context) {
-    return AlertDialog(
-      title: (_title != null) ? Text(_title!) : null,
-      content: Text(_message),
-      actions: <Widget>[
-        if (_isShowCancelButton)
-          TextButton(
-            onPressed: () => _onActionCancel(context),
-            child: Text(_cancelButtonLabel),
-          ),
-        TextButton(
-          onPressed: () => _onActionOk(context),
-          child: Text(_okButtonLabel),
-        ),
-      ],
-    );
-  }
-
-  Widget _createCupertinoDialog(BuildContext context) {
-    return cupertino.CupertinoAlertDialog(
-      title: (_title != null) ? Text(_title!) : null,
-      content: Text(_message),
-      actions: <Widget>[
-        if (_isShowCancelButton)
-          cupertino.CupertinoDialogAction(
-            onPressed: () => _onActionCancel(context),
-            child: Text(_cancelButtonLabel),
-          ),
-        cupertino.CupertinoDialogAction(
-          onPressed: () => _onActionOk(context),
-          child: Text(_okButtonLabel),
-        ),
-      ],
+      builder: (_) {
+        return cupertino.CupertinoAlertDialog(
+          title: (_title != null) ? Text(_title!) : null,
+          content: Text(_message),
+          actions: <Widget>[
+            if (_isShowCancelButton)
+              cupertino.CupertinoDialogAction(
+                onPressed: () => _onActionCancel(context),
+                child: Text(_cancelButtonLabel),
+              ),
+            cupertino.CupertinoDialogAction(
+              onPressed: () => _onActionOk(context),
+              child: Text(_okButtonLabel),
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -33,21 +33,21 @@ class CharacterDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(characterDetailViewModelProvider).uiState;
     return uiState.when(
-      loading: (String? errMsg) => _onLoading(ref, errMsg),
+      loading: (String? errMsg) {
+        _processOnLoading(ref, errMsg);
+        return OnViewLoading(
+          title: RSStrings.detailPageTitle,
+          errorMessage: errMsg,
+        );
+      },
       success: () => _onSuccess(context, ref),
     );
   }
 
-  Widget _onLoading(WidgetRef ref, String? errMsg) {
+  void _processOnLoading(WidgetRef ref, String? errMsg) {
     Future.delayed(Duration.zero).then((_) {
-      if (errMsg == null) {
-        ref.read(characterDetailViewModelProvider).init(character);
-      }
+      ref.read(characterDetailViewModelProvider).init(character);
     });
-    return OnViewLoading(
-      title: RSStrings.detailPageTitle,
-      errorMessage: errMsg,
-    );
   }
 
   Widget _onSuccess(BuildContext context, WidgetRef ref) {

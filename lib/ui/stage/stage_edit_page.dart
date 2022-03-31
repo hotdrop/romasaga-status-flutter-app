@@ -22,6 +22,7 @@ class StageEditPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(stageEditViewModelProvider).uiState;
+
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -29,34 +30,34 @@ class StageEditPage extends ConsumerWidget {
           title: const Text(RSStrings.stageEditPageTitle),
         ),
         body: uiState.when(
-          loading: (errMsg) => OnViewLoading(errorMessage: errMsg),
-          success: () => _onSuccess(context, ref),
-        ),
-      ),
-    );
-  }
-
-  Widget _onSuccess(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const _ViewNameTextField(),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                _ViewHpLimitField(),
-                SizedBox(width: 48),
-                _ViewStatusLimitFiled(),
-              ],
-            ),
-            const SizedBox(height: 8),
-            const Text(RSStrings.stageEditPageOverview),
-            const SizedBox(height: 16),
-            const _ViewSaveButton(),
-          ],
+          loading: (errMsg) {
+            return OnViewLoading(errorMessage: errMsg);
+          },
+          success: () {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    const _ViewNameTextField(),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const [
+                        _ViewHpLimitField(),
+                        SizedBox(width: 48),
+                        _ViewStatusLimitFiled(),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(RSStrings.stageEditPageOverview),
+                    const SizedBox(height: 16),
+                    const _ViewSaveButton(),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -111,7 +112,7 @@ class _ViewSaveButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSaved = ref.watch(stageEditIsExecuteSave);
+    final isSaved = ref.watch(stageEditIsExecuteSaveStateProvider);
     return AppButton(
       label: RSStrings.stageEditPageSaveLabel,
       onTap: isSaved

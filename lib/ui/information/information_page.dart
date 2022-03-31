@@ -25,9 +25,7 @@ class InformationPage extends StatelessWidget {
             child: AppIconButton(
               label: RSStrings.letterPageTitle,
               icon: Icons.mail_rounded,
-              onTap: () async {
-                await LetterPage.start(context);
-              },
+              onTap: () async => await LetterPage.start(context),
             ),
           ),
         ],

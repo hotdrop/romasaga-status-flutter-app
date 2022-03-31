@@ -22,10 +22,14 @@ class LetterPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(letterViewModelProvider).uiState;
+
     return uiState.when(
-      loading: (errMsg) => OnViewLoading(title: RSStrings.letterPageTitle, errorMessage: errMsg),
+      loading: (errMsg) {
+        return OnViewLoading(title: RSStrings.letterPageTitle, errorMessage: errMsg);
+      },
       success: () {
-        if (ref.watch(letterViewModelProvider).isEmpty) {
+        final isEmpty = ref.watch(letterViewModelProvider).isEmpty;
+        if (isEmpty) {
           return const _ViewNothingLetterPage();
         } else {
           return const _ViewLettersPage();
