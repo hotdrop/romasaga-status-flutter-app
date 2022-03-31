@@ -13,6 +13,7 @@ class _NoteViewModel extends BaseViewModel {
 
   late String _note;
   String get note => _note;
+
   String? _inputNote;
 
   Future<void> _init() async {
@@ -25,16 +26,16 @@ class _NoteViewModel extends BaseViewModel {
     _inputNote = v;
   }
 
-  Future<void> save() async {
+  @override
+  void dispose() {
+    _save();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
     // 更新されていれば保存する
     if (_note != _inputNote) {
       await _read(noteRepositoryProvider).save(_inputNote ?? '');
     }
-  }
-
-  @override
-  void dispose() {
-    save();
-    super.dispose();
   }
 }

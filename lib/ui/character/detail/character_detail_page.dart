@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/models/character.dart';
-import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
@@ -34,21 +33,21 @@ class CharacterDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(characterDetailViewModelProvider).uiState;
     return uiState.when(
-      loading: (String? errMsg) => _onLoading(ref, errMsg),
+      loading: (String? errMsg) {
+        _processOnLoading(ref, errMsg);
+        return OnViewLoading(
+          title: RSStrings.detailPageTitle,
+          errorMessage: errMsg,
+        );
+      },
       success: () => _onSuccess(context, ref),
     );
   }
 
-  Widget _onLoading(WidgetRef ref, String? errMsg) {
+  void _processOnLoading(WidgetRef ref, String? errMsg) {
     Future.delayed(Duration.zero).then((_) {
-      if (errMsg == null) {
-        ref.read(characterDetailViewModelProvider).init(character);
-      }
+      ref.read(characterDetailViewModelProvider).init(character);
     });
-    return OnViewLoading(
-      title: RSStrings.detailPageTitle,
-      errorMessage: errMsg,
-    );
   }
 
   Widget _onSuccess(BuildContext context, WidgetRef ref) {
@@ -66,8 +65,8 @@ class CharacterDetailPage extends ConsumerWidget {
                 const SizedBox(height: 8),
                 StatusTable(
                   character: character,
-                  ranks: ref.watch(characterDetailViewModelProvider).allRanks,
-                  stage: ref.watch(characterDetailViewModelProvider).stage,
+                  ranks: ref.read(characterDetailViewModelProvider).getAllRanks(),
+                  statusLimit: ref.watch(characterDetailLimitStatus),
                 ),
                 const SizedBox(height: 24),
               ],
@@ -79,7 +78,7 @@ class CharacterDetailPage extends ConsumerWidget {
         bottomNavigationBar: const _ViewBottomNavigationBar(),
       ),
       onWillPop: () async {
-        final isUpdate = ref.read(characterDetailViewModelProvider).isUpdate;
+        final isUpdate = ref.read(characterDetailIsUpdateStatus);
         Navigator.pop(context, isUpdate);
         return true;
       },
@@ -105,7 +104,7 @@ class _ViewCharacterOverview extends StatelessWidget {
           children: const <Widget>[
             _ViewCharacterInfo(),
             SizedBox(height: 8),
-            _ViewIconsAttr(),
+            _ViewAttributeIcons(),
             SizedBox(height: 8),
             HorizontalLine(),
             _ViewStyleChips(),
@@ -124,26 +123,40 @@ class _ViewCharacterInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
-    final selectedStyle = ref.watch(characterDetailViewModelProvider).selectedStyle;
-
     return Row(
       children: <Widget>[
-        GestureDetector(
-          child: CharacterIcon.large(selectedStyle.iconFilePath),
-          onTap: () async => await _processOnTapCharacterIcon(context, ref),
-          onLongPress: () async => await _processOnLongTapCharacterIcon(context, ref),
-        ),
+        const _ViewSelectStyleIcon(),
         const SizedBox(width: 16),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(character.production, style: Theme.of(context).textTheme.caption),
-            Text(character.name),
-            Text(selectedStyle.title, style: Theme.of(context).textTheme.caption),
+            Text(
+              ref.watch(characterDetailViewModelProvider).production,
+              style: Theme.of(context).textTheme.caption,
+            ),
+            Text(ref.watch(characterDetailViewModelProvider).name),
+            const _ViewSelectStyleTitle(),
           ],
         ),
       ],
+    );
+  }
+}
+
+///
+/// 選択スタイルのキャラアイコン
+///
+class _ViewSelectStyleIcon extends ConsumerWidget {
+  const _ViewSelectStyleIcon({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final iconFilePath = ref.watch(characterDetailSelectStyleStateProvider)!.iconFilePath;
+
+    return GestureDetector(
+      child: CharacterIcon.large(iconFilePath),
+      onTap: () async => await _processOnTapCharacterIcon(context, ref),
+      onLongPress: () async => await _processOnLongTapCharacterIcon(context, ref),
     );
   }
 
@@ -163,7 +176,7 @@ class _ViewCharacterInfo extends ConsumerWidget {
           context,
           execute: ref.read(characterDetailViewModelProvider).refreshIcon,
           onSuccess: (_) async {
-            ref.read(characterDetailViewModelProvider).refreshCharacterData();
+            /* 成功時は何もしない */
           },
           onError: (errMsg) async {
             await AppDialog.onlyOk(message: errMsg).show(context);
@@ -174,39 +187,50 @@ class _ViewCharacterInfo extends ConsumerWidget {
   }
 }
 
-///
-/// 属性アイコン
-///
-class _ViewIconsAttr extends ConsumerWidget {
-  const _ViewIconsAttr({Key? key}) : super(key: key);
+class _ViewSelectStyleTitle extends ConsumerWidget {
+  const _ViewSelectStyleTitle({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
+    return Text(
+      ref.watch(characterDetailSelectStyleStateProvider)!.title,
+      style: Theme.of(context).textTheme.caption,
+    );
+  }
+}
 
+///
+/// 属性アイコン
+///
+class _ViewAttributeIcons extends ConsumerWidget {
+  const _ViewAttributeIcons({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return Wrap(
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
       spacing: 8.0,
       runSpacing: 8.0,
-      children: _viewIconsAttr(character),
+      children: _viewIconsAttr(ref),
     );
   }
 
-  List<Widget> _viewIconsAttr(Character character) {
+  List<Widget> _viewIconsAttr(WidgetRef ref) {
     final widgets = <Widget>[];
 
-    for (var w in character.weapons) {
+    final weapons = ref.read(characterDetailViewModelProvider).weapons;
+    for (var w in weapons) {
       widgets.add(WeaponIcon.normal(w.type));
     }
 
-    for (var w in character.weapons) {
+    for (var w in weapons) {
       if (w.category != WeaponCategory.rod) {
         widgets.add(WeaponCategoryIcon.normal(w.category));
       }
     }
 
-    final attrs = character.attributes;
+    final attrs = ref.read(characterDetailViewModelProvider).attributes;
     if (attrs == null || attrs.isEmpty) {
       return widgets;
     }
@@ -228,13 +252,11 @@ class _ViewStyleChips extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
-
     return Wrap(
       children: <Widget>[
         RankChoiceChip(
-          ranks: ref.watch(characterDetailViewModelProvider).allRanks,
-          initSelectedRank: character.selectedStyleRank ?? character.styles.first.rank,
+          ranks: ref.read(characterDetailViewModelProvider).getAllRanks(),
+          initSelectedRank: ref.watch(characterDetailSelectStyleStateProvider)!.rank,
           onSelectedListener: (rank) {
             ref.read(characterDetailViewModelProvider).onSelectRank(rank);
           },
@@ -259,16 +281,20 @@ class _ViewStatusArea extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           children: <Widget>[
-            const _ViewTotalStatus(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: const [
+                _ViewTotalStatusCircleGraph(),
+                SizedBox(width: 16),
+                _ViewStage(),
+              ],
+            ),
             const SizedBox(height: 8),
             const HorizontalLine(),
             const SizedBox(height: 8),
-            HpGraph(
-              status: ref.watch(characterDetailViewModelProvider).character.myStatus?.hp ?? 0,
-              limit: ref.watch(characterDetailViewModelProvider).stage.hpLimit,
-            ),
+            const _ViewHpGraph(),
             const SizedBox(height: 8),
-            const _ViewEachStatus(),
+            const _ViewEachStatusGraph(),
           ],
         ),
       ),
@@ -276,35 +302,17 @@ class _ViewStatusArea extends ConsumerWidget {
   }
 }
 
-///
-/// 合計ステータス表示欄
-///
-class _ViewTotalStatus extends ConsumerWidget {
-  const _ViewTotalStatus({Key? key}) : super(key: key);
+class _ViewTotalStatusCircleGraph extends ConsumerWidget {
+  const _ViewTotalStatusCircleGraph({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedStyle = ref.watch(characterDetailViewModelProvider).selectedStyle;
-    final stage = ref.watch(characterDetailViewModelProvider).stage;
+    final selectedStyleSum = ref.watch(characterDetailSelectStyleStateProvider)!.sum();
+    final statusLimit = ref.watch(characterDetailLimitStatus);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        TotalStatusCircleGraph(
-          totalStatus: ref.watch(characterDetailViewModelProvider).character.myStatus?.sumWithoutHp() ?? 0,
-          limitStatus: (selectedStyle.sum()) + (8 * stage.statusLimit),
-        ),
-        const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const <Widget>[
-            SizedBox(height: 12.0),
-            _ViewStageName(),
-            SizedBox(height: 12.0),
-            _ViewStageLimit(),
-          ],
-        ),
-      ],
+    return TotalStatusCircleGraph(
+      totalStatus: ref.watch(characterDetailStatusStateProvider)?.sumWithoutHp() ?? 0,
+      limitStatus: selectedStyleSum + (8 * statusLimit),
     );
   }
 }
@@ -312,11 +320,33 @@ class _ViewTotalStatus extends ConsumerWidget {
 ///
 /// ステージ情報
 ///
+class _ViewStage extends StatelessWidget {
+  const _ViewStage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const <Widget>[
+        SizedBox(height: 12.0),
+        _ViewStageName(),
+        SizedBox(height: 12.0),
+        _ViewStageLimit(),
+      ],
+    );
+  }
+}
+
+///
+/// ステージ名の表示
+///
 class _ViewStageName extends ConsumerWidget {
   const _ViewStageName({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final stageName = ref.watch(characterDetailViewModelProvider).stageName;
+
     return Row(
       children: <Widget>[
         const VerticalLine(color: RSColors.stageNameLine),
@@ -326,7 +356,7 @@ class _ViewStageName extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(RSStrings.detailPageStageLabel, style: Theme.of(context).textTheme.caption),
-              Text(ref.watch(characterDetailViewModelProvider).stage.name),
+              Text(stageName),
             ],
           ),
         )
@@ -335,11 +365,16 @@ class _ViewStageName extends ConsumerWidget {
   }
 }
 
+///
+/// ステータス上限の表示
+///
 class _ViewStageLimit extends ConsumerWidget {
   const _ViewStageLimit({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final limit = ref.watch(characterDetailLimitStatus);
+
     return Row(
       children: <Widget>[
         const VerticalLine(color: RSColors.stageLimitLine),
@@ -349,7 +384,7 @@ class _ViewStageLimit extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(RSStrings.detailPageStatusLimitLabel, style: Theme.of(context).textTheme.caption),
-              Text('+${ref.watch(characterDetailViewModelProvider).stage.statusLimit}'),
+              Text('+$limit'),
             ],
           ),
         )
@@ -358,80 +393,184 @@ class _ViewStageLimit extends ConsumerWidget {
   }
 }
 
-class _ViewEachStatus extends ConsumerWidget {
-  const _ViewEachStatus({Key? key}) : super(key: key);
+///
+/// HP表示欄
+///
+class _ViewHpGraph extends ConsumerWidget {
+  const _ViewHpGraph({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final myStatus = ref.watch(characterDetailViewModelProvider).character.myStatus;
+    return HpGraph(
+      status: ref.watch(characterDetailStatusStateProvider)?.hp ?? 0,
+      limit: ref.watch(characterDetailViewModelProvider).stageHpLimit,
+    );
+  }
+}
 
+///
+/// ステータス表示欄
+///
+class _ViewEachStatusGraph extends StatelessWidget {
+  const _ViewEachStatusGraph({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            StatusGraph(
-              title: RSStrings.strName,
-              status: myStatus?.str ?? 0,
-              limit: ref.watch(characterDetailViewModelProvider).statusLimitStr,
-            ),
-            StatusGraph(
-              title: RSStrings.vitName,
-              status: myStatus?.vit ?? 0,
-              limit: ref.watch(characterDetailViewModelProvider).statusLimitVit,
-            ),
-            StatusGraph(
-              title: RSStrings.dexName,
-              status: myStatus?.dex ?? 0,
-              limit: ref.watch(characterDetailViewModelProvider).statusLimitDex,
-            ),
+          children: const [
+            _ViewStatusGraphStr(),
+            _ViewStatusGraphVit(),
+            _ViewStatusGraphDex(),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            StatusGraph(
-              title: RSStrings.agiName,
-              status: myStatus?.agi ?? 0,
-              limit: ref.watch(characterDetailViewModelProvider).statusLimitAgi,
-            ),
-            StatusGraph(
-              title: RSStrings.intName,
-              status: myStatus?.inte ?? 0,
-              limit: ref.watch(characterDetailViewModelProvider).statusLimitInt,
-            ),
-            StatusGraph(
-              title: RSStrings.spiName,
-              status: myStatus?.spi ?? 0,
-              limit: ref.watch(characterDetailViewModelProvider).statusLimitSpi,
-            ),
+          children: const [
+            _ViewStatusGraphAgi(),
+            _ViewStatusGraphInt(),
+            _ViewStatusGraphSpi(),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            StatusGraph(
-              title: RSStrings.loveName,
-              status: myStatus?.love ?? 0,
-              limit: ref.watch(characterDetailViewModelProvider).statusLimitLove,
-            ),
-            StatusGraph(
-              title: RSStrings.attrName,
-              status: myStatus?.attr ?? 0,
-              limit: ref.watch(characterDetailViewModelProvider).statusLimitAttr,
-            ),
-            // 揃えるためにダミーでwidget加える
-            Opacity(
-              opacity: 0,
-              child: StatusGraph(
-                title: RSStrings.attrName,
-                status: myStatus?.attr ?? 0,
-                limit: ref.watch(characterDetailViewModelProvider).statusLimitAttr,
-              ),
-            ),
+          children: const [
+            _ViewStatusGraphLove(),
+            _ViewStatusGraphAttr(),
+            Opacity(opacity: 0, child: _ViewStatusGraphAttr()), // 揃えるためにダミーでwidgetを加える
           ],
         )
       ],
+    );
+  }
+}
+
+///
+/// 腕力ステータスグラフ
+///
+class _ViewStatusGraphStr extends ConsumerWidget {
+  const _ViewStatusGraphStr({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return StatusGraph(
+      title: RSStrings.strName,
+      status: ref.watch(characterDetailStatusStateProvider)?.str ?? 0,
+      limit: ref.watch(characterDetailLimitStr),
+    );
+  }
+}
+
+///
+/// 体力ステータスグラフ
+///
+class _ViewStatusGraphVit extends ConsumerWidget {
+  const _ViewStatusGraphVit({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return StatusGraph(
+      title: RSStrings.vitName,
+      status: ref.watch(characterDetailStatusStateProvider)?.vit ?? 0,
+      limit: ref.watch(characterDetailLimitVit),
+    );
+  }
+}
+
+///
+/// 器用さステータスグラフ
+///
+class _ViewStatusGraphDex extends ConsumerWidget {
+  const _ViewStatusGraphDex({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return StatusGraph(
+      title: RSStrings.dexName,
+      status: ref.watch(characterDetailStatusStateProvider)?.dex ?? 0,
+      limit: ref.watch(characterDetailLimitDex),
+    );
+  }
+}
+
+///
+/// 素早さステータスグラフ
+///
+class _ViewStatusGraphAgi extends ConsumerWidget {
+  const _ViewStatusGraphAgi({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return StatusGraph(
+      title: RSStrings.agiName,
+      status: ref.watch(characterDetailStatusStateProvider)?.agi ?? 0,
+      limit: ref.watch(characterDetailLimitAgi),
+    );
+  }
+}
+
+///
+/// 知力ステータスグラフ
+///
+class _ViewStatusGraphInt extends ConsumerWidget {
+  const _ViewStatusGraphInt({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return StatusGraph(
+      title: RSStrings.intName,
+      status: ref.watch(characterDetailStatusStateProvider)?.inte ?? 0,
+      limit: ref.watch(characterDetailLimitInt),
+    );
+  }
+}
+
+///
+/// 精神ステータスグラフ
+///
+class _ViewStatusGraphSpi extends ConsumerWidget {
+  const _ViewStatusGraphSpi({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return StatusGraph(
+      title: RSStrings.spiName,
+      status: ref.watch(characterDetailStatusStateProvider)?.spi ?? 0,
+      limit: ref.watch(characterDetailLimitSpi),
+    );
+  }
+}
+
+///
+/// 愛ステータスグラフ
+///
+class _ViewStatusGraphLove extends ConsumerWidget {
+  const _ViewStatusGraphLove({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return StatusGraph(
+      title: RSStrings.loveName,
+      status: ref.watch(characterDetailStatusStateProvider)?.love ?? 0,
+      limit: ref.watch(characterDetailLimitLove),
+    );
+  }
+}
+
+///
+/// 魅力ステータスグラフ
+///
+class _ViewStatusGraphAttr extends ConsumerWidget {
+  const _ViewStatusGraphAttr({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return StatusGraph(
+      title: RSStrings.attrName,
+      status: ref.watch(characterDetailStatusStateProvider)?.attr ?? 0,
+      limit: ref.watch(characterDetailLimitAttr),
     );
   }
 }
@@ -444,8 +583,7 @@ class _ViewEditStatusFab extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.edit),
       onPressed: () async {
-        final character = ref.read(characterDetailViewModelProvider).character;
-        final myStatus = character.myStatus ?? MyStatus.empty(character.id);
+        final myStatus = ref.read(characterDetailStatusStateProvider)!;
         final isSaved = await StatusEditPage.start(context, myStatus);
         if (isSaved) {
           RSLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
@@ -456,40 +594,23 @@ class _ViewEditStatusFab extends ConsumerWidget {
   }
 }
 
-class _ViewBottomNavigationBar extends ConsumerWidget {
+class _ViewBottomNavigationBar extends StatelessWidget {
   const _ViewBottomNavigationBar({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final character = ref.watch(characterDetailViewModelProvider).character;
-
+  Widget build(BuildContext context) {
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 4.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          const Padding(padding: EdgeInsets.only(left: 16.0)),
-          _StatusUpEventIcon(
-            initValue: character.statusUpEvent,
-            onPressed: (newVal) async {
-              await ref.read(characterDetailViewModelProvider).saveStatusUpEvent(newVal);
-            },
-          ),
-          const Padding(padding: EdgeInsets.only(left: 16.0)),
-          _HighLevelIcon(
-            initValue: character.myStatus?.useHighLevel ?? false,
-            onPressed: (newVal) async {
-              await ref.read(characterDetailViewModelProvider).saveHighLevel(newVal);
-            },
-          ),
-          const Padding(padding: EdgeInsets.only(left: 16.0)),
-          _FavoriteIcon(
-            initValue: character.myStatus?.favorite ?? false,
-            onPressed: (newVal) async {
-              await ref.read(characterDetailViewModelProvider).saveFavorite(newVal);
-            },
-          ),
+        children: const <Widget>[
+          Padding(padding: EdgeInsets.only(left: 16.0)),
+          _ViewStatusUpEventIcon(),
+          Padding(padding: EdgeInsets.only(left: 16.0)),
+          _ViewHighLevelIcon(),
+          Padding(padding: EdgeInsets.only(left: 16.0)),
+          _ViewFavoriteIcon(),
         ],
       ),
     );
@@ -499,36 +620,21 @@ class _ViewBottomNavigationBar extends ConsumerWidget {
 ///
 /// ステータスアップイベントアイコン
 ///
-class _StatusUpEventIcon extends StatefulWidget {
-  const _StatusUpEventIcon({Key? key, required this.initValue, required this.onPressed}) : super(key: key);
-
-  final bool initValue;
-  final Function(bool) onPressed;
+class _ViewStatusUpEventIcon extends ConsumerWidget {
+  const _ViewStatusUpEventIcon({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _StatusUpEventIconState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isSelected = ref.watch(characterDetailStatusUpEventStateProvider);
 
-class _StatusUpEventIconState extends State<_StatusUpEventIcon> {
-  bool _isSelected = false;
-
-  @override
-  void initState() {
-    _isSelected = widget.initValue;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(
         Icons.trending_up,
-        color: _isSelected ? RSColors.statusUpEventSelected : Theme.of(context).disabledColor,
+        color: isSelected ? RSColors.statusUpEventSelected : Theme.of(context).disabledColor,
       ),
       iconSize: 28.0,
-      onPressed: () {
-        widget.onPressed(!_isSelected);
-        setState(() => _isSelected = !_isSelected);
+      onPressed: () async {
+        await ref.read(characterDetailViewModelProvider).saveStatusUpEvent(!isSelected);
       },
     );
   }
@@ -536,41 +642,21 @@ class _StatusUpEventIconState extends State<_StatusUpEventIcon> {
 
 ///
 /// 高難易度/周回アイコン
-class _HighLevelIcon extends StatefulWidget {
-  const _HighLevelIcon({Key? key, required this.initValue, required this.onPressed}) : super(key: key);
-
-  final bool initValue;
-  final Function(bool) onPressed;
+class _ViewHighLevelIcon extends ConsumerWidget {
+  const _ViewHighLevelIcon({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _HighLevelIconState();
-}
-
-class _HighLevelIconState extends State<_HighLevelIcon> {
-  bool _isSelected = false;
-
-  @override
-  void initState() {
-    _isSelected = widget.initValue;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Text text;
-    if (_isSelected) {
-      text = const Text(RSStrings.highLevelLabel, style: TextStyle(color: RSColors.highLevelSelected, fontSize: 20));
-    } else {
-      text = const Text(RSStrings.aroundLabel, style: TextStyle(color: RSColors.aroundSelected, fontSize: 20));
-    }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isSelected = ref.watch(characterDetailHighLevelStateProvider);
 
     return RawMaterialButton(
       shape: const CircleBorder(),
       constraints: const BoxConstraints(minWidth: 40.0, minHeight: 40.0),
-      child: text,
-      onPressed: () {
-        widget.onPressed(!_isSelected);
-        setState(() => _isSelected = !_isSelected);
+      child: isSelected
+          ? const Text(RSStrings.highLevelLabel, style: TextStyle(color: RSColors.highLevelSelected, fontSize: 20))
+          : const Text(RSStrings.aroundLabel, style: TextStyle(color: RSColors.aroundSelected, fontSize: 20)),
+      onPressed: () async {
+        await ref.read(characterDetailViewModelProvider).saveHighLevel(!isSelected);
       },
     );
   }
@@ -579,40 +665,20 @@ class _HighLevelIconState extends State<_HighLevelIcon> {
 ///
 /// お気に入りアイコン
 ///
-class _FavoriteIcon extends StatefulWidget {
-  const _FavoriteIcon({Key? key, required this.initValue, required this.onPressed}) : super(key: key);
-
-  final bool initValue;
-  final Function(bool) onPressed;
+class _ViewFavoriteIcon extends ConsumerWidget {
+  const _ViewFavoriteIcon({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _FavoriteIconState();
-}
-
-class _FavoriteIconState extends State<_FavoriteIcon> {
-  bool _isSelected = false;
-
-  @override
-  void initState() {
-    _isSelected = widget.initValue;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Icon icon;
-    if (_isSelected) {
-      icon = const Icon(Icons.star_rounded, color: RSColors.favoriteSelected);
-    } else {
-      icon = Icon(Icons.star_border_rounded, color: Theme.of(context).disabledColor);
-    }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isSelected = ref.watch(characterDetailFavoriteStateProvider);
 
     return IconButton(
-      icon: icon,
+      icon: isSelected
+          ? const Icon(Icons.star_rounded, color: RSColors.favoriteSelected)
+          : Icon(Icons.star_border_rounded, color: Theme.of(context).disabledColor),
       iconSize: 28.0,
-      onPressed: () {
-        widget.onPressed(!_isSelected);
-        setState(() => _isSelected = !_isSelected);
+      onPressed: () async {
+        await ref.read(characterDetailViewModelProvider).saveFavorite(!isSelected);
       },
     );
   }

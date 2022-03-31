@@ -5,11 +5,41 @@ import 'package:rsapp/data/account_repository.dart';
 import 'package:rsapp/data/character_repository.dart';
 import 'package:rsapp/data/my_status_repository.dart';
 import 'package:rsapp/data/stage_repository.dart';
+import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/base_view_model.dart';
 
 final accountViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _AccountViewModel(ref.read));
+
+// ログインしているか？
+final accountIsLoggedInStateProvider = StateProvider<bool>((_) => false);
+
+// ログインしているGoogleアカウント名
+final accountUserNameStateProvider = StateProvider<String>((ref) {
+  final isLogin = ref.watch(accountIsLoggedInStateProvider);
+  if (isLogin) {
+    return ref.read(accountRepositoryProvider).getUserName() ?? RSStrings.accountNotNameLabel;
+  } else {
+    return RSStrings.accountNotNameLabel;
+  }
+});
+
+// ログインしているGoogleアカウントのメアド
+final accountEmailStateProvider = StateProvider<String>((ref) {
+  final isLogin = ref.watch(accountIsLoggedInStateProvider);
+  if (isLogin) {
+    return ref.read(accountRepositoryProvider).getEmail() ?? RSStrings.accountNotSignInLabel;
+  } else {
+    return RSStrings.accountNotSignInLabel;
+  }
+});
+
+// ステージ情報
+final accountStageStateProvider = StateProvider<Stage>((_) => Stage.empty());
+
+// 最新のバックアップ日時の文字列表現
+final accountBackupDateLabel = StateProvider<String>((_) => RSStrings.accountStatusBackupNotLabel);
 
 class _AccountViewModel extends BaseViewModel {
   _AccountViewModel(this._read) {
@@ -22,24 +52,15 @@ class _AccountViewModel extends BaseViewModel {
   late PackageInfo _packageInfo;
   String get appVersion => _packageInfo.version + '-' + _packageInfo.buildNumber;
 
-  // ログイン情報
-  bool get isLoggedIn => _read(accountRepositoryProvider).isLogIn;
-  String get userName => _read(accountRepositoryProvider).getUserName() ?? RSStrings.accountNotNameLabel;
-  String get email => _read(accountRepositoryProvider).getEmail() ?? RSStrings.accountNotSignInLabel;
-
-  // ステージ情報
-  late Stage _stage;
-  Stage get stage => _stage;
-
-  // 前回バックアップ日付文字列
-  late String _backupDateLabel;
-  String get backupDateLabel => _backupDateLabel;
-
   Future<void> _init() async {
     try {
       _packageInfo = await PackageInfo.fromPlatform();
-      _backupDateLabel = await _read(myStatusRepositoryProvider).getPreviousBackupDateStr() ?? RSStrings.accountStatusBackupNotLabel;
-      _stage = await _read(stageRepositoryProvider).find();
+      _read(accountIsLoggedInStateProvider.notifier).state = _read(accountRepositoryProvider).isLogIn;
+
+      _read(accountStageStateProvider.notifier).state = await _read(stageRepositoryProvider).find();
+
+      await _refreshBakupDateLabel();
+
       onSuccess();
     } catch (e, s) {
       await RSLogger.e('アカウント画面の初期化に失敗しました。', e, s);
@@ -49,32 +70,34 @@ class _AccountViewModel extends BaseViewModel {
 
   Future<void> signIn() async {
     await _read(accountRepositoryProvider).signIn();
-    notifyListeners();
+    _read(accountIsLoggedInStateProvider.notifier).state = _read(accountRepositoryProvider).isLogIn;
   }
 
   Future<void> signOut() async {
     await _read(accountRepositoryProvider).signOut();
-    notifyListeners();
+    _read(accountIsLoggedInStateProvider.notifier).state = _read(accountRepositoryProvider).isLogIn;
   }
 
   Future<void> refreshCharacters() async {
     await _read(characterRepositoryProvider).refresh();
-    notifyListeners();
+    await _read(characterNotifierProvider.notifier).refresh();
   }
 
   Future<void> refreshStage() async {
-    _stage = await _read(stageRepositoryProvider).find();
-    notifyListeners();
+    _read(accountStageStateProvider.notifier).state = await _read(stageRepositoryProvider).find();
   }
 
   Future<void> backup() async {
     await _read(myStatusRepositoryProvider).backup();
-    _backupDateLabel = await _read(myStatusRepositoryProvider).getPreviousBackupDateStr() ?? RSStrings.accountStatusBackupNotLabel;
-    notifyListeners();
+    await _refreshBakupDateLabel();
   }
 
   Future<void> restore() async {
     await _read(myStatusRepositoryProvider).restore();
-    notifyListeners();
+  }
+
+  Future<void> _refreshBakupDateLabel() async {
+    final backupDateStr = await _read(myStatusRepositoryProvider).getPreviousBackupDateStr();
+    _read(accountBackupDateLabel.notifier).state = backupDateStr ?? RSStrings.accountStatusBackupNotLabel;
   }
 }

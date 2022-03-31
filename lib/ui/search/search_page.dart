@@ -19,30 +19,32 @@ class SearchPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final uiState = ref.watch(searchViewModelProvider).uiState;
     return uiState.when(
-      loading: (errMsg) => OnViewLoading(errorMessage: errMsg),
-      success: () => _onSuccess(context, ref),
+      loading: (errMsg) {
+        return OnViewLoading(errorMessage: errMsg);
+      },
+      success: () {
+        return Scaffold(
+          appBar: AppBar(
+            title: const _ViewHeaderTitle(),
+            actions: const [
+              _ViewHeaderIconSearchWord(),
+            ],
+          ),
+          body: const _ViewCharacters(),
+          floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.filter_list),
+            onPressed: () => _onPressFab(context),
+          ),
+        );
+      },
     );
   }
 
-  Widget _onSuccess(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const _ViewHeaderTitle(),
-        actions: const [
-          _ViewHeaderIconSearchWord(),
-        ],
-      ),
-      body: const _ViewCharacters(),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.filter_list),
-        onPressed: () {
-          showMaterialModalBottomSheet(
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (_) => const _BottomSheet(),
-          );
-        },
-      ),
+  void _onPressFab(BuildContext context) {
+    showMaterialModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const _BottomSheet(),
     );
   }
 }

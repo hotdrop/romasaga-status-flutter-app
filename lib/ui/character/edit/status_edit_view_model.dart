@@ -5,128 +5,155 @@ import 'package:rsapp/ui/base_view_model.dart';
 
 final statusEditViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _StatusEditViewModel(ref.read));
 
+final statusEditMyStatusStateProvider = StateProvider<MyStatus?>((_) => null);
+
+final statusEditModeStateProvider = StateProvider<EditMode>((_) => EditMode.each);
+
+// 入力用のStateProvider
+final statusEditHpStateProvider = StateProvider<int>((ref) {
+  final myStatus = ref.watch(statusEditMyStatusStateProvider);
+  return myStatus!.hp;
+});
+
+final statusEditStrStateProvider = StateProvider<int>((ref) {
+  final myStatus = ref.watch(statusEditMyStatusStateProvider);
+  return myStatus!.str;
+});
+
+final statusEditVitStateProvider = StateProvider<int>((ref) {
+  final myStatus = ref.watch(statusEditMyStatusStateProvider);
+  return myStatus!.vit;
+});
+
+final statusEditDexStateProvider = StateProvider<int>((ref) {
+  final myStatus = ref.watch(statusEditMyStatusStateProvider);
+  return myStatus!.dex;
+});
+
+final statusEditAgiStateProvider = StateProvider<int>((ref) {
+  final myStatus = ref.watch(statusEditMyStatusStateProvider);
+  return myStatus!.agi;
+});
+
+final statusEditIntStateProvider = StateProvider<int>((ref) {
+  final myStatus = ref.watch(statusEditMyStatusStateProvider);
+  return myStatus!.inte;
+});
+
+final statusEditSpiStateProvider = StateProvider<int>((ref) {
+  final myStatus = ref.watch(statusEditMyStatusStateProvider);
+  return myStatus!.spi;
+});
+
+final statusEditLoveStateProvider = StateProvider<int>((ref) {
+  final myStatus = ref.watch(statusEditMyStatusStateProvider);
+  return myStatus!.love;
+});
+
+final statusEditAttrStateProvider = StateProvider<int>((ref) {
+  final myStatus = ref.watch(statusEditMyStatusStateProvider);
+  return myStatus!.attr;
+});
+
 class _StatusEditViewModel extends BaseViewModel {
   _StatusEditViewModel(this._read);
 
   final Reader _read;
 
-  EditMode _editMode = EditMode.each;
-  bool get isEditEach => _editMode == EditMode.each;
-
-  late MyStatus _status;
-  int editHp = 0;
-  int editStr = 0;
-  int editVit = 0;
-  int editDex = 0;
-  int editAgi = 0;
-  int editInt = 0;
-  int editSpi = 0;
-  int editLove = 0;
-  int editAttr = 0;
-
   void init(MyStatus status) {
-    _status = status;
-    editHp = status.hp;
-    editStr = status.str;
-    editVit = status.vit;
-    editDex = status.dex;
-    editAgi = status.agi;
-    editInt = status.inte;
-    editSpi = status.spi;
-    editLove = status.love;
-    editAttr = status.attr;
+    _read(statusEditMyStatusStateProvider.notifier).state = status;
     onSuccess();
   }
 
   void updateHp(int newVal) {
-    editHp = _status.hp + newVal;
+    _read(statusEditHpStateProvider.notifier).state = _read(statusEditMyStatusStateProvider)!.hp + newVal;
   }
 
   void updateStr(int newVal) {
-    editStr = _status.str + newVal;
+    _read(statusEditStrStateProvider.notifier).state = _read(statusEditMyStatusStateProvider)!.str + newVal;
   }
 
   void updateVit(int newVal) {
-    editVit = _status.vit + newVal;
+    _read(statusEditVitStateProvider.notifier).state = _read(statusEditMyStatusStateProvider)!.vit + newVal;
   }
 
   void updateDex(int newVal) {
-    editDex = _status.dex + newVal;
+    _read(statusEditDexStateProvider.notifier).state = _read(statusEditMyStatusStateProvider)!.dex + newVal;
   }
 
   void updateAgi(int newVal) {
-    editAgi = _status.agi + newVal;
+    _read(statusEditAgiStateProvider.notifier).state = _read(statusEditMyStatusStateProvider)!.agi + newVal;
   }
 
   void updateInt(int newVal) {
-    editInt = _status.inte + newVal;
+    _read(statusEditIntStateProvider.notifier).state = _read(statusEditMyStatusStateProvider)!.inte + newVal;
   }
 
   void updateSpi(int newVal) {
-    editSpi = _status.spi + newVal;
+    _read(statusEditSpiStateProvider.notifier).state = _read(statusEditMyStatusStateProvider)!.spi + newVal;
   }
 
   void updateLove(int newVal) {
-    editLove = _status.love + newVal;
+    _read(statusEditLoveStateProvider.notifier).state = _read(statusEditMyStatusStateProvider)!.love + newVal;
   }
 
   void updateAttr(int newVal) {
-    editAttr = _status.attr + newVal;
+    _read(statusEditAttrStateProvider.notifier).state = _read(statusEditMyStatusStateProvider)!.attr + newVal;
   }
 
   void update(StatusType type, int newVal) {
     switch (type) {
       case StatusType.hp:
-        editHp = newVal;
+        _read(statusEditHpStateProvider.notifier).state = newVal;
         break;
       case StatusType.str:
-        editStr = newVal;
+        _read(statusEditStrStateProvider.notifier).state = newVal;
         break;
       case StatusType.vit:
-        editVit = newVal;
+        _read(statusEditVitStateProvider.notifier).state = newVal;
         break;
       case StatusType.dex:
-        editDex = newVal;
+        _read(statusEditDexStateProvider.notifier).state = newVal;
         break;
       case StatusType.agi:
-        editAgi = newVal;
+        _read(statusEditAgiStateProvider.notifier).state = newVal;
         break;
       case StatusType.inte:
-        editInt = newVal;
+        _read(statusEditIntStateProvider.notifier).state = newVal;
         break;
       case StatusType.spirit:
-        editSpi = newVal;
+        _read(statusEditSpiStateProvider.notifier).state = newVal;
         break;
       case StatusType.love:
-        editLove = newVal;
+        _read(statusEditLoveStateProvider.notifier).state = newVal;
         break;
       case StatusType.attr:
-        editAttr = newVal;
+        _read(statusEditAttrStateProvider.notifier).state = newVal;
         break;
     }
   }
 
   void changeEditMode() {
-    if (_editMode == EditMode.each) {
-      _editMode = EditMode.manual;
+    final currentMode = _read(statusEditModeStateProvider);
+    if (currentMode == EditMode.each) {
+      _read(statusEditModeStateProvider.notifier).state = EditMode.manual;
     } else {
-      _editMode = EditMode.each;
+      _read(statusEditModeStateProvider.notifier).state = EditMode.each;
     }
-    notifyListeners();
   }
 
   Future<void> saveNewStatus(MyStatus currentStatus) async {
     final newStatus = MyStatus(
       currentStatus.id,
-      editHp,
-      editStr,
-      editVit,
-      editDex,
-      editAgi,
-      editInt,
-      editSpi,
-      editLove,
-      editAttr,
+      _read(statusEditHpStateProvider),
+      _read(statusEditStrStateProvider),
+      _read(statusEditVitStateProvider),
+      _read(statusEditDexStateProvider),
+      _read(statusEditAgiStateProvider),
+      _read(statusEditIntStateProvider),
+      _read(statusEditSpiStateProvider),
+      _read(statusEditLoveStateProvider),
+      _read(statusEditAttrStateProvider),
       currentStatus.favorite,
       currentStatus.useHighLevel,
     );

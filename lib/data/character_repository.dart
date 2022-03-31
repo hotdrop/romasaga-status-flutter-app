@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/data/local/dao/character_dao.dart';
+import 'package:rsapp/data/local/dao/my_status_dao.dart';
 import 'package:rsapp/data/remote/character_api.dart';
 import 'package:rsapp/data/remote/response/character_response.dart';
 import 'package:rsapp/data/remote/response/style_response.dart';
 import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/style.dart';
 import 'package:collection/collection.dart';
 import 'package:rsapp/models/weapon.dart';
@@ -137,5 +139,17 @@ class _CharacterRepository {
     if (isSelected) {
       await saveSelectedRank(style.characterId, style.rank, newIconFilePath);
     }
+  }
+
+  Future<void> saveFavorite(int id, bool favorite) async {
+    final status = await _read(myStatusDaoProvider).find(id) ?? MyStatus.empty(id);
+    status.favorite = favorite;
+    await _read(myStatusDaoProvider).save(status);
+  }
+
+  Future<void> saveHighLevel(int id, bool highLevel) async {
+    final status = await _read(myStatusDaoProvider).find(id) ?? MyStatus.empty(id);
+    status.useHighLevel = highLevel;
+    await _read(myStatusDaoProvider).save(status);
   }
 }
