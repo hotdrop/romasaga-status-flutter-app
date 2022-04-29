@@ -10,30 +10,31 @@ class NotePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final uiState = ref.watch(noteViewModelProvider).uiState;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(RSStrings.notePageTitle),
       ),
-      body: uiState.when(
-        loading: (errMsg) => OnViewLoading(errorMessage: errMsg),
-        success: () {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Expanded(
-                  child: RSMultiLineTextField(
-                    initValue: ref.watch(noteViewModelProvider).note,
-                    onChanged: (String v) => ref.read(noteViewModelProvider).input(v),
-                  ),
+      body: ref.watch(noteStateProvider).when(
+            data: (note) {
+              return Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: RSMultiLineTextField(
+                        initValue: ref.watch(noteInputStateProvider),
+                        onChanged: (String v) {
+                          ref.read(noteInputStateProvider.notifier).state = v;
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-      ),
+              );
+            },
+            error: (err, _) => OnViewLoading(errorMessage: '$err'),
+            loading: () => const OnViewLoading(),
+          ),
     );
   }
 }

@@ -1,41 +1,34 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/note_repository.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 
-final noteViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _NoteViewModel(ref.read));
+final noteStateProvider = StateNotifierProvider.autoDispose<_NoteStateNotifier, AsyncValue<String>>((ref) {
+  return _NoteStateNotifier(ref.read);
+});
 
-class _NoteViewModel extends BaseViewModel {
-  _NoteViewModel(this._read) {
+class _NoteStateNotifier extends StateNotifier<AsyncValue<String>> {
+  _NoteStateNotifier(this._read) : super(const AsyncValue.loading()) {
     _init();
   }
 
   final Reader _read;
 
-  late String _note;
-  String get note => _note;
-
-  String? _inputNote;
-
   Future<void> _init() async {
-    _note = await _read(noteRepositoryProvider).find();
-    _inputNote = _note;
-    onSuccess();
-  }
-
-  void input(String v) {
-    _inputNote = v;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      final note = await _read(noteRepositoryProvider).find();
+      _read(noteInputStateProvider.notifier).state = note;
+      return note;
+    });
   }
 
   @override
   void dispose() {
-    _save();
+    final input = _read(noteInputStateProvider);
+    if (input != null) {
+      _read(noteRepositoryProvider).save(input);
+    }
     super.dispose();
   }
-
-  Future<void> _save() async {
-    // 更新されていれば保存する
-    if (_note != _inputNote) {
-      await _read(noteRepositoryProvider).save(_inputNote ?? '');
-    }
-  }
 }
+
+final noteInputStateProvider = StateProvider<String?>((_) => null);

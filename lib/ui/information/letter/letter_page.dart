@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rsapp/models/letter.dart';
 import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/base_view_model.dart';
@@ -21,31 +22,31 @@ class LetterPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final uiState = ref.watch(letterViewModelProvider).uiState;
-
-    return uiState.when(
-      loading: (errMsg) {
-        return OnViewLoading(title: RSStrings.letterPageTitle, errorMessage: errMsg);
-      },
-      success: () {
-        final isEmpty = ref.watch(letterViewModelProvider).isEmpty;
-        if (isEmpty) {
-          return const _ViewNothingLetterPage();
-        } else {
-          return const _ViewLettersPage();
-        }
-      },
-    );
+    return ref.watch(lettersStateProvider).when(
+          data: (letters) {
+            if (letters.isEmpty) {
+              return const _ViewNothingLetterPage();
+            } else {
+              return _ViewLettersPage(
+                years: ref.read(lettersExtractYears(letters)),
+                letters: letters,
+              );
+            }
+          },
+          error: (err, _) => OnViewLoading(title: RSStrings.letterPageTitle, errorMessage: '$err'),
+          loading: () => const OnViewLoading(title: RSStrings.letterPageTitle),
+        );
   }
 }
 
 class _ViewLettersPage extends ConsumerWidget {
-  const _ViewLettersPage({Key? key}) : super(key: key);
+  const _ViewLettersPage({Key? key, required this.years, required this.letters}) : super(key: key);
+
+  final List<int> years;
+  final List<Letter> letters;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final years = ref.read(letterViewModelProvider).findDistinctYears();
-
     return DefaultTabController(
       length: years.length,
       child: Scaffold(
@@ -62,7 +63,7 @@ class _ViewLettersPage extends ConsumerWidget {
           ),
         ),
         body: TabBarView(
-          children: years.map((y) => _TabLetter(year: y)).toList(),
+          children: years.map((y) => _TabLetter(letters: letters.where((letter) => letter.year == y).toList())).toList(),
         ),
       ),
     );
@@ -75,7 +76,7 @@ class _ViewLettersPage extends ConsumerWidget {
         const progressDialog = AppProgressDialog<void>();
         await progressDialog.show(
           context,
-          execute: ref.read(letterViewModelProvider).refresh,
+          execute: ref.read(lettersStateProvider.notifier).refresh,
           onSuccess: (_) {/* 成功時は何もしない */},
           onError: (err) async => await AppDialog.onlyOk(message: err).show(context),
         );
@@ -84,14 +85,13 @@ class _ViewLettersPage extends ConsumerWidget {
   }
 }
 
-class _TabLetter extends ConsumerWidget {
-  const _TabLetter({Key? key, required this.year}) : super(key: key);
+class _TabLetter extends StatelessWidget {
+  const _TabLetter({Key? key, required this.letters}) : super(key: key);
 
-  final int year;
+  final List<Letter> letters;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final letters = ref.watch(letterViewModelProvider).findByYear(year);
+  Widget build(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,
       childAspectRatio: 2 / 3,
@@ -139,7 +139,7 @@ class _ViewNothingLetterPage extends ConsumerWidget {
         const progressDialog = AppProgressDialog<void>();
         await progressDialog.show(
           context,
-          execute: ref.read(letterViewModelProvider).refresh,
+          execute: ref.read(lettersStateProvider.notifier).refresh,
           onSuccess: (_) {/* 成功時は何もしない */},
           onError: (err) async => await AppDialog.onlyOk(message: err).show(context),
         );

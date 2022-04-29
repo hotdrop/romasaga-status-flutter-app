@@ -48,8 +48,6 @@ class _CharactersViewModel extends BaseViewModel {
 
   final Reader _read;
 
-  CharacterListOrderType get selectedOrderType => _read(appSettingsProvider).characterListOrderType;
-
   Future<void> _init() async {
     try {
       final characters = _read(characterNotifierProvider);

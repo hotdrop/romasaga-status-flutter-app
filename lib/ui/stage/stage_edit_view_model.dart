@@ -3,6 +3,7 @@ import 'package:rsapp/data/stage_repository.dart';
 import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/ui/base_view_model.dart';
 
+// TODO ここAsyncValueで良い
 final stageEditViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _StageEditViewModel(ref.read));
 
 final stageEditInputNameStateProvider = StateProvider<String?>((ref) => null);

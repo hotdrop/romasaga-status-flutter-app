@@ -15,9 +15,7 @@ class CharactersPage extends ConsumerWidget {
     final uiState = ref.watch(charactersViewModelProvider).uiState;
 
     return uiState.when(
-      loading: (String? errMsg) {
-        return OnViewLoading(title: RSStrings.charactersPageTitle, errorMessage: errMsg);
-      },
+      loading: (String? errMsg) => OnViewLoading(title: RSStrings.charactersPageTitle, errorMessage: errMsg),
       success: () {
         return DefaultTabController(
           length: 5,

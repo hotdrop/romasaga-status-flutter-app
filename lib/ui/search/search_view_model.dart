@@ -41,6 +41,7 @@ class _SearchViewModel extends BaseViewModel {
       _search();
     } else {
       isKeywordSearch = true;
+      // TODO notifyListenersは使わない
       notifyListeners();
     }
   }
@@ -109,6 +110,7 @@ class _SearchViewModel extends BaseViewModel {
         .where((e) => _condition.filterProductionType(e.production))
         .toList();
     RSLogger.d('フィルター後のキャラ数=${charactersWithFilter.length}');
+    // TODO notifyListenersは使わない
     notifyListeners();
   }
 }

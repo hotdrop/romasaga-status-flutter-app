@@ -31,7 +31,7 @@ class UIState with _$UIState {
 }
 
 class OnViewLoading extends StatelessWidget {
-  const OnViewLoading({Key? key, this.title, required this.errorMessage}) : super(key: key);
+  const OnViewLoading({Key? key, this.title, this.errorMessage}) : super(key: key);
 
   final String? title;
   final String? errorMessage;
