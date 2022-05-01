@@ -75,6 +75,8 @@ class Character {
 
   Style? get selectedStyle => styles.firstWhereOrNull((style) => style.rank == selectedStyleRank);
 
+  List<String> get allRank => styles.map((style) => style.rank).toList()..sort((s, t) => s.compareTo(t));
+
   bool get favorite => myStatus?.favorite ?? false;
   bool get useHighLevel => myStatus?.useHighLevel ?? false;
 
@@ -119,6 +121,7 @@ class Character {
     String? selectedStyleRank,
     String? selectedIconFilePath,
     MyStatus? myStatus,
+    List<Style>? styles,
     bool? favorite,
     bool? statusUpEvent,
     bool? highLevel,
@@ -142,7 +145,9 @@ class Character {
       statusUpEvent: statusUpEvent ?? this.statusUpEvent,
       myStatus: newStatus,
     );
-    newCharacter.addAllStyle(styles);
+
+    newCharacter.addAllStyle(styles ?? this.styles);
+
     return newCharacter;
   }
 }

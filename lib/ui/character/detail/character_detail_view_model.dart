@@ -9,138 +9,68 @@ import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 
-final characterDetailViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _CharacterDetailViewModel(ref.read));
-
-// キャラ自身のステータス
-final characterDetailStatusStateProvider = StateProvider<MyStatus?>((ref) => null);
-
-final characterDetailStatusUpEventStateProvider = StateProvider((ref) => false);
-final characterDetailHighLevelStateProvider = StateProvider((ref) => false);
-final characterDetailFavoriteStateProvider = StateProvider((ref) => false);
-
-// 現在選択しているスタイル
-final characterDetailSelectStyleStateProvider = StateProvider<Style?>((_) => null);
-
-// 現在登録されているステージのステータス上限値
-final characterDetailLimitStatus = StateProvider((ref) => 0);
-
-final characterDetailLimitStr = StateProvider((ref) {
-  final status = ref.watch(characterDetailSelectStyleStateProvider)?.str ?? 0;
-  final limit = ref.watch(characterDetailLimitStatus);
-  return status + limit;
+///
+/// ViewModelのProvider（override用）
+///
+final characterDetailViewModel = StateNotifierProvider.autoDispose<_CharacterDetailViewModel, AsyncValue<void>>((ref) {
+  throw UnimplementedError();
 });
 
-final characterDetailLimitVit = StateProvider((ref) {
-  final status = ref.watch(characterDetailSelectStyleStateProvider)?.vit ?? 0;
-  final limit = ref.watch(characterDetailLimitStatus);
-  return status + limit;
+///
+/// ViewModelの引数付きProvider
+///
+final characterDetailFamilyViewModel = StateNotifierProvider.autoDispose.family<_CharacterDetailViewModel, AsyncValue<void>, Character>((ref, c) {
+  return _CharacterDetailViewModel(ref.read, c);
 });
 
-final characterDetailLimitDex = StateProvider((ref) {
-  final status = ref.watch(characterDetailSelectStyleStateProvider)?.dex ?? 0;
-  final limit = ref.watch(characterDetailLimitStatus);
-  return status + limit;
-});
-
-final characterDetailLimitAgi = StateProvider((ref) {
-  final status = ref.watch(characterDetailSelectStyleStateProvider)?.agi ?? 0;
-  final limit = ref.watch(characterDetailLimitStatus);
-  return status + limit;
-});
-
-final characterDetailLimitInt = StateProvider((ref) {
-  final status = ref.watch(characterDetailSelectStyleStateProvider)?.intelligence ?? 0;
-  final limit = ref.watch(characterDetailLimitStatus);
-  return status + limit;
-});
-
-final characterDetailLimitSpi = StateProvider((ref) {
-  final status = ref.watch(characterDetailSelectStyleStateProvider)?.spirit ?? 0;
-  final limit = ref.watch(characterDetailLimitStatus);
-  return status + limit;
-});
-
-final characterDetailLimitLove = StateProvider((ref) {
-  final status = ref.watch(characterDetailSelectStyleStateProvider)?.love ?? 0;
-  final limit = ref.watch(characterDetailLimitStatus);
-  return status + limit;
-});
-
-final characterDetailLimitAttr = StateProvider((ref) {
-  final status = ref.watch(characterDetailSelectStyleStateProvider)?.attr ?? 0;
-  final limit = ref.watch(characterDetailLimitStatus);
-  return status + limit;
-});
-
-// 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
-final characterDetailIsUpdateStatus = StateProvider((ref) => false);
-
-class _CharacterDetailViewModel extends BaseViewModel {
-  _CharacterDetailViewModel(this._read);
+class _CharacterDetailViewModel extends StateNotifier<AsyncValue<void>> {
+  _CharacterDetailViewModel(this._read, this._character) : super(const AsyncValue.loading());
 
   final Reader _read;
+  final Character _character;
+  late Stage _stage;
 
-  late Character _character;
+  // キャラ情報
+  List<String> get allRank => _character.allRank;
   String get production => _character.production;
   String get name => _character.name;
   List<Weapon> get weapons => _character.weapons;
   List<Attribute>? get attributes => _character.attributes;
 
-  late final Stage _stage;
+  // ステージ情報
   String get stageName => _stage.name;
-  int get stageHpLimit => _stage.hpLimit;
+  int get hpLimit => _stage.hpLimit;
+  int get statusLimit => _stage.statusLimit;
 
-  Future<void> init(Character c) async {
-    try {
-      _character = c;
+  ///
+  /// これ本当はクラス構築時に自動で実行したかったが、それやったらStateProviderの構築時に他のProviderを初期化してはならないとエラーで怒られた。
+  /// そのためLoading処理でViewから別途よぶことにした。
+  ///
+  Future<void> init() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      _read(_characterDetailStylesProvider.notifier).refresh(_character.styles);
+      _read(characterDetailSelectStyleStateProvider.notifier).state = _character.selectedStyle ?? _character.styles.first;
+      _read(characterDetailMyStatusStateProvider.notifier).state = _character.myStatus;
+
+      _read(characterDetailStatusUpEventStateProvider.notifier).state = _character.statusUpEvent;
+      _read(characterDetailHighLevelStateProvider.notifier).state = _character.useHighLevel;
+      _read(characterDetailFavoriteStateProvider.notifier).state = _character.favorite;
       _stage = await _read(stageRepositoryProvider).find();
-
-      _read(characterDetailLimitStatus.notifier).state = _stage.statusLimit;
-      _read(characterDetailSelectStyleStateProvider.notifier).state = c.selectedStyle ?? c.styles.first;
-
-      _read(characterDetailStatusStateProvider.notifier).state = c.myStatus;
-      _read(characterDetailStatusUpEventStateProvider.notifier).state = c.statusUpEvent;
-      _read(characterDetailHighLevelStateProvider.notifier).state = c.useHighLevel;
-      _read(characterDetailFavoriteStateProvider.notifier).state = c.favorite;
-      onSuccess();
-    } catch (e, s) {
-      RSLogger.e('キャラ詳細情報取得でエラー', e, s);
-      onError('$e');
-    }
-  }
-
-  List<String> getAllRanks() {
-    return _character.styles.map((style) => style.rank).toList()..sort((s, t) => s.compareTo(t));
+    });
   }
 
   void onSelectRank(String rank) {
-    _read(characterDetailSelectStyleStateProvider.notifier).state = _character.getStyle(rank);
+    final style = _read(_characterDetailStylesProvider.notifier).findRank(rank);
+    _read(characterDetailSelectStyleStateProvider.notifier).state = style;
   }
 
+  ///
+  /// 自身のステータスを再取得する
+  ///
   Future<void> refreshStatus() async {
-    final newStatus = await _read(myStatusRepositoryProvider).find(_character.id);
-    if (newStatus == null) {
-      return;
-    }
-
-    // 自身のステータスを更新
-    _character = _character.copyWith(myStatus: newStatus);
-    _read(characterDetailStatusStateProvider.notifier).state = newStatus;
-    _read(characterDetailIsUpdateStatus.notifier).state = true;
-  }
-
-  Future<void> saveCurrentSelectStyle() async {
-    final selectedStyle = _read(characterDetailSelectStyleStateProvider)!;
-    RSLogger.d('表示ランクを ${selectedStyle.rank} にします。');
-
-    await _read(characterRepositoryProvider).saveSelectedRank(_character.id, selectedStyle.rank, selectedStyle.iconFilePath);
-
-    _character = _character.copyWith(
-      selectedStyleRank: selectedStyle.rank,
-      selectedIconFilePath: selectedStyle.iconFilePath,
-    );
+    _read(characterDetailMyStatusStateProvider.notifier).state = await _read(myStatusRepositoryProvider).find(_character.id);
     _read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
@@ -163,19 +93,31 @@ class _CharacterDetailViewModel extends BaseViewModel {
   }
 
   ///
+  /// 選択したスタイルをデフォルトスタイルに更新する
+  ///
+  Future<void> updateDefaultStyle() async {
+    final selectedStyle = _read(characterDetailSelectStyleStateProvider)!;
+    RSLogger.d('表示ランクを ${selectedStyle.rank} にします。');
+
+    await _read(characterRepositoryProvider).saveSelectedRank(_character.id, selectedStyle.rank, selectedStyle.iconFilePath);
+    _read(characterDetailIsUpdateStatus.notifier).state = true;
+  }
+
+  ///
   /// サーバーから最新のアイコンパスを取得し画像データを更新する
   /// 画像はキャッシュしているのでこの処理が必要
   ///
   Future<void> refreshIcon() async {
     try {
+      final defaultStyleRank = _character.selectedStyleRank;
       final selectedStyle = _read(characterDetailSelectStyleStateProvider)!;
-      final isSelectedIcon = (_character.selectedStyleRank == selectedStyle.rank);
+
+      final isSelectedIcon = (defaultStyleRank == selectedStyle.rank);
       RSLogger.d('アイコンをサーバーから再取得します。（このアイコンをデフォルトにしているか？ $isSelectedIcon)');
       await _read(characterRepositoryProvider).refreshIcon(selectedStyle, isSelectedIcon);
 
-      RSLogger.d('アイコン情報をキャラ情報に反映します。');
-      final styles = await _read(characterRepositoryProvider).findStyles(_character.id);
-      _character.refreshStyles(styles);
+      final newStyles = await _read(characterRepositoryProvider).findStyles(_character.id);
+      _read(_characterDetailStylesProvider.notifier).refresh(newStyles);
 
       _read(characterDetailIsUpdateStatus.notifier).state = true;
     } catch (e, s) {
@@ -183,3 +125,38 @@ class _CharacterDetailViewModel extends BaseViewModel {
     }
   }
 }
+
+// キャラ自身のステータス
+final characterDetailMyStatusStateProvider = StateProvider<MyStatus?>((ref) => null);
+
+// キャラのスタイル情報
+final _characterDetailStylesProvider = StateNotifierProvider<_StylesNotifier, List<Style>>((ref) {
+  return _StylesNotifier();
+});
+
+class _StylesNotifier extends StateNotifier<List<Style>> {
+  _StylesNotifier() : super([]);
+
+  void refresh(List<Style> styles) {
+    state = styles;
+  }
+
+  Style findRank(String rank) {
+    return state.firstWhere((style) => style.rank == rank);
+  }
+}
+
+// 現在選択しているスタイル
+final characterDetailSelectStyleStateProvider = StateProvider<Style?>((ref) => null);
+
+// キャラのイベントフラグ
+final characterDetailStatusUpEventStateProvider = StateProvider<bool>((ref) => false);
+
+// キャラの難易度/周回フラグ
+final characterDetailHighLevelStateProvider = StateProvider<bool>((ref) => false);
+
+// キャラのお気に入りフラグ
+final characterDetailFavoriteStateProvider = StateProvider<bool>((ref) => false);
+
+// 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
+final characterDetailIsUpdateStatus = StateProvider((ref) => false);
