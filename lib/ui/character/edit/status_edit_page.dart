@@ -8,7 +8,7 @@ import 'package:rsapp/ui/character/edit/status_edit_view_model.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
 
 class StatusEditPage extends ConsumerWidget {
-  const StatusEditPage._(this._myStatus);
+  const StatusEditPage._(this.myStatus);
 
   static Future<bool> start(BuildContext context, MyStatus status) async {
     return await Navigator.push<bool>(
@@ -18,56 +18,66 @@ class StatusEditPage extends ConsumerWidget {
         false;
   }
 
-  final MyStatus _myStatus;
+  final MyStatus myStatus;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final uiState = ref.watch(statusEditViewModelProvider).uiState;
-
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(RSStrings.statusEditTitle),
-        ),
-        body: uiState.when(
-          loading: (errMsg) {
-            _processOnLoading(ref, errMsg);
-            return OnViewLoading(errorMessage: errMsg);
-          },
-          success: () => const _ViewBody(),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.save),
-          onPressed: () async {
-            await ref.read(statusEditViewModelProvider).saveNewStatus(_myStatus);
-            Navigator.pop(context, true);
-          },
-        ),
-        bottomNavigationBar: const _ViewBottomNavigationBar(),
+    return ProviderScope(
+      overrides: [
+        statusEditViewModel.overrideWithProvider(statusEditFamilyViewModel(myStatus)),
+      ],
+      child: Consumer(
+        builder: ((context, ref, child) {
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text(RSStrings.statusEditTitle),
+              ),
+              body: ref.watch(statusEditViewModel).when(
+                    data: (_) => _ViewBody(myStatus),
+                    error: (err, _) => OnViewLoading(errorMessage: '$err'),
+                    loading: () {
+                      _processOnLoading(ref);
+                      return const OnViewLoading();
+                    },
+                  ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+              floatingActionButton: FloatingActionButton(
+                child: const Icon(Icons.save),
+                onPressed: () async {
+                  await ref.read(statusEditViewModel.notifier).saveNewStatus();
+                  Navigator.pop(context, true);
+                },
+              ),
+              bottomNavigationBar: const _ViewBottomNavigationBar(),
+            ),
+          );
+        }),
       ),
     );
   }
 
-  void _processOnLoading(WidgetRef ref, String? errMsg) {
+  void _processOnLoading(WidgetRef ref) {
     Future<void>.delayed(Duration.zero).then((_) {
-      ref.read(statusEditViewModelProvider).init(_myStatus);
+      ref.read(statusEditViewModel.notifier).init();
     });
   }
 }
 
 class _ViewBody extends ConsumerWidget {
-  const _ViewBody({Key? key}) : super(key: key);
+  const _ViewBody(this.myStatus, {Key? key}) : super(key: key);
+
+  final MyStatus myStatus;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final editMode = ref.watch(statusEditModeStateProvider);
 
     if (editMode == EditMode.each) {
-      return const _ViewCountLayout();
+      return _ViewCountLayout(myStatus);
     } else {
-      return const _ViewManualLayout();
+      return _ViewManualLayout(myStatus);
     }
   }
 }
@@ -76,23 +86,23 @@ class _ViewBody extends ConsumerWidget {
 /// ボタン入力時のレイアウト
 ///
 class _ViewCountLayout extends ConsumerWidget {
-  const _ViewCountLayout({Key? key}) : super(key: key);
+  const _ViewCountLayout(this.myStatus, {Key? key}) : super(key: key);
+
+  final MyStatus myStatus;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final myStatus = ref.watch(statusEditMyStatusStateProvider)!;
-
     return ListView(
       children: <Widget>[
-        RowStatusCounter(type: StatusType.hp, currentStatus: myStatus.hp, onChangeValue: ref.read(statusEditViewModelProvider).updateHp),
-        RowStatusCounter(type: StatusType.str, currentStatus: myStatus.str, onChangeValue: ref.read(statusEditViewModelProvider).updateStr),
-        RowStatusCounter(type: StatusType.vit, currentStatus: myStatus.vit, onChangeValue: ref.read(statusEditViewModelProvider).updateVit),
-        RowStatusCounter(type: StatusType.dex, currentStatus: myStatus.dex, onChangeValue: ref.read(statusEditViewModelProvider).updateDex),
-        RowStatusCounter(type: StatusType.agi, currentStatus: myStatus.agi, onChangeValue: ref.read(statusEditViewModelProvider).updateAgi),
-        RowStatusCounter(type: StatusType.inte, currentStatus: myStatus.inte, onChangeValue: ref.read(statusEditViewModelProvider).updateInt),
-        RowStatusCounter(type: StatusType.spirit, currentStatus: myStatus.spi, onChangeValue: ref.read(statusEditViewModelProvider).updateSpi),
-        RowStatusCounter(type: StatusType.love, currentStatus: myStatus.love, onChangeValue: ref.read(statusEditViewModelProvider).updateLove),
-        RowStatusCounter(type: StatusType.attr, currentStatus: myStatus.attr, onChangeValue: ref.read(statusEditViewModelProvider).updateAttr),
+        RowStatusCounter(type: StatusType.hp, currentStatus: myStatus.hp, onChangeValue: ref.read(statusEditViewModel.notifier).updateHp),
+        RowStatusCounter(type: StatusType.str, currentStatus: myStatus.str, onChangeValue: ref.read(statusEditViewModel.notifier).updateStr),
+        RowStatusCounter(type: StatusType.vit, currentStatus: myStatus.vit, onChangeValue: ref.read(statusEditViewModel.notifier).updateVit),
+        RowStatusCounter(type: StatusType.dex, currentStatus: myStatus.dex, onChangeValue: ref.read(statusEditViewModel.notifier).updateDex),
+        RowStatusCounter(type: StatusType.agi, currentStatus: myStatus.agi, onChangeValue: ref.read(statusEditViewModel.notifier).updateAgi),
+        RowStatusCounter(type: StatusType.inte, currentStatus: myStatus.inte, onChangeValue: ref.read(statusEditViewModel.notifier).updateInt),
+        RowStatusCounter(type: StatusType.spirit, currentStatus: myStatus.spi, onChangeValue: ref.read(statusEditViewModel.notifier).updateSpi),
+        RowStatusCounter(type: StatusType.love, currentStatus: myStatus.love, onChangeValue: ref.read(statusEditViewModel.notifier).updateLove),
+        RowStatusCounter(type: StatusType.attr, currentStatus: myStatus.attr, onChangeValue: ref.read(statusEditViewModel.notifier).updateAttr),
         const SizedBox(height: 16.0)
       ],
     );
@@ -103,12 +113,12 @@ class _ViewCountLayout extends ConsumerWidget {
 /// 数値入力時のレイアウト
 ///
 class _ViewManualLayout extends ConsumerWidget {
-  const _ViewManualLayout({Key? key}) : super(key: key);
+  const _ViewManualLayout(this.myStatus, {Key? key}) : super(key: key);
+
+  final MyStatus myStatus;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final myStatus = ref.watch(statusEditMyStatusStateProvider)!;
-
     final attrFocus = FocusNode();
     final loveFocus = FocusNode();
     final spiFocus = FocusNode();
@@ -172,7 +182,7 @@ class _ViewStatusEdit extends ConsumerWidget {
         initValue: status,
         focusNode: focusNode,
         nextFocusNode: nextFocusNode,
-        onChanged: (v) => ref.read(statusEditViewModelProvider).update(type, v),
+        onChanged: (v) => ref.read(statusEditViewModel.notifier).update(type, v),
       ),
     );
   }
@@ -228,7 +238,7 @@ class _ViewBottomNavigationBar extends ConsumerWidget {
             icon: const Icon(Icons.compare_arrows),
             iconSize: 28.0,
             onPressed: () {
-              ref.read(statusEditViewModelProvider).changeEditMode();
+              ref.read(statusEditViewModel.notifier).changeEditMode();
             },
           ),
           const SizedBox(width: 16),

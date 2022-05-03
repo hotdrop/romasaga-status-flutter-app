@@ -52,35 +52,35 @@ class _CharacterDetailViewModel extends StateNotifier<AsyncValue<void>> {
   Future<void> init() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      _read(_characterDetailUiStateProvider.notifier).init(_character);
+      _read(_uiStateProvider.notifier).init(_character);
       _stage = await _read(stageRepositoryProvider).find();
     });
   }
 
   void onSelectRank(String rank) {
-    _read(_characterDetailUiStateProvider.notifier).selectRank(rank);
+    _read(_uiStateProvider.notifier).selectRank(rank);
   }
 
   ///
   /// 自身のステータスを再取得する
   ///
   Future<void> refreshMyStatus() async {
-    await _read(_characterDetailUiStateProvider.notifier).updateMyStatus(_character.id);
+    await _read(_uiStateProvider.notifier).updateMyStatus(_character.id);
     _read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   Future<void> saveStatusUpEvent(bool statusUpEvent) async {
-    await _read(_characterDetailUiStateProvider.notifier).saveStatusUpEvent(_character.id, statusUpEvent);
+    await _read(_uiStateProvider.notifier).saveStatusUpEvent(_character.id, statusUpEvent);
     _read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   Future<void> saveHighLevel(bool useHighLevel) async {
-    await _read(_characterDetailUiStateProvider.notifier).saveUseHighLevel(_character.id, useHighLevel);
+    await _read(_uiStateProvider.notifier).saveUseHighLevel(_character.id, useHighLevel);
     _read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   Future<void> saveFavorite(bool favorite) async {
-    await _read(_characterDetailUiStateProvider.notifier).saveFavorite(_character.id, favorite);
+    await _read(_uiStateProvider.notifier).saveFavorite(_character.id, favorite);
     _read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
@@ -106,7 +106,7 @@ class _CharacterDetailViewModel extends StateNotifier<AsyncValue<void>> {
       final isSelectedIcon = (defaultStyleRank == selectedStyle.rank);
       await _read(characterRepositoryProvider).refreshIcon(selectedStyle, isSelectedIcon);
 
-      await _read(_characterDetailUiStateProvider.notifier).updateStyles(_character.id);
+      await _read(_uiStateProvider.notifier).updateStyles(_character.id);
 
       _read(characterDetailIsUpdateStatus.notifier).state = true;
     } catch (e, s) {
@@ -116,7 +116,7 @@ class _CharacterDetailViewModel extends StateNotifier<AsyncValue<void>> {
 }
 
 // 画面の状態
-final _characterDetailUiStateProvider = StateNotifierProvider<_UiStateNotifer, _UiState>((ref) {
+final _uiStateProvider = StateNotifierProvider<_UiStateNotifer, _UiState>((ref) {
   return _UiStateNotifer(ref.read, _UiState.empty());
 });
 
@@ -188,29 +188,29 @@ class _UiState {
 
 // キャラ自身のステータス
 final characterDetailMyStatusStateProvider = Provider<MyStatus?>((ref) {
-  return ref.watch(_characterDetailUiStateProvider.select((v) => v.myStatus));
+  return ref.watch(_uiStateProvider.select((v) => v.myStatus));
 });
 
 // 現在選択しているスタイル
 final characterDetailSelectStyleStateProvider = Provider<Style>((ref) {
-  final selectRank = ref.watch(_characterDetailUiStateProvider.select((v) => v.selectStyleRank));
-  final styles = ref.watch(_characterDetailUiStateProvider.select((v) => v.styles));
+  final selectRank = ref.watch(_uiStateProvider.select((v) => v.selectStyleRank));
+  final styles = ref.watch(_uiStateProvider.select((v) => v.styles));
   return styles.firstWhereOrNull((style) => style.rank == selectRank) ?? styles.first;
 });
 
 // キャラのイベントフラグ
 final characterDetailStatusUpEventStateProvider = Provider<bool>((ref) {
-  return ref.watch(_characterDetailUiStateProvider.select((v) => v.statusUpEvent));
+  return ref.watch(_uiStateProvider.select((v) => v.statusUpEvent));
 });
 
 // キャラの難易度/周回フラグ
 final characterDetailHighLevelStateProvider = Provider<bool>((ref) {
-  return ref.watch(_characterDetailUiStateProvider.select((v) => v.useHighLevel));
+  return ref.watch(_uiStateProvider.select((v) => v.useHighLevel));
 });
 
 // キャラのお気に入りフラグ
 final characterDetailFavoriteStateProvider = Provider<bool>((ref) {
-  return ref.watch(_characterDetailUiStateProvider.select((v) => v.favorite));
+  return ref.watch(_uiStateProvider.select((v) => v.favorite));
 });
 
 // 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
