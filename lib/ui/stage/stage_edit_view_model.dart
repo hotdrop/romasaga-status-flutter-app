@@ -1,63 +1,98 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/stage_repository.dart';
 import 'package:rsapp/models/stage.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 
-// TODO ここAsyncValueで良い
-final stageEditViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _StageEditViewModel(ref.read));
-
-final stageEditInputNameStateProvider = StateProvider<String?>((ref) => null);
-
-final stageEditInputHpStateProvider = StateProvider<int?>((_) => null);
-
-final stageEditInputStatusStateProvider = StateProvider<int?>((_) => null);
-
-final stageEditIsExecuteSaveStateProvider = StateProvider<bool>((ref) {
-  final inputName = ref.watch(stageEditInputNameStateProvider);
-  final inputHp = ref.watch(stageEditInputHpStateProvider);
-  final inputStatus = ref.watch(stageEditInputStatusStateProvider);
-
-  return inputName != null && inputName.isNotEmpty && inputHp != null && inputHp > 0 && inputStatus != null;
+final stageEditViewModel = StateNotifierProvider.autoDispose<_StageEditViewModel, AsyncValue<void>>((ref) {
+  return _StageEditViewModel(ref.read);
 });
 
-class _StageEditViewModel extends BaseViewModel {
-  _StageEditViewModel(this._read) {
-    _init();
-  }
+class _StageEditViewModel extends StateNotifier<AsyncValue<void>> {
+  _StageEditViewModel(this._read) : super(const AsyncValue.loading());
 
   final Reader _read;
 
-  late Stage _currentStage;
-  Stage get currentStage => _currentStage;
-
-  Future<void> _init() async {
-    _currentStage = await _read(stageRepositoryProvider).find();
-
-    _read(stageEditInputNameStateProvider.notifier).state = _currentStage.name;
-    _read(stageEditInputHpStateProvider.notifier).state = _currentStage.hpLimit;
-    _read(stageEditInputStatusStateProvider.notifier).state = _currentStage.statusLimit;
-    onSuccess();
+  Future<void> init() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async => _read(_uiStateProvider.notifier).refresh());
   }
 
-  void inputName(String? input) {
-    _read(stageEditInputNameStateProvider.notifier).state = input;
+  void inputName(String? newVal) {
+    _read(_uiStateProvider.notifier).inputName(newVal);
   }
 
-  void inputHpLimit(int? input) {
-    _read(stageEditInputHpStateProvider.notifier).state = input;
+  void inputHpLimit(int? newVal) {
+    _read(_uiStateProvider.notifier).inputHpLimit(newVal);
   }
 
-  void inputLimit(int? input) {
-    _read(stageEditInputStatusStateProvider.notifier).state = input;
+  void inputLimit(int? newVal) {
+    _read(_uiStateProvider.notifier).inputLimit(newVal);
   }
 
   Future<void> save() async {
-    // ここでいずれかの値がnullならプログラムバグなので落とす
     final newStage = Stage(
-      name: _read(stageEditInputNameStateProvider)!,
-      hpLimit: _read(stageEditInputHpStateProvider)!,
-      statusLimit: _read(stageEditInputStatusStateProvider)!,
+      name: _read(_uiStateProvider).inputName,
+      hpLimit: _read(_uiStateProvider).inputHp,
+      statusLimit: _read(_uiStateProvider).inputStatusLimit,
     );
     await _read(stageRepositoryProvider).save(newStage);
   }
 }
+
+final _uiStateProvider = StateNotifierProvider<_UiStateNotifier, _UiState>((ref) {
+  return _UiStateNotifier(ref.read, _UiState.empty());
+});
+
+class _UiStateNotifier extends StateNotifier<_UiState> {
+  _UiStateNotifier(this._read, _UiState state) : super(state);
+
+  final Reader _read;
+
+  Future<void> refresh() async {
+    final currentStage = await _read(stageRepositoryProvider).find();
+    state = _UiState(currentStage, currentStage.name, currentStage.hpLimit, currentStage.statusLimit);
+  }
+
+  void inputName(String? newVal) {
+    state = state.copyWith(inputName: newVal ?? '');
+  }
+
+  void inputHpLimit(int? newVal) {
+    state = state.copyWith(inputHp: newVal ?? 0);
+  }
+
+  void inputLimit(int? newVal) {
+    state = state.copyWith(inputStatusLimit: newVal ?? 0);
+  }
+}
+
+class _UiState {
+  _UiState(this.currentStage, this.inputName, this.inputHp, this.inputStatusLimit);
+
+  factory _UiState.empty() {
+    final emptyStage = Stage.empty();
+    return _UiState(emptyStage, emptyStage.name, emptyStage.hpLimit, emptyStage.statusLimit);
+  }
+
+  final Stage currentStage;
+  final String inputName;
+  final int inputHp;
+  final int inputStatusLimit;
+
+  _UiState copyWith({String? inputName, int? inputHp, int? inputStatusLimit}) {
+    return _UiState(
+      currentStage,
+      inputName ?? this.inputName,
+      inputHp ?? this.inputHp,
+      inputStatusLimit ?? this.inputStatusLimit,
+    );
+  }
+}
+
+final stageEditCurrentProvider = Provider<Stage>((ref) {
+  return ref.watch(_uiStateProvider.select((value) => value.currentStage));
+});
+
+final stageEditIsExecuteSaveProvider = Provider<bool>((ref) {
+  final state = ref.watch(_uiStateProvider);
+  return state.inputName.isNotEmpty && state.inputHp > 0 && state.inputStatusLimit > 0;
+});

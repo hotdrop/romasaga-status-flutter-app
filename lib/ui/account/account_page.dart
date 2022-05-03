@@ -18,15 +18,20 @@ class AccountPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final uiState = ref.watch(accountViewModelProvider).uiState;
     return Scaffold(
       appBar: AppBar(
         title: const Text(RSStrings.accountPageTitle),
       ),
-      body: uiState.when(
-        loading: (errMsg) => OnViewLoading(errorMessage: errMsg),
-        success: () => _onSuccess(context, ref),
-      ),
+      body: ref.watch(accountViewModel).when(
+            data: (_) => _onSuccess(context, ref),
+            error: (err, _) => OnViewLoading(errorMessage: '$err'),
+            loading: () {
+              Future<void>.delayed(Duration.zero).then((_) {
+                ref.read(accountViewModel.notifier).init();
+              });
+              return const OnViewLoading();
+            },
+          ),
     );
   }
 
@@ -94,7 +99,7 @@ class _RowAppLicense extends ConsumerWidget {
         showLicensePage(
           context: context,
           applicationName: RSStrings.appTitle,
-          applicationVersion: ref.read(accountViewModelProvider).appVersion,
+          applicationVersion: ref.read(accountViewModel.notifier).appVersion,
           applicationIcon: Image.asset(RSImages.icLaunch, width: 50, height: 50),
         );
       },
@@ -153,7 +158,7 @@ class _RowRefreshCharacters extends ConsumerWidget {
     const progressDialog = AppProgressDialog<void>();
     await progressDialog.show(
       context,
-      execute: ref.read(accountViewModelProvider).refreshCharacters,
+      execute: ref.read(accountViewModel.notifier).refreshCharacters,
       onSuccess: (_) async {
         await AppDialog.onlyOk(message: RSStrings.accountCharacterUpdateDialogSuccessMessage).show(context);
       },
@@ -184,7 +189,7 @@ class _RowEditStage extends ConsumerWidget {
       onTap: () async {
         final isUpdate = await StageEditPage.start(context);
         if (isUpdate) {
-          await ref.read(accountViewModelProvider).refreshStage();
+          await ref.read(accountViewModel.notifier).refreshStage();
         }
       },
     );
@@ -220,7 +225,7 @@ class _RowBackup extends ConsumerWidget {
     const progressDialog = AppProgressDialog<void>();
     await progressDialog.show(
       context,
-      execute: ref.read(accountViewModelProvider).backup,
+      execute: ref.read(accountViewModel.notifier).backup,
       onSuccess: (_) async => await AppDialog.onlyOk(message: RSStrings.accountStatusBackupDialogSuccessMessage).show(context),
       onError: (errMsg) async => await AppDialog.onlyOk(message: errMsg).show(context),
     );
@@ -254,7 +259,7 @@ class _RowRestore extends ConsumerWidget {
     const progressDialog = AppProgressDialog<void>();
     await progressDialog.show(
       context,
-      execute: ref.read(accountViewModelProvider).restore,
+      execute: ref.read(accountViewModel.notifier).restore,
       onSuccess: (_) async => await AppDialog.onlyOk(message: RSStrings.accountStatusRestoreDialogSuccessMessage).show(context),
       onError: (errMsg) async => await AppDialog.onlyOk(message: errMsg).show(context),
     );
@@ -282,7 +287,7 @@ class _SignInButton extends ConsumerWidget {
     const progressDialog = AppProgressDialog<void>();
     await progressDialog.show(
       context,
-      execute: ref.read(accountViewModelProvider).signIn,
+      execute: ref.read(accountViewModel.notifier).signIn,
       onSuccess: (_) {/* 成功時は何もしない */},
       onError: (errMsg) async => await AppDialog.onlyOk(message: errMsg).show(context),
     );
@@ -315,7 +320,7 @@ class _SignOutButton extends ConsumerWidget {
     const progressDialog = AppProgressDialog<void>();
     await progressDialog.show(
       context,
-      execute: ref.read(accountViewModelProvider).signOut,
+      execute: ref.read(accountViewModel.notifier).signOut,
       onSuccess: (_) {/* 成功時は何もしない */},
       onError: (errMsg) async => await AppDialog.onlyOk(message: errMsg).show(context),
     );
