@@ -26,7 +26,12 @@ DIとして使っている箇所は全て`ref.read`で`Provider`同士を参照�
 この問題は`character_detail_view_model.dart`がわかりやすいと思いますが、できることなら`ViewModel`で持っている`_character`や`_stage`は`Provider`にしたいと思っています。
 現在の緩いMVVM設計は私が分かりやすいので基本は1画面1ViewModel(`ChangeNotiferProvider`)でいきたいと思っていますが、上記のような疑問が出るのはそもそも`Riverpod`を理解していない可能性も大きいので、どういう作りがベストなのかは模索中です。  
 →Viewと同じライフサイクルで状態と振る舞いをもつ担当が欲しいので1画面1ViewModelは維持したいですが`ChangeNotiferProvider`は`notifyListeners`を使うのが良くないのでuiStateにだけ使う、という方針にしてました。が、これ`AsyncValue`で同じことをやればいいのではとなっています。AsyncValueなら上の「迷っているところ」に書いた1も`family`を使えば解決するので今のところの最適解です。  
-というわけでリファクタリング中です。
+というわけでリファクタリング中です。  
+
+##　2022年5月現在、の個人的な最適解
+ViewModelは`StateNotiferProvider`にする。詳細画面などページ間遷移で引き継いできた場合は`overrideWithProvider`を使って初期値を入れる。  
+`ViewModel`は不変な値とビジネスロジックのみ。可変の値は`UiState`として`StateNotiferProvider`で定義する。UiStateはprivateでファイル外には公開しない。  
+UiStateのそれぞれの値をwatchしたProviderを用意し、View側はそれをwatchする。
 
 # Firebaseについて
 Firebaseで利用しているサービスは次の通りです。

@@ -73,8 +73,6 @@ class Character {
 
   List<WeaponCategory> get weaponCategories => weapons.map((e) => e.category).toList();
 
-  Style? get selectedStyle => styles.firstWhereOrNull((style) => style.rank == selectedStyleRank);
-
   List<String> get allRank => styles.map((style) => style.rank).toList()..sort((s, t) => s.compareTo(t));
 
   bool get favorite => myStatus?.favorite ?? false;

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/models/character.dart';
-import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
@@ -154,7 +153,7 @@ class _ViewSelectStyleIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final iconFilePath = ref.watch(characterDetailSelectStyleStateProvider)!.iconFilePath;
+    final iconFilePath = ref.watch(characterDetailSelectStyleStateProvider).iconFilePath;
 
     return GestureDetector(
       child: CharacterIcon.large(iconFilePath),
@@ -196,7 +195,7 @@ class _ViewSelectStyleTitle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Text(
-      ref.watch(characterDetailSelectStyleStateProvider)!.title,
+      ref.watch(characterDetailSelectStyleStateProvider).title,
       style: Theme.of(context).textTheme.caption,
     );
   }
@@ -259,7 +258,7 @@ class _ViewStyleChips extends ConsumerWidget {
       children: <Widget>[
         RankChoiceChip(
           ranks: ref.watch(characterDetailViewModel.notifier).allRank,
-          initSelectedRank: ref.watch(characterDetailSelectStyleStateProvider)!.rank,
+          initSelectedRank: ref.watch(characterDetailSelectStyleStateProvider).rank,
           onSelectedListener: (rank) {
             ref.read(characterDetailViewModel.notifier).onSelectRank(rank);
           },
@@ -310,7 +309,7 @@ class _ViewTotalStatusCircleGraph extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedStyleSum = ref.watch(characterDetailSelectStyleStateProvider)!.sum();
+    final selectedStyleSum = ref.watch(characterDetailSelectStyleStateProvider).sum();
     final statusLimit = ref.watch(characterDetailViewModel.notifier).statusLimit;
 
     return TotalStatusCircleGraph(
@@ -420,7 +419,7 @@ class _ViewEachStatusGraph extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final myStatus = ref.watch(characterDetailMyStatusStateProvider);
-    final selectStyle = ref.watch(characterDetailSelectStyleStateProvider)!;
+    final selectStyle = ref.watch(characterDetailSelectStyleStateProvider);
     final limit = ref.watch(characterDetailViewModel.notifier).statusLimit;
 
     return Column(
@@ -466,7 +465,7 @@ class _ViewEditStatusFab extends ConsumerWidget {
         final isSaved = await StatusEditPage.start(context, myStatus);
         if (isSaved) {
           RSLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
-          await ref.read(characterDetailViewModel.notifier).refreshStatus();
+          await ref.read(characterDetailViewModel.notifier).refreshMyStatus();
         }
       },
     );
