@@ -3,18 +3,10 @@ Flutter学習用として定期的にいじっているロマサガRSのステ�
 アイコンは著作権があるのでGit管理対象にはしていません。
 
 # 設計
-自分がAndroidアプリ開発に慣れていることもありAACのMVVMをベースにしています。  
-状態管理は`Riverpod`を使用しています。`hooks`は使っていません。  
-`hooks`は当初HookWidgetを`extends`するのが嫌だったので使ってなかったのですが、`Riverpodv1.0.0`で`ConsumerWidget`を`extends`しないといけなくなったのでこの理由は無くなりました。ただ、`hooks`も`useProvider`がなくなって書き方が同じようになったので、使用するかどうかはまだ決めかねています。  
-
-## Riverpodの使い方
-2022年4月現在、まだ使い方は試行錯誤中です。  
-DIとして使っている箇所は全て`ref.read`で`Provider`同士を参照しています。これは公式のMarvelアプリでも同じようにしていたので問題ないと思います。
-`View`レイヤーでの使い方については、以前の作りだと各Pageの一番上で`uiState`を`watch`してしまっているのと`ViewModel`に状態を持ってしまっているので`read`と`watch`の利用区分けは意味をなしていませんでした。そのためWidgetが`watch`するデータは基本`StateProvider`か`StateNotifierProvider`に切り出しました。  
-
-## 迷っているところ
-前Pageから引き継ぐデータをどうするか迷っており、現在は`ViewModel`に`init`メソッドをつけて`ViewModel`のフィールドとして持っています。  
-ほとんどの場合、そういった前画面から受け取ったデータをもとにしたものを`Provider`で状態管理したいのですがその場合の設計で以下の３パターン思いつきました。
+自分がAndroidアプリ開発に慣れていることもありAACのMVVMをベースにしていて、データ取得層は`Repository`パターンを採用しています。  
+基本、クラスは`Riverpod`でDIをしており`ref.read`で`Provider`同士を参照しています。  
+`View`レイヤーは、以前の作りだと各Pageの一番上で`uiState`を`watch`してしまっているのと`ViewModel`に状態を持ってしまっているので`read`と`watch`の利用区分けは意味をなしていませんでした。そのためWidgetが`watch`するデータは基本`StateProvider`か`StateNotifierProvider`に切り出しました。  
+また、前Pageから引き継ぐデータをどう持つか悩んでいて３パターン思いついていました。
 1. 引き継いだデータを`Provider`で持つ
    1. この場合、ページに遷移してきた際に100%データが存在するにもかかわらず定義する`Provider`の型はnull許容しないといけないのでいちいち!をつけるのが嫌だなと思いました。
 2. 引き継いだデータを`ViewModel`で持つ
@@ -23,15 +15,9 @@ DIとして使っている箇所は全て`ref.read`で`Provider`同士を参照�
    1. Page間やりとりも全部`Provider`でやればいいのでは？と思ったのですが、ページ遷移する際に「AとBの`Provider`に結果を入れてく必要がある」といちいち遷移時に考えないといけなくなるのはすごく嫌だなと思いました。
    2. これをやるなら全てのデータを`Provider`でやり取りするのがいいと思いますが（全ての`Provider`が相互作用すればページ遷移する際にXXの`Provider`に値が入っていない、というミスは無くなるのかなと）これをそのままやるとView層を巻き込んで`Provider`が複雑に絡み合ってしまうと思って躊躇しています。もしやるならPageごとに`Provider`を束ねる`Provider`を作るのが望ましいと思いましたがその場合はUI層の再検討が必要でした。
 
-この問題は`character_detail_view_model.dart`がわかりやすいと思いますが、できることなら`ViewModel`で持っている`_character`や`_stage`は`Provider`にしたいと思っています。
-現在の緩いMVVM設計は私が分かりやすいので基本は1画面1ViewModel(`ChangeNotiferProvider`)でいきたいと思っていますが、上記のような疑問が出るのはそもそも`Riverpod`を理解していない可能性も大きいので、どういう作りがベストなのかは模索中です。  
-→Viewと同じライフサイクルで状態と振る舞いをもつ担当が欲しいので1画面1ViewModelは維持したいですが`ChangeNotiferProvider`は`notifyListeners`を使うのが良くないのでuiStateにだけ使う、という方針にしてました。が、これ`AsyncValue`で同じことをやればいいのではとなっています。AsyncValueなら上の「迷っているところ」に書いた1も`family`を使えば解決するので今のところの最適解です。  
-というわけでリファクタリング中です。  
-
-##　2022年5月現在、の個人的な最適解
-ViewModelは`StateNotiferProvider`にする。詳細画面などページ間遷移で引き継いできた場合は`overrideWithProvider`を使って初期値を入れる。  
-`ViewModel`は不変な値とビジネスロジックのみ。可変の値は`UiState`として`StateNotiferProvider`で定義する。UiStateはprivateでファイル外には公開しない。  
-UiStateのそれぞれの値をwatchしたProviderを用意し、View側はそれをwatchする。
+現在は上記1でnull許容せずに`overrideWithProvider`を使って初期値を入れる方法をとっています。  
+`ViewModel`は不変な値とビジネスロジックのみとし、可変の値は`UiState`として`StateNotiferProvider`で定義しています。  
+UiStateのそれぞれの値をwatchしたProviderを用意しView側はそれをwatchするのみという設計で今のところ落ち着きました。  
 
 # Firebaseについて
 Firebaseで利用しているサービスは次の通りです。

@@ -14,7 +14,7 @@ class NotePage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text(RSStrings.notePageTitle),
       ),
-      body: ref.watch(noteStateProvider).when(
+      body: ref.watch(noteViewModel).when(
             data: (note) {
               return Padding(
                 padding: const EdgeInsets.all(16),
@@ -33,7 +33,12 @@ class NotePage extends ConsumerWidget {
               );
             },
             error: (err, _) => OnViewLoading(errorMessage: '$err'),
-            loading: () => const OnViewLoading(),
+            loading: () {
+              Future<void>.delayed(Duration.zero).then((_) {
+                ref.read(noteViewModel.notifier).init();
+              });
+              return const OnViewLoading();
+            },
           ),
     );
   }

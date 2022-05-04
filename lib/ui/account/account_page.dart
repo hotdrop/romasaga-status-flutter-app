@@ -36,7 +36,7 @@ class AccountPage extends ConsumerWidget {
   }
 
   Widget _onSuccess(BuildContext context, WidgetRef ref) {
-    final loggedIn = ref.watch(accountIsLoggedInStateProvider);
+    final loggedIn = ref.watch(accountIsLoginProvider);
 
     return ListView(
       children: <Widget>[
@@ -75,8 +75,8 @@ class _RowAccountInfo extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       leading: Icon(Icons.account_circle, size: iconSize),
-      title: Text(ref.watch(accountUserNameStateProvider)),
-      subtitle: Text(ref.watch(accountEmailStateProvider)),
+      title: Text(ref.watch(accountUserNameProvider)),
+      subtitle: Text(ref.watch(accountEmailProvider)),
     );
   }
 }
@@ -99,7 +99,7 @@ class _RowAppLicense extends ConsumerWidget {
         showLicensePage(
           context: context,
           applicationName: RSStrings.appTitle,
-          applicationVersion: ref.read(accountViewModel.notifier).appVersion,
+          applicationVersion: ref.read(accountAppVersionProvider),
           applicationIcon: Image.asset(RSImages.icLaunch, width: 50, height: 50),
         );
       },
@@ -179,7 +179,7 @@ class _RowEditStage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentStage = ref.watch(accountStageStateProvider);
+    final currentStage = ref.watch(accountStageProvider);
 
     return ListTile(
       leading: Icon(Icons.maps_home_work, size: iconSize),
