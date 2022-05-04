@@ -4,13 +4,22 @@ Flutter学習用として定期的にいじっているロマサガRSのステ�
 
 # 設計について
 私がAndroidアプリ開発に慣れていることもありAACのMVVMをベースにしています。データ取得層は`Repository`パターンを採用しています。  
-`ViewModel`は画面起動時の`StateNotifierProvider`、UiStateを保持する`StateNotifierProvider`の2つを持っています。分けている理由はいくつかありますが、一番は`ViewModel`をViewのライフサイクルに合わせたいためです。ただ、2つ持つと明らかに過剰になるケース（簡素な画面など）は1つにまとめています。  
-詳細画面など前ページから渡されたデータを元にさらにデータを取得するようなケースでは、`family`と`overrideWithProvider`を組み合わせてnull許容しないようにしました。  
-UiStateは画面データを保持しており、その`StateNotifierProvider`は外部に公開しないようにします。ViewでwatchするProviderは別に定義しUiStateの値をそれぞれ`select`しています。  
-ViewはUiStateをwatchしている別のProvderをwatchし、UiStateは必ず`ViewModel`を経由して更新する、という設計にしました。
-`ViewModel`はビジネスロジックと`family`で取得したデータのうち「Providerに切り出す必要はないがUiStateの更新に必要な不変な値（例えばキャラのIDや作品情報）」は持ってもいいかなと思ったので持っています。
-ただ、ビジネスロジックについては`UiState`の方の`StateNotifierProvider`で書いた方が自然な場合もあって迷っています。一応集約した方が保守性が上がるかなと思って現在はなるべく`ViewModel`に書くようにしています。  
-今のところこのような設計で落ち着きましたがまだ試行錯誤中です。  
+
+`ViewModel`は大きく画面起動時の`StateNotifierProvider`と、UiStateを保持する`StateNotifierProvider`の2つで構成しています。  
+(ただ、これだと明らかに過剰になる簡素な画面では1つにまとめています。)
+
+画面起動時の`StateNotifierProvider`は`ViewModel`本体としてビジネスロジックとスコープ内の一部の不変値を持つようにしています。  
+スコープ内の一部の不変値というのは`family`で取得したデータのうち「Providerに切り出す必要はないがUiStateの更新に必要な不変な値（例えばキャラのIDや作品情報）」を指しています。  
+これらの値は`ViewModel`で持っていた方が楽だったので持っていますが、私も設計の試行錯誤中なのでここで持つべきかは議論の余地があると思います。  
+詳細画面など前ページから渡されたデータを元にさらにデータを取得するようなケースでは`family`と`overrideWithProvider`を組み合わせてnull許容しないようにしました。  
+また、`ViewModel`はViewのライフサイクルと同様にするため`autoDispose`を必ずつけています。  
+
+UiStateを保持する`StateNotifierProvider`はそのまま画面の状態を保持します。  
+この`StateNotifierProvider`は外部に公開せずViewでwatchするProviderは別に定義してUiStateの値をそれぞれ`select`し「UiStateは必ず`ViewModel`を経由して更新する」という設計にしました。
+
+ビジネスロジックについては`UiState`の方の`StateNotifierProvider`で書いた方が自然な場合もあって迷っています。一応集約した方が保守性が上がるかなと思って現在はなるべく`ViewModel`に書くようにしています。  
+
+今のところこのような設計で落ち着きました。  
 
 # Firebaseについて
 Firebaseで利用しているサービスは次の通りです。
