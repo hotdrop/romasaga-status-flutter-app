@@ -64,7 +64,7 @@ class RSStrings {
   // アカウント画面
   static const String accountPageTitle = 'アカウント';
   static const String accountNotSignInLabel = '未ログイン';
-  static const String accountNotNameLabel = 'ー';
+  static const String accountNotSignInNameLabel = 'ー';
   static const String accountChangeThemeLabel = 'テーマの切り替え';
   static const String accountLicenseLabel = 'バージョンとライセンス';
   static const String accountSignInButton = 'Googleアカウントでサインインする';

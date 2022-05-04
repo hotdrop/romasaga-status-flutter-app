@@ -3,7 +3,7 @@ description: Romancing Saga RS Status Management application.
 
 publish_to: 'none'
 
-version: 2.2.0+17
+version: 2.2.1+18
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

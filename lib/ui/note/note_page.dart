@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/note/note_view_model.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class NotePage extends ConsumerWidget {
   const NotePage({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class NotePage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text(RSStrings.notePageTitle),
       ),
-      body: ref.watch(noteStateProvider).when(
+      body: ref.watch(noteViewModel).when(
             data: (note) {
               return Padding(
                 padding: const EdgeInsets.all(16),
@@ -33,7 +33,12 @@ class NotePage extends ConsumerWidget {
               );
             },
             error: (err, _) => OnViewLoading(errorMessage: '$err'),
-            loading: () => const OnViewLoading(),
+            loading: () {
+              Future<void>.delayed(Duration.zero).then((_) {
+                ref.read(noteViewModel.notifier).init();
+              });
+              return const OnViewLoading();
+            },
           ),
     );
   }

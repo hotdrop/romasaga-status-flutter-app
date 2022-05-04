@@ -8,7 +8,7 @@ import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:collection/collection.dart';
 
-final characterNotifierProvider = StateNotifierProvider<_CharacterNotifier, List<Character>>((ref) {
+final characterSNProvider = StateNotifierProvider<_CharacterNotifier, List<Character>>((ref) {
   return _CharacterNotifier(ref.read);
 });
 
@@ -18,7 +18,7 @@ class _CharacterNotifier extends StateNotifier<List<Character>> {
   final Reader _read;
 
   Future<void> refresh() async {
-    RSLogger.d('StateNotifierで保持しているキャラ情報を更新します。');
+    RSLogger.d('保持しているキャラ情報を更新します。');
     final characters = await _read(characterRepositoryProvider).findAll();
     final myStatuses = await _read(myStatusRepositoryProvider).findAll();
     state = await _merge(characters, myStatuses);
@@ -73,7 +73,7 @@ class Character {
 
   List<WeaponCategory> get weaponCategories => weapons.map((e) => e.category).toList();
 
-  Style? get selectedStyle => styles.firstWhereOrNull((style) => style.rank == selectedStyleRank);
+  List<String> get allRank => styles.map((style) => style.rank).toList()..sort((s, t) => s.compareTo(t));
 
   bool get favorite => myStatus?.favorite ?? false;
   bool get useHighLevel => myStatus?.useHighLevel ?? false;
@@ -119,6 +119,7 @@ class Character {
     String? selectedStyleRank,
     String? selectedIconFilePath,
     MyStatus? myStatus,
+    List<Style>? styles,
     bool? favorite,
     bool? statusUpEvent,
     bool? highLevel,
@@ -142,7 +143,9 @@ class Character {
       statusUpEvent: statusUpEvent ?? this.statusUpEvent,
       myStatus: newStatus,
     );
-    newCharacter.addAllStyle(styles);
+
+    newCharacter.addAllStyle(styles ?? this.styles);
+
     return newCharacter;
   }
 }

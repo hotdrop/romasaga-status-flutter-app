@@ -133,6 +133,7 @@ class _CharacterRepository {
   }
 
   Future<void> refreshIcon(Style style, bool isSelected) async {
+    RSLogger.d('アイコンをサーバーから再取得します。（このアイコンをデフォルトにしているか？ $isSelected)');
     final newIconFilePath = await _read(characterApiProvider).findIconUrl(style.iconFileName);
     RSLogger.d('新しいアイコンパス $newIconFilePath');
     await _read(characterDaoProvider).updateStyleIcon(style.characterId, style.rank, newIconFilePath);

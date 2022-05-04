@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/letter.dart';
 import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/information/letter/letter_row_item.dart';
 import 'package:rsapp/ui/information/letter/letter_view_model.dart';
 import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class LetterPage extends ConsumerWidget {
   const LetterPage._();

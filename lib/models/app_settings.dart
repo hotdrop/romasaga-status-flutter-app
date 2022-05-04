@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/app_setting_repository.dart';
 import 'package:rsapp/data/local/local_data_source.dart';
+import 'package:rsapp/models/character.dart';
 import 'package:rsapp/service/rs_service.dart';
 
 final appSettingsProvider = StateNotifierProvider<_AppSettingsNotifier, AppSettings>((ref) => _AppSettingsNotifier(ref.read));
@@ -82,3 +83,29 @@ class AppSettings {
 }
 
 enum CharacterListOrderType { status, hp, production }
+
+extension Characters on List<Character> {
+  List<Character> order(CharacterListOrderType orderType) {
+    final newList = this;
+    switch (orderType) {
+      case CharacterListOrderType.hp:
+        newList.sort((c1, c2) {
+          final t = c2.myStatus?.hp ?? 0;
+          final v = c1.myStatus?.hp ?? 0;
+          return t.compareTo(v);
+        });
+        break;
+      case CharacterListOrderType.production:
+        newList.sort((c1, c2) => c1.id.compareTo(c2.id));
+        break;
+      case CharacterListOrderType.status:
+        newList.sort((c1, c2) {
+          final t = c2.myStatus?.sumWithoutHp() ?? 0;
+          final v = c1.myStatus?.sumWithoutHp() ?? 0;
+          return t.compareTo(v);
+        });
+        break;
+    }
+    return newList;
+  }
+}

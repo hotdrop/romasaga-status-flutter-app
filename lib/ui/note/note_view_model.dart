@@ -1,23 +1,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/note_repository.dart';
 
-final noteStateProvider = StateNotifierProvider.autoDispose<_NoteStateNotifier, AsyncValue<String>>((ref) {
-  return _NoteStateNotifier(ref.read);
+final noteViewModel = StateNotifierProvider.autoDispose<_NoteViewModelNotifier, AsyncValue<void>>((ref) {
+  return _NoteViewModelNotifier(ref.read);
 });
 
-class _NoteStateNotifier extends StateNotifier<AsyncValue<String>> {
-  _NoteStateNotifier(this._read) : super(const AsyncValue.loading()) {
-    _init();
-  }
+class _NoteViewModelNotifier extends StateNotifier<AsyncValue<void>> {
+  _NoteViewModelNotifier(this._read) : super(const AsyncValue.loading());
 
   final Reader _read;
 
-  Future<void> _init() async {
+  Future<void> init() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final note = await _read(noteRepositoryProvider).find();
-      _read(noteInputStateProvider.notifier).state = note;
-      return note;
+      _read(noteInputStateProvider.notifier).state = await _read(noteRepositoryProvider).find();
     });
   }
 

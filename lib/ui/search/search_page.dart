@@ -7,37 +7,40 @@ import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/production.dart';
 import 'package:rsapp/models/weapon.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/search/search_view_model.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class SearchPage extends ConsumerWidget {
   const SearchPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final uiState = ref.watch(searchViewModelProvider).uiState;
-    return uiState.when(
-      loading: (errMsg) {
-        return OnViewLoading(errorMessage: errMsg);
-      },
-      success: () {
-        return Scaffold(
-          appBar: AppBar(
-            title: const _ViewHeaderTitle(),
-            actions: const [
-              _ViewHeaderIconSearchWord(),
-            ],
-          ),
-          body: const _ViewCharacters(),
-          floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.filter_list),
-            onPressed: () => _onPressFab(context),
-          ),
+    return ref.watch(searchViewModel).when(
+          data: (_) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const _ViewHeaderTitle(),
+                actions: const [
+                  _ViewHeaderIconSearchWord(),
+                ],
+              ),
+              body: const _ViewCharacters(),
+              floatingActionButton: FloatingActionButton(
+                child: const Icon(Icons.filter_list),
+                onPressed: () => _onPressFab(context),
+              ),
+            );
+          },
+          error: (err, _) => OnViewLoading(errorMessage: '$err'),
+          loading: () {
+            Future<void>.delayed(Duration.zero).then((_) {
+              ref.read(searchViewModel.notifier).init();
+            });
+            return const OnViewLoading();
+          },
         );
-      },
-    );
   }
 
   void _onPressFab(BuildContext context) {
@@ -54,7 +57,7 @@ class _ViewHeaderTitle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isKeywordSearch = ref.watch(searchViewModelProvider).isKeywordSearch;
+    final isKeywordSearch = ref.watch(searchIsKeyword);
     if (!isKeywordSearch) {
       return const Text(RSStrings.searchPageTitle);
     }
@@ -64,7 +67,7 @@ class _ViewHeaderTitle extends ConsumerWidget {
         prefixIcon: Icon(Icons.search),
         hintText: RSStrings.searchListQueryHint,
       ),
-      onSubmitted: (v) => ref.read(searchViewModelProvider).findByKeyword(v),
+      onSubmitted: (v) => ref.read(searchViewModel.notifier).findByKeyword(v),
     );
   }
 }
@@ -74,12 +77,12 @@ class _ViewHeaderIconSearchWord extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isKeywordSearch = ref.watch(searchViewModelProvider).isKeywordSearch;
+    final isKeywordSearch = ref.watch(searchIsKeyword);
 
     return IconButton(
       icon: isKeywordSearch ? const Icon(Icons.close) : const Icon(Icons.search),
       onPressed: () {
-        ref.read(searchViewModelProvider).changeSearchMode();
+        ref.read(searchViewModel.notifier).changeSearchMode();
       },
     );
   }
@@ -90,7 +93,7 @@ class _ViewCharacters extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final characters = ref.watch(searchViewModelProvider).charactersWithFilter;
+    final characters = ref.watch(searchCharacterProvider);
 
     if (characters.isEmpty) {
       return const Center(
@@ -104,7 +107,7 @@ class _ViewCharacters extends ConsumerWidget {
       itemCount: characters.length,
       itemBuilder: (_, index) {
         return RowCharacterItem(characters[index], refreshListener: () async {
-          await ref.read(characterNotifierProvider.notifier).refresh();
+          await ref.read(characterSNProvider.notifier).refresh();
         });
       },
     );
@@ -158,11 +161,11 @@ class _ViewFilterKind extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CategoryIcons(
-      isFavSelected: ref.watch(searchViewModelProvider).isFilterFavorite,
-      isHighLevelSelected: ref.watch(searchViewModelProvider).isFilterHighLevel,
-      isAroundSelected: ref.watch(searchViewModelProvider).isFilterAround,
+      isFavSelected: ref.read(searchFilterFavorite),
+      isHighLevelSelected: ref.read(searchFilterUseHighLebel),
+      isAroundSelected: ref.read(searchFilterUseAround),
       onTap: (bool fav, bool high, bool around) {
-        ref.read(searchViewModelProvider).filterCategory(favorite: fav, highLevel: high, around: around);
+        ref.read(searchViewModel.notifier).filterCategory(favorite: fav, highLevel: high, around: around);
       },
     );
   }
@@ -179,9 +182,9 @@ class _ViewFilterWeaponType extends ConsumerWidget {
       children: WeaponType.values.map<Widget>((type) {
         return WeaponIcon.normal(
           type,
-          selected: ref.read(searchViewModelProvider).isSelectWeaponType(type),
+          selected: ref.watch(searchFilterWeaponType) == type,
           onTap: () {
-            ref.read(searchViewModelProvider).findByWeaponType(type);
+            ref.read(searchViewModel.notifier).findByWeaponType(type);
             Navigator.pop(context);
           },
         );
@@ -198,7 +201,7 @@ class _ViewFilterWeaponClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearWeapon),
       onPressed: () {
-        ref.read(searchViewModelProvider).clearFilterWeapon();
+        ref.read(searchViewModel.notifier).clearFilterWeapon();
         Navigator.pop(context);
       },
     );
@@ -216,9 +219,9 @@ class _ViewFilterAttributes extends ConsumerWidget {
       children: AttributeType.values.map<Widget>((type) {
         return AttributeIcon(
           type: type,
-          selected: ref.read(searchViewModelProvider).isSelectAttributeType(type),
+          selected: ref.watch(searchFilterAttributeType) == type,
           onTap: () {
-            ref.read(searchViewModelProvider).findByAttributeType(type);
+            ref.read(searchViewModel.notifier).findByAttributeType(type);
             Navigator.pop(context);
           },
         );
@@ -235,7 +238,7 @@ class _ViewFilterAttributeClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearAttributes),
       onPressed: () {
-        ref.read(searchViewModelProvider).clearFilterAttribute();
+        ref.read(searchViewModel.notifier).clearFilterAttribute();
         Navigator.pop(context);
       },
     );
@@ -253,9 +256,9 @@ class _ViewFilterProduct extends ConsumerWidget {
       children: ProductionType.values.map<Widget>((type) {
         return ProductionLogo(
           type: type,
-          selected: ref.read(searchViewModelProvider).isSelectProductType(type),
+          selected: ref.watch(searchFilterProductionType) == type,
           onTap: () {
-            ref.read(searchViewModelProvider).findByProduction(type);
+            ref.read(searchViewModel.notifier).findByProduction(type);
             Navigator.pop(context);
           },
         );
@@ -272,7 +275,7 @@ class _ViewFilterProductionClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearProduction),
       onPressed: () {
-        ref.read(searchViewModelProvider).clearFilterProduction();
+        ref.read(searchViewModel.notifier).clearFilterProduction();
         Navigator.pop(context);
       },
     );
