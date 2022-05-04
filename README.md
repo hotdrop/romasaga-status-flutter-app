@@ -2,22 +2,15 @@
 Flutter学習用として定期的にいじっているロマサガRSのステータス管理用アプリです。
 アイコンは著作権があるのでGit管理対象にはしていません。
 
-# 設計
-自分がAndroidアプリ開発に慣れていることもありAACのMVVMをベースにしていて、データ取得層は`Repository`パターンを採用しています。  
-基本、クラスは`Riverpod`でDIをしており`ref.read`で`Provider`同士を参照しています。  
-`View`レイヤーは、以前の作りだと各Pageの一番上で`uiState`を`watch`してしまっているのと`ViewModel`に状態を持ってしまっているので`read`と`watch`の利用区分けは意味をなしていませんでした。そのためWidgetが`watch`するデータは基本`StateProvider`か`StateNotifierProvider`に切り出しました。  
-また、前Pageから引き継ぐデータをどう持つか悩んでいて３パターン思いついていました。
-1. 引き継いだデータを`Provider`で持つ
-   1. この場合、ページに遷移してきた際に100%データが存在するにもかかわらず定義する`Provider`の型はnull許容しないといけないのでいちいち!をつけるのが嫌だなと思いました。
-2. 引き継いだデータを`ViewModel`で持つ
-   1. 現在これでコード書いてます。ただ、この方法だと各`Provider`の値をいちいち`ViewModel`で初期設定しないといけないので嫌だなと思いました。本当は1のように1つの`Provider`に値を入れたら他の`Provider`は`watch`して勝手に最適なデータが流れてほしいです。
-3. 引き継ごうとするデータ自体を`Provider`にする
-   1. Page間やりとりも全部`Provider`でやればいいのでは？と思ったのですが、ページ遷移する際に「AとBの`Provider`に結果を入れてく必要がある」といちいち遷移時に考えないといけなくなるのはすごく嫌だなと思いました。
-   2. これをやるなら全てのデータを`Provider`でやり取りするのがいいと思いますが（全ての`Provider`が相互作用すればページ遷移する際にXXの`Provider`に値が入っていない、というミスは無くなるのかなと）これをそのままやるとView層を巻き込んで`Provider`が複雑に絡み合ってしまうと思って躊躇しています。もしやるならPageごとに`Provider`を束ねる`Provider`を作るのが望ましいと思いましたがその場合はUI層の再検討が必要でした。
-
-現在は上記1でnull許容せずに`overrideWithProvider`を使って初期値を入れる方法をとっています。  
-`ViewModel`は不変な値とビジネスロジックのみとし、可変の値は`UiState`として`StateNotiferProvider`で定義しています。  
-UiStateのそれぞれの値をwatchしたProviderを用意しView側はそれをwatchするのみという設計で今のところ落ち着きました。  
+# 設計について
+私がAndroidアプリ開発に慣れていることもありAACのMVVMをベースにしています。データ取得層は`Repository`パターンを採用しています。  
+`ViewModel`は画面起動時の`StateNotifierProvider`、UiStateを保持する`StateNotifierProvider`の2つを持っています。分けている理由はいくつかありますが、一番は`ViewModel`をViewのライフサイクルに合わせたいためです。ただ、2つ持つと明らかに過剰になるケース（簡素な画面など）は1つにまとめています。  
+詳細画面など前ページから渡されたデータを元にさらにデータを取得するようなケースでは、`family`と`overrideWithProvider`を組み合わせてnull許容しないようにしました。  
+UiStateは画面データを保持しており、その`StateNotifierProvider`は外部に公開しないようにします。ViewでwatchするProviderは別に定義しUiStateの値をそれぞれ`select`しています。  
+ViewはUiStateをwatchしている別のProvderをwatchし、UiStateは必ず`ViewModel`を経由して更新する、という設計にしました。
+`ViewModel`はビジネスロジックと`family`で取得したデータのうち「Providerに切り出す必要はないがUiStateの更新に必要な不変な値（例えばキャラのIDや作品情報）」は持ってもいいかなと思ったので持っています。
+ただ、ビジネスロジックについては`UiState`の方の`StateNotifierProvider`で書いた方が自然な場合もあって迷っています。一応集約した方が保守性が上がるかなと思って現在はなるべく`ViewModel`に書くようにしています。  
+今のところこのような設計で落ち着きましたがまだ試行錯誤中です。  
 
 # Firebaseについて
 Firebaseで利用しているサービスは次の通りです。

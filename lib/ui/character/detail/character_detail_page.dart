@@ -5,7 +5,6 @@ import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/character/detail/character_detail_view_model.dart';
 import 'package:rsapp/ui/character/detail/status_table.dart';
 import 'package:rsapp/ui/character/edit/status_edit_page.dart';
@@ -15,6 +14,7 @@ import 'package:rsapp/ui/widget/rs_icon.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 import 'package:rsapp/ui/widget/status_graph.dart';
 import 'package:rsapp/ui/widget/app_line.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class CharacterDetailPage extends ConsumerWidget {
   const CharacterDetailPage._(this.character);

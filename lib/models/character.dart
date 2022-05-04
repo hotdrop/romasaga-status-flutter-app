@@ -8,7 +8,7 @@ import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:collection/collection.dart';
 
-final characterNotifierProvider = StateNotifierProvider<_CharacterNotifier, List<Character>>((ref) {
+final characterSNProvider = StateNotifierProvider<_CharacterNotifier, List<Character>>((ref) {
   return _CharacterNotifier(ref.read);
 });
 

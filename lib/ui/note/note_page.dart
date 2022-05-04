@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/note/note_view_model.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class NotePage extends ConsumerWidget {
   const NotePage({Key? key}) : super(key: key);

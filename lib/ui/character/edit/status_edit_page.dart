@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/status.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/character/edit/row_status_counter.dart';
 import 'package:rsapp/ui/character/edit/status_edit_view_model.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class StatusEditPage extends ConsumerWidget {
   const StatusEditPage._(this.myStatus);

@@ -187,9 +187,7 @@ class _UiState {
 }
 
 // キャラ自身のステータス
-final characterDetailMyStatusStateProvider = Provider<MyStatus?>((ref) {
-  return ref.watch(_uiStateProvider.select((v) => v.myStatus));
-});
+final characterDetailMyStatusStateProvider = Provider<MyStatus?>((ref) => ref.watch(_uiStateProvider.select((v) => v.myStatus)));
 
 // 現在選択しているスタイル
 final characterDetailSelectStyleStateProvider = Provider<Style>((ref) {
@@ -199,19 +197,13 @@ final characterDetailSelectStyleStateProvider = Provider<Style>((ref) {
 });
 
 // キャラのイベントフラグ
-final characterDetailStatusUpEventStateProvider = Provider<bool>((ref) {
-  return ref.watch(_uiStateProvider.select((v) => v.statusUpEvent));
-});
+final characterDetailStatusUpEventStateProvider = Provider<bool>((ref) => ref.watch(_uiStateProvider.select((v) => v.statusUpEvent)));
 
 // キャラの難易度/周回フラグ
-final characterDetailHighLevelStateProvider = Provider<bool>((ref) {
-  return ref.watch(_uiStateProvider.select((v) => v.useHighLevel));
-});
+final characterDetailHighLevelStateProvider = Provider<bool>((ref) => ref.watch(_uiStateProvider.select((v) => v.useHighLevel)));
 
 // キャラのお気に入りフラグ
-final characterDetailFavoriteStateProvider = Provider<bool>((ref) {
-  return ref.watch(_uiStateProvider.select((v) => v.favorite));
-});
+final characterDetailFavoriteStateProvider = Provider<bool>((ref) => ref.watch(_uiStateProvider.select((v) => v.favorite)));
 
 // 詳細画面で更新した情報を一覧に反映したい場合はこれをtrueにする。
 final characterDetailIsUpdateStatus = StateProvider((ref) => false);

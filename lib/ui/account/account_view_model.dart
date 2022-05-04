@@ -37,7 +37,7 @@ class _AccountViewModel extends StateNotifier<AsyncValue<void>> {
 
   Future<void> refreshCharacters() async {
     await _read(characterRepositoryProvider).refresh();
-    await _read(characterNotifierProvider.notifier).refresh();
+    await _read(characterSNProvider.notifier).refresh();
   }
 
   Future<void> refreshStage() async {
@@ -158,26 +158,16 @@ class _UiState {
 final accountIsLoginProvider = StateProvider<bool>((ref) => false);
 
 // アプリのバージョン
-final accountAppVersionProvider = Provider<String>((ref) {
-  return ref.watch(_uiStateProvider.select((value) => value.appVersion));
-});
+final accountAppVersionProvider = Provider<String>((ref) => ref.watch(_uiStateProvider.select((value) => value.appVersion)));
 
 // ログインしているGoogleアカウント名
-final accountUserNameProvider = Provider<String>((ref) {
-  return ref.watch(_uiStateProvider.select((value) => value.loginUserName));
-});
+final accountUserNameProvider = Provider<String>((ref) => ref.watch(_uiStateProvider.select((value) => value.loginUserName)));
 
 // ログインしているGoogleアカウントのメアド
-final accountEmailProvider = Provider<String>((ref) {
-  return ref.watch(_uiStateProvider.select((value) => value.loginEmail));
-});
+final accountEmailProvider = Provider<String>((ref) => ref.watch(_uiStateProvider.select((value) => value.loginEmail)));
 
 // 最新のバックアップ日時の文字列表現
-final accountBackupDateLabel = Provider<String>((ref) {
-  return ref.watch(_uiStateProvider.select((value) => value.backupDate));
-});
+final accountBackupDateLabel = Provider<String>((ref) => ref.watch(_uiStateProvider.select((value) => value.backupDate)));
 
 // ステージ情報
-final accountStageProvider = Provider<Stage>((ref) {
-  return ref.watch(_uiStateProvider.select((value) => value.stage));
-});
+final accountStageProvider = Provider<Stage>((ref) => ref.watch(_uiStateProvider.select((value) => value.stage)));

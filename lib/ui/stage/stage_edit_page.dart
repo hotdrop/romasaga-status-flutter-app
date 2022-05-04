@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/stage/stage_edit_view_model.dart';
 import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class StageEditPage extends ConsumerWidget {
   const StageEditPage._();

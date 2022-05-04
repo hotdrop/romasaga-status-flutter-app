@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/character/characters_view_model.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class CharactersPage extends ConsumerWidget {
   const CharactersPage({Key? key}) : super(key: key);

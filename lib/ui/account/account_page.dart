@@ -4,12 +4,12 @@ import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/account/account_view_model.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 import 'package:rsapp/ui/stage/stage_edit_page.dart';
 import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/app_line.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class AccountPage extends ConsumerWidget {
   const AccountPage({Key? key}) : super(key: key);

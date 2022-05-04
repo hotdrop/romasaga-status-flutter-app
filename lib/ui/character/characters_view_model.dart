@@ -16,14 +16,14 @@ class _CharactersViewModel extends StateNotifier<AsyncValue<void>> {
   Future<void> _init() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      if (_read(characterNotifierProvider).isEmpty) {
-        await _read(characterNotifierProvider.notifier).refresh();
+      if (_read(characterSNProvider).isEmpty) {
+        await _read(characterSNProvider.notifier).refresh();
       }
     });
   }
 
   Future<void> refresh() async {
-    await _read(characterNotifierProvider.notifier).refresh();
+    await _read(characterSNProvider.notifier).refresh();
   }
 
   Future<void> selectOrder(CharacterListOrderType type) async {
@@ -33,35 +33,35 @@ class _CharactersViewModel extends StateNotifier<AsyncValue<void>> {
 
 // ステータス上昇（育成期間）キャラ一覧
 final charactersStatusUpStateProvider = Provider((ref) {
-  final c = ref.watch(characterNotifierProvider).where((c) => c.statusUpEvent).toList();
+  final c = ref.watch(characterSNProvider).where((c) => c.statusUpEvent).toList();
   final orderType = ref.watch(appSettingsProvider).characterListOrderType;
   return c.order(orderType);
 });
 
 // 高難易度キャラ一覧
 final charactersHighLevelStateProvider = Provider((ref) {
-  final c = ref.watch(characterNotifierProvider).where((c) => (c.myStatus?.favorite ?? false) && (c.myStatus?.useHighLevel ?? false)).toList();
+  final c = ref.watch(characterSNProvider).where((c) => (c.myStatus?.favorite ?? false) && (c.myStatus?.useHighLevel ?? false)).toList();
   final orderType = ref.watch(appSettingsProvider).characterListOrderType;
   return c.order(orderType);
 });
 
 // 周回キャラ一覧
 final charactersForRoundStateProvider = Provider((ref) {
-  final c = ref.watch(characterNotifierProvider).where((c) => (c.myStatus?.favorite ?? false) && !(c.myStatus?.useHighLevel ?? false)).toList();
+  final c = ref.watch(characterSNProvider).where((c) => (c.myStatus?.favorite ?? false) && !(c.myStatus?.useHighLevel ?? false)).toList();
   final orderType = ref.watch(appSettingsProvider).characterListOrderType;
   return c.order(orderType);
 });
 
 // お気に入りキャラ一覧
 final charactersFavoriteStateProvider = Provider((ref) {
-  final c = ref.watch(characterNotifierProvider).where((c) => c.myStatus?.favorite ?? false).toList();
+  final c = ref.watch(characterSNProvider).where((c) => c.myStatus?.favorite ?? false).toList();
   final orderType = ref.watch(appSettingsProvider).characterListOrderType;
   return c.order(orderType);
 });
 
 // お気に入りでないキャラ一覧
 final charactersNotFavoriteStateProvider = Provider((ref) {
-  final c = ref.watch(characterNotifierProvider).where((c) => !(c.myStatus?.favorite ?? false)).toList();
+  final c = ref.watch(characterSNProvider).where((c) => !(c.myStatus?.favorite ?? false)).toList();
   final orderType = ref.watch(appSettingsProvider).characterListOrderType;
   return c.order(orderType);
 });
