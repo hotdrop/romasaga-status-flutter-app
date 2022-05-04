@@ -1,116 +1,272 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/production.dart';
-import 'package:rsapp/models/search_condition.dart';
 import 'package:rsapp/models/weapon.dart';
-import 'package:rsapp/ui/base_view_model.dart';
 
-final searchViewModelProvider = ChangeNotifierProvider.autoDispose((ref) => _SearchViewModel(ref.read));
+final searchViewModel = StateNotifierProvider.autoDispose<_SearchViewModel, AsyncValue<void>>((ref) {
+  return _SearchViewModel(ref.read);
+});
 
-class _SearchViewModel extends BaseViewModel {
-  _SearchViewModel(this._read) {
-    _init();
-  }
+class _SearchViewModel extends StateNotifier<AsyncValue<void>> {
+  _SearchViewModel(this._read) : super(const AsyncValue.loading());
 
   final Reader _read;
 
-  late List<Character> _characters;
-  late List<Character> charactersWithFilter;
-
-  final _condition = SearchCondition();
-  bool isKeywordSearch = false;
-
-  Future<void> _init() async {
-    try {
-      await _read(characterNotifierProvider.notifier).refresh();
-      _characters = _read(characterNotifierProvider);
-      charactersWithFilter = _characters;
-      onSuccess();
-    } catch (e, s) {
-      await RSLogger.e('検索画面のロードに失敗しました。', e, s);
-      onError('$e');
-    }
+  Future<void> init() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await _read(characterSNProvider.notifier).refresh();
+      final characters = _read(characterSNProvider);
+      _read(_uiStateProvider.notifier).init(characters);
+    });
   }
 
   void changeSearchMode() {
-    if (isKeywordSearch) {
-      isKeywordSearch = false;
-      _condition.keyword = null;
-      _search();
-    } else {
-      isKeywordSearch = true;
-      // TODO notifyListenersは使わない
-      notifyListeners();
-    }
-  }
-
-  bool get isFilterFavorite => _condition.isFilterFavorite;
-  bool get isFilterHighLevel => _condition.isFilterHighLevel;
-  bool get isFilterAround => _condition.isFilterAround;
-
-  bool isSelectWeaponType(WeaponType type) {
-    return type == _condition.weaponType;
-  }
-
-  bool isSelectAttributeType(AttributeType type) {
-    return type == _condition.attributeType;
-  }
-
-  bool isSelectProductType(ProductionType type) {
-    return type == _condition.productionType;
+    _read(_uiStateProvider.notifier).switchSearchMode();
   }
 
   void findByKeyword(String word) {
-    _condition.keyword = word;
-    _search();
+    _read(_uiStateProvider.notifier).searchKeyword(word);
   }
 
   void filterCategory({required bool favorite, required bool highLevel, required bool around}) {
-    _condition.setFilterCategory(favorite: favorite, highLevel: highLevel, around: around);
+    _read(_uiStateProvider.notifier).setFilterCategory(isFavorite: favorite, isUseHighLevel: highLevel, isUseAround: around);
   }
 
   void findByWeaponType(WeaponType type) {
-    _condition.weaponType = type;
-    _search();
+    _read(_uiStateProvider.notifier).searchWeaponType(type);
   }
 
   void findByAttributeType(AttributeType type) {
-    _condition.attributeType = type;
-    _search();
+    _read(_uiStateProvider.notifier).searchAttributeType(type);
   }
 
   void findByProduction(ProductionType type) {
-    _condition.productionType = type;
-    _search();
+    _read(_uiStateProvider.notifier).searchProductionType(type);
   }
 
   void clearFilterWeapon() {
-    _condition.weaponType = null;
-    _search();
+    _read(_uiStateProvider.notifier).clearWeaponType();
   }
 
   void clearFilterAttribute() {
-    _condition.attributeType = null;
-    _search();
+    _read(_uiStateProvider.notifier).clearAttributeType();
   }
 
   void clearFilterProduction() {
-    _condition.productionType = null;
-    _search();
-  }
-
-  void _search() {
-    charactersWithFilter = _characters
-        .where((c) => _condition.filterWord(targetName: c.name, targetProduction: c.production))
-        .where((c) => _condition.filterCategory(c.myStatus?.favorite ?? false, c.myStatus?.useHighLevel ?? false))
-        .where((c) => _condition.filterWeaponType(c.weapons))
-        .where((e) => _condition.filterAttributesType(e.attributes))
-        .where((e) => _condition.filterProductionType(e.production))
-        .toList();
-    RSLogger.d('フィルター後のキャラ数=${charactersWithFilter.length}');
-    // TODO notifyListenersは使わない
-    notifyListeners();
+    _read(_uiStateProvider.notifier).clearProductionType();
   }
 }
+
+final _uiStateProvider = StateNotifierProvider<_UiStateNotifier, _UiState>((ref) {
+  return _UiStateNotifier(_UiState.empty());
+});
+
+class _UiStateNotifier extends StateNotifier<_UiState> {
+  _UiStateNotifier(_UiState state) : super(state);
+
+  void init(List<Character> characters) {
+    state = _UiState(isKeywordSearch: false);
+  }
+
+  void switchSearchMode() {
+    if (state.isKeywordSearch) {
+      state = state.copyWithClear(isKeywordSearch: false, keyword: true);
+    } else {
+      state = state.copyWith(isKeywordSearch: true);
+    }
+  }
+
+  void searchKeyword(String word) {
+    state = state.copyWith(keyword: word);
+  }
+
+  void setFilterCategory({required bool isFavorite, required bool isUseHighLevel, required bool isUseAround}) {
+    state = state.copyWith(isFavorite: isFavorite, isUseHighLevel: isUseHighLevel, isUseAround: isUseAround);
+  }
+
+  void searchWeaponType(WeaponType? type) {
+    state = state.copyWith(weaponType: type);
+  }
+
+  void searchAttributeType(AttributeType? type) {
+    state = state.copyWith(attributeType: type);
+  }
+
+  void searchProductionType(ProductionType? type) {
+    state = state.copyWith(productionType: type);
+  }
+
+  void clearWeaponType() {
+    state = state.copyWithClear(weaponType: true);
+  }
+
+  void clearAttributeType() {
+    state = state.copyWithClear(attributeType: true);
+  }
+
+  void clearProductionType() {
+    state = state.copyWithClear(productionType: true);
+  }
+}
+
+class _UiState {
+  _UiState({
+    required this.isKeywordSearch,
+    this.keyword,
+    this.weaponType,
+    this.attributeType,
+    this.productionType,
+    this.isFavorite = false,
+    this.isUseHighLevel = false,
+    this.isUseAround = false,
+  });
+
+  factory _UiState.empty() {
+    return _UiState(isKeywordSearch: false);
+  }
+
+  final bool isKeywordSearch;
+  final String? keyword;
+  final WeaponType? weaponType;
+  final AttributeType? attributeType;
+  final ProductionType? productionType;
+  final bool isFavorite;
+  final bool isUseHighLevel;
+  final bool isUseAround;
+
+  ///
+  /// キーワードフィルター
+  ///
+  bool filterWord({required String targetName, required String targetProduction}) {
+    if (keyword == null) {
+      return true;
+    }
+    return targetName.contains(keyword!) || targetProduction.contains(keyword!);
+  }
+
+  ///
+  /// カテゴリーフィルター
+  ///
+  bool filterCategory(bool characterFav, bool characterIsHighLevel) {
+    if (isFavorite) {
+      return characterFav;
+    }
+
+    if (isUseHighLevel) {
+      return characterFav && characterIsHighLevel;
+    }
+
+    if (isUseAround) {
+      return characterFav && !characterIsHighLevel;
+    }
+
+    // どのフィルターもかかっていない場合はフィルターかけない
+    return true;
+  }
+
+  ///
+  /// 武器種別でのフィルタ
+  ///
+  bool filterWeaponType(List<Weapon> weapon) {
+    if (weaponType == null) {
+      return true;
+    }
+    return weapon.any((w) => w.type == weaponType);
+  }
+
+  ///
+  /// 属性でのフィルタ
+  ///
+  bool filterAttributesType(List<Attribute>? attributes) {
+    if (attributeType == null) {
+      return true;
+    }
+    if (attributes == null) {
+      return false;
+    }
+
+    return attributes.any((a) => a.type == attributeType);
+  }
+
+  ///
+  /// 作品でのフィルタ
+  ///
+  bool filterProductionType(String name) {
+    if (productionType == null) {
+      return true;
+    }
+    return Production.equal(productionType!, name);
+  }
+
+  ///
+  /// nullは絞り込みクリアと同義なのでcopyWithで初期化できない。
+  /// そのため絞り込みをクリアするためのclearメソッドを別途設ける
+  ///
+  _UiState copyWithClear(
+      {bool? isKeywordSearch, bool keyword = false, bool weaponType = false, bool attributeType = false, bool productionType = false}) {
+    return _UiState(
+      isKeywordSearch: isKeywordSearch ?? this.isKeywordSearch,
+      keyword: keyword ? null : this.keyword,
+      weaponType: weaponType ? null : this.weaponType,
+      attributeType: attributeType ? null : this.attributeType,
+      productionType: productionType ? null : this.productionType,
+      isFavorite: isFavorite,
+      isUseHighLevel: isUseHighLevel,
+      isUseAround: isUseAround,
+    );
+  }
+
+  _UiState copyWith({
+    bool? isKeywordSearch,
+    String? keyword,
+    WeaponType? weaponType,
+    AttributeType? attributeType,
+    ProductionType? productionType,
+    bool? isFavorite,
+    bool? isUseHighLevel,
+    bool? isUseAround,
+  }) {
+    return _UiState(
+      isKeywordSearch: isKeywordSearch ?? this.isKeywordSearch,
+      keyword: keyword ?? this.keyword,
+      weaponType: weaponType ?? this.weaponType,
+      attributeType: attributeType ?? this.attributeType,
+      productionType: productionType ?? this.productionType,
+      isFavorite: isFavorite ?? this.isFavorite,
+      isUseHighLevel: isUseHighLevel ?? this.isUseHighLevel,
+      isUseAround: isUseAround ?? this.isUseAround,
+    );
+  }
+}
+
+// 検索結果のキャラ一覧
+final searchCharacterProvider = Provider<List<Character>>((ref) {
+  final uiState = ref.watch(_uiStateProvider);
+  return ref
+      .watch(characterSNProvider)
+      .where((c) => uiState.filterWord(targetName: c.name, targetProduction: c.production))
+      .where((c) => uiState.filterCategory(c.myStatus?.favorite ?? false, c.myStatus?.useHighLevel ?? false))
+      .where((c) => uiState.filterWeaponType(c.weapons))
+      .where((e) => uiState.filterAttributesType(e.attributes))
+      .where((e) => uiState.filterProductionType(e.production))
+      .toList();
+});
+
+// キーワード検索をしているか？
+final searchIsKeyword = Provider<bool>((ref) => ref.watch(_uiStateProvider.select((value) => value.isKeywordSearch)));
+
+// お気に入り、周回用/高難易度用での絞り込みフィルターをかけているか
+final searchFilterFavorite = Provider<bool>((ref) => ref.watch(_uiStateProvider.select((value) => value.isFavorite)));
+final searchFilterUseHighLebel = Provider<bool>((ref) => ref.watch(_uiStateProvider.select((value) => value.isUseHighLevel)));
+final searchFilterUseAround = Provider<bool>((ref) => ref.watch(_uiStateProvider.select((value) => value.isUseAround)));
+
+// 絞り込みをかけている武器種
+final searchFilterWeaponType = Provider<WeaponType?>((ref) => ref.watch(_uiStateProvider.select((value) => value.weaponType)));
+
+// 絞り込みをかけている属性
+final searchFilterAttributeType = Provider<AttributeType?>((ref) => ref.watch(_uiStateProvider.select((value) => value.attributeType)));
+
+// 絞り込みをかけている作品
+final searchFilterProductionType = Provider<ProductionType?>((ref) => ref.watch(_uiStateProvider.select((value) => value.productionType)));
