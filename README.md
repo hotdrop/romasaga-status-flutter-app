@@ -38,7 +38,8 @@ Firebaseで利用しているサービスは次の通りです。
 
 # 画面イメージ一部
 ![01](/images/01_char_list.png)
-![02](/images/02_char_detail.png)
-![03](images/03_search.png)
-![04](images/04_info.png)
-![05](images/05_account.png)
+![0201](/images/02_char_detail_01.png)
+![0202](/images/02_char_detail_02.png)
+![03](/images/03_search.png)
+![04](/images/04_info.png)
+![05](/images/05_account.png)
