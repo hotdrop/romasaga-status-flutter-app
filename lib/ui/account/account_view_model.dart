@@ -70,7 +70,7 @@ class _UiStateNotifer extends StateNotifier<_UiState> {
     state = _UiState(
       appVersion: packageInfo.version + '-' + packageInfo.buildNumber,
       loginUserName: _getLoginName(),
-      loginEmail: _getLoginName(),
+      loginEmail: _getLoginEmail(),
       backupDate: await _getBakupDateLabel(),
       stage: await _read(stageRepositoryProvider).find(),
     );
