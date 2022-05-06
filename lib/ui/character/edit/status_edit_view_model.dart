@@ -25,74 +25,83 @@ class _StatusEditViewModel extends StateNotifier<AsyncValue<void>> {
   Future<void> init() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      _read(_uiStateProvider.notifier).init(_status);
+      _read(_uiStateProvider.notifier).init();
     });
   }
 
   void updateHp(int newVal) {
-    _read(_uiStateProvider.notifier).updateHp(newVal + _read(_uiStateProvider).hp);
+    _read(_uiStateProvider.notifier).updateHp(newVal);
   }
 
   void updateStr(int newVal) {
-    _read(_uiStateProvider.notifier).updateStr(newVal + _read(_uiStateProvider).str);
+    _read(_uiStateProvider.notifier).updateStr(newVal);
   }
 
   void updateVit(int newVal) {
-    _read(_uiStateProvider.notifier).updateVit(newVal + _read(_uiStateProvider).vit);
+    _read(_uiStateProvider.notifier).updateVit(newVal);
   }
 
   void updateDex(int newVal) {
-    _read(_uiStateProvider.notifier).updateDex(newVal + _read(_uiStateProvider).dex);
+    _read(_uiStateProvider.notifier).updateDex(newVal);
   }
 
   void updateAgi(int newVal) {
-    _read(_uiStateProvider.notifier).updateAgi(newVal + _read(_uiStateProvider).agi);
+    _read(_uiStateProvider.notifier).updateAgi(newVal);
   }
 
   void updateInt(int newVal) {
-    _read(_uiStateProvider.notifier).updateInt(newVal + _read(_uiStateProvider).inte);
+    _read(_uiStateProvider.notifier).updateInt(newVal);
   }
 
   void updateSpi(int newVal) {
-    _read(_uiStateProvider.notifier).updateSpi(newVal + _read(_uiStateProvider).spi);
+    _read(_uiStateProvider.notifier).updateSpi(newVal);
   }
 
   void updateLove(int newVal) {
-    _read(_uiStateProvider.notifier).updateLove(newVal + _read(_uiStateProvider).love);
+    _read(_uiStateProvider.notifier).updateLove(newVal);
   }
 
   void updateAttr(int newVal) {
-    _read(_uiStateProvider.notifier).updateAttr(newVal + _read(_uiStateProvider).attr);
+    _read(_uiStateProvider.notifier).updateAttr(newVal);
   }
 
   void update(StatusType type, int newVal) {
     switch (type) {
       case StatusType.hp:
-        _read(_uiStateProvider.notifier).updateHp(newVal);
+        final diff = newVal - _status.hp;
+        _read(_uiStateProvider.notifier).updateHp(diff);
         break;
       case StatusType.str:
-        _read(_uiStateProvider.notifier).updateStr(newVal);
+        final diff = newVal - _status.str;
+        _read(_uiStateProvider.notifier).updateStr(diff);
         break;
       case StatusType.vit:
-        _read(_uiStateProvider.notifier).updateVit(newVal);
+        final diff = newVal - _status.vit;
+        _read(_uiStateProvider.notifier).updateVit(diff);
         break;
       case StatusType.dex:
-        _read(_uiStateProvider.notifier).updateDex(newVal);
+        final diff = newVal - _status.dex;
+        _read(_uiStateProvider.notifier).updateDex(diff);
         break;
       case StatusType.agi:
-        _read(_uiStateProvider.notifier).updateAgi(newVal);
+        final diff = newVal - _status.agi;
+        _read(_uiStateProvider.notifier).updateAgi(diff);
         break;
       case StatusType.inte:
-        _read(_uiStateProvider.notifier).updateInt(newVal);
+        final diff = newVal - _status.inte;
+        _read(_uiStateProvider.notifier).updateInt(diff);
         break;
       case StatusType.spirit:
-        _read(_uiStateProvider.notifier).updateSpi(newVal);
+        final diff = newVal - _status.spi;
+        _read(_uiStateProvider.notifier).updateSpi(diff);
         break;
       case StatusType.love:
-        _read(_uiStateProvider.notifier).updateLove(newVal);
+        final diff = newVal - _status.love;
+        _read(_uiStateProvider.notifier).updateLove(diff);
         break;
       case StatusType.attr:
-        _read(_uiStateProvider.notifier).updateAttr(newVal);
+        final diff = newVal - _status.attr;
+        _read(_uiStateProvider.notifier).updateAttr(diff);
         break;
     }
   }
@@ -106,18 +115,21 @@ class _StatusEditViewModel extends StateNotifier<AsyncValue<void>> {
     }
   }
 
+  ///
+  /// 更新した値を保存する
+  ///
   Future<void> saveNewStatus() async {
     final newStatus = MyStatus(
-      _read(_uiStateProvider).id,
-      _read(_uiStateProvider).hp,
-      _read(_uiStateProvider).str,
-      _read(_uiStateProvider).vit,
-      _read(_uiStateProvider).dex,
-      _read(_uiStateProvider).agi,
-      _read(_uiStateProvider).inte,
-      _read(_uiStateProvider).spi,
-      _read(_uiStateProvider).love,
-      _read(_uiStateProvider).attr,
+      _status.id,
+      _status.hp + _read(_uiStateProvider).hp,
+      _status.str + _read(_uiStateProvider).str,
+      _status.vit + _read(_uiStateProvider).vit,
+      _status.dex + _read(_uiStateProvider).dex,
+      _status.agi + _read(_uiStateProvider).agi,
+      _status.inte + _read(_uiStateProvider).inte,
+      _status.spi + _read(_uiStateProvider).spi,
+      _status.love + _read(_uiStateProvider).love,
+      _status.attr + _read(_uiStateProvider).attr,
       _status.favorite,
       _status.useHighLevel,
     );
@@ -135,8 +147,8 @@ final _uiStateProvider = StateNotifierProvider<_UiStateNotifer, _UiState>((ref) 
 class _UiStateNotifer extends StateNotifier<_UiState> {
   _UiStateNotifer(_UiState state) : super(state);
 
-  void init(MyStatus s) {
-    state = _UiState(s.id, s.hp, s.str, s.vit, s.dex, s.agi, s.inte, s.spi, s.love, s.attr);
+  void init() {
+    state = _UiState.empty();
   }
 
   void updateHp(int newVal) {
@@ -177,13 +189,12 @@ class _UiStateNotifer extends StateNotifier<_UiState> {
 }
 
 class _UiState {
-  _UiState(this.id, this.hp, this.str, this.vit, this.dex, this.agi, this.inte, this.spi, this.love, this.attr);
+  _UiState(this.hp, this.str, this.vit, this.dex, this.agi, this.inte, this.spi, this.love, this.attr);
 
   factory _UiState.empty() {
-    return _UiState(-1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    return _UiState(0, 0, 0, 0, 0, 0, 0, 0, 0);
   }
 
-  final int id;
   final int hp;
   final int str;
   final int vit;
@@ -194,9 +205,8 @@ class _UiState {
   final int love;
   final int attr;
 
-  _UiState copyWith({int? id, int? hp, int? str, int? vit, int? dex, int? agi, int? inte, int? spi, int? love, int? attr}) {
+  _UiState copyWith({int? hp, int? str, int? vit, int? dex, int? agi, int? inte, int? spi, int? love, int? attr}) {
     return _UiState(
-      id ?? this.id,
       hp ?? this.hp,
       str ?? this.str,
       vit ?? this.vit,
