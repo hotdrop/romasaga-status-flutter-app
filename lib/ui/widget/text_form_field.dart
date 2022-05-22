@@ -148,7 +148,7 @@ class RSMultiLineTextField extends StatefulWidget {
   final void Function(String) onChanged;
 
   @override
-  _RSMultiLineTextFieldState createState() => _RSMultiLineTextFieldState();
+  State<RSMultiLineTextField> createState() => _RSMultiLineTextFieldState();
 }
 
 class _RSMultiLineTextFieldState extends State<RSMultiLineTextField> {

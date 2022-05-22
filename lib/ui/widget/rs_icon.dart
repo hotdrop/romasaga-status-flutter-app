@@ -88,8 +88,8 @@ class WeaponIcon extends StatelessWidget {
     String res = _getResourcePath();
     if (_onTap == null) {
       return CircleAvatar(
-        child: Image.asset(res, width: _size, height: _size),
         backgroundColor: Theme.of(context).disabledColor,
+        child: Image.asset(res, width: _size, height: _size),
       );
     } else {
       return Material(
@@ -153,8 +153,8 @@ class WeaponCategoryIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     String res = _getResourcePath();
     return CircleAvatar(
-      child: Image.asset(res, width: _size, height: _size),
       backgroundColor: Theme.of(context).disabledColor,
+      child: Image.asset(res, width: _size, height: _size),
     );
   }
 
@@ -191,8 +191,8 @@ class AttributeIcon extends StatelessWidget {
     String res = _getResourcePath();
     if (onTap == null) {
       return CircleAvatar(
-        child: Image.asset(res, width: _size, height: _size),
         backgroundColor: Theme.of(context).disabledColor,
+        child: Image.asset(res, width: _size, height: _size),
       );
     }
     return Material(
@@ -419,8 +419,8 @@ class _FavoriteIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isSelected ? RSColors.favoriteSelected : Theme.of(context).disabledColor;
     return _IconButton(
-      child: Icon(Icons.star_rounded, color: color, size: 20.0),
       onPressed: onPressed,
+      child: Icon(Icons.star_rounded, color: color, size: 20.0),
     );
   }
 }
@@ -435,8 +435,8 @@ class _HighLevelIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isSelected ? RSColors.highLevelSelected : Theme.of(context).disabledColor;
     return _IconButton(
-      child: Text(RSStrings.highLevelLabel, style: TextStyle(color: color)),
       onPressed: onPressed,
+      child: Text(RSStrings.highLevelLabel, style: TextStyle(color: color)),
     );
   }
 }
@@ -451,8 +451,8 @@ class _AroundIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isSelected ? RSColors.aroundSelected : Theme.of(context).disabledColor;
     return _IconButton(
-      child: Text(RSStrings.aroundLabel, style: TextStyle(color: color)),
       onPressed: onPressed,
+      child: Text(RSStrings.aroundLabel, style: TextStyle(color: color)),
     );
   }
 }
@@ -472,8 +472,8 @@ class _IconButton extends StatelessWidget {
         minHeight: 40.0,
       ),
       fillColor: Theme.of(context).disabledColor,
-      child: child,
       onPressed: onPressed,
+      child: child,
     );
   }
 }

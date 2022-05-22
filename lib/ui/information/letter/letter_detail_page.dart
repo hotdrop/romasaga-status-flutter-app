@@ -113,8 +113,8 @@ class _VideoViewState extends State<_VideoView> {
 
     if (isInitialized()) {
       return AspectRatio(
-        child: VideoPlayer(_controller!),
         aspectRatio: _controller!.value.aspectRatio,
+        child: VideoPlayer(_controller!),
       );
     } else {
       return _ViewProcessLoading(loadingIcon: widget.letter.loadingIcon);

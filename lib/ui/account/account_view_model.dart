@@ -68,7 +68,7 @@ class _UiStateNotifer extends StateNotifier<_UiState> {
   Future<void> init() async {
     final packageInfo = await _read(packageInfoProvider);
     state = _UiState(
-      appVersion: packageInfo.version + '-' + packageInfo.buildNumber,
+      appVersion: '${packageInfo.version}-${packageInfo.buildNumber}',
       loginUserName: _getLoginName(),
       loginEmail: _getLoginEmail(),
       backupDate: await _getBakupDateLabel(),

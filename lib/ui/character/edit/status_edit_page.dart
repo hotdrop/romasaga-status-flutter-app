@@ -46,8 +46,9 @@ class StatusEditPage extends ConsumerWidget {
               floatingActionButton: FloatingActionButton(
                 child: const Icon(Icons.save),
                 onPressed: () async {
+                  final navigator = Navigator.of(context);
                   await ref.read(statusEditViewModel.notifier).saveNewStatus();
-                  Navigator.pop(context, true);
+                  navigator.pop(true);
                 },
               ),
               bottomNavigationBar: const _ViewBottomNavigationBar(),
