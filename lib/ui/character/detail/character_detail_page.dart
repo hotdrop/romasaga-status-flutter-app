@@ -92,7 +92,7 @@ class CharacterDetailPage extends ConsumerWidget {
 /// キャラクター概要の表示領域
 ///
 class _ViewCharacterOverview extends StatelessWidget {
-  const _ViewCharacterOverview({Key? key}) : super(key: key);
+  const _ViewCharacterOverview();
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +121,7 @@ class _ViewCharacterOverview extends StatelessWidget {
 /// キャラクターの作品、名前、肩書き、武器情報
 ///
 class _ViewCharacterInfo extends ConsumerWidget {
-  const _ViewCharacterInfo({Key? key}) : super(key: key);
+  const _ViewCharacterInfo();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -149,7 +149,7 @@ class _ViewCharacterInfo extends ConsumerWidget {
 /// 選択スタイルのキャラアイコン
 ///
 class _ViewSelectStyleIcon extends ConsumerWidget {
-  const _ViewSelectStyleIcon({Key? key}) : super(key: key);
+  const _ViewSelectStyleIcon();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -190,7 +190,7 @@ class _ViewSelectStyleIcon extends ConsumerWidget {
 }
 
 class _ViewSelectStyleTitle extends ConsumerWidget {
-  const _ViewSelectStyleTitle({Key? key}) : super(key: key);
+  const _ViewSelectStyleTitle();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -205,7 +205,7 @@ class _ViewSelectStyleTitle extends ConsumerWidget {
 /// 属性アイコン
 ///
 class _ViewAttributeIcons extends ConsumerWidget {
-  const _ViewAttributeIcons({Key? key}) : super(key: key);
+  const _ViewAttributeIcons();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -250,7 +250,7 @@ class _ViewAttributeIcons extends ConsumerWidget {
 /// スタイルChips
 ///
 class _ViewStyleChips extends ConsumerWidget {
-  const _ViewStyleChips({Key? key}) : super(key: key);
+  const _ViewStyleChips();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -272,7 +272,7 @@ class _ViewStyleChips extends ConsumerWidget {
 /// ステータス表示領域
 ///
 class _ViewStatusArea extends ConsumerWidget {
-  const _ViewStatusArea({Key? key}) : super(key: key);
+  const _ViewStatusArea();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -305,7 +305,7 @@ class _ViewStatusArea extends ConsumerWidget {
 }
 
 class _ViewTotalStatusCircleGraph extends ConsumerWidget {
-  const _ViewTotalStatusCircleGraph({Key? key}) : super(key: key);
+  const _ViewTotalStatusCircleGraph();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -323,7 +323,7 @@ class _ViewTotalStatusCircleGraph extends ConsumerWidget {
 /// ステージ情報
 ///
 class _ViewStage extends StatelessWidget {
-  const _ViewStage({Key? key}) : super(key: key);
+  const _ViewStage();
 
   @override
   Widget build(BuildContext context) {
@@ -343,7 +343,7 @@ class _ViewStage extends StatelessWidget {
 /// ステージ名の表示
 ///
 class _ViewStageName extends ConsumerWidget {
-  const _ViewStageName({Key? key}) : super(key: key);
+  const _ViewStageName();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -371,7 +371,7 @@ class _ViewStageName extends ConsumerWidget {
 /// ステータス上限の表示
 ///
 class _ViewStageLimit extends ConsumerWidget {
-  const _ViewStageLimit({Key? key}) : super(key: key);
+  const _ViewStageLimit();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -399,7 +399,7 @@ class _ViewStageLimit extends ConsumerWidget {
 /// HP表示欄
 ///
 class _ViewHpGraph extends ConsumerWidget {
-  const _ViewHpGraph({Key? key}) : super(key: key);
+  const _ViewHpGraph();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -414,7 +414,7 @@ class _ViewHpGraph extends ConsumerWidget {
 /// ステータス表示欄
 ///
 class _ViewEachStatusGraph extends ConsumerWidget {
-  const _ViewEachStatusGraph({Key? key}) : super(key: key);
+  const _ViewEachStatusGraph();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -454,7 +454,7 @@ class _ViewEachStatusGraph extends ConsumerWidget {
 }
 
 class _ViewEditStatusFab extends ConsumerWidget {
-  const _ViewEditStatusFab({Key? key}) : super(key: key);
+  const _ViewEditStatusFab();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -473,7 +473,7 @@ class _ViewEditStatusFab extends ConsumerWidget {
 }
 
 class _ViewBottomNavigationBar extends StatelessWidget {
-  const _ViewBottomNavigationBar({Key? key}) : super(key: key);
+  const _ViewBottomNavigationBar();
 
   @override
   Widget build(BuildContext context) {
@@ -499,7 +499,7 @@ class _ViewBottomNavigationBar extends StatelessWidget {
 /// ステータスアップイベントアイコン
 ///
 class _ViewStatusUpEventIcon extends ConsumerWidget {
-  const _ViewStatusUpEventIcon({Key? key}) : super(key: key);
+  const _ViewStatusUpEventIcon();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -521,7 +521,7 @@ class _ViewStatusUpEventIcon extends ConsumerWidget {
 ///
 /// 高難易度/周回アイコン
 class _ViewHighLevelIcon extends ConsumerWidget {
-  const _ViewHighLevelIcon({Key? key}) : super(key: key);
+  const _ViewHighLevelIcon();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -544,7 +544,7 @@ class _ViewHighLevelIcon extends ConsumerWidget {
 /// お気に入りアイコン
 ///
 class _ViewFavoriteIcon extends ConsumerWidget {
-  const _ViewFavoriteIcon({Key? key}) : super(key: key);
+  const _ViewFavoriteIcon();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -7,7 +7,7 @@ import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class InformationPage extends StatelessWidget {
-  const InformationPage({Key? key}) : super(key: key);
+  const InformationPage({super.key});
 
   @override
   Widget build(BuildContext context) {

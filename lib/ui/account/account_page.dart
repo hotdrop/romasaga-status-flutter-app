@@ -12,7 +12,7 @@ import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 import 'package:rsapp/ui/widget/view_loading.dart';
 
 class AccountPage extends ConsumerWidget {
-  const AccountPage({Key? key}) : super(key: key);
+  const AccountPage({super.key});
 
   static const double _rowIconSize = 32;
 
@@ -67,7 +67,7 @@ class AccountPage extends ConsumerWidget {
 /// アカウント情報
 ///
 class _RowAccountInfo extends ConsumerWidget {
-  const _RowAccountInfo({Key? key, required this.iconSize}) : super(key: key);
+  const _RowAccountInfo({required this.iconSize});
 
   final double iconSize;
 
@@ -85,7 +85,7 @@ class _RowAccountInfo extends ConsumerWidget {
 /// ライセンス情報
 ///
 class _RowAppLicense extends ConsumerWidget {
-  const _RowAppLicense({Key? key, required this.iconSize}) : super(key: key);
+  const _RowAppLicense({required this.iconSize});
 
   final double iconSize;
 
@@ -111,7 +111,7 @@ class _RowAppLicense extends ConsumerWidget {
 /// アプリのテーマを変更するスイッチ
 ///
 class _RowThemeSwitch extends ConsumerWidget {
-  const _RowThemeSwitch({Key? key, required this.iconSize}) : super(key: key);
+  const _RowThemeSwitch({required this.iconSize});
 
   final double iconSize;
 
@@ -135,7 +135,7 @@ class _RowThemeSwitch extends ConsumerWidget {
 /// キャラ情報更新
 ///
 class _RowRefreshCharacters extends ConsumerWidget {
-  const _RowRefreshCharacters({Key? key, required this.iconSize}) : super(key: key);
+  const _RowRefreshCharacters({required this.iconSize});
 
   final double iconSize;
 
@@ -173,7 +173,7 @@ class _RowRefreshCharacters extends ConsumerWidget {
 /// ステージ編集
 ///
 class _RowEditStage extends ConsumerWidget {
-  const _RowEditStage({Key? key, required this.iconSize}) : super(key: key);
+  const _RowEditStage({required this.iconSize});
 
   final double iconSize;
 
@@ -200,7 +200,7 @@ class _RowEditStage extends ConsumerWidget {
 /// データバックアップ
 ///
 class _RowBackup extends ConsumerWidget {
-  const _RowBackup({Key? key, required this.iconSize}) : super(key: key);
+  const _RowBackup({required this.iconSize});
 
   final double iconSize;
 
@@ -236,7 +236,7 @@ class _RowBackup extends ConsumerWidget {
 /// データ復元
 ///
 class _RowRestore extends ConsumerWidget {
-  const _RowRestore({Key? key, required this.iconSize}) : super(key: key);
+  const _RowRestore({required this.iconSize});
 
   final double iconSize;
 
@@ -270,7 +270,7 @@ class _RowRestore extends ConsumerWidget {
 /// サインインボタン
 ///
 class _SignInButton extends ConsumerWidget {
-  const _SignInButton({Key? key}) : super(key: key);
+  const _SignInButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -298,7 +298,7 @@ class _SignInButton extends ConsumerWidget {
 /// サインアウトボタン
 ///
 class _SignOutButton extends ConsumerWidget {
-  const _SignOutButton({Key? key}) : super(key: key);
+  const _SignOutButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

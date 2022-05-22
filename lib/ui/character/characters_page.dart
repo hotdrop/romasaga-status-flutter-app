@@ -8,7 +8,7 @@ import 'package:rsapp/ui/character/characters_view_model.dart';
 import 'package:rsapp/ui/widget/view_loading.dart';
 
 class CharactersPage extends ConsumerWidget {
-  const CharactersPage({Key? key}) : super(key: key);
+  const CharactersPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,7 +52,7 @@ class CharactersPage extends ConsumerWidget {
 }
 
 class _TitlePopupMenu extends ConsumerWidget {
-  const _TitlePopupMenu({Key? key}) : super(key: key);
+  const _TitlePopupMenu();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -81,7 +81,7 @@ class _TitlePopupMenu extends ConsumerWidget {
 }
 
 class _ViewList extends ConsumerWidget {
-  const _ViewList({Key? key, required this.characters}) : super(key: key);
+  const _ViewList({required this.characters});
 
   final List<Character> characters;
 
@@ -108,7 +108,7 @@ class _ViewList extends ConsumerWidget {
 }
 
 class _ViewEmptyList extends StatelessWidget {
-  const _ViewEmptyList({Key? key}) : super(key: key);
+  const _ViewEmptyList();
 
   @override
   Widget build(BuildContext context) {

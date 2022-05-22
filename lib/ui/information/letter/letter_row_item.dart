@@ -5,11 +5,7 @@ import 'package:rsapp/models/letter.dart';
 import 'package:rsapp/ui/information/letter/letter_detail_page.dart';
 
 class LetterRowItem extends StatelessWidget {
-  const LetterRowItem(
-    this._selectedIndex,
-    this._allLetters, {
-    Key? key,
-  }) : super(key: key);
+  const LetterRowItem(this._selectedIndex, this._allLetters, {super.key});
 
   final int _selectedIndex;
   final List<Letter> _allLetters;
@@ -37,7 +33,7 @@ class LetterRowItem extends StatelessWidget {
 }
 
 class _ViewImage extends StatelessWidget {
-  const _ViewImage({Key? key, required this.imagePath, required this.letter}) : super(key: key);
+  const _ViewImage({required this.imagePath, required this.letter});
 
   final String imagePath;
   final Letter letter;
@@ -54,7 +50,7 @@ class _ViewImage extends StatelessWidget {
 }
 
 class _LoadingIcon extends StatelessWidget {
-  const _LoadingIcon({Key? key, required this.res}) : super(key: key);
+  const _LoadingIcon({required this.res});
 
   final String res;
 
@@ -71,7 +67,7 @@ class _LoadingIcon extends StatelessWidget {
 }
 
 class _ErrorIcon extends StatelessWidget {
-  const _ErrorIcon({Key? key, required this.res}) : super(key: key);
+  const _ErrorIcon({required this.res});
 
   final String res;
 
@@ -89,7 +85,7 @@ class _ErrorIcon extends StatelessWidget {
 }
 
 class _ViewImageTitle extends StatelessWidget {
-  const _ViewImageTitle({Key? key, required this.letter}) : super(key: key);
+  const _ViewImageTitle({required this.letter});
 
   final Letter letter;
 

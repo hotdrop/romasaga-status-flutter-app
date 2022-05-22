@@ -40,7 +40,7 @@ class LetterPage extends ConsumerWidget {
 }
 
 class _ViewLettersPage extends ConsumerWidget {
-  const _ViewLettersPage({Key? key, required this.years, required this.letters}) : super(key: key);
+  const _ViewLettersPage({required this.years, required this.letters});
 
   final List<int> years;
   final List<Letter> letters;
@@ -86,7 +86,7 @@ class _ViewLettersPage extends ConsumerWidget {
 }
 
 class _TabLetter extends StatelessWidget {
-  const _TabLetter({Key? key, required this.letters}) : super(key: key);
+  const _TabLetter({required this.letters});
 
   final List<Letter> letters;
 
@@ -107,7 +107,7 @@ class _TabLetter extends StatelessWidget {
 /// お便り情報をローカルにロードしておらず0件の場合のページ
 ///
 class _ViewNothingLetterPage extends ConsumerWidget {
-  const _ViewNothingLetterPage({Key? key}) : super(key: key);
+  const _ViewNothingLetterPage();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

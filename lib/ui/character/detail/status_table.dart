@@ -6,7 +6,7 @@ import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class StatusTable extends StatelessWidget {
-  const StatusTable({Key? key, required this.character, required this.ranks, required this.statusLimit}) : super(key: key);
+  const StatusTable({super.key, required this.character, required this.ranks, required this.statusLimit});
 
   final Character character;
   final List<String> ranks;
@@ -32,7 +32,7 @@ class StatusTable extends StatelessWidget {
 }
 
 class _ViewTable extends StatelessWidget {
-  const _ViewTable(this.character, this.ranks, this.statusLimit, {Key? key}) : super(key: key);
+  const _ViewTable(this.character, this.ranks, this.statusLimit);
 
   final Character character;
   final List<String> ranks;
@@ -117,7 +117,7 @@ class _MaxStatus {
 }
 
 class _TableRowHeader extends StatelessWidget {
-  const _TableRowHeader(this.title, {Key? key}) : super(key: key);
+  const _TableRowHeader(this.title);
 
   final String title;
 
@@ -133,7 +133,7 @@ class _TableRowHeader extends StatelessWidget {
 }
 
 class _TableRowIcon extends StatelessWidget {
-  const _TableRowIcon(this.iconFilePath, {Key? key}) : super(key: key);
+  const _TableRowIcon(this.iconFilePath);
 
   final String iconFilePath;
 
@@ -149,12 +149,7 @@ class _TableRowIcon extends StatelessWidget {
 }
 
 class _TableRowStatus extends StatelessWidget {
-  const _TableRowStatus(
-    this.status,
-    this.stageStatusLimit,
-    this.maxStatus, {
-    Key? key,
-  }) : super(key: key);
+  const _TableRowStatus(this.status, this.stageStatusLimit, this.maxStatus);
 
   final int status;
   final int stageStatusLimit;

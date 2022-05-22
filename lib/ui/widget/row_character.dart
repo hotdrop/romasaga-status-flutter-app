@@ -8,7 +8,7 @@ import 'package:rsapp/ui/character/detail/character_detail_page.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class RowCharacterItem extends StatelessWidget {
-  const RowCharacterItem(this.character, {Key? key, required this.refreshListener}) : super(key: key);
+  const RowCharacterItem(this.character, {super.key, required this.refreshListener});
 
   final Character character;
   final Function refreshListener;
@@ -50,7 +50,7 @@ class RowCharacterItem extends StatelessWidget {
 }
 
 class _ViewLeadingArea extends StatelessWidget {
-  const _ViewLeadingArea({Key? key, required this.iconPath, required this.name, required this.production}) : super(key: key);
+  const _ViewLeadingArea({required this.iconPath, required this.name, required this.production});
 
   final String iconPath;
   final String name;
@@ -78,7 +78,7 @@ class _ViewLeadingArea extends StatelessWidget {
 }
 
 class _ViewTrailingArea extends StatelessWidget {
-  const _ViewTrailingArea({Key? key, required this.weaponType, required this.hp, required this.sumWithoutHp}) : super(key: key);
+  const _ViewTrailingArea({required this.weaponType, required this.hp, required this.sumWithoutHp});
 
   final WeaponType weaponType;
   final int hp;

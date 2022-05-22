@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 
 class OnViewLoading extends StatelessWidget {
-  const OnViewLoading({Key? key, this.title, this.errorMessage}) : super(key: key);
+  const OnViewLoading({super.key, this.title, this.errorMessage});
 
   final String? title;
   final String? errorMessage;

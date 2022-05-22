@@ -56,7 +56,7 @@ class _LetterDetailPage extends StatelessWidget {
 }
 
 class _LetterTitle extends StatelessWidget {
-  const _LetterTitle(this.letter, {Key? key}) : super(key: key);
+  const _LetterTitle(this.letter);
 
   final Letter letter;
 
@@ -80,7 +80,7 @@ class _LetterTitle extends StatelessWidget {
 }
 
 class _VideoView extends StatefulWidget {
-  const _VideoView(this.letter, {Key? key}) : super(key: key);
+  const _VideoView(this.letter);
 
   final Letter letter;
 
@@ -133,7 +133,7 @@ class _VideoViewState extends State<_VideoView> {
 }
 
 class _ViewProcessLoading extends StatelessWidget {
-  const _ViewProcessLoading({Key? key, required this.loadingIcon}) : super(key: key);
+  const _ViewProcessLoading({required this.loadingIcon});
 
   final String loadingIcon;
 
@@ -152,7 +152,7 @@ class _ViewProcessLoading extends StatelessWidget {
 }
 
 class _ViewProcessError extends StatelessWidget {
-  const _ViewProcessError({Key? key, required this.loadingIcon}) : super(key: key);
+  const _ViewProcessError({required this.loadingIcon});
 
   final String loadingIcon;
 

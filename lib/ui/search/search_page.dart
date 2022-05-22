@@ -13,7 +13,7 @@ import 'package:rsapp/ui/widget/rs_icon.dart';
 import 'package:rsapp/ui/widget/view_loading.dart';
 
 class SearchPage extends ConsumerWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -53,7 +53,7 @@ class SearchPage extends ConsumerWidget {
 }
 
 class _ViewHeaderTitle extends ConsumerWidget {
-  const _ViewHeaderTitle({Key? key}) : super(key: key);
+  const _ViewHeaderTitle();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -73,7 +73,7 @@ class _ViewHeaderTitle extends ConsumerWidget {
 }
 
 class _ViewHeaderIconSearchWord extends ConsumerWidget {
-  const _ViewHeaderIconSearchWord({Key? key}) : super(key: key);
+  const _ViewHeaderIconSearchWord();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -89,7 +89,7 @@ class _ViewHeaderIconSearchWord extends ConsumerWidget {
 }
 
 class _ViewCharacters extends ConsumerWidget {
-  const _ViewCharacters({Key? key}) : super(key: key);
+  const _ViewCharacters();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -115,7 +115,7 @@ class _ViewCharacters extends ConsumerWidget {
 }
 
 class _BottomSheet extends StatelessWidget {
-  const _BottomSheet({Key? key}) : super(key: key);
+  const _BottomSheet();
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +156,7 @@ class _BottomSheet extends StatelessWidget {
 }
 
 class _ViewFilterKind extends ConsumerWidget {
-  const _ViewFilterKind({Key? key}) : super(key: key);
+  const _ViewFilterKind();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -172,7 +172,7 @@ class _ViewFilterKind extends ConsumerWidget {
 }
 
 class _ViewFilterWeaponType extends ConsumerWidget {
-  const _ViewFilterWeaponType({Key? key}) : super(key: key);
+  const _ViewFilterWeaponType();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -194,7 +194,7 @@ class _ViewFilterWeaponType extends ConsumerWidget {
 }
 
 class _ViewFilterWeaponClearButton extends ConsumerWidget {
-  const _ViewFilterWeaponClearButton({Key? key}) : super(key: key);
+  const _ViewFilterWeaponClearButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -209,7 +209,7 @@ class _ViewFilterWeaponClearButton extends ConsumerWidget {
 }
 
 class _ViewFilterAttributes extends ConsumerWidget {
-  const _ViewFilterAttributes({Key? key}) : super(key: key);
+  const _ViewFilterAttributes();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -231,7 +231,7 @@ class _ViewFilterAttributes extends ConsumerWidget {
 }
 
 class _ViewFilterAttributeClearButton extends ConsumerWidget {
-  const _ViewFilterAttributeClearButton({Key? key}) : super(key: key);
+  const _ViewFilterAttributeClearButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -246,7 +246,7 @@ class _ViewFilterAttributeClearButton extends ConsumerWidget {
 }
 
 class _ViewFilterProduct extends ConsumerWidget {
-  const _ViewFilterProduct({Key? key}) : super(key: key);
+  const _ViewFilterProduct();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -268,7 +268,7 @@ class _ViewFilterProduct extends ConsumerWidget {
 }
 
 class _ViewFilterProductionClearButton extends ConsumerWidget {
-  const _ViewFilterProductionClearButton({Key? key}) : super(key: key);
+  const _ViewFilterProductionClearButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

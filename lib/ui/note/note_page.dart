@@ -6,7 +6,7 @@ import 'package:rsapp/ui/widget/text_form_field.dart';
 import 'package:rsapp/ui/widget/view_loading.dart';
 
 class NotePage extends ConsumerWidget {
-  const NotePage({Key? key}) : super(key: key);
+  const NotePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
