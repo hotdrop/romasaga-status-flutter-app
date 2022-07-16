@@ -7,7 +7,7 @@ import 'package:rsapp/ui/note/note_page.dart';
 import 'package:rsapp/ui/search/search_page.dart';
 
 class TopPage extends StatefulWidget {
-  const TopPage({Key? key}) : super(key: key);
+  const TopPage({super.key});
 
   @override
   State<TopPage> createState() => _TopPageState();

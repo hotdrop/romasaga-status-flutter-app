@@ -8,7 +8,7 @@ import 'package:rsapp/res/rs_strings.dart';
 /// ステータスの合計を示すサークルグラフ
 ///
 class TotalStatusCircleGraph extends StatelessWidget {
-  const TotalStatusCircleGraph({Key? key, required this.totalStatus, required this.limitStatus}) : super(key: key);
+  const TotalStatusCircleGraph({super.key, required this.totalStatus, required this.limitStatus});
 
   final int totalStatus;
   final int limitStatus;
@@ -34,7 +34,7 @@ class TotalStatusCircleGraph extends StatelessWidget {
 }
 
 class _CenterText extends StatelessWidget {
-  const _CenterText({Key? key, required this.currentTotal}) : super(key: key);
+  const _CenterText({required this.currentTotal});
 
   final int currentTotal;
 
@@ -64,10 +64,10 @@ class _CenterText extends StatelessWidget {
 ///
 class HpGraph extends StatelessWidget {
   const HpGraph({
-    Key? key,
+    super.key,
     required this.status,
     required this.limit,
-  }) : super(key: key);
+  });
 
   final int status;
   final int limit;
@@ -118,11 +118,11 @@ class HpGraph extends StatelessWidget {
 ///
 class StatusGraph extends StatelessWidget {
   const StatusGraph({
-    Key? key,
+    super.key,
     required this.title,
     required this.status,
     required this.limit,
-  }) : super(key: key);
+  });
 
   final String title;
   final int status;
@@ -172,12 +172,11 @@ class StatusGraph extends StatelessWidget {
 
 class _ContentLinearPercentIndicator extends StatelessWidget {
   const _ContentLinearPercentIndicator({
-    Key? key,
     required this.width,
     required this.status,
     required this.limit,
     required this.color,
-  }) : super(key: key);
+  });
 
   final double width;
   final int status;

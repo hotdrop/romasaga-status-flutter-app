@@ -46,8 +46,9 @@ class StatusEditPage extends ConsumerWidget {
               floatingActionButton: FloatingActionButton(
                 child: const Icon(Icons.save),
                 onPressed: () async {
+                  final navigator = Navigator.of(context);
                   await ref.read(statusEditViewModel.notifier).saveNewStatus();
-                  Navigator.pop(context, true);
+                  navigator.pop(true);
                 },
               ),
               bottomNavigationBar: const _ViewBottomNavigationBar(),
@@ -66,7 +67,7 @@ class StatusEditPage extends ConsumerWidget {
 }
 
 class _ViewBody extends ConsumerWidget {
-  const _ViewBody(this.myStatus, {Key? key}) : super(key: key);
+  const _ViewBody(this.myStatus);
 
   final MyStatus myStatus;
 
@@ -86,7 +87,7 @@ class _ViewBody extends ConsumerWidget {
 /// ボタン入力時のレイアウト
 ///
 class _ViewCountLayout extends ConsumerWidget {
-  const _ViewCountLayout(this.myStatus, {Key? key}) : super(key: key);
+  const _ViewCountLayout(this.myStatus);
 
   final MyStatus myStatus;
 
@@ -113,7 +114,7 @@ class _ViewCountLayout extends ConsumerWidget {
 /// 数値入力時のレイアウト
 ///
 class _ViewManualLayout extends ConsumerWidget {
-  const _ViewManualLayout(this.myStatus, {Key? key}) : super(key: key);
+  const _ViewManualLayout(this.myStatus);
 
   final MyStatus myStatus;
 
@@ -161,12 +162,11 @@ class _ViewManualLayout extends ConsumerWidget {
 
 class _ViewStatusEdit extends ConsumerWidget {
   const _ViewStatusEdit({
-    Key? key,
     required this.type,
     required this.status,
     required this.focusNode,
     required this.nextFocusNode,
-  }) : super(key: key);
+  });
 
   final StatusType type;
   final int status;
@@ -223,7 +223,7 @@ class _ViewStatusEdit extends ConsumerWidget {
 /// ボトムメニュー
 ///
 class _ViewBottomNavigationBar extends ConsumerWidget {
-  const _ViewBottomNavigationBar({Key? key}) : super(key: key);
+  const _ViewBottomNavigationBar();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

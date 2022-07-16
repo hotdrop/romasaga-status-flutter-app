@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
-  const AppButton({Key? key, required this.label, this.onTap}) : super(key: key);
+  const AppButton({super.key, required this.label, this.onTap});
 
   final String label;
   final Function? onTap;
@@ -19,12 +19,7 @@ class AppButton extends StatelessWidget {
 }
 
 class AppIconButton extends StatelessWidget {
-  const AppIconButton({
-    Key? key,
-    required this.label,
-    required this.icon,
-    required this.onTap,
-  }) : super(key: key);
+  const AppIconButton({super.key, required this.label, required this.icon, required this.onTap});
 
   final String label;
   final Function? onTap;

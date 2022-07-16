@@ -5,11 +5,11 @@ import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class RankChoiceChip extends StatefulWidget {
   const RankChoiceChip({
-    Key? key,
+    super.key,
     required this.ranks,
     required this.initSelectedRank,
     required this.onSelectedListener,
-  }) : super(key: key);
+  });
 
   final List<String> ranks;
   final String initSelectedRank;
@@ -57,7 +57,7 @@ class _RankChoiceChipState extends State<RankChoiceChip> {
 }
 
 class _RankChip extends StatelessWidget {
-  const _RankChip(this.rank, {Key? key, required this.isSameRank, required this.onSelected}) : super(key: key);
+  const _RankChip(this.rank, {required this.isSameRank, required this.onSelected});
 
   final String rank;
   final bool isSameRank;
@@ -91,7 +91,7 @@ class _RankChip extends StatelessWidget {
 }
 
 class _RankIcon extends StatelessWidget {
-  const _RankIcon(this.rank, {Key? key}) : super(key: key);
+  const _RankIcon(this.rank);
 
   final String rank;
 

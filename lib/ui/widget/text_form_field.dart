@@ -85,13 +85,13 @@ class RSNumberFormField extends StatelessWidget {
 ///
 class StatusEditField extends StatelessWidget {
   const StatusEditField({
-    Key? key,
+    super.key,
     required this.label,
     required this.initValue,
     required this.focusNode,
     required this.nextFocusNode,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final String label;
   final int initValue;
@@ -139,16 +139,16 @@ class StatusEditField extends StatelessWidget {
 // 複数行テキストフィールド
 class RSMultiLineTextField extends StatefulWidget {
   const RSMultiLineTextField({
-    Key? key,
+    super.key,
     required this.initValue,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final String? initValue;
   final void Function(String) onChanged;
 
   @override
-  _RSMultiLineTextFieldState createState() => _RSMultiLineTextFieldState();
+  State<RSMultiLineTextField> createState() => _RSMultiLineTextFieldState();
 }
 
 class _RSMultiLineTextFieldState extends State<RSMultiLineTextField> {

@@ -6,11 +6,11 @@ import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class RowStatusCounter extends StatefulWidget {
   const RowStatusCounter({
-    Key? key,
+    super.key,
     required this.type,
     required this.currentStatus,
     required this.onChangeValue,
-  }) : super(key: key);
+  });
 
   final StatusType type;
   final int currentStatus;
@@ -56,7 +56,7 @@ class _RowStatusCounterState extends State<RowStatusCounter> {
 }
 
 class _ViewStatusIcon extends StatelessWidget {
-  const _ViewStatusIcon({Key? key, required this.type}) : super(key: key);
+  const _ViewStatusIcon({required this.type});
 
   final StatusType type;
 
@@ -92,7 +92,7 @@ class _ViewStatusIcon extends StatelessWidget {
 }
 
 class _ViewStatusLabel extends StatelessWidget {
-  const _ViewStatusLabel(this.status, {Key? key}) : super(key: key);
+  const _ViewStatusLabel(this.status);
 
   final int status;
 
@@ -108,7 +108,7 @@ class _ViewStatusLabel extends StatelessWidget {
 }
 
 class _ViewDiffLabel extends StatelessWidget {
-  const _ViewDiffLabel(this.incrementVal, {Key? key}) : super(key: key);
+  const _ViewDiffLabel(this.incrementVal);
 
   final int incrementVal;
 
@@ -142,7 +142,7 @@ class _ViewDiffLabel extends StatelessWidget {
 /// カウント増加ボタン
 ///
 class _IncrementCounter extends StatelessWidget {
-  const _IncrementCounter({Key? key, required this.onTap}) : super(key: key);
+  const _IncrementCounter({required this.onTap});
 
   final Function onTap;
 
@@ -168,7 +168,7 @@ class _IncrementCounter extends StatelessWidget {
 /// カウント減少ボタン
 ///
 class _DecrementCounter extends StatelessWidget {
-  const _DecrementCounter({Key? key, required this.onTap}) : super(key: key);
+  const _DecrementCounter({required this.onTap});
 
   final Function onTap;
 

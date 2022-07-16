@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// カラー付き
 ///
 class VerticalLine extends StatelessWidget {
-  const VerticalLine({Key? key, required this.color}) : super(key: key);
+  const VerticalLine({super.key, required this.color});
 
   final Color color;
 
@@ -28,7 +28,7 @@ class VerticalLine extends StatelessWidget {
 /// 横線
 ///
 class HorizontalLine extends StatelessWidget {
-  const HorizontalLine({Key? key}) : super(key: key);
+  const HorizontalLine({super.key});
 
   @override
   Widget build(BuildContext context) {

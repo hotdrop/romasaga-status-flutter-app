@@ -67,7 +67,7 @@ class StageEditPage extends ConsumerWidget {
 }
 
 class _ViewNameTextField extends ConsumerWidget {
-  const _ViewNameTextField({Key? key}) : super(key: key);
+  const _ViewNameTextField();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -79,7 +79,7 @@ class _ViewNameTextField extends ConsumerWidget {
 }
 
 class _ViewHpLimitField extends ConsumerWidget {
-  const _ViewHpLimitField({Key? key}) : super(key: key);
+  const _ViewHpLimitField();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -94,7 +94,7 @@ class _ViewHpLimitField extends ConsumerWidget {
 }
 
 class _ViewStatusLimitFiled extends ConsumerWidget {
-  const _ViewStatusLimitFiled({Key? key}) : super(key: key);
+  const _ViewStatusLimitFiled();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -109,7 +109,7 @@ class _ViewStatusLimitFiled extends ConsumerWidget {
 }
 
 class _ViewSaveButton extends ConsumerWidget {
-  const _ViewSaveButton({Key? key}) : super(key: key);
+  const _ViewSaveButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

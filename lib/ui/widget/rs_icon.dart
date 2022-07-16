@@ -88,8 +88,8 @@ class WeaponIcon extends StatelessWidget {
     String res = _getResourcePath();
     if (_onTap == null) {
       return CircleAvatar(
-        child: Image.asset(res, width: _size, height: _size),
         backgroundColor: Theme.of(context).disabledColor,
+        child: Image.asset(res, width: _size, height: _size),
       );
     } else {
       return Material(
@@ -153,8 +153,8 @@ class WeaponCategoryIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     String res = _getResourcePath();
     return CircleAvatar(
-      child: Image.asset(res, width: _size, height: _size),
       backgroundColor: Theme.of(context).disabledColor,
+      child: Image.asset(res, width: _size, height: _size),
     );
   }
 
@@ -174,11 +174,11 @@ class WeaponCategoryIcon extends StatelessWidget {
 
 class AttributeIcon extends StatelessWidget {
   const AttributeIcon({
-    Key? key,
+    super.key,
     required this.type,
     this.selected = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final AttributeType type;
   final bool selected;
@@ -191,8 +191,8 @@ class AttributeIcon extends StatelessWidget {
     String res = _getResourcePath();
     if (onTap == null) {
       return CircleAvatar(
-        child: Image.asset(res, width: _size, height: _size),
         backgroundColor: Theme.of(context).disabledColor,
+        child: Image.asset(res, width: _size, height: _size),
       );
     }
     return Material(
@@ -272,11 +272,11 @@ class StatusIcon extends StatelessWidget {
 
 class ProductionLogo extends StatelessWidget {
   const ProductionLogo({
-    Key? key,
+    super.key,
     required this.type,
     required this.selected,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final ProductionType type;
   final bool selected;
@@ -336,12 +336,12 @@ class ProductionLogo extends StatelessWidget {
 ///
 class CategoryIcons extends StatefulWidget {
   const CategoryIcons({
-    Key? key,
+    super.key,
     required this.isFavSelected,
     required this.isHighLevelSelected,
     required this.isAroundSelected,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final bool isFavSelected;
   final bool isHighLevelSelected;
@@ -410,7 +410,7 @@ class _CategoryIconsState extends State<CategoryIcons> {
 }
 
 class _FavoriteIcon extends StatelessWidget {
-  const _FavoriteIcon({Key? key, required this.isSelected, required this.onPressed}) : super(key: key);
+  const _FavoriteIcon({required this.isSelected, required this.onPressed});
 
   final bool isSelected;
   final VoidCallback? onPressed;
@@ -419,14 +419,14 @@ class _FavoriteIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isSelected ? RSColors.favoriteSelected : Theme.of(context).disabledColor;
     return _IconButton(
-      child: Icon(Icons.star_rounded, color: color, size: 20.0),
       onPressed: onPressed,
+      child: Icon(Icons.star_rounded, color: color, size: 20.0),
     );
   }
 }
 
 class _HighLevelIcon extends StatelessWidget {
-  const _HighLevelIcon({Key? key, required this.isSelected, required this.onPressed}) : super(key: key);
+  const _HighLevelIcon({required this.isSelected, required this.onPressed});
 
   final bool isSelected;
   final VoidCallback? onPressed;
@@ -435,14 +435,14 @@ class _HighLevelIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isSelected ? RSColors.highLevelSelected : Theme.of(context).disabledColor;
     return _IconButton(
-      child: Text(RSStrings.highLevelLabel, style: TextStyle(color: color)),
       onPressed: onPressed,
+      child: Text(RSStrings.highLevelLabel, style: TextStyle(color: color)),
     );
   }
 }
 
 class _AroundIcon extends StatelessWidget {
-  const _AroundIcon({Key? key, required this.isSelected, required this.onPressed}) : super(key: key);
+  const _AroundIcon({required this.isSelected, required this.onPressed});
 
   final bool isSelected;
   final VoidCallback? onPressed;
@@ -451,14 +451,14 @@ class _AroundIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isSelected ? RSColors.aroundSelected : Theme.of(context).disabledColor;
     return _IconButton(
-      child: Text(RSStrings.aroundLabel, style: TextStyle(color: color)),
       onPressed: onPressed,
+      child: Text(RSStrings.aroundLabel, style: TextStyle(color: color)),
     );
   }
 }
 
 class _IconButton extends StatelessWidget {
-  const _IconButton({Key? key, required this.child, required this.onPressed}) : super(key: key);
+  const _IconButton({required this.child, required this.onPressed});
 
   final Widget child;
   final VoidCallback? onPressed;
@@ -472,8 +472,8 @@ class _IconButton extends StatelessWidget {
         minHeight: 40.0,
       ),
       fillColor: Theme.of(context).disabledColor,
-      child: child,
       onPressed: onPressed,
+      child: child,
     );
   }
 }
