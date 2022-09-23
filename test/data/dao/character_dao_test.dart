@@ -1,23 +1,38 @@
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive/hive.dart';
+
 import 'package:rsapp/data/local/dao/character_dao.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_strings.dart';
-
-import '../hive_test.dart';
+import 'package:rsapp/data/local/entity/character_entity.dart';
+import 'package:rsapp/data/local/entity/letter_entity.dart';
+import 'package:rsapp/data/local/entity/my_status_entity.dart';
+import 'package:rsapp/data/local/entity/style_entity.dart';
 
 void main() {
-  setUpAll(() => HiveTest.setUp());
-  tearDown(() async => await HiveTest.clear());
+  setUpAll(() {
+    Hive.init(Directory.current.path);
+    Hive.registerAdapter(LetterEntityAdapter());
+    Hive.registerAdapter(CharacterEntityAdapter());
+    Hive.registerAdapter(MyStatusEntityAdapter());
+    Hive.registerAdapter(StyleEntityAdapter());
+  });
+
+  tearDown(() async {
+    await Hive.deleteFromDisk();
+  });
 
   test('全キャラ情報の保存と取得ができることを確認する', () async {
     final container = ProviderContainer();
     final dao = container.read(characterDaoProvider);
 
     final characters = [
-      Character(1001, 'Test1', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')..addStyle(Style(1, 1001, 's', 'remote', 'remoteName1', 'path1', 91, 92, 93, 94, 95, 96, 97, 98)),
+      Character(1001, 'Test1', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')
+        ..addStyle(Style(1, 1001, 's', 'remote', 'remoteName1', 'path1', 91, 92, 93, 94, 95, 96, 97, 98)),
       Character(1002, 'Test2', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')
         ..addStyle(Style(2, 1002, 's', 'remote', 'remoteName2', 'path2', 100, 101, 102, 103, 104, 105, 106, 107))
         ..addStyle(Style(3, 1002, 'a', 'remote', 'remoteName3', 'path3', 21, 22, 23, 24, 25, 26, 27, 28)),
@@ -48,7 +63,8 @@ void main() {
     final dao = container.read(characterDaoProvider);
 
     final characters = [
-      Character(1001, 'Test1', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')..addStyle(Style(1, 1001, 's', 'remote', 'remoteName1', 'path1', 91, 92, 93, 94, 95, 96, 97, 98)),
+      Character(1001, 'Test1', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')
+        ..addStyle(Style(1, 1001, 's', 'remote', 'remoteName1', 'path1', 91, 92, 93, 94, 95, 96, 97, 98)),
       Character(1002, 'Test2', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')
         ..addStyle(Style(2, 1002, 's', 'remote', 'remoteName2', 'path1', 100, 101, 102, 103, 104, 105, 106, 107))
         ..addStyle(Style(3, 1002, 'a', 'remote', 'remoteName3', 'path1', 21, 22, 23, 24, 25, 26, 27, 28)),
@@ -94,7 +110,8 @@ void main() {
     final dao = container.read(characterDaoProvider);
 
     final characters = [
-      Character(1001, 'Test1', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')..addStyle(Style(1, 1001, 's', 'remote', 'remoteName1', 'path1', 91, 92, 93, 94, 95, 96, 97, 98)),
+      Character(1001, 'Test1', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')
+        ..addStyle(Style(1, 1001, 's', 'remote', 'remoteName1', 'path1', 91, 92, 93, 94, 95, 96, 97, 98)),
       Character(1002, 'Test2', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')
         ..addStyle(Style(2, 1002, 's', 'remote', 'remoteName2', 'path1', 100, 101, 102, 103, 104, 105, 106, 107)),
       Character(1003, 'Test3', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 'ss')
@@ -117,7 +134,8 @@ void main() {
         ..addStyle(Style(2, 1001, 'a', 'style2', 'iconFile2', 'path1', 91, 92, 93, 94, 95, 96, 97, 98)),
       Character(1002, 'Test2', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 's')
         ..addStyle(Style(3, 1002, 's', 'style3', 'iconFile3', 'path1', 100, 101, 102, 103, 104, 105, 106, 107)),
-      Character(1003, 'Test3', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 'ss')..addStyle(Style(4, 1003, 'ss', 'style4', 'iconFile4', 'path1', 31, 32, 33, 34, 35, 36, 37, 38)),
+      Character(1003, 'Test3', 'prd', [Weapon(name: RSStrings.sword)], null, selectedStyleRank: 'ss')
+        ..addStyle(Style(4, 1003, 'ss', 'style4', 'iconFile4', 'path1', 31, 32, 33, 34, 35, 36, 37, 38)),
     ];
     await dao.refresh(characters);
 

@@ -35,9 +35,22 @@ Firebaseで利用しているサービスは次の通りです。
     - クラッシュレポート
 
 # 環境
-実際に使っているアプリとデバッグ用のアプリはBuildTypeで分割しています。
-キャラデータが全て入ったjsonをいちいち読み込んで動作確認するのが辛かったため、動作確認は`main_dev.dart`で開発用のjsonを読み込むようにしています。
-開発はvscodeでやっているので`launch.json`のprogramにこのdartファイルを指定してデバッグしています。
+実際に使っているアプリとデバッグ用のアプリはBuildTypeで分割しています。  
+キャラデータが全て入ったjsonをいちいち読み込んで動作確認するのが辛かったため、動作確認は`main_dev.dart`で開発用のjsonを読み込むようにしています。  
+開発はvscodeでやっているので`launch.json`のprogramにこのdartファイルを指定してデバッグしています。  
+`launch.json`例です。  
+```launch.json
+{
+  "configurations": [
+    {
+      "name": "romansing_saga_app",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_dev.dart",
+    }
+  ]
+}
+```
 
 # 画面イメージ一部
 ![01](/images/01_char_list.png)
