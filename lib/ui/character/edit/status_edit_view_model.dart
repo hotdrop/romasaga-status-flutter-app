@@ -65,7 +65,7 @@ class _StatusEditViewModel extends StateNotifier<AsyncValue<void>> {
     _read(_uiStateProvider.notifier).updateAttr(newVal);
   }
 
-  void update(StatusType type, int newVal) {
+  void updateManualInput(StatusType type, int newVal) {
     switch (type) {
       case StatusType.hp:
         final diff = newVal - _status.hp;
