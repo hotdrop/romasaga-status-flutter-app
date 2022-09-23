@@ -23,7 +23,7 @@ jobs:
         run: flutter --version
         
       - name: Setup Dart
-        uses: dart-lang/setup-dart@v2.18.1
+        uses: dart-lang/setup-dart@v1.3
 
       - name: Run tests
         run: flutter test
