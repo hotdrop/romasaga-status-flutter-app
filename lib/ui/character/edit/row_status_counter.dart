@@ -5,8 +5,7 @@ import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class RowStatusCounter extends StatefulWidget {
-  const RowStatusCounter({
-    super.key,
+  const RowStatusCounter._({
     required this.type,
     required this.currentStatus,
     required this.onChangeValue,
@@ -15,6 +14,42 @@ class RowStatusCounter extends StatefulWidget {
   final StatusType type;
   final int currentStatus;
   final Function(int) onChangeValue;
+
+  factory RowStatusCounter.hp(int status, {required Function(int) onChangeValue}) {
+    return RowStatusCounter._(type: StatusType.hp, currentStatus: status, onChangeValue: onChangeValue);
+  }
+
+  factory RowStatusCounter.str(int status, {required Function(int) onChangeValue}) {
+    return RowStatusCounter._(type: StatusType.str, currentStatus: status, onChangeValue: onChangeValue);
+  }
+
+  factory RowStatusCounter.vit(int status, {required Function(int) onChangeValue}) {
+    return RowStatusCounter._(type: StatusType.vit, currentStatus: status, onChangeValue: onChangeValue);
+  }
+
+  factory RowStatusCounter.dex(int status, {required Function(int) onChangeValue}) {
+    return RowStatusCounter._(type: StatusType.dex, currentStatus: status, onChangeValue: onChangeValue);
+  }
+
+  factory RowStatusCounter.agi(int status, {required Function(int) onChangeValue}) {
+    return RowStatusCounter._(type: StatusType.agi, currentStatus: status, onChangeValue: onChangeValue);
+  }
+
+  factory RowStatusCounter.int(int status, {required Function(int) onChangeValue}) {
+    return RowStatusCounter._(type: StatusType.inte, currentStatus: status, onChangeValue: onChangeValue);
+  }
+
+  factory RowStatusCounter.spirit(int status, {required Function(int) onChangeValue}) {
+    return RowStatusCounter._(type: StatusType.spirit, currentStatus: status, onChangeValue: onChangeValue);
+  }
+
+  factory RowStatusCounter.love(int status, {required Function(int) onChangeValue}) {
+    return RowStatusCounter._(type: StatusType.love, currentStatus: status, onChangeValue: onChangeValue);
+  }
+
+  factory RowStatusCounter.attr(int status, {required Function(int) onChangeValue}) {
+    return RowStatusCounter._(type: StatusType.attr, currentStatus: status, onChangeValue: onChangeValue);
+  }
 
   @override
   State<RowStatusCounter> createState() => _RowStatusCounterState();

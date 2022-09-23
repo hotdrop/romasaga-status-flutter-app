@@ -32,12 +32,12 @@ class RSTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        primary: darkThemeColor,
+        backgroundColor: darkThemeColor,
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        primary: darkThemeColor,
+        foregroundColor: darkThemeColor,
       ),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(

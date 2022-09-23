@@ -34,6 +34,7 @@ class _CharacterDetailViewModel extends StateNotifier<AsyncValue<void>> {
   late Stage _stage;
 
   // キャラ情報
+  int get id => _character.id;
   List<String> get allRank => _character.allRank;
   String get production => _character.production;
   String get name => _character.name;

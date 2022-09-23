@@ -95,15 +95,15 @@ class _ViewCountLayout extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView(
       children: <Widget>[
-        RowStatusCounter(type: StatusType.hp, currentStatus: myStatus.hp, onChangeValue: ref.read(statusEditViewModel.notifier).updateHp),
-        RowStatusCounter(type: StatusType.str, currentStatus: myStatus.str, onChangeValue: ref.read(statusEditViewModel.notifier).updateStr),
-        RowStatusCounter(type: StatusType.vit, currentStatus: myStatus.vit, onChangeValue: ref.read(statusEditViewModel.notifier).updateVit),
-        RowStatusCounter(type: StatusType.dex, currentStatus: myStatus.dex, onChangeValue: ref.read(statusEditViewModel.notifier).updateDex),
-        RowStatusCounter(type: StatusType.agi, currentStatus: myStatus.agi, onChangeValue: ref.read(statusEditViewModel.notifier).updateAgi),
-        RowStatusCounter(type: StatusType.inte, currentStatus: myStatus.inte, onChangeValue: ref.read(statusEditViewModel.notifier).updateInt),
-        RowStatusCounter(type: StatusType.spirit, currentStatus: myStatus.spi, onChangeValue: ref.read(statusEditViewModel.notifier).updateSpi),
-        RowStatusCounter(type: StatusType.love, currentStatus: myStatus.love, onChangeValue: ref.read(statusEditViewModel.notifier).updateLove),
-        RowStatusCounter(type: StatusType.attr, currentStatus: myStatus.attr, onChangeValue: ref.read(statusEditViewModel.notifier).updateAttr),
+        RowStatusCounter.hp(myStatus.hp, onChangeValue: ref.read(statusEditViewModel.notifier).updateHp),
+        RowStatusCounter.str(myStatus.str, onChangeValue: ref.read(statusEditViewModel.notifier).updateStr),
+        RowStatusCounter.vit(myStatus.vit, onChangeValue: ref.read(statusEditViewModel.notifier).updateVit),
+        RowStatusCounter.dex(myStatus.dex, onChangeValue: ref.read(statusEditViewModel.notifier).updateDex),
+        RowStatusCounter.agi(myStatus.agi, onChangeValue: ref.read(statusEditViewModel.notifier).updateAgi),
+        RowStatusCounter.int(myStatus.inte, onChangeValue: ref.read(statusEditViewModel.notifier).updateInt),
+        RowStatusCounter.spirit(myStatus.spi, onChangeValue: ref.read(statusEditViewModel.notifier).updateSpi),
+        RowStatusCounter.love(myStatus.love, onChangeValue: ref.read(statusEditViewModel.notifier).updateLove),
+        RowStatusCounter.attr(myStatus.attr, onChangeValue: ref.read(statusEditViewModel.notifier).updateAttr),
         const SizedBox(height: 16.0)
       ],
     );
@@ -120,15 +120,6 @@ class _ViewManualLayout extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final attrFocus = FocusNode();
-    final loveFocus = FocusNode();
-    final spiFocus = FocusNode();
-    final intFocus = FocusNode();
-    final agiFocus = FocusNode();
-    final dexFocus = FocusNode();
-    final vidFocus = FocusNode();
-    final strFocus = FocusNode();
-
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -137,20 +128,20 @@ class _ViewManualLayout extends ConsumerWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(16),
-              child: _ViewStatusEdit(type: StatusType.hp, status: myStatus.hp, focusNode: null, nextFocusNode: strFocus),
+              child: _ViewStatusEdit.hp(myStatus.hp),
             ),
             Wrap(
               runSpacing: 24,
               spacing: 24,
               children: [
-                _ViewStatusEdit(type: StatusType.str, status: myStatus.str, focusNode: strFocus, nextFocusNode: vidFocus),
-                _ViewStatusEdit(type: StatusType.vit, status: myStatus.vit, focusNode: vidFocus, nextFocusNode: dexFocus),
-                _ViewStatusEdit(type: StatusType.dex, status: myStatus.dex, focusNode: dexFocus, nextFocusNode: agiFocus),
-                _ViewStatusEdit(type: StatusType.agi, status: myStatus.agi, focusNode: agiFocus, nextFocusNode: intFocus),
-                _ViewStatusEdit(type: StatusType.inte, status: myStatus.inte, focusNode: intFocus, nextFocusNode: spiFocus),
-                _ViewStatusEdit(type: StatusType.spirit, status: myStatus.spi, focusNode: spiFocus, nextFocusNode: loveFocus),
-                _ViewStatusEdit(type: StatusType.love, status: myStatus.love, focusNode: loveFocus, nextFocusNode: attrFocus),
-                _ViewStatusEdit(type: StatusType.attr, status: myStatus.attr, focusNode: attrFocus, nextFocusNode: null),
+                _ViewStatusEdit.str(myStatus.str),
+                _ViewStatusEdit.vit(myStatus.vit),
+                _ViewStatusEdit.dex(myStatus.dex),
+                _ViewStatusEdit.agi(myStatus.agi),
+                _ViewStatusEdit.int(myStatus.inte),
+                _ViewStatusEdit.spirit(myStatus.spi),
+                _ViewStatusEdit.love(myStatus.love),
+                _ViewStatusEdit.attr(myStatus.attr),
               ],
             ),
           ],
@@ -161,28 +152,52 @@ class _ViewManualLayout extends ConsumerWidget {
 }
 
 class _ViewStatusEdit extends ConsumerWidget {
-  const _ViewStatusEdit({
+  const _ViewStatusEdit._({
     required this.type,
     required this.status,
-    required this.focusNode,
-    required this.nextFocusNode,
+    required this.statusName,
   });
 
+  factory _ViewStatusEdit.hp(int status) {
+    return _ViewStatusEdit._(type: StatusType.hp, status: status, statusName: RSStrings.hpName);
+  }
+  factory _ViewStatusEdit.str(int status) {
+    return _ViewStatusEdit._(type: StatusType.str, status: status, statusName: RSStrings.strName);
+  }
+  factory _ViewStatusEdit.vit(int status) {
+    return _ViewStatusEdit._(type: StatusType.vit, status: status, statusName: RSStrings.vitName);
+  }
+  factory _ViewStatusEdit.dex(int status) {
+    return _ViewStatusEdit._(type: StatusType.dex, status: status, statusName: RSStrings.dexName);
+  }
+  factory _ViewStatusEdit.agi(int status) {
+    return _ViewStatusEdit._(type: StatusType.agi, status: status, statusName: RSStrings.agiName);
+  }
+  factory _ViewStatusEdit.int(int status) {
+    return _ViewStatusEdit._(type: StatusType.inte, status: status, statusName: RSStrings.intName);
+  }
+  factory _ViewStatusEdit.spirit(int status) {
+    return _ViewStatusEdit._(type: StatusType.spirit, status: status, statusName: RSStrings.spiName);
+  }
+  factory _ViewStatusEdit.love(int status) {
+    return _ViewStatusEdit._(type: StatusType.love, status: status, statusName: RSStrings.loveName);
+  }
+  factory _ViewStatusEdit.attr(int status) {
+    return _ViewStatusEdit._(type: StatusType.attr, status: status, statusName: RSStrings.attrName);
+  }
+
   final StatusType type;
+  final String statusName;
   final int status;
-  final FocusNode? focusNode;
-  final FocusNode? nextFocusNode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: _width(context),
       child: StatusEditField(
-        label: _statusName(),
+        label: statusName,
         initValue: status,
-        focusNode: focusNode,
-        nextFocusNode: nextFocusNode,
-        onChanged: (v) => ref.read(statusEditViewModel.notifier).update(type, v),
+        onChanged: (v) => ref.read(statusEditViewModel.notifier).updateManualInput(type, v),
       ),
     );
   }
@@ -192,29 +207,6 @@ class _ViewStatusEdit extends ConsumerWidget {
       return MediaQuery.of(context).size.width - 48;
     } else {
       return MediaQuery.of(context).size.width / 4;
-    }
-  }
-
-  String _statusName() {
-    switch (type) {
-      case StatusType.hp:
-        return RSStrings.hpName;
-      case StatusType.str:
-        return RSStrings.strName;
-      case StatusType.vit:
-        return RSStrings.vitName;
-      case StatusType.dex:
-        return RSStrings.dexName;
-      case StatusType.agi:
-        return RSStrings.agiName;
-      case StatusType.inte:
-        return RSStrings.intName;
-      case StatusType.spirit:
-        return RSStrings.spiName;
-      case StatusType.love:
-        return RSStrings.loveName;
-      case StatusType.attr:
-        return RSStrings.attrName;
     }
   }
 }

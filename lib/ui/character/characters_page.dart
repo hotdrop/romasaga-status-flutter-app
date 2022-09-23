@@ -72,7 +72,7 @@ class _TitlePopupMenu extends ConsumerWidget {
           child: Text(RSStrings.charactersOrderProduction),
         ),
       ],
-      initialValue: ref.watch(appSettingsProvider).characterListOrderType,
+      initialValue: ref.read(appSettingsProvider).characterListOrderType,
       onSelected: (value) async {
         await ref.read(charactersViewModelProvider.notifier).selectOrder(value);
       },

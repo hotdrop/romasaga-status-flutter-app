@@ -72,7 +72,7 @@ class _ViewNameTextField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return RSTextFormField.stageName(
-      initValue: ref.watch(stageEditCurrentProvider).name,
+      initValue: ref.read(stageEditCurrentProvider).name,
       onChanged: (String? input) => ref.read(stageEditViewModel.notifier).inputName(input),
     );
   }
@@ -85,9 +85,12 @@ class _ViewHpLimitField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: 150,
-      child: RSNumberFormField.stageHpLimit(
-        initValue: ref.watch(stageEditCurrentProvider).hpLimit,
-        onChanged: (int? input) => ref.read(stageEditViewModel.notifier).inputHpLimit(input),
+      child: RSTextFormField.stageHpLimit(
+        initValue: ref.read(stageEditCurrentProvider).hpLimit,
+        onChanged: (String? input) {
+          final num = (input != null) ? int.tryParse(input) : null;
+          ref.read(stageEditViewModel.notifier).inputHpLimit(num);
+        },
       ),
     );
   }
@@ -100,9 +103,12 @@ class _ViewStatusLimitFiled extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: 100,
-      child: RSNumberFormField.stageStatusLimit(
-        initValue: ref.watch(stageEditCurrentProvider).statusLimit,
-        onChanged: (int? input) => ref.read(stageEditViewModel.notifier).inputLimit(input),
+      child: RSTextFormField.stageStatusLimit(
+        initValue: ref.read(stageEditCurrentProvider).statusLimit,
+        onChanged: (String? input) {
+          final num = (input != null) ? int.tryParse(input) : null;
+          ref.read(stageEditViewModel.notifier).inputLimit(num);
+        },
       ),
     );
   }

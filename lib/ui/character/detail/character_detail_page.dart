@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
@@ -67,8 +68,8 @@ class CharacterDetailPage extends ConsumerWidget {
                 const SizedBox(height: 8),
                 StatusTable(
                   character: character,
-                  ranks: ref.watch(characterDetailViewModel.notifier).allRank,
-                  statusLimit: ref.watch(characterDetailViewModel.notifier).statusLimit,
+                  ranks: ref.read(characterDetailViewModel.notifier).allRank,
+                  statusLimit: ref.read(characterDetailViewModel.notifier).statusLimit,
                 ),
                 const SizedBox(height: 24),
               ],
@@ -133,10 +134,10 @@ class _ViewCharacterInfo extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              ref.watch(characterDetailViewModel.notifier).production,
+              ref.read(characterDetailViewModel.notifier).production,
               style: Theme.of(context).textTheme.caption,
             ),
-            Text(ref.watch(characterDetailViewModel.notifier).name),
+            Text(ref.read(characterDetailViewModel.notifier).name),
             const _ViewSelectStyleTitle(),
           ],
         ),
@@ -221,7 +222,7 @@ class _ViewAttributeIcons extends ConsumerWidget {
   List<Widget> _viewIconsAttr(WidgetRef ref) {
     final widgets = <Widget>[];
 
-    final weapons = ref.watch(characterDetailViewModel.notifier).weapons;
+    final weapons = ref.read(characterDetailViewModel.notifier).weapons;
     for (var w in weapons) {
       widgets.add(WeaponIcon.normal(w.type));
     }
@@ -232,7 +233,7 @@ class _ViewAttributeIcons extends ConsumerWidget {
       }
     }
 
-    final attrs = ref.watch(characterDetailViewModel.notifier).attributes;
+    final attrs = ref.read(characterDetailViewModel.notifier).attributes;
     if (attrs == null || attrs.isEmpty) {
       return widgets;
     }
@@ -257,7 +258,7 @@ class _ViewStyleChips extends ConsumerWidget {
     return Wrap(
       children: <Widget>[
         RankChoiceChip(
-          ranks: ref.watch(characterDetailViewModel.notifier).allRank,
+          ranks: ref.read(characterDetailViewModel.notifier).allRank,
           initSelectedRank: ref.watch(characterDetailSelectStyleStateProvider).rank,
           onSelectedListener: (rank) {
             ref.read(characterDetailViewModel.notifier).onSelectRank(rank);
@@ -271,11 +272,11 @@ class _ViewStyleChips extends ConsumerWidget {
 ///
 /// ステータス表示領域
 ///
-class _ViewStatusArea extends ConsumerWidget {
+class _ViewStatusArea extends StatelessWidget {
   const _ViewStatusArea();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
       color: Theme.of(context).backgroundColor,
@@ -310,11 +311,10 @@ class _ViewTotalStatusCircleGraph extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedStyleSum = ref.watch(characterDetailSelectStyleStateProvider).sum();
-    final statusLimit = ref.watch(characterDetailViewModel.notifier).statusLimit;
 
     return TotalStatusCircleGraph(
       totalStatus: ref.watch(characterDetailMyStatusStateProvider)?.sumWithoutHp() ?? 0,
-      limitStatus: selectedStyleSum + (8 * statusLimit),
+      limitStatus: selectedStyleSum + (8 * ref.read(characterDetailViewModel.notifier).statusLimit),
     );
   }
 }
@@ -347,8 +347,6 @@ class _ViewStageName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final stageName = ref.watch(characterDetailViewModel.notifier).stageName;
-
     return Row(
       children: <Widget>[
         const VerticalLine(color: RSColors.stageNameLine),
@@ -358,7 +356,7 @@ class _ViewStageName extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(RSStrings.detailPageStageLabel, style: Theme.of(context).textTheme.caption),
-              Text(stageName),
+              Text(ref.read(characterDetailViewModel.notifier).stageName),
             ],
           ),
         )
@@ -375,8 +373,6 @@ class _ViewStageLimit extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final limit = ref.watch(characterDetailViewModel.notifier).statusLimit;
-
     return Row(
       children: <Widget>[
         const VerticalLine(color: RSColors.stageLimitLine),
@@ -386,7 +382,7 @@ class _ViewStageLimit extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(RSStrings.detailPageStatusLimitLabel, style: Theme.of(context).textTheme.caption),
-              Text('+$limit'),
+              Text('+${ref.read(characterDetailViewModel.notifier).statusLimit}'),
             ],
           ),
         )
@@ -405,7 +401,7 @@ class _ViewHpGraph extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return HpGraph(
       status: ref.watch(characterDetailMyStatusStateProvider)?.hp ?? 0,
-      limit: ref.watch(characterDetailViewModel.notifier).hpLimit,
+      limit: ref.read(characterDetailViewModel.notifier).hpLimit,
     );
   }
 }
@@ -420,7 +416,7 @@ class _ViewEachStatusGraph extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final myStatus = ref.watch(characterDetailMyStatusStateProvider);
     final selectStyle = ref.watch(characterDetailSelectStyleStateProvider);
-    final limit = ref.watch(characterDetailViewModel.notifier).statusLimit;
+    final limit = ref.read(characterDetailViewModel.notifier).statusLimit;
 
     return Column(
       children: [
@@ -461,7 +457,7 @@ class _ViewEditStatusFab extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.edit),
       onPressed: () async {
-        final myStatus = ref.read(characterDetailMyStatusStateProvider)!;
+        final myStatus = ref.read(characterDetailMyStatusStateProvider) ?? MyStatus.empty(ref.read(characterDetailViewModel.notifier).id);
         final isSaved = await StatusEditPage.start(context, myStatus);
         if (isSaved) {
           RSLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
