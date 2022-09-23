@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rsapp/models/character.dart';
@@ -18,21 +19,7 @@ class SearchPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(searchViewModel).when(
-          data: (_) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const _ViewHeaderTitle(),
-                actions: const [
-                  _ViewHeaderIconSearchWord(),
-                ],
-              ),
-              body: const _ViewCharacters(),
-              floatingActionButton: FloatingActionButton(
-                child: const Icon(Icons.filter_list),
-                onPressed: () => _onPressFab(context),
-              ),
-            );
-          },
+          data: (_) => const _OnViewSuccess(),
           error: (err, _) => OnViewLoading(errorMessage: '$err'),
           loading: () {
             Future<void>.delayed(Duration.zero).then((_) {
@@ -42,12 +29,49 @@ class SearchPage extends ConsumerWidget {
           },
         );
   }
+}
 
-  void _onPressFab(BuildContext context) {
-    showMaterialModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (_) => const _BottomSheet(),
+class _OnViewSuccess extends StatefulWidget {
+  const _OnViewSuccess();
+
+  @override
+  State<StatefulWidget> createState() => __OnViewSuccessState();
+}
+
+class __OnViewSuccessState extends State<_OnViewSuccess> {
+  bool _visibleFab = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const _ViewHeaderTitle(),
+        actions: const [
+          _ViewHeaderIconSearchWord(),
+        ],
+      ),
+      body: NotificationListener<UserScrollNotification>(
+        onNotification: ((notification) {
+          if (notification.direction == ScrollDirection.forward) {
+            setState(() => _visibleFab = true);
+          } else if (notification.direction == ScrollDirection.reverse) {
+            setState(() => _visibleFab = false);
+          }
+          return true;
+        }),
+        child: const _ViewCharacters(),
+      ),
+      floatingActionButton: Visibility(
+        visible: _visibleFab,
+        child: FloatingActionButton(
+          child: const Icon(Icons.filter_list),
+          onPressed: () => showMaterialModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (_) => const _BottomSheet(),
+          ),
+        ),
+      ),
     );
   }
 }
