@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
@@ -461,7 +462,7 @@ class _ViewEditStatusFab extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.edit),
       onPressed: () async {
-        final myStatus = ref.read(characterDetailMyStatusStateProvider)!;
+        final myStatus = ref.read(characterDetailMyStatusStateProvider) ?? MyStatus.empty(ref.read(characterDetailViewModel.notifier).id);
         final isSaved = await StatusEditPage.start(context, myStatus);
         if (isSaved) {
           RSLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
