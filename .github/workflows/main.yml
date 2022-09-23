@@ -22,5 +22,12 @@ jobs:
       - name: Flutter version
         run: flutter --version
 
+      - name: Pub get
+        run: flutter pub get
+        shell: bash
+        
+      - name: build runner
+        run: flutter pub run build_runner build
+
       - name: Run tests
         run: flutter test
