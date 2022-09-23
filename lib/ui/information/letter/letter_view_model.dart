@@ -3,7 +3,7 @@ import 'package:rsapp/data/letter_repository.dart';
 import 'package:rsapp/models/letter.dart';
 
 // お便りデータ
-final lettersStateProvider = StateNotifierProvider<_LetterStateNotifier, AsyncValue<List<Letter>>>((ref) {
+final lettersStateProvider = StateNotifierProvider.autoDispose<_LetterStateNotifier, AsyncValue<List<Letter>>>((ref) {
   return _LetterStateNotifier(ref.read);
 });
 
