@@ -1,13 +1,27 @@
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive/hive.dart';
+
 import 'package:rsapp/data/local/dao/my_status_dao.dart';
 import 'package:rsapp/models/status.dart';
-
-import '../hive_test.dart';
+import 'package:rsapp/data/local/entity/character_entity.dart';
+import 'package:rsapp/data/local/entity/letter_entity.dart';
+import 'package:rsapp/data/local/entity/my_status_entity.dart';
+import 'package:rsapp/data/local/entity/style_entity.dart';
 
 void main() {
-  setUpAll(() => HiveTest.setUp());
-  tearDown(() async => await HiveTest.clear());
+  setUpAll(() {
+    Hive.init(Directory.current.path);
+    Hive.registerAdapter(LetterEntityAdapter());
+    Hive.registerAdapter(CharacterEntityAdapter());
+    Hive.registerAdapter(MyStatusEntityAdapter());
+    Hive.registerAdapter(StyleEntityAdapter());
+  });
+
+  tearDown(() async {
+    await Hive.deleteFromDisk();
+  });
 
   test('ステータス情報の全更新と全取得ができるか確認する', () async {
     final container = ProviderContainer();
