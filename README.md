@@ -1,9 +1,13 @@
-# MyRS
-Flutter学習用として定期的にいじっているロマサガRSのステータス管理用アプリです。
-アイコンは著作権があるのでGit管理対象にはしていません。
+![platform](https://img.shields.io/badge/platform-flutter-blue.svg)
+![test workflow](https://github.com/hotdrop/romasaga-status-flutter-app/actions/workflows/main.yml/badge.svg)
+![GitHub Release](https://img.shields.io/github/release/hotdrop/romasaga-status-flutter-app.svg?style=flat)
+
+# RSApp
+ロマサガRSの所持キャラステータス管理用アプリです。Flutter学習用として作成しました。  
+アイコンやリソースは著作権があるのでGit管理対象にはしていません。
 
 # 設計について
-私がAndroidアプリ開発に慣れていることもありAACのMVVMをベースに実装しています。  
+私がAndroidアプリ開発に慣れていることもありAACのMVVMをベースに設計しています。  
 データ取得層は`Repository`パターンを採用しています。  
 
 `ViewModel`は、画面起動時の`StateNotifierProvider`とUiStateを保持する`StateNotifierProvider`の2つで構成しています。  
