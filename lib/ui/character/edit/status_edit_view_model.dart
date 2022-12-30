@@ -13,105 +13,105 @@ final statusEditViewModel = StateNotifierProvider.autoDispose<_StatusEditViewMod
 /// ViewModelの引数付きProvider
 ///
 final statusEditFamilyViewModel = StateNotifierProvider.autoDispose.family<_StatusEditViewModel, AsyncValue<void>, MyStatus>((ref, myStatus) {
-  return _StatusEditViewModel(ref.read, myStatus);
+  return _StatusEditViewModel(ref, myStatus);
 });
 
 class _StatusEditViewModel extends StateNotifier<AsyncValue<void>> {
-  _StatusEditViewModel(this._read, this._status) : super(const AsyncValue.loading());
+  _StatusEditViewModel(this._ref, this._status) : super(const AsyncValue.loading());
 
-  final Reader _read;
+  final Ref _ref;
   final MyStatus _status;
 
   Future<void> init() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      _read(_uiStateProvider.notifier).init();
+      _ref.read(_uiStateProvider.notifier).init();
     });
   }
 
   void updateHp(int newVal) {
-    _read(_uiStateProvider.notifier).updateHp(newVal);
+    _ref.read(_uiStateProvider.notifier).updateHp(newVal);
   }
 
   void updateStr(int newVal) {
-    _read(_uiStateProvider.notifier).updateStr(newVal);
+    _ref.read(_uiStateProvider.notifier).updateStr(newVal);
   }
 
   void updateVit(int newVal) {
-    _read(_uiStateProvider.notifier).updateVit(newVal);
+    _ref.read(_uiStateProvider.notifier).updateVit(newVal);
   }
 
   void updateDex(int newVal) {
-    _read(_uiStateProvider.notifier).updateDex(newVal);
+    _ref.read(_uiStateProvider.notifier).updateDex(newVal);
   }
 
   void updateAgi(int newVal) {
-    _read(_uiStateProvider.notifier).updateAgi(newVal);
+    _ref.read(_uiStateProvider.notifier).updateAgi(newVal);
   }
 
   void updateInt(int newVal) {
-    _read(_uiStateProvider.notifier).updateInt(newVal);
+    _ref.read(_uiStateProvider.notifier).updateInt(newVal);
   }
 
   void updateSpi(int newVal) {
-    _read(_uiStateProvider.notifier).updateSpi(newVal);
+    _ref.read(_uiStateProvider.notifier).updateSpi(newVal);
   }
 
   void updateLove(int newVal) {
-    _read(_uiStateProvider.notifier).updateLove(newVal);
+    _ref.read(_uiStateProvider.notifier).updateLove(newVal);
   }
 
   void updateAttr(int newVal) {
-    _read(_uiStateProvider.notifier).updateAttr(newVal);
+    _ref.read(_uiStateProvider.notifier).updateAttr(newVal);
   }
 
   void updateManualInput(StatusType type, int newVal) {
     switch (type) {
       case StatusType.hp:
         final diff = newVal - _status.hp;
-        _read(_uiStateProvider.notifier).updateHp(diff);
+        _ref.read(_uiStateProvider.notifier).updateHp(diff);
         break;
       case StatusType.str:
         final diff = newVal - _status.str;
-        _read(_uiStateProvider.notifier).updateStr(diff);
+        _ref.read(_uiStateProvider.notifier).updateStr(diff);
         break;
       case StatusType.vit:
         final diff = newVal - _status.vit;
-        _read(_uiStateProvider.notifier).updateVit(diff);
+        _ref.read(_uiStateProvider.notifier).updateVit(diff);
         break;
       case StatusType.dex:
         final diff = newVal - _status.dex;
-        _read(_uiStateProvider.notifier).updateDex(diff);
+        _ref.read(_uiStateProvider.notifier).updateDex(diff);
         break;
       case StatusType.agi:
         final diff = newVal - _status.agi;
-        _read(_uiStateProvider.notifier).updateAgi(diff);
+        _ref.read(_uiStateProvider.notifier).updateAgi(diff);
         break;
       case StatusType.inte:
         final diff = newVal - _status.inte;
-        _read(_uiStateProvider.notifier).updateInt(diff);
+        _ref.read(_uiStateProvider.notifier).updateInt(diff);
         break;
       case StatusType.spirit:
         final diff = newVal - _status.spi;
-        _read(_uiStateProvider.notifier).updateSpi(diff);
+        _ref.read(_uiStateProvider.notifier).updateSpi(diff);
         break;
       case StatusType.love:
         final diff = newVal - _status.love;
-        _read(_uiStateProvider.notifier).updateLove(diff);
+        _ref.read(_uiStateProvider.notifier).updateLove(diff);
         break;
       case StatusType.attr:
         final diff = newVal - _status.attr;
-        _read(_uiStateProvider.notifier).updateAttr(diff);
+        _ref.read(_uiStateProvider.notifier).updateAttr(diff);
         break;
     }
   }
 
   void changeEditMode() {
-    final currentMode = _read(statusEditModeStateProvider);
+    final currentMode = _ref.read(statusEditModeStateProvider);
     if (currentMode == EditMode.each) {
-      _read(statusEditModeStateProvider.notifier).state = EditMode.manual;
+      _ref.read(statusEditModeStateProvider.notifier).state = EditMode.manual;
     } else {
-      _read(statusEditModeStateProvider.notifier).state = EditMode.each;
+      _ref.read(statusEditModeStateProvider.notifier).state = EditMode.each;
     }
   }
 
@@ -121,19 +121,19 @@ class _StatusEditViewModel extends StateNotifier<AsyncValue<void>> {
   Future<void> saveNewStatus() async {
     final newStatus = MyStatus(
       _status.id,
-      _status.hp + _read(_uiStateProvider).hp,
-      _status.str + _read(_uiStateProvider).str,
-      _status.vit + _read(_uiStateProvider).vit,
-      _status.dex + _read(_uiStateProvider).dex,
-      _status.agi + _read(_uiStateProvider).agi,
-      _status.inte + _read(_uiStateProvider).inte,
-      _status.spi + _read(_uiStateProvider).spi,
-      _status.love + _read(_uiStateProvider).love,
-      _status.attr + _read(_uiStateProvider).attr,
+      _status.hp + _ref.read(_uiStateProvider).hp,
+      _status.str + _ref.read(_uiStateProvider).str,
+      _status.vit + _ref.read(_uiStateProvider).vit,
+      _status.dex + _ref.read(_uiStateProvider).dex,
+      _status.agi + _ref.read(_uiStateProvider).agi,
+      _status.inte + _ref.read(_uiStateProvider).inte,
+      _status.spi + _ref.read(_uiStateProvider).spi,
+      _status.love + _ref.read(_uiStateProvider).love,
+      _status.attr + _ref.read(_uiStateProvider).attr,
       _status.favorite,
       _status.useHighLevel,
     );
-    await _read(myStatusRepositoryProvider).save(newStatus);
+    await _ref.read(myStatusRepositoryProvider).save(newStatus);
   }
 }
 

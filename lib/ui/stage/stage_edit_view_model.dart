@@ -3,52 +3,52 @@ import 'package:rsapp/data/stage_repository.dart';
 import 'package:rsapp/models/stage.dart';
 
 final stageEditViewModel = StateNotifierProvider.autoDispose<_StageEditViewModel, AsyncValue<void>>((ref) {
-  return _StageEditViewModel(ref.read);
+  return _StageEditViewModel(ref);
 });
 
 class _StageEditViewModel extends StateNotifier<AsyncValue<void>> {
-  _StageEditViewModel(this._read) : super(const AsyncValue.loading());
+  _StageEditViewModel(this._ref) : super(const AsyncValue.loading());
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<void> init() async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async => _read(_uiStateProvider.notifier).refresh());
+    state = await AsyncValue.guard(() async => _ref.read(_uiStateProvider.notifier).refresh());
   }
 
   void inputName(String? newVal) {
-    _read(_uiStateProvider.notifier).inputName(newVal);
+    _ref.read(_uiStateProvider.notifier).inputName(newVal);
   }
 
   void inputHpLimit(int? newVal) {
-    _read(_uiStateProvider.notifier).inputHpLimit(newVal);
+    _ref.read(_uiStateProvider.notifier).inputHpLimit(newVal);
   }
 
   void inputLimit(int? newVal) {
-    _read(_uiStateProvider.notifier).inputLimit(newVal);
+    _ref.read(_uiStateProvider.notifier).inputLimit(newVal);
   }
 
   Future<void> save() async {
     final newStage = Stage(
-      name: _read(_uiStateProvider).inputName,
-      hpLimit: _read(_uiStateProvider).inputHp,
-      statusLimit: _read(_uiStateProvider).inputStatusLimit,
+      name: _ref.read(_uiStateProvider).inputName,
+      hpLimit: _ref.read(_uiStateProvider).inputHp,
+      statusLimit: _ref.read(_uiStateProvider).inputStatusLimit,
     );
-    await _read(stageRepositoryProvider).save(newStage);
+    await _ref.read(stageRepositoryProvider).save(newStage);
   }
 }
 
 final _uiStateProvider = StateNotifierProvider<_UiStateNotifier, _UiState>((ref) {
-  return _UiStateNotifier(ref.read, _UiState.empty());
+  return _UiStateNotifier(ref, _UiState.empty());
 });
 
 class _UiStateNotifier extends StateNotifier<_UiState> {
-  _UiStateNotifier(this._read, _UiState state) : super(state);
+  _UiStateNotifier(this._ref, _UiState state) : super(state);
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<void> refresh() async {
-    final currentStage = await _read(stageRepositoryProvider).find();
+    final currentStage = await _ref.read(stageRepositoryProvider).find();
     state = _UiState(currentStage, currentStage.name, currentStage.hpLimit, currentStage.statusLimit);
   }
 

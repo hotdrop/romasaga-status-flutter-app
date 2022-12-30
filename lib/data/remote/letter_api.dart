@@ -2,19 +2,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/remote/response/letter_response.dart';
 import 'package:rsapp/service/rs_service.dart';
 
-final letterApiProvider = Provider((ref) => _LetterApi(ref.read));
+final letterApiProvider = Provider((ref) => _LetterApi(ref));
 
 class _LetterApi {
-  const _LetterApi(this._read);
+  const _LetterApi(this._ref);
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<LettersResponse> findAll() async {
-    final responseRow = await _read(rsServiceProvider).getLetters() as Map<String, dynamic>;
+    final responseRow = await _ref.read(rsServiceProvider).getLetters() as Map<String, dynamic>;
     return LettersResponse.fromJson(responseRow);
   }
 
   Future<String> findImageUrl(String fileName) async {
-    return await _read(rsServiceProvider).getLetterImageUrl(fileName);
+    return await _ref.read(rsServiceProvider).getLetterImageUrl(fileName);
   }
 }

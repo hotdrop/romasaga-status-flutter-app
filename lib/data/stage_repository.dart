@@ -2,29 +2,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/local/shared_prefs.dart';
 import 'package:rsapp/models/stage.dart';
 
-final stageRepositoryProvider = Provider((ref) => _StageRepository(ref.read));
+final stageRepositoryProvider = Provider((ref) => _StageRepository(ref));
 
 class _StageRepository {
-  const _StageRepository(this._read);
+  const _StageRepository(this._ref);
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<Stage> find() async {
-    final stageName = await _read(sharedPrefsProvider).getStageName();
+    final stageName = await _ref.read(sharedPrefsProvider).getStageName();
     if (stageName == null) {
       return Stage.empty();
     } else {
       return Stage(
         name: stageName,
-        hpLimit: await _read(sharedPrefsProvider).getStageHpLimit(),
-        statusLimit: await _read(sharedPrefsProvider).getStageStatusLimit(),
+        hpLimit: await _ref.read(sharedPrefsProvider).getStageHpLimit(),
+        statusLimit: await _ref.read(sharedPrefsProvider).getStageStatusLimit(),
       );
     }
   }
 
   Future<void> save(Stage stage) async {
-    await _read(sharedPrefsProvider).saveStageName(stage.name);
-    await _read(sharedPrefsProvider).saveStageHpLimit(stage.hpLimit);
-    await _read(sharedPrefsProvider).saveStageStatusLimit(stage.statusLimit);
+    await _ref.read(sharedPrefsProvider).saveStageName(stage.name);
+    await _ref.read(sharedPrefsProvider).saveStageHpLimit(stage.hpLimit);
+    await _ref.read(sharedPrefsProvider).saveStageStatusLimit(stage.statusLimit);
   }
 }

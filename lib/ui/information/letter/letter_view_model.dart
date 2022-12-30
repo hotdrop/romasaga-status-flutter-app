@@ -4,24 +4,24 @@ import 'package:rsapp/models/letter.dart';
 
 // お便りデータ
 final lettersStateProvider = StateNotifierProvider.autoDispose<_LetterStateNotifier, AsyncValue<List<Letter>>>((ref) {
-  return _LetterStateNotifier(ref.read);
+  return _LetterStateNotifier(ref);
 });
 
 class _LetterStateNotifier extends StateNotifier<AsyncValue<List<Letter>>> {
-  _LetterStateNotifier(this._read) : super(const AsyncValue.loading()) {
+  _LetterStateNotifier(this._ref) : super(const AsyncValue.loading()) {
     _init();
   }
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<void> _init() async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async => await _read(letterRepositoryProvider).findAll());
+    state = await AsyncValue.guard(() async => await _ref.read(letterRepositoryProvider).findAll());
   }
 
   Future<void> refresh() async {
-    await _read(letterRepositoryProvider).update();
-    state = await AsyncValue.guard(() async => await _read(letterRepositoryProvider).findAll());
+    await _ref.read(letterRepositoryProvider).update();
+    state = await AsyncValue.guard(() async => await _ref.read(letterRepositoryProvider).findAll());
   }
 }
 

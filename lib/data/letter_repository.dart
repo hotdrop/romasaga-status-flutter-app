@@ -7,18 +7,18 @@ import 'package:rsapp/data/local/dao/letter_dao.dart';
 import 'package:rsapp/data/remote/letter_api.dart';
 import 'package:rsapp/models/letter.dart';
 
-final letterRepositoryProvider = Provider((ref) => _LetterRepository(ref.read));
+final letterRepositoryProvider = Provider((ref) => _LetterRepository(ref));
 
 class _LetterRepository {
-  const _LetterRepository(this._read);
+  const _LetterRepository(this._ref);
 
-  final Reader _read;
+  final Ref _ref;
 
   ///
   /// お便りデータを取得
   ///
   Future<List<Letter>> findAll() async {
-    List<Letter> letters = await _read(letterDaoProvider).findAll();
+    List<Letter> letters = await _ref.read(letterDaoProvider).findAll();
 
     if (letters.isEmpty) {
       RSLogger.d('保持しているお便りデータはありません。');
@@ -28,12 +28,12 @@ class _LetterRepository {
   }
 
   Future<void> update() async {
-    final response = await _read(letterApiProvider).findAll();
-    final localLetters = await _read(letterDaoProvider).findAll();
+    final response = await _ref.read(letterApiProvider).findAll();
+    final localLetters = await _ref.read(letterDaoProvider).findAll();
     RSLogger.d('お便り情報を取得しました。 リモートのデータ件数=${response.letters.length} 端末に登録されているデータ件数=${localLetters.length}');
 
     final mergeLetters = await _merge(response.letters, localLetters);
-    await _read(letterDaoProvider).saveAll(mergeLetters);
+    await _ref.read(letterDaoProvider).saveAll(mergeLetters);
   }
 
   Future<List<Letter>> _merge(List<LetterResponse> responses, List<Letter> localLetters) async {
@@ -51,8 +51,8 @@ class _LetterRepository {
   }
 
   Future<Letter> _toLetter(LetterResponse response) async {
-    final videoPath = await _read(letterApiProvider).findImageUrl('${response.imageName}.mp4');
-    final imagePath = await _read(letterApiProvider).findImageUrl('${response.imageName}_static.jpg');
+    final videoPath = await _ref.read(letterApiProvider).findImageUrl('${response.imageName}.mp4');
+    final imagePath = await _ref.read(letterApiProvider).findImageUrl('${response.imageName}_static.jpg');
     RSLogger.d('お便り letters/${response.imageName} のフルパスを取得しました。\n videoPath=$videoPath staticPath=$imagePath');
 
     return Letter(
@@ -66,7 +66,7 @@ class _LetterRepository {
   }
 
   Future<String?> getLatestLetterName() async {
-    final letters = await _read(letterDaoProvider).findAll();
+    final letters = await _ref.read(letterDaoProvider).findAll();
     if (letters.isEmpty) {
       return null;
     } else {

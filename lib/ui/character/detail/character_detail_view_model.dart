@@ -22,13 +22,13 @@ final characterDetailViewModel = StateNotifierProvider.autoDispose<_CharacterDet
 /// ViewModelの引数付きProvider
 ///
 final characterDetailFamilyViewModel = StateNotifierProvider.autoDispose.family<_CharacterDetailViewModel, AsyncValue<void>, Character>((ref, c) {
-  return _CharacterDetailViewModel(ref.read, c);
+  return _CharacterDetailViewModel(ref, c);
 });
 
 class _CharacterDetailViewModel extends StateNotifier<AsyncValue<void>> {
-  _CharacterDetailViewModel(this._read, this._character) : super(const AsyncValue.loading());
+  _CharacterDetailViewModel(this._ref, this._character) : super(const AsyncValue.loading());
 
-  final Reader _read;
+  final Ref _ref;
 
   final Character _character;
   late Stage _stage;
@@ -53,46 +53,46 @@ class _CharacterDetailViewModel extends StateNotifier<AsyncValue<void>> {
   Future<void> init() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      _read(_uiStateProvider.notifier).init(_character);
-      _stage = await _read(stageRepositoryProvider).find();
+      _ref.read(_uiStateProvider.notifier).init(_character);
+      _stage = await _ref.read(stageRepositoryProvider).find();
     });
   }
 
   void onSelectRank(String rank) {
-    _read(_uiStateProvider.notifier).selectRank(rank);
+    _ref.read(_uiStateProvider.notifier).selectRank(rank);
   }
 
   ///
   /// 自身のステータスを再取得する
   ///
   Future<void> refreshMyStatus() async {
-    await _read(_uiStateProvider.notifier).updateMyStatus(_character.id);
-    _read(characterDetailIsUpdateStatus.notifier).state = true;
+    await _ref.read(_uiStateProvider.notifier).updateMyStatus(_character.id);
+    _ref.read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   Future<void> saveStatusUpEvent(bool statusUpEvent) async {
-    await _read(_uiStateProvider.notifier).saveStatusUpEvent(_character.id, statusUpEvent);
-    _read(characterDetailIsUpdateStatus.notifier).state = true;
+    await _ref.read(_uiStateProvider.notifier).saveStatusUpEvent(_character.id, statusUpEvent);
+    _ref.read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   Future<void> saveHighLevel(bool useHighLevel) async {
-    await _read(_uiStateProvider.notifier).saveUseHighLevel(_character.id, useHighLevel);
-    _read(characterDetailIsUpdateStatus.notifier).state = true;
+    await _ref.read(_uiStateProvider.notifier).saveUseHighLevel(_character.id, useHighLevel);
+    _ref.read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   Future<void> saveFavorite(bool favorite) async {
-    await _read(_uiStateProvider.notifier).saveFavorite(_character.id, favorite);
-    _read(characterDetailIsUpdateStatus.notifier).state = true;
+    await _ref.read(_uiStateProvider.notifier).saveFavorite(_character.id, favorite);
+    _ref.read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   ///
   /// 選択したスタイルをデフォルトスタイルに更新する
   ///
   Future<void> updateDefaultStyle() async {
-    final selectedStyle = _read(characterDetailSelectStyleStateProvider);
+    final selectedStyle = _ref.read(characterDetailSelectStyleStateProvider);
     RSLogger.d('表示ランクを ${selectedStyle.rank} にします。');
-    await _read(characterRepositoryProvider).saveSelectedRank(_character.id, selectedStyle.rank, selectedStyle.iconFilePath);
-    _read(characterDetailIsUpdateStatus.notifier).state = true;
+    await _ref.read(characterRepositoryProvider).saveSelectedRank(_character.id, selectedStyle.rank, selectedStyle.iconFilePath);
+    _ref.read(characterDetailIsUpdateStatus.notifier).state = true;
   }
 
   ///
@@ -102,14 +102,14 @@ class _CharacterDetailViewModel extends StateNotifier<AsyncValue<void>> {
   Future<void> refreshIcon() async {
     try {
       final defaultStyleRank = _character.selectedStyleRank;
-      final selectedStyle = _read(characterDetailSelectStyleStateProvider);
+      final selectedStyle = _ref.read(characterDetailSelectStyleStateProvider);
 
       final isSelectedIcon = (defaultStyleRank == selectedStyle.rank);
-      await _read(characterRepositoryProvider).refreshIcon(selectedStyle, isSelectedIcon);
+      await _ref.read(characterRepositoryProvider).refreshIcon(selectedStyle, isSelectedIcon);
 
-      await _read(_uiStateProvider.notifier).updateStyles(_character.id);
+      await _ref.read(_uiStateProvider.notifier).updateStyles(_character.id);
 
-      _read(characterDetailIsUpdateStatus.notifier).state = true;
+      _ref.read(characterDetailIsUpdateStatus.notifier).state = true;
     } catch (e, s) {
       await RSLogger.e('アイコン更新に失敗しました。', e, s);
     }
@@ -118,13 +118,13 @@ class _CharacterDetailViewModel extends StateNotifier<AsyncValue<void>> {
 
 // 画面の状態
 final _uiStateProvider = StateNotifierProvider<_UiStateNotifer, _UiState>((ref) {
-  return _UiStateNotifer(ref.read, _UiState.empty());
+  return _UiStateNotifer(ref, _UiState.empty());
 });
 
 class _UiStateNotifer extends StateNotifier<_UiState> {
-  _UiStateNotifer(this._read, _UiState state) : super(state);
+  _UiStateNotifer(this._ref, _UiState state) : super(state);
 
-  final Reader _read;
+  final Ref _ref;
 
   void init(Character c) {
     state = _UiState(c.myStatus, c.styles, c.selectedStyleRank, c.statusUpEvent, c.useHighLevel, c.favorite);
@@ -135,27 +135,27 @@ class _UiStateNotifer extends StateNotifier<_UiState> {
   }
 
   Future<void> updateStyles(int id) async {
-    final newStyles = await _read(characterRepositoryProvider).findStyles(id);
+    final newStyles = await _ref.read(characterRepositoryProvider).findStyles(id);
     state = state.copyWith(styles: newStyles);
   }
 
   Future<void> updateMyStatus(int id) async {
-    final newMyStatus = await _read(myStatusRepositoryProvider).find(id);
+    final newMyStatus = await _ref.read(myStatusRepositoryProvider).find(id);
     state = state.copyWith(myStatus: newMyStatus);
   }
 
   Future<void> saveStatusUpEvent(int id, bool newVal) async {
-    await _read(characterRepositoryProvider).saveStatusUpEvent(id, newVal);
+    await _ref.read(characterRepositoryProvider).saveStatusUpEvent(id, newVal);
     state = state.copyWith(statusUpEvent: newVal);
   }
 
   Future<void> saveUseHighLevel(int id, bool newVal) async {
-    await _read(characterRepositoryProvider).saveHighLevel(id, newVal);
+    await _ref.read(characterRepositoryProvider).saveHighLevel(id, newVal);
     state = state.copyWith(useHighLevel: newVal);
   }
 
   Future<void> saveFavorite(int id, bool newVal) async {
-    await _read(characterRepositoryProvider).saveFavorite(id, newVal);
+    await _ref.read(characterRepositoryProvider).saveFavorite(id, newVal);
     state = state.copyWith(favorite: newVal);
   }
 }

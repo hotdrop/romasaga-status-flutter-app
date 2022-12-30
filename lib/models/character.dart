@@ -9,18 +9,18 @@ import 'package:rsapp/models/weapon.dart';
 import 'package:collection/collection.dart';
 
 final characterSNProvider = StateNotifierProvider<_CharacterNotifier, List<Character>>((ref) {
-  return _CharacterNotifier(ref.read);
+  return _CharacterNotifier(ref);
 });
 
 class _CharacterNotifier extends StateNotifier<List<Character>> {
-  _CharacterNotifier(this._read) : super(<Character>[]);
+  _CharacterNotifier(this._ref) : super(<Character>[]);
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<void> refresh() async {
     RSLogger.d('保持しているキャラ情報を更新します。');
-    final characters = await _read(characterRepositoryProvider).findAll();
-    final myStatuses = await _read(myStatusRepositoryProvider).findAll();
+    final characters = await _ref.read(characterRepositoryProvider).findAll();
+    final myStatuses = await _ref.read(myStatusRepositoryProvider).findAll();
     state = await _merge(characters, myStatuses);
   }
 

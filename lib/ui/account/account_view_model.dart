@@ -8,76 +8,76 @@ import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/res/rs_strings.dart';
 
-final accountViewModel = StateNotifierProvider.autoDispose<_AccountViewModel, AsyncValue<void>>((ref) => _AccountViewModel(ref.read));
+final accountViewModel = StateNotifierProvider.autoDispose<_AccountViewModel, AsyncValue<void>>((ref) => _AccountViewModel(ref));
 
 class _AccountViewModel extends StateNotifier<AsyncValue<void>> {
-  _AccountViewModel(this._read) : super(const AsyncValue.loading());
+  _AccountViewModel(this._ref) : super(const AsyncValue.loading());
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<void> init() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      _read(_uiStateProvider.notifier).init();
-      _read(accountIsLoginProvider.notifier).state = _read(accountRepositoryProvider).isLogIn;
+      _ref.read(_uiStateProvider.notifier).init();
+      _ref.read(accountIsLoginProvider.notifier).state = _ref.read(accountRepositoryProvider).isLogIn;
     });
   }
 
   Future<void> signIn() async {
-    await _read(accountRepositoryProvider).signIn();
-    _read(_uiStateProvider.notifier).updateLogin();
-    _read(accountIsLoginProvider.notifier).state = _read(accountRepositoryProvider).isLogIn;
+    await _ref.read(accountRepositoryProvider).signIn();
+    _ref.read(_uiStateProvider.notifier).updateLogin();
+    _ref.read(accountIsLoginProvider.notifier).state = _ref.read(accountRepositoryProvider).isLogIn;
   }
 
   Future<void> signOut() async {
-    await _read(accountRepositoryProvider).signOut();
-    _read(_uiStateProvider.notifier).updateLogin();
-    _read(accountIsLoginProvider.notifier).state = _read(accountRepositoryProvider).isLogIn;
+    await _ref.read(accountRepositoryProvider).signOut();
+    _ref.read(_uiStateProvider.notifier).updateLogin();
+    _ref.read(accountIsLoginProvider.notifier).state = _ref.read(accountRepositoryProvider).isLogIn;
   }
 
   Future<void> refreshCharacters() async {
-    await _read(characterRepositoryProvider).refresh();
-    await _read(characterSNProvider.notifier).refresh();
+    await _ref.read(characterRepositoryProvider).refresh();
+    await _ref.read(characterSNProvider.notifier).refresh();
   }
 
   Future<void> refreshStage() async {
-    await _read(_uiStateProvider.notifier).refreshStage();
+    await _ref.read(_uiStateProvider.notifier).refreshStage();
   }
 
   Future<void> backup() async {
-    await _read(myStatusRepositoryProvider).backup();
-    _read(_uiStateProvider.notifier).refreshBackupDate();
+    await _ref.read(myStatusRepositoryProvider).backup();
+    _ref.read(_uiStateProvider.notifier).refreshBackupDate();
   }
 
   Future<void> restore() async {
-    await _read(myStatusRepositoryProvider).restore();
+    await _ref.read(myStatusRepositoryProvider).restore();
   }
 }
 
 final packageInfoProvider = Provider((ref) => PackageInfo.fromPlatform());
 
 final _uiStateProvider = StateNotifierProvider<_UiStateNotifer, _UiState>((ref) {
-  return _UiStateNotifer(ref.read, _UiState.empty());
+  return _UiStateNotifer(ref, _UiState.empty());
 });
 
 class _UiStateNotifer extends StateNotifier<_UiState> {
-  _UiStateNotifer(this._read, _UiState state) : super(state);
+  _UiStateNotifer(this._ref, _UiState state) : super(state);
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<void> init() async {
-    final packageInfo = await _read(packageInfoProvider);
+    final packageInfo = await _ref.read(packageInfoProvider);
     state = _UiState(
       appVersion: '${packageInfo.version}-${packageInfo.buildNumber}',
       loginUserName: _getLoginName(),
       loginEmail: _getLoginEmail(),
       backupDate: await _getBakupDateLabel(),
-      stage: await _read(stageRepositoryProvider).find(),
+      stage: await _ref.read(stageRepositoryProvider).find(),
     );
   }
 
   Future<void> refreshStage() async {
-    final newVal = await _read(stageRepositoryProvider).find();
+    final newVal = await _ref.read(stageRepositoryProvider).find();
     state = state.copyWith(stage: newVal);
   }
 
@@ -95,25 +95,25 @@ class _UiStateNotifer extends StateNotifier<_UiState> {
   }
 
   String _getLoginName() {
-    final isLogin = _read(accountRepositoryProvider).isLogIn;
+    final isLogin = _ref.read(accountRepositoryProvider).isLogIn;
     if (isLogin) {
-      return _read(accountRepositoryProvider).getUserName() ?? RSStrings.accountNotSignInNameLabel;
+      return _ref.read(accountRepositoryProvider).getUserName() ?? RSStrings.accountNotSignInNameLabel;
     } else {
       return RSStrings.accountNotSignInNameLabel;
     }
   }
 
   String _getLoginEmail() {
-    final isLogin = _read(accountRepositoryProvider).isLogIn;
+    final isLogin = _ref.read(accountRepositoryProvider).isLogIn;
     if (isLogin) {
-      return _read(accountRepositoryProvider).getEmail() ?? RSStrings.accountNotSignInLabel;
+      return _ref.read(accountRepositoryProvider).getEmail() ?? RSStrings.accountNotSignInLabel;
     } else {
       return RSStrings.accountNotSignInLabel;
     }
   }
 
   Future<String> _getBakupDateLabel() async {
-    final backupDateStr = await _read(myStatusRepositoryProvider).getPreviousBackupDateStr();
+    final backupDateStr = await _ref.read(myStatusRepositoryProvider).getPreviousBackupDateStr();
     return backupDateStr ?? RSStrings.accountStatusBackupNotLabel;
   }
 }

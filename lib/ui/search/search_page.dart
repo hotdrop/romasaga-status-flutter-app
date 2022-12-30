@@ -18,15 +18,10 @@ class SearchPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(searchViewModel).when(
+    return ref.watch(searchViewModelProvider).when(
           data: (_) => const _OnViewSuccess(),
           error: (err, _) => OnViewLoading(errorMessage: '$err'),
-          loading: () {
-            Future<void>.delayed(Duration.zero).then((_) {
-              ref.read(searchViewModel.notifier).init();
-            });
-            return const OnViewLoading();
-          },
+          loading: () => const OnViewLoading(),
         );
   }
 }
@@ -91,7 +86,7 @@ class _ViewHeaderTitle extends ConsumerWidget {
         prefixIcon: Icon(Icons.search),
         hintText: RSStrings.searchListQueryHint,
       ),
-      onSubmitted: (v) => ref.read(searchViewModel.notifier).findByKeyword(v),
+      onSubmitted: (v) => ref.read(searchViewModelProvider.notifier).findByKeyword(v),
     );
   }
 }
@@ -106,7 +101,7 @@ class _ViewHeaderIconSearchWord extends ConsumerWidget {
     return IconButton(
       icon: isKeywordSearch ? const Icon(Icons.close) : const Icon(Icons.search),
       onPressed: () {
-        ref.read(searchViewModel.notifier).changeSearchMode();
+        ref.read(searchViewModelProvider.notifier).changeSearchMode();
       },
     );
   }
@@ -189,7 +184,7 @@ class _ViewFilterKind extends ConsumerWidget {
       isHighLevelSelected: ref.read(searchFilterUseHighLebel),
       isAroundSelected: ref.read(searchFilterUseAround),
       onTap: (bool fav, bool high, bool around) {
-        ref.read(searchViewModel.notifier).filterCategory(favorite: fav, highLevel: high, around: around);
+        ref.read(searchViewModelProvider.notifier).filterCategory(favorite: fav, highLevel: high, around: around);
       },
     );
   }
@@ -208,7 +203,7 @@ class _ViewFilterWeaponType extends ConsumerWidget {
           type,
           selected: ref.watch(searchFilterWeaponType) == type,
           onTap: () {
-            ref.read(searchViewModel.notifier).findByWeaponType(type);
+            ref.read(searchViewModelProvider.notifier).findByWeaponType(type);
             Navigator.pop(context);
           },
         );
@@ -225,7 +220,7 @@ class _ViewFilterWeaponClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearWeapon),
       onPressed: () {
-        ref.read(searchViewModel.notifier).clearFilterWeapon();
+        ref.read(searchViewModelProvider.notifier).clearFilterWeapon();
         Navigator.pop(context);
       },
     );
@@ -245,7 +240,7 @@ class _ViewFilterAttributes extends ConsumerWidget {
           type: type,
           selected: ref.watch(searchFilterAttributeType) == type,
           onTap: () {
-            ref.read(searchViewModel.notifier).findByAttributeType(type);
+            ref.read(searchViewModelProvider.notifier).findByAttributeType(type);
             Navigator.pop(context);
           },
         );
@@ -262,7 +257,7 @@ class _ViewFilterAttributeClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearAttributes),
       onPressed: () {
-        ref.read(searchViewModel.notifier).clearFilterAttribute();
+        ref.read(searchViewModelProvider.notifier).clearFilterAttribute();
         Navigator.pop(context);
       },
     );
@@ -282,7 +277,7 @@ class _ViewFilterProduct extends ConsumerWidget {
           type: type,
           selected: ref.watch(searchFilterProductionType) == type,
           onTap: () {
-            ref.read(searchViewModel.notifier).findByProduction(type);
+            ref.read(searchViewModelProvider.notifier).findByProduction(type);
             Navigator.pop(context);
           },
         );
@@ -299,7 +294,7 @@ class _ViewFilterProductionClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearProduction),
       onPressed: () {
-        ref.read(searchViewModel.notifier).clearFilterProduction();
+        ref.read(searchViewModelProvider.notifier).clearFilterProduction();
         Navigator.pop(context);
       },
     );

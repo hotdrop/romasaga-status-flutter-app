@@ -12,18 +12,18 @@ import 'package:rsapp/models/style.dart';
 import 'package:collection/collection.dart';
 import 'package:rsapp/models/weapon.dart';
 
-final characterRepositoryProvider = Provider((ref) => _CharacterRepository(ref.read));
+final characterRepositoryProvider = Provider((ref) => _CharacterRepository(ref));
 
 class _CharacterRepository {
-  const _CharacterRepository(this._read);
+  const _CharacterRepository(this._ref);
 
-  final Reader _read;
+  final Ref _ref;
 
   ///
   /// キャラ情報を全て取得
   ///
   Future<List<Character>> findAll() async {
-    var characters = await _read(characterDaoProvider).findAll();
+    var characters = await _ref.read(characterDaoProvider).findAll();
     RSLogger.d('データ取得完了 件数=${characters.length}');
     return characters;
   }
@@ -33,12 +33,12 @@ class _CharacterRepository {
   /// アイコンファイルパスはローカルのものを使うので更新したい場合はrefreshIcon()で行う
   ///
   Future<void> refresh() async {
-    final response = await _read(characterApiProvider).findAll();
-    final localCharacters = await _read(characterDaoProvider).findAll();
+    final response = await _ref.read(characterApiProvider).findAll();
+    final localCharacters = await _ref.read(characterDaoProvider).findAll();
     RSLogger.d('キャラ情報を取得しました。 リモートのデータ件数=${response.characters.length} 端末に登録されているデータ件数=${localCharacters.length}');
 
     final newCharacters = await merge(response.characters, localCharacters);
-    await _read(characterDaoProvider).refresh(newCharacters);
+    await _ref.read(characterDaoProvider).refresh(newCharacters);
   }
 
   ///
@@ -95,7 +95,7 @@ class _CharacterRepository {
     String? iconFilePath = styles?.firstWhereOrNull((ls) => ls.rank == styleResponse.rank)?.iconFilePath;
     if (iconFilePath == null) {
       RSLogger.d(' スタイル ${styleResponse.rank} はアイコン未取得なのでリモートから取得');
-      iconFilePath = await _read(characterApiProvider).findIconUrl(styleResponse.iconFileName);
+      iconFilePath = await _ref.read(characterApiProvider).findIconUrl(styleResponse.iconFileName);
     }
 
     return Style(
@@ -117,40 +117,40 @@ class _CharacterRepository {
   }
 
   Future<int> count() async {
-    return await _read(characterDaoProvider).count();
+    return await _ref.read(characterDaoProvider).count();
   }
 
   Future<List<Style>> findStyles(int id) async {
-    return _read(characterDaoProvider).findStyles(id);
+    return _ref.read(characterDaoProvider).findStyles(id);
   }
 
   Future<void> saveSelectedRank(int id, String rank, String iconFilePath) async {
-    await _read(characterDaoProvider).saveSelectedStyle(id, rank, iconFilePath);
+    await _ref.read(characterDaoProvider).saveSelectedStyle(id, rank, iconFilePath);
   }
 
   Future<void> saveStatusUpEvent(int id, bool statusUpEvent) async {
-    await _read(characterDaoProvider).saveStatusUpEvent(id, statusUpEvent);
+    await _ref.read(characterDaoProvider).saveStatusUpEvent(id, statusUpEvent);
   }
 
   Future<void> refreshIcon(Style style, bool isSelected) async {
     RSLogger.d('アイコンをサーバーから再取得します。（このアイコンをデフォルトにしているか？ $isSelected)');
-    final newIconFilePath = await _read(characterApiProvider).findIconUrl(style.iconFileName);
+    final newIconFilePath = await _ref.read(characterApiProvider).findIconUrl(style.iconFileName);
     RSLogger.d('新しいアイコンパス $newIconFilePath');
-    await _read(characterDaoProvider).updateStyleIcon(style.characterId, style.rank, newIconFilePath);
+    await _ref.read(characterDaoProvider).updateStyleIcon(style.characterId, style.rank, newIconFilePath);
     if (isSelected) {
       await saveSelectedRank(style.characterId, style.rank, newIconFilePath);
     }
   }
 
   Future<void> saveFavorite(int id, bool favorite) async {
-    final status = await _read(myStatusDaoProvider).find(id) ?? MyStatus.empty(id);
+    final status = await _ref.read(myStatusDaoProvider).find(id) ?? MyStatus.empty(id);
     status.favorite = favorite;
-    await _read(myStatusDaoProvider).save(status);
+    await _ref.read(myStatusDaoProvider).save(status);
   }
 
   Future<void> saveHighLevel(int id, bool highLevel) async {
-    final status = await _read(myStatusDaoProvider).find(id) ?? MyStatus.empty(id);
+    final status = await _ref.read(myStatusDaoProvider).find(id) ?? MyStatus.empty(id);
     status.useHighLevel = highLevel;
-    await _read(myStatusDaoProvider).save(status);
+    await _ref.read(myStatusDaoProvider).save(status);
   }
 }

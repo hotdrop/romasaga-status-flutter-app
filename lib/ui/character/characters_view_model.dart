@@ -3,31 +3,31 @@ import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/models/character.dart';
 
 final charactersViewModelProvider = StateNotifierProvider.autoDispose<_CharactersViewModel, AsyncValue<void>>((ref) {
-  return _CharactersViewModel(ref.read);
+  return _CharactersViewModel(ref);
 });
 
 class _CharactersViewModel extends StateNotifier<AsyncValue<void>> {
-  _CharactersViewModel(this._read) : super(const AsyncValue.loading()) {
+  _CharactersViewModel(this._ref) : super(const AsyncValue.loading()) {
     _init();
   }
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<void> _init() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      if (_read(characterSNProvider).isEmpty) {
-        await _read(characterSNProvider.notifier).refresh();
+      if (_ref.read(characterSNProvider).isEmpty) {
+        await _ref.read(characterSNProvider.notifier).refresh();
       }
     });
   }
 
   Future<void> refresh() async {
-    await _read(characterSNProvider.notifier).refresh();
+    await _ref.read(characterSNProvider.notifier).refresh();
   }
 
   Future<void> selectOrder(CharacterListOrderType type) async {
-    await _read(appSettingsProvider.notifier).setCharacterListOrder(type);
+    await _ref.read(appSettingsProvider.notifier).setCharacterListOrder(type);
   }
 }
 
