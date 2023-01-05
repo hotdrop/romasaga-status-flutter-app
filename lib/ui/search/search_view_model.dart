@@ -1,115 +1,60 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/production.dart';
 import 'package:rsapp/models/weapon.dart';
 
-final searchViewModel = StateNotifierProvider.autoDispose<_SearchViewModel, AsyncValue<void>>((ref) {
-  return _SearchViewModel(ref.read);
-});
+part 'search_view_model.g.dart';
 
-class _SearchViewModel extends StateNotifier<AsyncValue<void>> {
-  _SearchViewModel(this._read) : super(const AsyncValue.loading());
-
-  final Reader _read;
-
-  Future<void> init() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      await _read(characterSNProvider.notifier).refresh();
-      final characters = _read(characterSNProvider);
-      _read(_uiStateProvider.notifier).init(characters);
-    });
-  }
+@riverpod
+class SearchViewModel extends _$SearchViewModel {
+  @override
+  void build() {}
 
   void changeSearchMode() {
-    _read(_uiStateProvider.notifier).switchSearchMode();
-  }
-
-  void findByKeyword(String word) {
-    _read(_uiStateProvider.notifier).searchKeyword(word);
-  }
-
-  void filterCategory({required bool favorite, required bool highLevel, required bool around}) {
-    _read(_uiStateProvider.notifier).setFilterCategory(isFavorite: favorite, isUseHighLevel: highLevel, isUseAround: around);
-  }
-
-  void findByWeaponType(WeaponType type) {
-    _read(_uiStateProvider.notifier).searchWeaponType(type);
-  }
-
-  void findByAttributeType(AttributeType type) {
-    _read(_uiStateProvider.notifier).searchAttributeType(type);
-  }
-
-  void findByProduction(ProductionType type) {
-    _read(_uiStateProvider.notifier).searchProductionType(type);
-  }
-
-  void clearFilterWeapon() {
-    _read(_uiStateProvider.notifier).clearWeaponType();
-  }
-
-  void clearFilterAttribute() {
-    _read(_uiStateProvider.notifier).clearAttributeType();
-  }
-
-  void clearFilterProduction() {
-    _read(_uiStateProvider.notifier).clearProductionType();
-  }
-}
-
-final _uiStateProvider = StateNotifierProvider<_UiStateNotifier, _UiState>((ref) {
-  return _UiStateNotifier(_UiState.empty());
-});
-
-class _UiStateNotifier extends StateNotifier<_UiState> {
-  _UiStateNotifier(_UiState state) : super(state);
-
-  void init(List<Character> characters) {
-    state = _UiState(isKeywordSearch: false);
-  }
-
-  void switchSearchMode() {
-    if (state.isKeywordSearch) {
-      state = state.copyWithClear(isKeywordSearch: false, keyword: true);
+    final uiState = ref.read(_uiStateProvider);
+    if (uiState.isKeywordSearch) {
+      ref.read(_uiStateProvider.notifier).update((state) => state.copyWithClear(isKeywordSearch: false, keyword: true));
     } else {
-      state = state.copyWith(isKeywordSearch: true);
+      ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(isKeywordSearch: true));
     }
   }
 
-  void searchKeyword(String word) {
-    state = state.copyWith(keyword: word);
+  void findByKeyword(String word) {
+    ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(keyword: word));
   }
 
-  void setFilterCategory({required bool isFavorite, required bool isUseHighLevel, required bool isUseAround}) {
-    state = state.copyWith(isFavorite: isFavorite, isUseHighLevel: isUseHighLevel, isUseAround: isUseAround);
+  void filterCategory({required bool favorite, required bool highLevel, required bool around}) {
+    ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(isFavorite: favorite, isUseHighLevel: highLevel, isUseAround: around));
   }
 
-  void searchWeaponType(WeaponType? type) {
-    state = state.copyWith(weaponType: type);
+  void findByWeaponType(WeaponType type) {
+    ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(weaponType: type));
   }
 
-  void searchAttributeType(AttributeType? type) {
-    state = state.copyWith(attributeType: type);
+  void findByAttributeType(AttributeType type) {
+    ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(attributeType: type));
   }
 
-  void searchProductionType(ProductionType? type) {
-    state = state.copyWith(productionType: type);
+  void findByProduction(ProductionType type) {
+    ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(productionType: type));
   }
 
-  void clearWeaponType() {
-    state = state.copyWithClear(weaponType: true);
+  void clearFilterWeapon() {
+    ref.read(_uiStateProvider.notifier).update((state) => state.copyWithClear(weaponType: true));
   }
 
-  void clearAttributeType() {
-    state = state.copyWithClear(attributeType: true);
+  void clearFilterAttribute() {
+    ref.read(_uiStateProvider.notifier).update((state) => state.copyWithClear(attributeType: true));
   }
 
-  void clearProductionType() {
-    state = state.copyWithClear(productionType: true);
+  void clearFilterProduction() {
+    ref.read(_uiStateProvider.notifier).update((state) => state.copyWithClear(productionType: true));
   }
 }
+
+final _uiStateProvider = StateProvider<_UiState>((ref) => _UiState.empty());
 
 class _UiState {
   _UiState({
@@ -204,8 +149,13 @@ class _UiState {
   /// nullは絞り込みクリアと同義なのでcopyWithで初期化できない。
   /// そのため絞り込みをクリアするためのclearメソッドを別途設ける
   ///
-  _UiState copyWithClear(
-      {bool? isKeywordSearch, bool keyword = false, bool weaponType = false, bool attributeType = false, bool productionType = false}) {
+  _UiState copyWithClear({
+    bool? isKeywordSearch,
+    bool keyword = false,
+    bool weaponType = false,
+    bool attributeType = false,
+    bool productionType = false,
+  }) {
     return _UiState(
       isKeywordSearch: isKeywordSearch ?? this.isKeywordSearch,
       keyword: keyword ? null : this.keyword,
@@ -245,7 +195,7 @@ class _UiState {
 final searchCharacterProvider = Provider<List<Character>>((ref) {
   final uiState = ref.watch(_uiStateProvider);
   return ref
-      .watch(characterSNProvider)
+      .watch(characterProvider)
       .where((c) => uiState.filterWord(targetName: c.name, targetProduction: c.production))
       .where((c) => uiState.filterCategory(c.myStatus?.favorite ?? false, c.myStatus?.useHighLevel ?? false))
       .where((c) => uiState.filterWeaponType(c.weapons))

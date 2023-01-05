@@ -41,7 +41,8 @@ class RowCharacterItem extends StatelessWidget {
   }
 
   Future<void> _onTap(BuildContext context) async {
-    bool isUpdate = await CharacterDetailPage.start(context, character);
+    bool isUpdate = await CharacterDetailPage.start(context, character.id);
+    // TODO isUpdateいらない
     RSLogger.d('詳細画面でステータスが更新されたか？ $isUpdate');
     if (isUpdate) {
       await refreshListener();

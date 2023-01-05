@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:rsapp/models/character.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/attribute.dart';
@@ -11,29 +10,15 @@ import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/search/search_view_model.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
-import 'package:rsapp/ui/widget/view_loading.dart';
 
-class SearchPage extends ConsumerWidget {
+class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(searchViewModelProvider).when(
-          data: (_) => const _OnViewSuccess(),
-          error: (err, _) => OnViewLoading(errorMessage: '$err'),
-          loading: () => const OnViewLoading(),
-        );
-  }
+  State<StatefulWidget> createState() => _SearchPageState();
 }
 
-class _OnViewSuccess extends StatefulWidget {
-  const _OnViewSuccess();
-
-  @override
-  State<StatefulWidget> createState() => __OnViewSuccessState();
-}
-
-class __OnViewSuccessState extends State<_OnViewSuccess> {
+class _SearchPageState extends State<SearchPage> {
   bool _visibleFab = true;
 
   @override
@@ -126,7 +111,8 @@ class _ViewCharacters extends ConsumerWidget {
       itemCount: characters.length,
       itemBuilder: (_, index) {
         return RowCharacterItem(characters[index], refreshListener: () async {
-          await ref.read(characterSNProvider.notifier).refresh();
+          // TODO キャラの更新はRowの先の詳細画面でやる
+          // await ref.read(characterSNProvider.notifier).refresh();
         });
       },
     );

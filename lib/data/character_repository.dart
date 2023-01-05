@@ -24,7 +24,6 @@ class _CharacterRepository {
   ///
   Future<List<Character>> findAll() async {
     var characters = await _ref.read(characterDaoProvider).findAll();
-    RSLogger.d('データ取得完了 件数=${characters.length}');
     return characters;
   }
 
@@ -39,6 +38,7 @@ class _CharacterRepository {
 
     final newCharacters = await merge(response.characters, localCharacters);
     await _ref.read(characterDaoProvider).refresh(newCharacters);
+    // TODO ここで characterProvider をinvalidateする
   }
 
   ///

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/status.dart';
 import 'package:rsapp/models/weapon.dart';
@@ -18,42 +17,30 @@ import 'package:rsapp/ui/widget/app_line.dart';
 import 'package:rsapp/ui/widget/view_loading.dart';
 
 class CharacterDetailPage extends ConsumerWidget {
-  const CharacterDetailPage._(this.character);
+  const CharacterDetailPage._(this.id);
 
-  static Future<bool> start(BuildContext context, Character character) async {
+  static Future<bool> start(BuildContext context, int id) async {
     return await Navigator.push<bool>(
           context,
-          MaterialPageRoute(builder: (_) => CharacterDetailPage._(character)),
+          MaterialPageRoute(builder: (_) => CharacterDetailPage._(id)),
         ) ??
         false;
   }
 
-  final Character character;
+  final int id;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ProviderScope(
-      overrides: [
-        characterDetailViewModel.overrideWithProvider(characterDetailFamilyViewModel(character)),
-      ],
-      child: Consumer(
-        builder: ((context, ref, child) {
-          return ref.watch(characterDetailViewModel).when(
-                data: (_) => _onSuccess(context, ref),
-                error: (err, _) => OnViewLoading(title: RSStrings.detailPageTitle, errorMessage: '$err'),
-                loading: () {
-                  Future<void>.delayed(Duration.zero).then((_) async {
-                    await ref.read(characterDetailViewModel.notifier).init();
-                  });
-                  return const OnViewLoading(title: RSStrings.detailPageTitle);
-                },
-              );
-        }),
-      ),
-    );
+    final character = ref.watch(characterProvider.select((chars) => chars.firstWhere((c) => c.id == id)));
+    // TODO ここ変更する
+    return ref.watch(characterDetailViewModelProvider(character)).when(
+          data: (_) => _onSuccess(context, ref, character),
+          error: (err, _) => OnViewLoading(title: RSStrings.detailPageTitle, errorMessage: '$err'),
+          loading: () => const OnViewLoading(title: RSStrings.detailPageTitle),
+        );
   }
 
-  Widget _onSuccess(BuildContext context, WidgetRef ref) {
+  Widget _onSuccess(BuildContext context, WidgetRef ref, Character character) {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(title: const Text(RSStrings.detailPageTitle)),
@@ -68,8 +55,8 @@ class CharacterDetailPage extends ConsumerWidget {
                 const SizedBox(height: 8),
                 StatusTable(
                   character: character,
-                  ranks: ref.read(characterDetailViewModel.notifier).allRank,
-                  statusLimit: ref.read(characterDetailViewModel.notifier).statusLimit,
+                  ranks: ref.read(characterDetailMethodsProvider).allRank,
+                  statusLimit: ref.read(characterDetailMethodsProvider).statusLimit,
                 ),
                 const SizedBox(height: 24),
               ],
@@ -134,10 +121,10 @@ class _ViewCharacterInfo extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              ref.read(characterDetailViewModel.notifier).production,
+              ref.read(characterDetailMethodsProvider).production,
               style: Theme.of(context).textTheme.caption,
             ),
-            Text(ref.read(characterDetailViewModel.notifier).name),
+            Text(ref.read(characterDetailMethodsProvider).name),
             const _ViewSelectStyleTitle(),
           ],
         ),
@@ -166,7 +153,7 @@ class _ViewSelectStyleIcon extends ConsumerWidget {
   Future<void> _processOnTapCharacterIcon(BuildContext context, WidgetRef ref) async {
     await AppDialog.okAndCancel(
       message: RSStrings.detailPageChangeStyleIconDialogMessage,
-      onOk: () => ref.read(characterDetailViewModel.notifier).updateDefaultStyle(),
+      onOk: () => ref.read(characterDetailMethodsProvider).updateDefaultStyle(),
     ).show(context);
   }
 
@@ -177,7 +164,7 @@ class _ViewSelectStyleIcon extends ConsumerWidget {
         const progressDialog = AppProgressDialog<void>();
         await progressDialog.show(
           context,
-          execute: ref.read(characterDetailViewModel.notifier).refreshIcon,
+          execute: ref.read(characterDetailMethodsProvider).refreshIcon,
           onSuccess: (_) async {
             /* 成功時は何もしない */
           },
@@ -222,7 +209,7 @@ class _ViewAttributeIcons extends ConsumerWidget {
   List<Widget> _viewIconsAttr(WidgetRef ref) {
     final widgets = <Widget>[];
 
-    final weapons = ref.read(characterDetailViewModel.notifier).weapons;
+    final weapons = ref.read(characterDetailMethodsProvider).weapons;
     for (var w in weapons) {
       widgets.add(WeaponIcon.normal(w.type));
     }
@@ -233,7 +220,7 @@ class _ViewAttributeIcons extends ConsumerWidget {
       }
     }
 
-    final attrs = ref.read(characterDetailViewModel.notifier).attributes;
+    final attrs = ref.read(characterDetailMethodsProvider).attributes;
     if (attrs == null || attrs.isEmpty) {
       return widgets;
     }
@@ -258,10 +245,10 @@ class _ViewStyleChips extends ConsumerWidget {
     return Wrap(
       children: <Widget>[
         RankChoiceChip(
-          ranks: ref.read(characterDetailViewModel.notifier).allRank,
+          ranks: ref.read(characterDetailMethodsProvider).allRank,
           initSelectedRank: ref.watch(characterDetailSelectStyleStateProvider).rank,
           onSelectedListener: (rank) {
-            ref.read(characterDetailViewModel.notifier).onSelectRank(rank);
+            ref.read(characterDetailMethodsProvider).onSelectRank(rank);
           },
         ),
       ],
@@ -314,7 +301,7 @@ class _ViewTotalStatusCircleGraph extends ConsumerWidget {
 
     return TotalStatusCircleGraph(
       totalStatus: ref.watch(characterDetailMyStatusStateProvider)?.sumWithoutHp() ?? 0,
-      limitStatus: selectedStyleSum + (8 * ref.read(characterDetailViewModel.notifier).statusLimit),
+      limitStatus: selectedStyleSum + (8 * ref.read(characterDetailMethodsProvider).statusLimit),
     );
   }
 }
@@ -356,7 +343,7 @@ class _ViewStageName extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(RSStrings.detailPageStageLabel, style: Theme.of(context).textTheme.caption),
-              Text(ref.read(characterDetailViewModel.notifier).stageName),
+              Text(ref.read(characterDetailMethodsProvider).stageName),
             ],
           ),
         )
@@ -382,7 +369,7 @@ class _ViewStageLimit extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(RSStrings.detailPageStatusLimitLabel, style: Theme.of(context).textTheme.caption),
-              Text('+${ref.read(characterDetailViewModel.notifier).statusLimit}'),
+              Text('+${ref.read(characterDetailMethodsProvider).statusLimit}'),
             ],
           ),
         )
@@ -401,7 +388,7 @@ class _ViewHpGraph extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return HpGraph(
       status: ref.watch(characterDetailMyStatusStateProvider)?.hp ?? 0,
-      limit: ref.read(characterDetailViewModel.notifier).hpLimit,
+      limit: ref.read(characterDetailMethodsProvider).hpLimit,
     );
   }
 }
@@ -416,7 +403,7 @@ class _ViewEachStatusGraph extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final myStatus = ref.watch(characterDetailMyStatusStateProvider);
     final selectStyle = ref.watch(characterDetailSelectStyleStateProvider);
-    final limit = ref.read(characterDetailViewModel.notifier).statusLimit;
+    final limit = ref.read(characterDetailMethodsProvider).statusLimit;
 
     return Column(
       children: [
@@ -457,11 +444,11 @@ class _ViewEditStatusFab extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.edit),
       onPressed: () async {
-        final myStatus = ref.read(characterDetailMyStatusStateProvider) ?? MyStatus.empty(ref.read(characterDetailViewModel.notifier).id);
+        final myStatus = ref.read(characterDetailMyStatusStateProvider) ?? MyStatus.empty(ref.read(characterDetailMethodsProvider).id);
         final isSaved = await StatusEditPage.start(context, myStatus);
         if (isSaved) {
-          RSLogger.d('詳細画面で値が保存されたのでステータスを更新します。');
-          await ref.read(characterDetailViewModel.notifier).refreshMyStatus();
+          // TODO ここは更新しない
+          // await ref.read(characterDetailMethodsProvider).refreshMyStatus();
         }
       },
     );
@@ -508,7 +495,7 @@ class _ViewStatusUpEventIcon extends ConsumerWidget {
       ),
       iconSize: 28.0,
       onPressed: () async {
-        await ref.read(characterDetailViewModel.notifier).saveStatusUpEvent(!isSelected);
+        await ref.read(characterDetailMethodsProvider).saveStatusUpEvent(!isSelected);
       },
     );
   }
@@ -530,7 +517,7 @@ class _ViewHighLevelIcon extends ConsumerWidget {
           ? const Text(RSStrings.highLevelLabel, style: TextStyle(color: RSColors.highLevelSelected, fontSize: 20))
           : const Text(RSStrings.aroundLabel, style: TextStyle(color: RSColors.aroundSelected, fontSize: 20)),
       onPressed: () async {
-        await ref.read(characterDetailViewModel.notifier).saveHighLevel(!isSelected);
+        await ref.read(characterDetailMethodsProvider).saveHighLevel(!isSelected);
       },
     );
   }
@@ -552,7 +539,7 @@ class _ViewFavoriteIcon extends ConsumerWidget {
           : Icon(Icons.star_border_rounded, color: Theme.of(context).disabledColor),
       iconSize: 28.0,
       onPressed: () async {
-        await ref.read(characterDetailViewModel.notifier).saveFavorite(!isSelected);
+        await ref.read(characterDetailMethodsProvider).saveFavorite(!isSelected);
       },
     );
   }

@@ -8,19 +8,21 @@ import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:collection/collection.dart';
 
-final characterSNProvider = StateNotifierProvider<_CharacterNotifier, List<Character>>((ref) {
-  return _CharacterNotifier(ref);
-});
+// キャラクターデータは全てこのProviderを参照、更新する
+final characterProvider = NotifierProvider<CharacterNotifier, List<Character>>(CharacterNotifier.new);
 
-class _CharacterNotifier extends StateNotifier<List<Character>> {
-  _CharacterNotifier(this._ref) : super(<Character>[]);
+class CharacterNotifier extends Notifier<List<Character>> {
+  @override
+  List<Character> build() {
+    return [];
+  }
 
-  final Ref _ref;
-
-  Future<void> refresh() async {
-    RSLogger.d('保持しているキャラ情報を更新します。');
-    final characters = await _ref.read(characterRepositoryProvider).findAll();
-    final myStatuses = await _ref.read(myStatusRepositoryProvider).findAll();
+  ///
+  /// アプリ起動時、最初の1度だけ実行する
+  ///
+  Future<void> init() async {
+    final characters = await ref.read(characterRepositoryProvider).findAll();
+    final myStatuses = await ref.read(myStatusRepositoryProvider).findAll();
     state = await _merge(characters, myStatuses);
   }
 
