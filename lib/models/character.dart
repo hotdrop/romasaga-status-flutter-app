@@ -43,6 +43,67 @@ class CharacterNotifier extends Notifier<List<Character>> {
       return characters;
     }
   }
+
+  ///
+  /// 選択したスタイルをデフォルトスタイルに更新する
+  ///
+  Future<void> updateDefaultStyle({required int selectedCharacterId, required Style selectedStyle}) async {
+    await ref.read(characterRepositoryProvider).saveSelectedRank(selectedCharacterId, selectedStyle.rank, selectedStyle.iconFilePath);
+    _replace(
+      newChara: state.where((e) => e.id == selectedCharacterId).first.copyWith(
+            selectedStyleRank: selectedStyle.rank,
+            selectedIconFilePath: selectedStyle.iconFilePath,
+          ),
+    );
+  }
+
+  ///
+  /// サーバーから最新のアイコンパスを取得し画像データを更新する
+  /// 画像はキャッシュしているのでこの処理が必要
+  ///
+  Future<void> refreshIcon({required int id, required Style selectedStyle}) async {
+    final target = state.where((e) => e.id == id).first;
+    final isAlreadySelected = (target.selectedStyleRank == selectedStyle.rank);
+    await ref.read(characterRepositoryProvider).refreshIcon(selectedStyle, isAlreadySelected);
+
+    final newStyles = await ref.read(characterRepositoryProvider).findStyles(target.id);
+    _replace(newChara: target.copyWith(styles: newStyles));
+  }
+
+  ///
+  /// イベント対象フラグの更新
+  ///
+  Future<void> saveStatusUpEvent({required int id, required bool statusUpEvent}) async {
+    await ref.read(characterRepositoryProvider).saveStatusUpEvent(id, statusUpEvent);
+    _replace(
+      newChara: state.where((e) => e.id == id).first.copyWith(statusUpEvent: statusUpEvent),
+    );
+  }
+
+  ///
+  /// 高難易度フラグの更新
+  ///
+  Future<void> saveHighLevel({required int id, required bool useHighLevel}) async {
+    await ref.read(characterRepositoryProvider).saveHighLevel(id, useHighLevel);
+    _replace(
+      newChara: state.where((e) => e.id == id).first.copyWith(statusUpEvent: useHighLevel),
+    );
+  }
+
+  ///
+  /// お気に入りフラグの更新
+  ///
+  Future<void> saveFavorite({required int id, required bool favorite}) async {
+    await ref.read(characterRepositoryProvider).saveFavorite(id, favorite);
+    _replace(
+      newChara: state.where((e) => e.id == id).first.copyWith(statusUpEvent: favorite),
+    );
+  }
+
+  void _replace({required Character newChara}) {
+    final idx = state.indexWhere((chara) => chara.id == newChara.id);
+    state = List.of(state)..[idx] = newChara;
+  }
 }
 
 class Character {
