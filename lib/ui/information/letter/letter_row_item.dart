@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/letter.dart';
 import 'package:rsapp/ui/information/letter/letter_detail_page.dart';
@@ -20,7 +21,7 @@ class LetterRowItem extends StatelessWidget {
         child: Column(
           children: <Widget>[
             if (imagePath != null) _ViewImage(imagePath: imagePath, letter: currentLetter),
-            if (imagePath == null) _ErrorIcon(res: currentLetter.loadingIcon),
+            if (imagePath == null) _ErrorIcon(),
             _ViewImageTitle(letter: currentLetter),
           ],
         ),
@@ -43,40 +44,36 @@ class _ViewImage extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: imagePath,
       fit: BoxFit.fill,
-      placeholder: (context, url) => _LoadingIcon(res: letter.loadingIcon),
-      errorWidget: (context, url, dynamic error) => _ErrorIcon(res: letter.loadingIcon),
+      placeholder: (context, url) => const _LoadingIcon(),
+      errorWidget: (context, url, dynamic error) => const _ErrorIcon(),
     );
   }
 }
 
 class _LoadingIcon extends StatelessWidget {
-  const _LoadingIcon({required this.res});
-
-  final String res;
+  const _LoadingIcon();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Image.asset(res),
-        const Padding(padding: EdgeInsets.only(top: 8), child: Text(RSStrings.letterNowLoading)),
+      children: [
+        Image.asset(RSImages.gifLoading),
+        const Padding(padding: EdgeInsets.only(top: 8), child: Text(RSStrings.nowLoading)),
       ],
     );
   }
 }
 
 class _ErrorIcon extends StatelessWidget {
-  const _ErrorIcon({required this.res});
-
-  final String res;
+  const _ErrorIcon();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Image.asset(res),
+      children: [
+        Image.asset(RSImages.gifLoading),
         const SizedBox(height: 8),
         const Text(RSStrings.letterLoadingFailure, style: TextStyle(color: Colors.red)),
       ],

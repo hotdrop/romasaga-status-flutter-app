@@ -63,8 +63,6 @@ class RSImages {
   static const String icStatusAttr = '$_rootIconsPath/icon_status_attr.png';
 
   // gif
-  static const String gifLoadingSpring = '$_rootIconsPath/loading_spring.gif';
-  static const String gifLoadingSummer = '$_rootIconsPath/loading_summer.gif';
-  static const String gifLoadingFall = '$_rootIconsPath/loading_fall.gif';
-  static const String gifLoadingWinter = '$_rootIconsPath/loading_winter.gif';
+  static const String gifLoading = '$_rootIconsPath/view_loading.gif';
+  static const String gifLoadingQueen = '$_rootIconsPath/view_loading_queen.gif';
 }

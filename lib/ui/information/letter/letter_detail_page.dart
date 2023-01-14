@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_video_player/cached_video_player.dart';
 import 'package:rsapp/models/letter.dart';
+import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/res/rs_colors.dart';
 
@@ -108,7 +109,7 @@ class _VideoViewState extends State<_VideoView> {
   @override
   Widget build(BuildContext context) {
     if (widget.letter.videoFilePath == null) {
-      return _ViewProcessError(loadingIcon: widget.letter.loadingIcon);
+      return const _ViewProcessError();
     }
 
     if (isInitialized()) {
@@ -117,7 +118,7 @@ class _VideoViewState extends State<_VideoView> {
         child: VideoPlayer(_controller!),
       );
     } else {
-      return _ViewProcessLoading(loadingIcon: widget.letter.loadingIcon);
+      return const _ViewProcessLoading();
     }
   }
 
@@ -133,9 +134,7 @@ class _VideoViewState extends State<_VideoView> {
 }
 
 class _ViewProcessLoading extends StatelessWidget {
-  const _ViewProcessLoading({required this.loadingIcon});
-
-  final String loadingIcon;
+  const _ViewProcessLoading();
 
   @override
   Widget build(BuildContext context) {
@@ -143,18 +142,16 @@ class _ViewProcessLoading extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         const SizedBox(height: 108),
-        Image.asset(loadingIcon),
+        Image.asset(RSImages.gifLoading),
         const SizedBox(height: 8),
-        const Text(RSStrings.letterNowLoading),
+        const Text(RSStrings.nowLoading),
       ],
     );
   }
 }
 
 class _ViewProcessError extends StatelessWidget {
-  const _ViewProcessError({required this.loadingIcon});
-
-  final String loadingIcon;
+  const _ViewProcessError();
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +159,7 @@ class _ViewProcessError extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         const SizedBox(height: 108),
-        Image.asset(loadingIcon),
+        Image.asset(RSImages.gifLoading),
         const SizedBox(height: 8),
         const Text(
           RSStrings.letterLoadingFailure,

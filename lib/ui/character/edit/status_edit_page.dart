@@ -4,6 +4,7 @@ import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/character/edit/row_status_counter.dart';
 import 'package:rsapp/ui/character/edit/status_edit_view_model.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class StatusEditPage extends ConsumerWidget {
   const StatusEditPage._(this.id);
@@ -19,15 +20,17 @@ class StatusEditPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(statusEditViewModelProvider(id));
-
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text(RSStrings.statusEditTitle),
         ),
-        body: const _ViewBody(),
+        body: ref.watch(statusEditViewModelProvider(id)).when(
+              data: (_) => const _ViewBody(),
+              error: (error, stackTrace) => ViewLoading(errorMessage: '$error'),
+              loading: () => const ViewLoading(),
+            ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.save),

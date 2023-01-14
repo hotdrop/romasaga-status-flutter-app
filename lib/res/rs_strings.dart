@@ -1,7 +1,9 @@
 class RSStrings {
   RSStrings._();
 
+  // 共通
   static const String appTitle = 'ロマサガRSステータス管理';
+  static const String nowLoading = 'Now Loading...';
 
   static const String bottomMenuCharacter = 'キャラ';
   static const String bottomMenuSearch = '検索';
@@ -56,7 +58,6 @@ class RSStrings {
   static const String letterDetailPageTitle = '運営からのお便り詳細';
   static const String letterNothingMessage = '運営からのお便りデータが0件でした。';
   static const String letterLoadingErrorMessage = '運営からのお便りデータ取得に失敗しました。';
-  static const String letterNowLoading = 'Now Loading...';
   static const String letterLoadingFailure = '画像取得エラー！';
   static const String letterYearLabel = '年';
   static const String letterMonthLabel = '月';

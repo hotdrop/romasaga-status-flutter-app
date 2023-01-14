@@ -8,8 +8,11 @@ part 'status_edit_view_model.g.dart';
 @riverpod
 class StatusEditViewModel extends _$StatusEditViewModel {
   @override
-  void build(int id) {
-    ref.read(_uiStateProvider.notifier).state = _UiState.create(id: id);
+  Future<void> build(int id) async {
+    // ここで_uiStateProviderを同期更新してしまうとWidgetのbuild中に更新することになるので非同期にする
+    Future<void>.delayed(Duration.zero).then((value) {
+      ref.read(_uiStateProvider.notifier).state = _UiState.create(id: id);
+    });
   }
 }
 
