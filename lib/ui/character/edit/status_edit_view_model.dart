@@ -18,57 +18,108 @@ class StatusEditMethods extends _$StatusEditMethods {
   @override
   void build() {}
 
-  void updateHp(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(hp: newVal));
-  void updateStr(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(str: newVal));
-  void updateVit(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(vit: newVal));
-  void updateDex(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(dex: newVal));
-  void updateAgi(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(agi: newVal));
-  void updateInt(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(inte: newVal));
-  void updateSpi(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(spi: newVal));
-  void updateLove(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(love: newVal));
-  void updateAttr(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(attr: newVal));
-
-  ///
-  /// 編集モードがManualの場合はこのメソッドでステータスを反映する
-  /// モードがeachの場合は元のステータスの差分値のみが、Manualの場合は元のステータスに加減算された最終値がそれぞれ取得される
-  /// uiStateで保持する際はどちらかに合わせたかったのでeachに統一してManual時も差分値を保持するようにしている。
-  /// そのため、わざわざcurrentValから減算している
-  ///
-  void updateManualInput(StatusType type, int newVal) {
-    switch (type) {
-      case StatusType.hp:
+  void updateHp(int newVal) {
+    switch (ref.read(statusEditModeProvider)) {
+      case EditMode.each:
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(hp: newVal));
+        break;
+      case EditMode.manual:
         final currentVal = ref.read(statusEditCurrentMyStatusProvider).hp;
         ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(hp: newVal - currentVal));
         break;
-      case StatusType.str:
+    }
+  }
+
+  void updateStr(int newVal) {
+    switch (ref.read(statusEditModeProvider)) {
+      case EditMode.each:
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(str: newVal));
+        break;
+      case EditMode.manual:
         final currentVal = ref.read(statusEditCurrentMyStatusProvider).str;
         ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(str: newVal - currentVal));
         break;
-      case StatusType.vit:
+    }
+  }
+
+  void updateVit(int newVal) {
+    switch (ref.read(statusEditModeProvider)) {
+      case EditMode.each:
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(vit: newVal));
+        break;
+      case EditMode.manual:
         final currentVal = ref.read(statusEditCurrentMyStatusProvider).vit;
         ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(vit: newVal - currentVal));
         break;
-      case StatusType.dex:
+    }
+  }
+
+  void updateDex(int newVal) {
+    switch (ref.read(statusEditModeProvider)) {
+      case EditMode.each:
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(dex: newVal));
+        break;
+      case EditMode.manual:
         final currentVal = ref.read(statusEditCurrentMyStatusProvider).dex;
         ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(dex: newVal - currentVal));
         break;
-      case StatusType.agi:
+    }
+  }
+
+  void updateAgi(int newVal) {
+    switch (ref.read(statusEditModeProvider)) {
+      case EditMode.each:
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(agi: newVal));
+        break;
+      case EditMode.manual:
         final currentVal = ref.read(statusEditCurrentMyStatusProvider).agi;
         ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(agi: newVal - currentVal));
         break;
-      case StatusType.inte:
+    }
+  }
+
+  void updateInt(int newVal) {
+    switch (ref.read(statusEditModeProvider)) {
+      case EditMode.each:
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(inte: newVal));
+        break;
+      case EditMode.manual:
         final currentVal = ref.read(statusEditCurrentMyStatusProvider).inte;
         ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(inte: newVal - currentVal));
         break;
-      case StatusType.spirit:
+    }
+  }
+
+  void updateSpi(int newVal) {
+    switch (ref.read(statusEditModeProvider)) {
+      case EditMode.each:
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(spi: newVal));
+        break;
+      case EditMode.manual:
         final currentVal = ref.read(statusEditCurrentMyStatusProvider).spi;
         ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(spi: newVal - currentVal));
         break;
-      case StatusType.love:
+    }
+  }
+
+  void updateLove(int newVal) {
+    switch (ref.read(statusEditModeProvider)) {
+      case EditMode.each:
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(love: newVal));
+        break;
+      case EditMode.manual:
         final currentVal = ref.read(statusEditCurrentMyStatusProvider).love;
         ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(love: newVal - currentVal));
         break;
-      case StatusType.attr:
+    }
+  }
+
+  void updateAttr(int newVal) {
+    switch (ref.read(statusEditModeProvider)) {
+      case EditMode.each:
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(attr: newVal));
+        break;
+      case EditMode.manual:
         final currentVal = ref.read(statusEditCurrentMyStatusProvider).attr;
         ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(attr: newVal - currentVal));
         break;

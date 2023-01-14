@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rsapp/models/status.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/character/edit/row_status_counter.dart';
 import 'package:rsapp/ui/character/edit/status_edit_view_model.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
-import 'package:rsapp/ui/widget/view_loading.dart';
 
 class StatusEditPage extends ConsumerWidget {
   const StatusEditPage._(this.id);
@@ -51,11 +49,10 @@ class _ViewBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final editMode = ref.watch(statusEditModeProvider);
-
     if (editMode == EditMode.each) {
-      return _ViewCountLayout();
+      return const _ViewCountLayout();
     } else {
-      return _ViewManualLayout();
+      return const _ViewManualLayout();
     }
   }
 }
@@ -90,35 +87,33 @@ class _ViewCountLayout extends ConsumerWidget {
 ///
 /// 数値入力時のレイアウト
 ///
-class _ViewManualLayout extends ConsumerWidget {
+class _ViewManualLayout extends StatelessWidget {
   const _ViewManualLayout();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final myStatus = ref.watch(statusEditCurrentMyStatusProvider);
-
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: _ViewStatusEdit.hp(myStatus.hp),
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: _ViewStatusEditHp(),
             ),
             Wrap(
               runSpacing: 24,
               spacing: 24,
-              children: [
-                _ViewStatusEdit.str(myStatus.str),
-                _ViewStatusEdit.vit(myStatus.vit),
-                _ViewStatusEdit.dex(myStatus.dex),
-                _ViewStatusEdit.agi(myStatus.agi),
-                _ViewStatusEdit.int(myStatus.inte),
-                _ViewStatusEdit.spirit(myStatus.spi),
-                _ViewStatusEdit.love(myStatus.love),
-                _ViewStatusEdit.attr(myStatus.attr),
+              children: const [
+                _ViewStatusEditStr(),
+                _ViewStatusEditVit(),
+                _ViewStatusEditDex(),
+                _ViewStatusEditAgi(),
+                _ViewStatusEditInt(),
+                _ViewStatusEditSpi(),
+                _ViewStatusEditLove(),
+                _ViewStatusEditAttr(),
               ],
             ),
           ],
@@ -128,63 +123,165 @@ class _ViewManualLayout extends ConsumerWidget {
   }
 }
 
-class _ViewStatusEdit extends ConsumerWidget {
-  const _ViewStatusEdit._({
-    required this.type,
-    required this.status,
-    required this.statusName,
-  });
-
-  factory _ViewStatusEdit.hp(int status) {
-    return _ViewStatusEdit._(type: StatusType.hp, status: status, statusName: RSStrings.hpName);
-  }
-  factory _ViewStatusEdit.str(int status) {
-    return _ViewStatusEdit._(type: StatusType.str, status: status, statusName: RSStrings.strName);
-  }
-  factory _ViewStatusEdit.vit(int status) {
-    return _ViewStatusEdit._(type: StatusType.vit, status: status, statusName: RSStrings.vitName);
-  }
-  factory _ViewStatusEdit.dex(int status) {
-    return _ViewStatusEdit._(type: StatusType.dex, status: status, statusName: RSStrings.dexName);
-  }
-  factory _ViewStatusEdit.agi(int status) {
-    return _ViewStatusEdit._(type: StatusType.agi, status: status, statusName: RSStrings.agiName);
-  }
-  factory _ViewStatusEdit.int(int status) {
-    return _ViewStatusEdit._(type: StatusType.inte, status: status, statusName: RSStrings.intName);
-  }
-  factory _ViewStatusEdit.spirit(int status) {
-    return _ViewStatusEdit._(type: StatusType.spirit, status: status, statusName: RSStrings.spiName);
-  }
-  factory _ViewStatusEdit.love(int status) {
-    return _ViewStatusEdit._(type: StatusType.love, status: status, statusName: RSStrings.loveName);
-  }
-  factory _ViewStatusEdit.attr(int status) {
-    return _ViewStatusEdit._(type: StatusType.attr, status: status, statusName: RSStrings.attrName);
-  }
-
-  final StatusType type;
-  final String statusName;
-  final int status;
+class _ViewStatusEditHp extends ConsumerWidget {
+  const _ViewStatusEditHp();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentHp = ref.watch(statusEditCurrentMyStatusProvider.select((value) => value.hp));
+
     return SizedBox(
-      width: _width(context),
+      width: MediaQuery.of(context).size.width - 48,
       child: StatusEditField(
-        label: statusName,
-        initValue: status,
-        onChanged: (v) => ref.read(statusEditMethodsProvider.notifier).updateManualInput(type, v),
+        label: RSStrings.hpName,
+        initValue: currentHp,
+        onChanged: (v) => ref.read(statusEditMethodsProvider.notifier).updateHp(v),
       ),
     );
   }
+}
 
-  double _width(BuildContext context) {
-    if (type == StatusType.hp) {
-      return MediaQuery.of(context).size.width - 48;
-    } else {
-      return MediaQuery.of(context).size.width / 4;
-    }
+class _ViewStatusEditStr extends ConsumerWidget {
+  const _ViewStatusEditStr();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentStr = ref.watch(statusEditCurrentMyStatusProvider.select((value) => value.str));
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 4,
+      child: StatusEditField(
+        label: RSStrings.strName,
+        initValue: currentStr,
+        onChanged: (v) => ref.read(statusEditMethodsProvider.notifier).updateStr(v),
+      ),
+    );
+  }
+}
+
+class _ViewStatusEditVit extends ConsumerWidget {
+  const _ViewStatusEditVit();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentVit = ref.watch(statusEditCurrentMyStatusProvider.select((value) => value.vit));
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 4,
+      child: StatusEditField(
+        label: RSStrings.vitName,
+        initValue: currentVit,
+        onChanged: (v) => ref.read(statusEditMethodsProvider.notifier).updateVit(v),
+      ),
+    );
+  }
+}
+
+class _ViewStatusEditDex extends ConsumerWidget {
+  const _ViewStatusEditDex();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentDex = ref.watch(statusEditCurrentMyStatusProvider.select((value) => value.dex));
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 4,
+      child: StatusEditField(
+        label: RSStrings.dexName,
+        initValue: currentDex,
+        onChanged: (v) => ref.read(statusEditMethodsProvider.notifier).updateDex(v),
+      ),
+    );
+  }
+}
+
+class _ViewStatusEditAgi extends ConsumerWidget {
+  const _ViewStatusEditAgi();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentAgi = ref.watch(statusEditCurrentMyStatusProvider.select((value) => value.agi));
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 4,
+      child: StatusEditField(
+        label: RSStrings.agiName,
+        initValue: currentAgi,
+        onChanged: (v) => ref.read(statusEditMethodsProvider.notifier).updateAgi(v),
+      ),
+    );
+  }
+}
+
+class _ViewStatusEditInt extends ConsumerWidget {
+  const _ViewStatusEditInt();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentInt = ref.watch(statusEditCurrentMyStatusProvider.select((value) => value.inte));
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 4,
+      child: StatusEditField(
+        label: RSStrings.intName,
+        initValue: currentInt,
+        onChanged: (v) => ref.read(statusEditMethodsProvider.notifier).updateInt(v),
+      ),
+    );
+  }
+}
+
+class _ViewStatusEditSpi extends ConsumerWidget {
+  const _ViewStatusEditSpi();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentSpi = ref.watch(statusEditCurrentMyStatusProvider.select((value) => value.spi));
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 4,
+      child: StatusEditField(
+        label: RSStrings.spiName,
+        initValue: currentSpi,
+        onChanged: (v) => ref.read(statusEditMethodsProvider.notifier).updateSpi(v),
+      ),
+    );
+  }
+}
+
+class _ViewStatusEditLove extends ConsumerWidget {
+  const _ViewStatusEditLove();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentLove = ref.watch(statusEditCurrentMyStatusProvider.select((value) => value.love));
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 4,
+      child: StatusEditField(
+        label: RSStrings.loveName,
+        initValue: currentLove,
+        onChanged: (v) => ref.read(statusEditMethodsProvider.notifier).updateLove(v),
+      ),
+    );
+  }
+}
+
+class _ViewStatusEditAttr extends ConsumerWidget {
+  const _ViewStatusEditAttr();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentAttr = ref.watch(statusEditCurrentMyStatusProvider.select((value) => value.attr));
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 4,
+      child: StatusEditField(
+        label: RSStrings.attrName,
+        initValue: currentAttr,
+        onChanged: (v) => ref.read(statusEditMethodsProvider.notifier).updateAttr(v),
+      ),
+    );
   }
 }
 
