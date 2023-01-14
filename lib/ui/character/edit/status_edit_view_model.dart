@@ -1,117 +1,86 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rsapp/data/my_status_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/status.dart';
 
-///
-/// ViewModelのProvider（override用）
-///
-final statusEditViewModel = StateNotifierProvider.autoDispose<_StatusEditViewModel, AsyncValue<void>>((ref) {
-  throw UnimplementedError();
-});
+part 'status_edit_view_model.g.dart';
 
-///
-/// ViewModelの引数付きProvider
-///
-final statusEditFamilyViewModel = StateNotifierProvider.autoDispose.family<_StatusEditViewModel, AsyncValue<void>, MyStatus>((ref, myStatus) {
-  return _StatusEditViewModel(ref, myStatus);
-});
-
-class _StatusEditViewModel extends StateNotifier<AsyncValue<void>> {
-  _StatusEditViewModel(this._ref, this._status) : super(const AsyncValue.loading());
-
-  final Ref _ref;
-  final MyStatus _status;
-
-  Future<void> init() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      _ref.read(_uiStateProvider.notifier).init();
-    });
+@riverpod
+class StatusEditViewModel extends _$StatusEditViewModel {
+  @override
+  void build(int id) {
+    ref.read(_uiStateProvider.notifier).state = _UiState.create(id: id);
   }
+}
 
-  void updateHp(int newVal) {
-    _ref.read(_uiStateProvider.notifier).updateHp(newVal);
-  }
+@riverpod
+class StatusEditMethods extends _$StatusEditMethods {
+  @override
+  void build() {}
 
-  void updateStr(int newVal) {
-    _ref.read(_uiStateProvider.notifier).updateStr(newVal);
-  }
+  void updateHp(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(hp: newVal));
+  void updateStr(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(str: newVal));
+  void updateVit(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(vit: newVal));
+  void updateDex(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(dex: newVal));
+  void updateAgi(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(agi: newVal));
+  void updateInt(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(inte: newVal));
+  void updateSpi(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(spi: newVal));
+  void updateLove(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(love: newVal));
+  void updateAttr(int newVal) => ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(attr: newVal));
 
-  void updateVit(int newVal) {
-    _ref.read(_uiStateProvider.notifier).updateVit(newVal);
-  }
-
-  void updateDex(int newVal) {
-    _ref.read(_uiStateProvider.notifier).updateDex(newVal);
-  }
-
-  void updateAgi(int newVal) {
-    _ref.read(_uiStateProvider.notifier).updateAgi(newVal);
-  }
-
-  void updateInt(int newVal) {
-    _ref.read(_uiStateProvider.notifier).updateInt(newVal);
-  }
-
-  void updateSpi(int newVal) {
-    _ref.read(_uiStateProvider.notifier).updateSpi(newVal);
-  }
-
-  void updateLove(int newVal) {
-    _ref.read(_uiStateProvider.notifier).updateLove(newVal);
-  }
-
-  void updateAttr(int newVal) {
-    _ref.read(_uiStateProvider.notifier).updateAttr(newVal);
-  }
-
+  ///
+  /// 編集モードがManualの場合はこのメソッドでステータスを反映する
+  /// モードがeachの場合は元のステータスの差分値のみが、Manualの場合は元のステータスに加減算された最終値がそれぞれ取得される
+  /// uiStateで保持する際はどちらかに合わせたかったのでeachに統一してManual時も差分値を保持するようにしている。
+  /// そのため、わざわざcurrentValから減算している
+  ///
   void updateManualInput(StatusType type, int newVal) {
     switch (type) {
       case StatusType.hp:
-        final diff = newVal - _status.hp;
-        _ref.read(_uiStateProvider.notifier).updateHp(diff);
+        final currentVal = ref.read(statusEditCurrentMyStatusProvider).hp;
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(hp: newVal - currentVal));
         break;
       case StatusType.str:
-        final diff = newVal - _status.str;
-        _ref.read(_uiStateProvider.notifier).updateStr(diff);
+        final currentVal = ref.read(statusEditCurrentMyStatusProvider).str;
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(str: newVal - currentVal));
         break;
       case StatusType.vit:
-        final diff = newVal - _status.vit;
-        _ref.read(_uiStateProvider.notifier).updateVit(diff);
+        final currentVal = ref.read(statusEditCurrentMyStatusProvider).vit;
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(vit: newVal - currentVal));
         break;
       case StatusType.dex:
-        final diff = newVal - _status.dex;
-        _ref.read(_uiStateProvider.notifier).updateDex(diff);
+        final currentVal = ref.read(statusEditCurrentMyStatusProvider).dex;
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(dex: newVal - currentVal));
         break;
       case StatusType.agi:
-        final diff = newVal - _status.agi;
-        _ref.read(_uiStateProvider.notifier).updateAgi(diff);
+        final currentVal = ref.read(statusEditCurrentMyStatusProvider).agi;
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(agi: newVal - currentVal));
         break;
       case StatusType.inte:
-        final diff = newVal - _status.inte;
-        _ref.read(_uiStateProvider.notifier).updateInt(diff);
+        final currentVal = ref.read(statusEditCurrentMyStatusProvider).inte;
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(inte: newVal - currentVal));
         break;
       case StatusType.spirit:
-        final diff = newVal - _status.spi;
-        _ref.read(_uiStateProvider.notifier).updateSpi(diff);
+        final currentVal = ref.read(statusEditCurrentMyStatusProvider).spi;
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(spi: newVal - currentVal));
         break;
       case StatusType.love:
-        final diff = newVal - _status.love;
-        _ref.read(_uiStateProvider.notifier).updateLove(diff);
+        final currentVal = ref.read(statusEditCurrentMyStatusProvider).love;
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(love: newVal - currentVal));
         break;
       case StatusType.attr:
-        final diff = newVal - _status.attr;
-        _ref.read(_uiStateProvider.notifier).updateAttr(diff);
+        final currentVal = ref.read(statusEditCurrentMyStatusProvider).attr;
+        ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(attr: newVal - currentVal));
         break;
     }
   }
 
   void changeEditMode() {
-    final currentMode = _ref.read(statusEditModeStateProvider);
+    final currentMode = ref.read(statusEditModeProvider);
     if (currentMode == EditMode.each) {
-      _ref.read(statusEditModeStateProvider.notifier).state = EditMode.manual;
+      ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(editMode: EditMode.manual));
     } else {
-      _ref.read(statusEditModeStateProvider.notifier).state = EditMode.each;
+      ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(editMode: EditMode.each));
     }
   }
 
@@ -119,82 +88,42 @@ class _StatusEditViewModel extends StateNotifier<AsyncValue<void>> {
   /// 更新した値を保存する
   ///
   Future<void> saveNewStatus() async {
+    final currentStatus = ref.read(statusEditCurrentMyStatusProvider);
+    final uiState = ref.read(_uiStateProvider);
+
     final newStatus = MyStatus(
-      _status.id,
-      _status.hp + _ref.read(_uiStateProvider).hp,
-      _status.str + _ref.read(_uiStateProvider).str,
-      _status.vit + _ref.read(_uiStateProvider).vit,
-      _status.dex + _ref.read(_uiStateProvider).dex,
-      _status.agi + _ref.read(_uiStateProvider).agi,
-      _status.inte + _ref.read(_uiStateProvider).inte,
-      _status.spi + _ref.read(_uiStateProvider).spi,
-      _status.love + _ref.read(_uiStateProvider).love,
-      _status.attr + _ref.read(_uiStateProvider).attr,
-      _status.favorite,
-      _status.useHighLevel,
+      ref.read(_uiStateProvider).characterId,
+      uiState.hp + currentStatus.hp,
+      uiState.str + currentStatus.str,
+      uiState.vit + currentStatus.vit,
+      uiState.dex + currentStatus.dex,
+      uiState.agi + currentStatus.agi,
+      uiState.inte + currentStatus.inte,
+      uiState.spi + currentStatus.spi,
+      uiState.love + currentStatus.love,
+      uiState.attr + currentStatus.attr,
+      currentStatus.favorite,
+      currentStatus.useHighLevel,
     );
-    await _ref.read(myStatusRepositoryProvider).save(newStatus);
+
+    await ref.read(characterProvider.notifier).updateMyStatus(id: uiState.characterId, newStatus: newStatus);
   }
 }
 
-final statusEditModeStateProvider = StateProvider.autoDispose<EditMode>((_) => EditMode.each);
-
-// 画面の状態
-final _uiStateProvider = StateNotifierProvider<_UiStateNotifer, _UiState>((ref) {
-  return _UiStateNotifer(_UiState.empty());
-});
-
-class _UiStateNotifer extends StateNotifier<_UiState> {
-  _UiStateNotifer(_UiState state) : super(state);
-
-  void init() {
-    state = _UiState.empty();
-  }
-
-  void updateHp(int newVal) {
-    state = state.copyWith(hp: newVal);
-  }
-
-  void updateStr(int newVal) {
-    state = state.copyWith(str: newVal);
-  }
-
-  void updateVit(int newVal) {
-    state = state.copyWith(vit: newVal);
-  }
-
-  void updateDex(int newVal) {
-    state = state.copyWith(dex: newVal);
-  }
-
-  void updateAgi(int newVal) {
-    state = state.copyWith(agi: newVal);
-  }
-
-  void updateInt(int newVal) {
-    state = state.copyWith(inte: newVal);
-  }
-
-  void updateSpi(int newVal) {
-    state = state.copyWith(spi: newVal);
-  }
-
-  void updateLove(int newVal) {
-    state = state.copyWith(love: newVal);
-  }
-
-  void updateAttr(int newVal) {
-    state = state.copyWith(attr: newVal);
-  }
-}
+final _uiStateProvider = StateProvider<_UiState>((ref) => _UiState.empty());
 
 class _UiState {
-  _UiState(this.hp, this.str, this.vit, this.dex, this.agi, this.inte, this.spi, this.love, this.attr);
+  _UiState(this.characterId, this.hp, this.str, this.vit, this.dex, this.agi, this.inte, this.spi, this.love, this.attr, this.editMode);
 
-  factory _UiState.empty() {
-    return _UiState(0, 0, 0, 0, 0, 0, 0, 0, 0);
+  factory _UiState.create({required int id}) {
+    return _UiState(id, 0, 0, 0, 0, 0, 0, 0, 0, 0, EditMode.each);
   }
 
+  factory _UiState.empty() {
+    return _UiState(-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, EditMode.each);
+  }
+
+  final int characterId;
   final int hp;
   final int str;
   final int vit;
@@ -204,9 +133,11 @@ class _UiState {
   final int spi;
   final int love;
   final int attr;
+  final EditMode editMode;
 
-  _UiState copyWith({int? hp, int? str, int? vit, int? dex, int? agi, int? inte, int? spi, int? love, int? attr}) {
+  _UiState copyWith({int? hp, int? str, int? vit, int? dex, int? agi, int? inte, int? spi, int? love, int? attr, EditMode? editMode}) {
     return _UiState(
+      characterId,
       hp ?? this.hp,
       str ?? this.str,
       vit ?? this.vit,
@@ -216,9 +147,22 @@ class _UiState {
       spi ?? this.spi,
       love ?? this.love,
       attr ?? this.attr,
+      editMode ?? this.editMode,
     );
   }
 }
+
+// キャラの編集前ステータス情報
+final statusEditCurrentMyStatusProvider = Provider<MyStatus>((ref) {
+  final id = ref.watch(_uiStateProvider.select((value) => value.characterId));
+  final targetCharacter = ref.watch(characterProvider.select((c) => c.firstWhere((c) => c.id == id)));
+  return targetCharacter.myStatus ?? MyStatus.empty(targetCharacter.id);
+});
+
+// 編集モードの切り替え
+final statusEditModeProvider = Provider<EditMode>((ref) {
+  return ref.watch(_uiStateProvider.select((value) => value.editMode));
+});
 
 ///
 /// eachは＋➖のボタンがあって1ずつ加減算するモード

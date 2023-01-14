@@ -34,8 +34,6 @@ class _CharacterRepository {
   Future<void> refresh() async {
     final response = await _ref.read(characterApiProvider).findAll();
     final localCharacters = await _ref.read(characterDaoProvider).findAll();
-    RSLogger.d('キャラ情報を取得しました。 リモートのデータ件数=${response.characters.length} 端末に登録されているデータ件数=${localCharacters.length}');
-
     final newCharacters = await merge(response.characters, localCharacters);
     await _ref.read(characterDaoProvider).refresh(newCharacters);
     // TODO ここで characterProvider をinvalidateする

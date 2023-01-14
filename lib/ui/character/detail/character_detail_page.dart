@@ -19,12 +19,11 @@ import 'package:rsapp/ui/widget/view_loading.dart';
 class CharacterDetailPage extends ConsumerWidget {
   const CharacterDetailPage._(this.id);
 
-  static Future<bool> start(BuildContext context, int id) async {
-    return await Navigator.push<bool>(
-          context,
-          MaterialPageRoute(builder: (_) => CharacterDetailPage._(id)),
-        ) ??
-        false;
+  static Future<void> start(BuildContext context, int id) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => CharacterDetailPage._(id)),
+    );
   }
 
   final int id;
@@ -416,13 +415,7 @@ class _ViewEditStatusFab extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.edit),
       onPressed: () async {
-        final myStatus = chara.myStatus ?? MyStatus.empty(chara.id);
-        await StatusEditPage.start(context, myStatus);
-        // TODO ここは更新しない。characterが更新されるので自動的にbuildが走るはず
-        // final isSaved = await StatusEditPage.start(context, myStatus);
-        // if (isSaved) {
-        //   await ref.read(characterDetailMethodsProvider).refreshMyStatus();
-        // }
+        await StatusEditPage.start(context, chara.id);
       },
     );
   }

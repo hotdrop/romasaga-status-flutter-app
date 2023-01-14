@@ -37,7 +37,8 @@ class _AccountViewModel extends StateNotifier<AsyncValue<void>> {
 
   Future<void> refreshCharacters() async {
     await _ref.read(characterRepositoryProvider).refresh();
-    // TODO Repositoryのrefresh内でinvalidateするかVMでinvalidateするか・・
+    // TODO characterProviderのinvalidateをRepositoryでこのViewModelでするか・・
+    // TODO この処理はcharacterproviderに持っていって自信をinvalidateした方がいいかも
     // await _ref.read(characterSNProvider.notifier).refresh();
   }
 

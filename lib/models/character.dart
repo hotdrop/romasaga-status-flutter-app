@@ -71,6 +71,16 @@ class CharacterNotifier extends Notifier<List<Character>> {
   }
 
   ///
+  /// ステータスの更新
+  ///
+  Future<void> updateMyStatus({required int id, required MyStatus newStatus}) async {
+    await ref.read(myStatusRepositoryProvider).save(newStatus);
+    _replace(
+      newChara: state.where((e) => e.id == id).first.copyWith(myStatus: newStatus),
+    );
+  }
+
+  ///
   /// イベント対象フラグの更新
   ///
   Future<void> saveStatusUpEvent({required int id, required bool statusUpEvent}) async {

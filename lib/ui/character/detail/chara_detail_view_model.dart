@@ -79,10 +79,6 @@ class CharacterDetailMethods extends _$CharacterDetailMethods {
 
 final _uiStateProvider = StateProvider<_UiState>((ref) => _UiState.empty());
 
-///
-/// characterデータは更新の可能性があるのでここでは持たない。
-/// UiStateの意味があまりないかも
-///
 class _UiState {
   _UiState._(
     this.characterId,
