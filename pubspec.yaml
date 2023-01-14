@@ -20,12 +20,12 @@ dependencies:
   freezed_annotation: ^2.1.0
 
   # Firebase
-  google_sign_in: ^5.2.0
-  firebase_core: ^1.8.0
-  firebase_auth: ^3.1.4
-  cloud_firestore: ^2.5.3
-  firebase_storage: ^10.0.6
-  firebase_crashlytics: ^2.2.4
+  google_sign_in: ^5.4.3
+  firebase_core: ^2.4.1
+  firebase_auth: ^4.2.5
+  cloud_firestore: ^4.3.1
+  firebase_storage: ^11.0.10
+  firebase_crashlytics: ^3.0.10
 
   # UI
   percent_indicator: ^3.4.0
