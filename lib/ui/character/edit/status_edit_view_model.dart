@@ -9,7 +9,7 @@ part 'status_edit_view_model.g.dart';
 class StatusEditViewModel extends _$StatusEditViewModel {
   @override
   Future<void> build(int id) async {
-    // ここで_uiStateProviderを同期更新してしまうとWidgetのbuild中に更新することになるので非同期にする
+    // ここで_uiStateProviderを同期更新してしまうとWidgetのbuild中に更新することになるので非同期にする・・なんかいい方法ないかなここ
     Future<void>.delayed(Duration.zero).then((value) {
       ref.read(_uiStateProvider.notifier).state = _UiState.create(id: id);
     });
