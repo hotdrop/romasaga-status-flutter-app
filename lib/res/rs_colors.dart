@@ -23,7 +23,7 @@ class RSColors {
   static const Color stageNameLine = Color(0xFF87A0E5);
   static const Color stageLimitLine = Color(0xFFFFF987);
   static const Color statusNone = Colors.grey;
-  static const Color statusIndicatorBackground = Colors.white;
+  static const Color statusIndicatorBackground = Color.fromARGB(255, 232, 232, 225);
   static const Color statusLack = Color(0xFFFF5E6A);
   static const Color statusNormal = Color(0xFF74FF97);
   static const Color statusSufficient = Color(0xFF26BCFF);

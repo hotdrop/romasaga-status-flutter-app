@@ -86,7 +86,7 @@ class CharacterNotifier extends Notifier<List<Character>> {
   Future<void> saveHighLevel({required int id, required bool useHighLevel}) async {
     await ref.read(characterRepositoryProvider).saveHighLevel(id, useHighLevel);
     _replace(
-      newChara: state.where((e) => e.id == id).first.copyWith(statusUpEvent: useHighLevel),
+      newChara: state.where((e) => e.id == id).first.copyWith(highLevel: useHighLevel),
     );
   }
 
@@ -96,7 +96,7 @@ class CharacterNotifier extends Notifier<List<Character>> {
   Future<void> saveFavorite({required int id, required bool favorite}) async {
     await ref.read(characterRepositoryProvider).saveFavorite(id, favorite);
     _replace(
-      newChara: state.where((e) => e.id == id).first.copyWith(statusUpEvent: favorite),
+      newChara: state.where((e) => e.id == id).first.copyWith(favorite: favorite),
     );
   }
 

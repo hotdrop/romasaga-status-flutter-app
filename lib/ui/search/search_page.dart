@@ -109,12 +109,7 @@ class _ViewCharacters extends ConsumerWidget {
       shrinkWrap: true,
       padding: const EdgeInsets.only(bottom: 24),
       itemCount: characters.length,
-      itemBuilder: (_, index) {
-        return RowCharacterItem(characters[index], refreshListener: () async {
-          // TODO キャラの更新はRowの先の詳細画面でやる
-          // await ref.read(characterSNProvider.notifier).refresh();
-        });
-      },
+      itemBuilder: (_, index) => RowCharacterItem(characters[index]),
     );
   }
 }

@@ -95,13 +95,7 @@ class _ViewList extends ConsumerWidget {
       shrinkWrap: true,
       itemCount: characters.length,
       itemBuilder: (context, index) {
-        return RowCharacterItem(
-          characters[index],
-          refreshListener: () async {
-            // TODO ここ全部更新しない。そもそもRowCharacterItemの引数のrefreshListenerもいらない
-            // await ref.read(charactersViewModelProvider.notifier).refresh();
-          },
-        );
+        return RowCharacterItem(characters[index]);
       },
     );
   }

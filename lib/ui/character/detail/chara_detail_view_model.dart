@@ -13,9 +13,8 @@ part 'chara_detail_view_model.g.dart';
 class CharacterDetailViewModel extends _$CharacterDetailViewModel {
   @override
   Future<void> build(int id) async {
-    ref.read(_characterIdProvider.notifier).state = id;
     final stage = await ref.read(stageRepositoryProvider).find();
-    ref.read(_uiStateProvider.notifier).state = _UiState.create(stage: stage);
+    ref.read(_uiStateProvider.notifier).state = _UiState.create(id: id, stage: stage);
   }
 }
 
@@ -86,18 +85,20 @@ final _uiStateProvider = StateProvider<_UiState>((ref) => _UiState.empty());
 ///
 class _UiState {
   _UiState._(
+    this.characterId,
     this.stage,
     this.selectedStyleRank,
   );
 
-  factory _UiState.create({required Stage stage}) {
-    return _UiState._(stage, null);
+  factory _UiState.create({required int id, required Stage stage}) {
+    return _UiState._(id, stage, null);
   }
 
   factory _UiState.empty() {
-    return _UiState._(Stage.empty(), null);
+    return _UiState._(-1, Stage.empty(), null);
   }
 
+  int characterId;
   Stage stage;
   String? selectedStyleRank;
 
@@ -105,18 +106,16 @@ class _UiState {
     String? selectedStyleRank,
   }) {
     return _UiState._(
+      characterId,
       stage,
       selectedStyleRank ?? this.selectedStyleRank,
     );
   }
 }
 
-// 選択したキャラのID情報
-final _characterIdProvider = StateProvider<int>((_) => 0);
-
 // キャラ情報
 final characterDetailCharaProvider = Provider<Character>((ref) {
-  final id = ref.watch(_characterIdProvider);
+  final id = ref.watch(_uiStateProvider.select((value) => value.characterId));
   return ref.watch(characterProvider.select((c) => c.firstWhere((c) => c.id == id)));
 });
 
