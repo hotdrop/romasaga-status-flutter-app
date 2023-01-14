@@ -34,7 +34,7 @@ class CharacterIcon extends StatelessWidget {
       imageUrl: _res,
       width: _size,
       height: _size,
-      placeholder: (context, url) => const CircularProgressIndicator(),
+      placeholder: (context, url) => const CircularProgressIndicator(), // ここはCircularProgressIndicatorを使う
       errorWidget: (context, url, dynamic error) => Image.asset(RSImages.icDefault, width: _size, height: _size),
     );
   }

@@ -32,7 +32,7 @@ class AppProgressDialog<T> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           child: Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(), // ここはCircularProgressIndicatorを使う
           ),
         );
       },

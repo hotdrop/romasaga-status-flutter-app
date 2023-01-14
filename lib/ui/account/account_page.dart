@@ -14,8 +14,6 @@ import 'package:rsapp/ui/widget/view_loading.dart';
 class AccountPage extends ConsumerWidget {
   const AccountPage({super.key});
 
-  static const double _rowIconSize = 32;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -23,23 +21,30 @@ class AccountPage extends ConsumerWidget {
         title: const Text(RSStrings.accountPageTitle),
       ),
       body: ref.watch(accountViewModel).when(
-            data: (_) => _onSuccess(context, ref),
-            error: (err, _) => OnViewLoading(errorMessage: '$err'),
+            data: (_) => const _ViewBody(),
+            error: (err, _) => ViewLoadingError(errorMessage: '$err'),
             loading: () {
               Future<void>.delayed(Duration.zero).then((_) {
                 ref.read(accountViewModel.notifier).init();
               });
-              return const OnViewLoading();
+              return const ViewNowLoading();
             },
           ),
     );
   }
+}
 
-  Widget _onSuccess(BuildContext context, WidgetRef ref) {
+class _ViewBody extends ConsumerWidget {
+  const _ViewBody();
+
+  static const double _rowIconSize = 32;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final loggedIn = ref.watch(accountIsLoginProvider);
 
     return ListView(
-      children: <Widget>[
+      children: [
         const _RowAccountInfo(iconSize: _rowIconSize),
         const _RowAppLicense(iconSize: _rowIconSize),
         const _RowThemeSwitch(iconSize: _rowIconSize),

@@ -13,41 +13,60 @@ class CharactersPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(charactersViewModelProvider).when(
-          data: (_) {
-            return DefaultTabController(
-              length: 5,
-              child: Scaffold(
-                appBar: AppBar(
-                  title: const Text(RSStrings.charactersPageTitle),
-                  actions: const <Widget>[
-                    _TitlePopupMenu(),
-                  ],
-                  bottom: TabBar(
-                    isScrollable: true,
-                    tabs: <Tab>[
-                      Tab(text: '${RSStrings.charactersPageTabStatusUp}(${ref.watch(charactersStatusUpStateProvider).length})'),
-                      Tab(text: '${RSStrings.charactersPageTabHighLevel}(${ref.watch(charactersHighLevelStateProvider).length})'),
-                      Tab(text: '${RSStrings.charactersPageTabAround}(${ref.watch(charactersForRoundStateProvider).length})'),
-                      Tab(text: '${RSStrings.charactersPageTabFavorite}(${ref.watch(charactersFavoriteStateProvider).length})'),
-                      Tab(text: '${RSStrings.charactersPageTabNotFavorite}(${ref.watch(charactersNotFavoriteStateProvider).length})'),
-                    ],
-                  ),
-                ),
-                body: TabBarView(
-                  children: <Widget>[
-                    _ViewList(characters: ref.watch(charactersStatusUpStateProvider)),
-                    _ViewList(characters: ref.watch(charactersHighLevelStateProvider)),
-                    _ViewList(characters: ref.watch(charactersForRoundStateProvider)),
-                    _ViewList(characters: ref.watch(charactersFavoriteStateProvider)),
-                    _ViewList(characters: ref.watch(charactersNotFavoriteStateProvider)),
-                  ],
-                ),
+          data: (_) => const _ViewBody(),
+          error: (err, _) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text(RSStrings.charactersPageTitle),
               ),
+              body: ViewLoadingError(errorMessage: '$err'),
             );
           },
-          error: (err, _) => OnViewLoading(title: RSStrings.charactersPageTitle, errorMessage: '$err'),
-          loading: () => const OnViewLoading(title: RSStrings.charactersPageTitle),
+          loading: () {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text(RSStrings.charactersPageTitle),
+              ),
+              body: const ViewNowLoading(),
+            );
+          },
         );
+  }
+}
+
+class _ViewBody extends ConsumerWidget {
+  const _ViewBody();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(RSStrings.charactersPageTitle),
+          actions: const [_TitlePopupMenu()],
+          bottom: TabBar(
+            isScrollable: true,
+            tabs: <Tab>[
+              Tab(text: '${RSStrings.charactersPageTabStatusUp}(${ref.watch(charactersStatusUpStateProvider).length})'),
+              Tab(text: '${RSStrings.charactersPageTabHighLevel}(${ref.watch(charactersHighLevelStateProvider).length})'),
+              Tab(text: '${RSStrings.charactersPageTabAround}(${ref.watch(charactersForRoundStateProvider).length})'),
+              Tab(text: '${RSStrings.charactersPageTabFavorite}(${ref.watch(charactersFavoriteStateProvider).length})'),
+              Tab(text: '${RSStrings.charactersPageTabNotFavorite}(${ref.watch(charactersNotFavoriteStateProvider).length})'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            _ViewList(characters: ref.watch(charactersStatusUpStateProvider)),
+            _ViewList(characters: ref.watch(charactersHighLevelStateProvider)),
+            _ViewList(characters: ref.watch(charactersForRoundStateProvider)),
+            _ViewList(characters: ref.watch(charactersFavoriteStateProvider)),
+            _ViewList(characters: ref.watch(charactersNotFavoriteStateProvider)),
+          ],
+        ),
+      ),
+    );
   }
 }
 

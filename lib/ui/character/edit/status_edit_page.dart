@@ -28,8 +28,8 @@ class StatusEditPage extends ConsumerWidget {
         ),
         body: ref.watch(statusEditViewModelProvider(id)).when(
               data: (_) => const _ViewBody(),
-              error: (error, stackTrace) => ViewLoading(errorMessage: '$error'),
-              loading: () => const ViewLoading(),
+              error: (error, stackTrace) => ViewLoadingError(errorMessage: '$error'),
+              loading: () => const ViewNowLoading(),
             ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FloatingActionButton(

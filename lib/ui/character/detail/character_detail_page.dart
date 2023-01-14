@@ -31,8 +31,22 @@ class CharacterDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(characterDetailViewModelProvider(id)).when(
           data: (_) => const _ViewOnSuccess(),
-          error: (err, _) => OnViewLoading(title: RSStrings.detailPageTitle, errorMessage: '$err'),
-          loading: () => const OnViewLoading(title: RSStrings.detailPageTitle),
+          error: (err, _) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text(RSStrings.detailPageTitle),
+              ),
+              body: ViewLoadingError(errorMessage: '$err'),
+            );
+          },
+          loading: () {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text(RSStrings.detailPageTitle),
+              ),
+              body: const ViewNowLoading(),
+            );
+          },
         );
   }
 }

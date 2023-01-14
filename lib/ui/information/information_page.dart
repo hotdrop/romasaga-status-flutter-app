@@ -13,8 +13,12 @@ class InformationPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(RSStrings.infoPageTitle),
       ),
-      body: const Expanded(
-        child: _OfficialSiteWebView(),
+      body: Column(
+        children: const [
+          Flexible(
+            child: _OfficialSiteWebView(),
+          ),
+        ],
       ),
     );
   }

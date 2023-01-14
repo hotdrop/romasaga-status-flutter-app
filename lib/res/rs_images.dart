@@ -66,7 +66,7 @@ class RSImages {
   static const String icStatusLove = '$_rootIconsPath/icon_status_love.png';
   static const String icStatusAttr = '$_rootIconsPath/icon_status_attr.png';
 
-  // ロード画像（gif）
-  static const String gifLoading = '$_rootIconsPath/view_loading.gif';
-  static const String gifLoadingQueen = '$_rootIconsPath/view_loading_queen.gif';
+  // ローディング
+  static const String loadingGifIcon = '$_rootIconsPath/view_loading.gif';
+  static const String loadingIconError = '$_rootIconsPath/view_loading_error.png';
 }

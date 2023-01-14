@@ -4,6 +4,7 @@ class RSStrings {
   // 共通
   static const String appTitle = 'ロマサガRSステータス管理';
   static const String nowLoading = 'Now Loading...';
+  static const String loadingError = 'エラーが発生してしまいました...';
 
   static const String bottomMenuCharacter = 'キャラ';
   static const String bottomMenuSearch = '検索';

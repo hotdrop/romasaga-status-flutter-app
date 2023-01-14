@@ -32,12 +32,12 @@ class NotePage extends ConsumerWidget {
                 ),
               );
             },
-            error: (err, _) => OnViewLoading(errorMessage: '$err'),
+            error: (err, _) => ViewLoadingError(errorMessage: '$err'),
             loading: () {
               Future<void>.delayed(Duration.zero).then((_) {
                 ref.read(noteViewModel.notifier).init();
               });
-              return const OnViewLoading();
+              return const ViewNowLoading();
             },
           ),
     );

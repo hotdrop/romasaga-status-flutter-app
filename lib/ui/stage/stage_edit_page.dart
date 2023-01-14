@@ -53,12 +53,12 @@ class StageEditPage extends ConsumerWidget {
                   ),
                 );
               },
-              error: (err, _) => OnViewLoading(errorMessage: '$err'),
+              error: (err, _) => ViewLoadingError(errorMessage: '$err'),
               loading: () {
                 Future<void>.delayed(Duration.zero).then((_) async {
                   await ref.read(stageEditViewModel.notifier).init();
                 });
-                return const OnViewLoading();
+                return const ViewNowLoading();
               },
             ),
       ),

@@ -5,7 +5,7 @@ import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/res/rs_theme.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/top_page.dart';
-import 'package:rsapp/ui/widget/app_dialog.dart';
+import 'package:rsapp/ui/widget/view_loading.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -25,11 +25,8 @@ class App extends ConsumerWidget {
       theme: isDarkMode ? RSTheme.dark : RSTheme.light,
       home: initFutureProvider.when(
         data: (_) => const TopPage(),
-        error: (e, s) {
-          Future<void>.delayed(Duration.zero).then((_) => AppDialog.onlyOk(message: '$e'));
-          return const Center(child: CircularProgressIndicator());
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, s) => ViewLoadingError(errorMessage: '$error'),
+        loading: () => const ViewNowLoading(),
       ),
     );
   }
