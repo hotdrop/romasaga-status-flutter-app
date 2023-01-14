@@ -36,7 +36,6 @@ class _CharacterRepository {
     final localCharacters = await _ref.read(characterDaoProvider).findAll();
     final newCharacters = await merge(response.characters, localCharacters);
     await _ref.read(characterDaoProvider).refresh(newCharacters);
-    // TODO ここで characterProvider をinvalidateする
   }
 
   ///

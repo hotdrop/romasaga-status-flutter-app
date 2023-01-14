@@ -4,7 +4,6 @@ import 'package:rsapp/data/account_repository.dart';
 import 'package:rsapp/data/character_repository.dart';
 import 'package:rsapp/data/my_status_repository.dart';
 import 'package:rsapp/data/stage_repository.dart';
-import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/res/rs_strings.dart';
 
@@ -37,9 +36,7 @@ class _AccountViewModel extends StateNotifier<AsyncValue<void>> {
 
   Future<void> refreshCharacters() async {
     await _ref.read(characterRepositoryProvider).refresh();
-    // TODO characterProviderのinvalidateをRepositoryでこのViewModelでするか・・
-    // TODO この処理はcharacterproviderに持っていって自信をinvalidateした方がいいかも
-    // await _ref.read(characterSNProvider.notifier).refresh();
+    // TODO characterProviderのinvalidateをRepositoryでするか、ViewModelでするか・・characterproviderに持っていって自身をinvalidateした方がいいか？
   }
 
   Future<void> refreshStage() async {
