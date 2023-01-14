@@ -51,16 +51,6 @@ class RSStrings {
   // 情報
   static const String infoPageTitle = '公式情報';
   static const String infoOfficialUrl = 'https://info.rs.aktsk.jp/info/';
-  static const String letterPageTitle = '運営からのお便り';
-  static const String letterPageNotData = 'お便り情報がロードされていません。';
-  static const String letterPageLoadButton = 'お便り情報をロードする';
-  static const String letterPageLoadConfirmMessage = 'サーバーから最新のお便り情報を取得します。よろしいですか？';
-  static const String letterDetailPageTitle = '運営からのお便り詳細';
-  static const String letterNothingMessage = '運営からのお便りデータが0件でした。';
-  static const String letterLoadingErrorMessage = '運営からのお便りデータ取得に失敗しました。';
-  static const String letterLoadingFailure = '画像取得エラー！';
-  static const String letterYearLabel = '年';
-  static const String letterMonthLabel = '月';
 
   // アカウント画面
   static const String accountPageTitle = 'アカウント';

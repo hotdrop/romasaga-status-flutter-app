@@ -1,16 +1,16 @@
 import 'package:rsapp/common/rs_logger.dart';
 
 class RSEnv {
-  RSEnv._(this.characterJsonFileName, this.lettersJsonFileName);
+  RSEnv._(this.characterJsonFileName);
 
   factory RSEnv.dev() {
-    res = RSEnv._('characters_dev.json', 'letters_dev.json');
+    res = RSEnv._('characters_dev.json');
     RSLogger.d('デバッグ環境で実行します。');
     return res;
   }
 
   factory RSEnv.prd() {
-    res = RSEnv._('characters.json', 'letters.json');
+    res = RSEnv._('characters.json');
     RSLogger.d('プロダクト環境で実行します。');
     return res;
   }
@@ -18,5 +18,4 @@ class RSEnv {
   static late RSEnv res;
 
   final String characterJsonFileName;
-  final String lettersJsonFileName;
 }

@@ -5,11 +5,10 @@ import 'package:rsapp/data/local/local_data_source.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/service/rs_service.dart';
 
+// アプリ起動時の初期化処理を行う
+final appInitStreamProvider = FutureProvider<void>((ref) => ref.read(appSettingsProvider.notifier).init());
+
 final appSettingsProvider = StateNotifierProvider<_AppSettingsNotifier, AppSettings>((ref) => _AppSettingsNotifier(ref));
-final appInitStreamProvider = FutureProvider<void>((ref) {
-  // アプリ起動時の初期化処理を行う
-  return ref.read(appSettingsProvider.notifier).init();
-});
 
 class _AppSettingsNotifier extends StateNotifier<AppSettings> {
   _AppSettingsNotifier(this._ref) : super(const AppSettings());

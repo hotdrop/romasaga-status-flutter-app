@@ -6,14 +6,12 @@ import 'package:hive/hive.dart';
 import 'package:rsapp/data/local/dao/my_status_dao.dart';
 import 'package:rsapp/models/status.dart';
 import 'package:rsapp/data/local/entity/character_entity.dart';
-import 'package:rsapp/data/local/entity/letter_entity.dart';
 import 'package:rsapp/data/local/entity/my_status_entity.dart';
 import 'package:rsapp/data/local/entity/style_entity.dart';
 
 void main() {
   setUpAll(() {
     Hive.init(Directory.current.path);
-    Hive.registerAdapter(LetterEntityAdapter());
     Hive.registerAdapter(CharacterEntityAdapter());
     Hive.registerAdapter(MyStatusEntityAdapter());
     Hive.registerAdapter(StyleEntityAdapter());

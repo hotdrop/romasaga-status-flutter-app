@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class RSColors {
   RSColors._();
 
-  // common
+  // 共通
   static const Color itemBackground = Color(0xFF4C4C4C);
 
-  // Chip
+  // スタイルChips
   static final Color chipAvatarBackground = Colors.grey.shade300;
   static const Color chipRankA = Color.fromARGB(255, 239, 201, 191);
   static const Color chipRankS = Color.fromARGB(255, 200, 204, 219);
@@ -36,10 +36,4 @@ class RSColors {
   // ステータス編集
   static const Color statusPlus = Colors.blue;
   static const Color statusMinus = Colors.red;
-
-  static const Color titleShadow = Colors.grey;
-  static const Color winter = Colors.orange;
-  static const Color spring = Colors.pinkAccent;
-  static const Color summer = Colors.blueAccent;
-  static const Color fall = Color(0xFFF2E100);
 }

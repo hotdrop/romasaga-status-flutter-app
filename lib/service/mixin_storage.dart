@@ -9,10 +9,6 @@ mixin RSStorageMixin {
     return await _readJson(path: RSEnv.res.characterJsonFileName);
   }
 
-  Future<dynamic> getLetters() async {
-    return await _readJson(path: RSEnv.res.lettersJsonFileName);
-  }
-
   Future<dynamic> _readJson({required String path}) async {
     final url = await FirebaseStorage.instance.ref().child(path).getDownloadURL();
     final response = await http.get(Uri.parse(url));
@@ -23,10 +19,6 @@ mixin RSStorageMixin {
 
   Future<String> getCharacterIconUrl(String fileName) async {
     return await _getDownloadUrl('icons/$fileName');
-  }
-
-  Future<String> getLetterImageUrl(String fileName) async {
-    return await _getDownloadUrl('letters/$fileName');
   }
 
   Future<String> _getDownloadUrl(String refPath) async {
