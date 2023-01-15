@@ -10,6 +10,7 @@ class NoteController extends _$NoteController {
   @override
   Future<void> build() async {
     final currentNote = await ref.read(noteRepositoryProvider).find();
+
     ref.onDispose(() {
       ref.read(_uiStateProvider).dispose();
     });
@@ -18,6 +19,7 @@ class NoteController extends _$NoteController {
       ref.read(_inputNoteStateProvider.notifier).state = controller.text;
     });
     controller.text = currentNote;
+
     ref.read(_uiStateProvider.notifier).state = _UiState.create(currentNote, controller);
   }
 

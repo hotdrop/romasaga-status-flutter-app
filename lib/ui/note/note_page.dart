@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/note/note_providers.dart';
 import 'package:rsapp/ui/widget/app_button.dart';
-import 'package:rsapp/ui/widget/text_form_field.dart';
 import 'package:rsapp/ui/widget/view_loading.dart';
 
 class NotePage extends ConsumerWidget {
@@ -64,15 +63,15 @@ class _ViewButtonArea extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           AppIconButton(
-            label: '保存する',
+            label: RSStrings.notePageSaveButton,
             icon: Icons.save,
             onTap: isSave ? ref.read(noteControllerProvider.notifier).save : null,
           ),
           const SizedBox(width: 8),
           AppIconButton(
-            label: '戻す',
+            label: RSStrings.notePageReturnButton,
             icon: Icons.restore,
-            onTap: ref.read(noteControllerProvider.notifier).clear,
+            onTap: isSave ? ref.read(noteControllerProvider.notifier).clear : null,
           ),
         ],
       ),

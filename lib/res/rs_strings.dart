@@ -48,6 +48,8 @@ class RSStrings {
 
   // ノート
   static const String notePageTitle = '簡易メモ';
+  static const String notePageSaveButton = '保存する';
+  static const String notePageReturnButton = '戻す';
 
   // 情報
   static const String infoPageTitle = '公式情報';
