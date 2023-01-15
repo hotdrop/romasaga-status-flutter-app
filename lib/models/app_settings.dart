@@ -6,29 +6,28 @@ import 'package:rsapp/models/character.dart';
 import 'package:rsapp/service/rs_service.dart';
 
 // アプリ起動時の初期化処理を行う
-final appInitStreamProvider = FutureProvider<void>((ref) => ref.read(appSettingsProvider.notifier).init());
+final appInitStreamProvider = FutureProvider<void>((ref) async {
+  await ref.read(rsServiceProvider).init();
+  await ref.read(localDataSourceProvider).init();
+  await ref.read(characterProvider.notifier).init();
 
-final appSettingsProvider = StateNotifierProvider<_AppSettingsNotifier, AppSettings>((ref) => _AppSettingsNotifier(ref));
+  await ref.read(appSettingsProvider.notifier).refresh();
+});
 
-class _AppSettingsNotifier extends StateNotifier<AppSettings> {
-  _AppSettingsNotifier(this._ref) : super(const AppSettings());
+final appSettingsProvider = NotifierProvider<AppSettingsNotifier, AppSettings>(AppSettingsNotifier.new);
 
-  final Ref _ref;
-
-  ///
-  /// アプリ起動時に一回だけ呼ぶ
-  ///
-  Future<void> init() async {
-    await _ref.read(rsServiceProvider).init();
-    await _ref.read(localDataSourceProvider).init();
-    await refresh();
+class AppSettingsNotifier extends Notifier<AppSettings> {
+  @override
+  AppSettings build() {
+    // TODO これよくないのでこのNotifierをやめてappInitStreamProviderでAppSettingsの初期値を取得するようにする
+    return const AppSettings(currentMode: ThemeMode.light, characterListOrderType: CharacterListOrderType.status);
   }
 
   Future<void> refresh() async {
-    final isDarkMode = await _ref.read(appSettingsRepositoryProvider).isDarkMode();
+    final isDarkMode = await ref.read(appSettingsRepositoryProvider).isDarkMode();
     final mode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
-    final index = await _ref.read(appSettingsRepositoryProvider).getCaracterListOrderIndex();
+    final index = await ref.read(appSettingsRepositoryProvider).getCaracterListOrderIndex();
     final type = AppSettings.toType(index);
 
     state = AppSettings(currentMode: mode, characterListOrderType: type);
@@ -36,15 +35,15 @@ class _AppSettingsNotifier extends StateNotifier<AppSettings> {
 
   Future<void> setDarkMode(bool isDark) async {
     if (isDark) {
-      await _ref.read(appSettingsRepositoryProvider).changeDarkMode();
+      await ref.read(appSettingsRepositoryProvider).changeDarkMode();
     } else {
-      await _ref.read(appSettingsRepositoryProvider).changeLightMode();
+      await ref.read(appSettingsRepositoryProvider).changeLightMode();
     }
     await refresh();
   }
 
   Future<void> setCharacterListOrder(CharacterListOrderType type) async {
-    await _ref.read(appSettingsRepositoryProvider).saveCharacterListOrderIndex(type.index);
+    await ref.read(appSettingsRepositoryProvider).saveCharacterListOrderIndex(type.index);
     state = state.copyWith(characterListOrderType: type);
   }
 }

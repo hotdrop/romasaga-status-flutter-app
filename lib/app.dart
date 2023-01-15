@@ -25,8 +25,22 @@ class App extends ConsumerWidget {
       theme: isDarkMode ? RSTheme.dark : RSTheme.light,
       home: initFutureProvider.when(
         data: (_) => const TopPage(),
-        error: (error, s) => ViewLoadingError(errorMessage: '$error'),
-        loading: () => const ViewNowLoading(),
+        error: (error, s) => Scaffold(
+          appBar: AppBar(
+            title: const Text(RSStrings.appTitle),
+          ),
+          body: Center(
+            child: ViewLoadingError(errorMessage: '$error'),
+          ),
+        ),
+        loading: () => Scaffold(
+          appBar: AppBar(
+            title: const Text(RSStrings.appTitle),
+          ),
+          body: const Center(
+            child: ViewNowLoading(),
+          ),
+        ),
       ),
     );
   }

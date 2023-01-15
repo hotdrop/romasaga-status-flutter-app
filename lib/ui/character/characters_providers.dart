@@ -7,9 +7,7 @@ part 'characters_providers.g.dart';
 @riverpod
 class CharactersController extends _$CharactersController {
   @override
-  Future<void> build() async {
-    await ref.read(characterProvider.notifier).init();
-  }
+  void build() {}
 
   Future<void> selectOrder(CharacterListOrderType type) async {
     await ref.read(appSettingsProvider.notifier).setCharacterListOrder(type);

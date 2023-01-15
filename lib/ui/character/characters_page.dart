@@ -5,37 +5,9 @@ import 'package:rsapp/models/character.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/character/characters_providers.dart';
-import 'package:rsapp/ui/widget/view_loading.dart';
 
 class CharactersPage extends ConsumerWidget {
   const CharactersPage({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(charactersControllerProvider).when(
-          data: (_) => const _ViewBody(),
-          error: (err, _) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text(RSStrings.charactersPageTitle),
-              ),
-              body: ViewLoadingError(errorMessage: '$err'),
-            );
-          },
-          loading: () {
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text(RSStrings.charactersPageTitle),
-              ),
-              body: const ViewNowLoading(),
-            );
-          },
-        );
-  }
-}
-
-class _ViewBody extends ConsumerWidget {
-  const _ViewBody();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
