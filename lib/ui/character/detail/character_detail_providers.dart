@@ -7,10 +7,10 @@ import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/models/style.dart';
 import 'package:collection/collection.dart';
 
-part 'chara_detail_view_model.g.dart';
+part 'character_detail_providers.g.dart';
 
 @riverpod
-class CharacterDetailViewModel extends _$CharacterDetailViewModel {
+class CharacterDetailController extends _$CharacterDetailController {
   @override
   Future<void> build(int id) async {
     final stage = await ref.read(stageRepositoryProvider).find();
@@ -29,7 +29,7 @@ class CharacterDetailMethods extends _$CharacterDetailMethods {
   Future<void> updateDefaultStyle() async {
     await ref.read(characterProvider.notifier).updateDefaultStyle(
           selectedCharacterId: ref.read(characterDetailCharaProvider).id,
-          selectedStyle: ref.read(characterDetailSelectStyleStateProvider),
+          selectedStyle: ref.read(characterDetailSelectStyleProvider),
         );
   }
 
@@ -48,7 +48,7 @@ class CharacterDetailMethods extends _$CharacterDetailMethods {
     try {
       await ref.read(characterProvider.notifier).refreshIcon(
             id: ref.read(characterDetailCharaProvider).id,
-            selectedStyle: ref.read(characterDetailSelectStyleStateProvider),
+            selectedStyle: ref.read(characterDetailSelectStyleProvider),
           );
     } catch (e, s) {
       await RSLogger.e('アイコン更新に失敗しました。', e, s);
@@ -121,23 +121,23 @@ final characterDetailStageProvider = Provider<Stage>((ref) {
 });
 
 // 現在選択しているスタイル
-final characterDetailSelectStyleStateProvider = Provider<Style>((ref) {
+final characterDetailSelectStyleProvider = Provider<Style>((ref) {
   final styles = ref.watch(characterDetailCharaProvider).styles;
   final selectRank = ref.watch(_uiStateProvider.select((v) => v.selectedStyleRank));
   return styles.firstWhereOrNull((style) => style.rank == selectRank) ?? styles.first;
 });
 
 // キャラのイベントフラグ
-final characterDetailStatusUpEventStateProvider = Provider<bool>((ref) {
+final characterDetailStatusUpEventProvider = Provider<bool>((ref) {
   return ref.watch(characterDetailCharaProvider.select((v) => v.statusUpEvent));
 });
 
 // キャラの難易度/周回フラグ
-final characterDetailHighLevelStateProvider = Provider<bool>((ref) {
+final characterDetailHighLevelProvider = Provider<bool>((ref) {
   return ref.watch(characterDetailCharaProvider.select((v) => v.useHighLevel));
 });
 
 // キャラのお気に入りフラグ
-final characterDetailFavoriteStateProvider = Provider<bool>((ref) {
+final characterDetailFavoriteProvider = Provider<bool>((ref) {
   return ref.watch(characterDetailCharaProvider.select((v) => v.favorite));
 });

@@ -4,7 +4,7 @@ import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/character/detail/chara_detail_view_model.dart';
+import 'package:rsapp/ui/character/detail/character_detail_providers.dart';
 import 'package:rsapp/ui/character/detail/status_table.dart';
 import 'package:rsapp/ui/character/edit/status_edit_page.dart';
 import 'package:rsapp/ui/widget/rank_chip.dart';
@@ -29,7 +29,7 @@ class CharacterDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(characterDetailViewModelProvider(id)).when(
+    return ref.watch(characterDetailControllerProvider(id)).when(
           data: (_) => const _ViewOnSuccess(),
           error: (err, _) {
             return Scaffold(
@@ -56,7 +56,7 @@ class _ViewOnSuccess extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chara = ref.watch(characterDetailCharaProvider);
+    final character = ref.watch(characterDetailCharaProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text(RSStrings.detailPageTitle)),
@@ -70,8 +70,8 @@ class _ViewOnSuccess extends ConsumerWidget {
               const _ViewStatusArea(),
               const SizedBox(height: 8),
               StatusTable(
-                character: chara,
-                ranks: chara.allRank,
+                character: character,
+                ranks: character.allRank,
                 statusLimit: ref.watch(characterDetailStageProvider).statusLimit,
               ),
               const SizedBox(height: 24),
@@ -123,8 +123,8 @@ class _ViewCharacterInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chara = ref.watch(characterDetailCharaProvider);
-    final title = ref.watch(characterDetailSelectStyleStateProvider).title;
+    final character = ref.watch(characterDetailCharaProvider);
+    final title = ref.watch(characterDetailSelectStyleProvider).title;
 
     return Row(
       children: [
@@ -133,8 +133,8 @@ class _ViewCharacterInfo extends ConsumerWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(chara.production, style: Theme.of(context).textTheme.caption),
-            Text(chara.name),
+            Text(character.production, style: Theme.of(context).textTheme.caption),
+            Text(character.name),
             Text(title, style: Theme.of(context).textTheme.caption),
           ],
         ),
@@ -151,7 +151,7 @@ class _ViewSelectStyleIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final iconFilePath = ref.watch(characterDetailSelectStyleStateProvider).iconFilePath;
+    final iconFilePath = ref.watch(characterDetailSelectStyleProvider).iconFilePath;
 
     return GestureDetector(
       child: CharacterIcon.large(iconFilePath),
@@ -191,14 +191,14 @@ class _ViewAttributeIcons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chara = ref.watch(characterDetailCharaProvider);
+    final character = ref.watch(characterDetailCharaProvider);
 
     return Wrap(
       alignment: WrapAlignment.start,
       direction: Axis.horizontal,
       spacing: 8.0,
       runSpacing: 8.0,
-      children: _viewIconsAttr(chara),
+      children: _viewIconsAttr(character),
     );
   }
 
@@ -238,12 +238,13 @@ class _ViewStyleChips extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chara = ref.watch(characterDetailCharaProvider);
+    final character = ref.watch(characterDetailCharaProvider);
+
     return Wrap(
       children: [
         RankChoiceChip(
-          ranks: chara.allRank,
-          initSelectedRank: ref.watch(characterDetailSelectStyleStateProvider).rank,
+          ranks: character.allRank,
+          initSelectedRank: ref.watch(characterDetailSelectStyleProvider).rank,
           onSelectedListener: (rank) {
             ref.read(characterDetailMethodsProvider.notifier).onSelectRank(rank);
           },
@@ -294,12 +295,12 @@ class _ViewTotalStatusCircleGraph extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chara = ref.watch(characterDetailCharaProvider);
-    final selectedStyleSum = ref.watch(characterDetailSelectStyleStateProvider).sum();
+    final character = ref.watch(characterDetailCharaProvider);
+    final selectedStyleSum = ref.watch(characterDetailSelectStyleProvider).sum();
     final statusLimit = ref.watch(characterDetailStageProvider).statusLimit;
 
     return TotalStatusCircleGraph(
-      totalStatus: chara.myStatus?.sumWithoutHp() ?? 0,
+      totalStatus: character.myStatus?.sumWithoutHp() ?? 0,
       limitStatus: selectedStyleSum + (8 * statusLimit),
     );
   }
@@ -366,9 +367,10 @@ class _ViewHpGraph extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chara = ref.watch(characterDetailCharaProvider);
+    final character = ref.watch(characterDetailCharaProvider);
+
     return HpGraph(
-      status: chara.myStatus?.hp ?? 0,
+      status: character.myStatus?.hp ?? 0,
       limit: ref.watch(characterDetailStageProvider).hpLimit,
     );
   }
@@ -383,8 +385,8 @@ class _ViewEachStatusGraph extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chara = ref.watch(characterDetailCharaProvider);
-    final selectStyle = ref.watch(characterDetailSelectStyleStateProvider);
+    final character = ref.watch(characterDetailCharaProvider);
+    final selectStyle = ref.watch(characterDetailSelectStyleProvider);
     final limit = ref.watch(characterDetailStageProvider).statusLimit;
 
     return Column(
@@ -392,24 +394,24 @@ class _ViewEachStatusGraph extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            StatusGraph(title: RSStrings.strName, status: chara.myStatus?.str ?? 0, limit: selectStyle.str + limit),
-            StatusGraph(title: RSStrings.vitName, status: chara.myStatus?.vit ?? 0, limit: selectStyle.vit + limit),
-            StatusGraph(title: RSStrings.dexName, status: chara.myStatus?.dex ?? 0, limit: selectStyle.dex + limit),
+            StatusGraph(title: RSStrings.strName, status: character.myStatus?.str ?? 0, limit: selectStyle.str + limit),
+            StatusGraph(title: RSStrings.vitName, status: character.myStatus?.vit ?? 0, limit: selectStyle.vit + limit),
+            StatusGraph(title: RSStrings.dexName, status: character.myStatus?.dex ?? 0, limit: selectStyle.dex + limit),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            StatusGraph(title: RSStrings.agiName, status: chara.myStatus?.agi ?? 0, limit: selectStyle.agi + limit),
-            StatusGraph(title: RSStrings.intName, status: chara.myStatus?.inte ?? 0, limit: selectStyle.intelligence + limit),
-            StatusGraph(title: RSStrings.spiName, status: chara.myStatus?.spi ?? 0, limit: selectStyle.spirit + limit),
+            StatusGraph(title: RSStrings.agiName, status: character.myStatus?.agi ?? 0, limit: selectStyle.agi + limit),
+            StatusGraph(title: RSStrings.intName, status: character.myStatus?.inte ?? 0, limit: selectStyle.intelligence + limit),
+            StatusGraph(title: RSStrings.spiName, status: character.myStatus?.spi ?? 0, limit: selectStyle.spirit + limit),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            StatusGraph(title: RSStrings.loveName, status: chara.myStatus?.love ?? 0, limit: selectStyle.love + limit),
-            StatusGraph(title: RSStrings.attrName, status: chara.myStatus?.attr ?? 0, limit: selectStyle.attr + limit),
+            StatusGraph(title: RSStrings.loveName, status: character.myStatus?.love ?? 0, limit: selectStyle.love + limit),
+            StatusGraph(title: RSStrings.attrName, status: character.myStatus?.attr ?? 0, limit: selectStyle.attr + limit),
             const Opacity(opacity: 0, child: StatusGraph(title: '', status: 0, limit: 0)), // 揃えるためにダミーでwidgetを加える
           ],
         )
@@ -423,12 +425,12 @@ class _ViewEditStatusFab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chara = ref.watch(characterDetailCharaProvider);
+    final character = ref.watch(characterDetailCharaProvider);
 
     return FloatingActionButton(
       child: const Icon(Icons.edit),
       onPressed: () async {
-        await StatusEditPage.start(context, chara.id);
+        await StatusEditPage.start(context, character.id);
       },
     );
   }
@@ -465,7 +467,7 @@ class _ViewStatusUpEventIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSelected = ref.watch(characterDetailStatusUpEventStateProvider);
+    final isSelected = ref.watch(characterDetailStatusUpEventProvider);
 
     return IconButton(
       icon: Icon(
@@ -487,7 +489,7 @@ class _ViewHighLevelIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSelected = ref.watch(characterDetailHighLevelStateProvider);
+    final isSelected = ref.watch(characterDetailHighLevelProvider);
 
     return RawMaterialButton(
       shape: const CircleBorder(),
@@ -510,7 +512,7 @@ class _ViewFavoriteIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSelected = ref.watch(characterDetailFavoriteStateProvider);
+    final isSelected = ref.watch(characterDetailFavoriteProvider);
 
     return IconButton(
       icon: isSelected

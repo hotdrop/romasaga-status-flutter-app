@@ -3,10 +3,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/status.dart';
 
-part 'status_edit_view_model.g.dart';
+part 'status_edit_providers.g.dart';
 
 @riverpod
-class StatusEditViewModel extends _$StatusEditViewModel {
+class StatusEditController extends _$StatusEditController {
   @override
   Future<void> build(int id) async {
     // ここで_uiStateProviderを同期更新してしまうとWidgetのbuild中に更新することになるので非同期にする・・なんかいい方法ないかなここ
