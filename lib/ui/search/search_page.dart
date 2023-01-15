@@ -8,7 +8,7 @@ import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/production.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
-import 'package:rsapp/ui/search/search_view_model.dart';
+import 'package:rsapp/ui/search/search_providers.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class SearchPage extends StatefulWidget {
@@ -71,7 +71,7 @@ class _ViewHeaderTitle extends ConsumerWidget {
         prefixIcon: Icon(Icons.search),
         hintText: RSStrings.searchListQueryHint,
       ),
-      onSubmitted: (v) => ref.read(searchViewModelProvider.notifier).findByKeyword(v),
+      onSubmitted: (v) => ref.read(searchControllerProvider.notifier).findByKeyword(v),
     );
   }
 }
@@ -86,7 +86,7 @@ class _ViewHeaderIconSearchWord extends ConsumerWidget {
     return IconButton(
       icon: isKeywordSearch ? const Icon(Icons.close) : const Icon(Icons.search),
       onPressed: () {
-        ref.read(searchViewModelProvider.notifier).changeSearchMode();
+        ref.read(searchControllerProvider.notifier).changeSearchMode();
       },
     );
   }
@@ -165,7 +165,7 @@ class _ViewFilterKind extends ConsumerWidget {
       isHighLevelSelected: ref.read(searchFilterUseHighLebel),
       isAroundSelected: ref.read(searchFilterUseAround),
       onTap: (bool fav, bool high, bool around) {
-        ref.read(searchViewModelProvider.notifier).filterCategory(favorite: fav, highLevel: high, around: around);
+        ref.read(searchControllerProvider.notifier).filterCategory(favorite: fav, highLevel: high, around: around);
       },
     );
   }
@@ -184,7 +184,7 @@ class _ViewFilterWeaponType extends ConsumerWidget {
           type,
           selected: ref.watch(searchFilterWeaponType) == type,
           onTap: () {
-            ref.read(searchViewModelProvider.notifier).findByWeaponType(type);
+            ref.read(searchControllerProvider.notifier).findByWeaponType(type);
             Navigator.pop(context);
           },
         );
@@ -201,7 +201,7 @@ class _ViewFilterWeaponClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearWeapon),
       onPressed: () {
-        ref.read(searchViewModelProvider.notifier).clearFilterWeapon();
+        ref.read(searchControllerProvider.notifier).clearFilterWeapon();
         Navigator.pop(context);
       },
     );
@@ -221,7 +221,7 @@ class _ViewFilterAttributes extends ConsumerWidget {
           type: type,
           selected: ref.watch(searchFilterAttributeType) == type,
           onTap: () {
-            ref.read(searchViewModelProvider.notifier).findByAttributeType(type);
+            ref.read(searchControllerProvider.notifier).findByAttributeType(type);
             Navigator.pop(context);
           },
         );
@@ -238,7 +238,7 @@ class _ViewFilterAttributeClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearAttributes),
       onPressed: () {
-        ref.read(searchViewModelProvider.notifier).clearFilterAttribute();
+        ref.read(searchControllerProvider.notifier).clearFilterAttribute();
         Navigator.pop(context);
       },
     );
@@ -258,7 +258,7 @@ class _ViewFilterProduct extends ConsumerWidget {
           type: type,
           selected: ref.watch(searchFilterProductionType) == type,
           onTap: () {
-            ref.read(searchViewModelProvider.notifier).findByProduction(type);
+            ref.read(searchControllerProvider.notifier).findByProduction(type);
             Navigator.pop(context);
           },
         );
@@ -275,7 +275,7 @@ class _ViewFilterProductionClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearProduction),
       onPressed: () {
-        ref.read(searchViewModelProvider.notifier).clearFilterProduction();
+        ref.read(searchControllerProvider.notifier).clearFilterProduction();
         Navigator.pop(context);
       },
     );

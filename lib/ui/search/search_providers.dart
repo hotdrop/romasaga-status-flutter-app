@@ -5,17 +5,19 @@ import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/production.dart';
 import 'package:rsapp/models/weapon.dart';
 
-part 'search_view_model.g.dart';
+part 'search_providers.g.dart';
 
 @riverpod
-class SearchViewModel extends _$SearchViewModel {
+class SearchController extends _$SearchController {
   @override
   void build() {}
 
   void changeSearchMode() {
-    final uiState = ref.read(_uiStateProvider);
-    if (uiState.isKeywordSearch) {
-      ref.read(_uiStateProvider.notifier).update((state) => state.copyWithClear(isKeywordSearch: false, keyword: true));
+    if (ref.read(_uiStateProvider).isKeywordSearch) {
+      ref.read(_uiStateProvider.notifier).update((state) => state.copyWithClear(
+            isKeywordSearch: false,
+            keyword: true,
+          ));
     } else {
       ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(isKeywordSearch: true));
     }
