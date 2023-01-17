@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/stage/stage_edit_view_model.dart';
+import 'package:rsapp/ui/stage/stage_edit_providers.dart';
 import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
@@ -27,40 +27,42 @@ class StageEditPage extends ConsumerWidget {
         appBar: AppBar(
           title: const Text(RSStrings.stageEditPageTitle),
         ),
-        body: ref.watch(stageEditViewModel).when(
-              data: (_) {
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        const _ViewNameTextField(),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            _ViewHpLimitField(),
-                            SizedBox(width: 48),
-                            _ViewStatusLimitFiled(),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(RSStrings.stageEditPageOverview),
-                        const SizedBox(height: 16),
-                        const _ViewSaveButton(),
-                      ],
-                    ),
-                  ),
-                );
-              },
+        body: ref.watch(stageEditControllerProvider).when(
+              data: (_) => const _ViewBody(),
               error: (err, _) => ViewLoadingError(errorMessage: '$err'),
-              loading: () {
-                Future<void>.delayed(Duration.zero).then((_) async {
-                  await ref.read(stageEditViewModel.notifier).init();
-                });
-                return const ViewNowLoading();
-              },
+              loading: () => const ViewNowLoading(),
             ),
+      ),
+    );
+  }
+}
+
+class _ViewBody extends ConsumerWidget {
+  const _ViewBody();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const _ViewNameTextField(),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: const [
+                _ViewHpLimitField(),
+                SizedBox(width: 48),
+                _ViewStatusLimitFiled(),
+              ],
+            ),
+            const SizedBox(height: 8),
+            const Text(RSStrings.stageEditPageOverview),
+            const SizedBox(height: 16),
+            const _ViewSaveButton(),
+          ],
+        ),
       ),
     );
   }
@@ -73,7 +75,7 @@ class _ViewNameTextField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return RSTextFormField.stageName(
       initValue: ref.read(stageEditCurrentProvider).name,
-      onChanged: (String? input) => ref.read(stageEditViewModel.notifier).inputName(input),
+      onChanged: (String? input) => ref.read(stageEditMethodsProvider.notifier).inputName(input),
     );
   }
 }
@@ -89,7 +91,7 @@ class _ViewHpLimitField extends ConsumerWidget {
         initValue: ref.read(stageEditCurrentProvider).hpLimit,
         onChanged: (String? input) {
           final num = (input != null) ? int.tryParse(input) : null;
-          ref.read(stageEditViewModel.notifier).inputHpLimit(num);
+          ref.read(stageEditMethodsProvider.notifier).inputHpLimit(num);
         },
       ),
     );
@@ -107,7 +109,7 @@ class _ViewStatusLimitFiled extends ConsumerWidget {
         initValue: ref.read(stageEditCurrentProvider).statusLimit,
         onChanged: (String? input) {
           final num = (input != null) ? int.tryParse(input) : null;
-          ref.read(stageEditViewModel.notifier).inputLimit(num);
+          ref.read(stageEditMethodsProvider.notifier).inputLimit(num);
         },
       ),
     );
@@ -127,7 +129,7 @@ class _ViewSaveButton extends ConsumerWidget {
               const progressDialog = AppProgressDialog<void>();
               await progressDialog.show(
                 context,
-                execute: ref.read(stageEditViewModel.notifier).save,
+                execute: ref.read(stageEditMethodsProvider.notifier).save,
                 onSuccess: (_) async {
                   Navigator.pop(context, true);
                 },
