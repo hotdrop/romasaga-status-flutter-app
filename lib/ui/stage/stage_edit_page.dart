@@ -75,7 +75,7 @@ class _ViewNameTextField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return RSTextFormField.stageName(
       initValue: ref.read(stageEditCurrentProvider).name,
-      onChanged: (String? input) => ref.read(stageEditMethodsProvider.notifier).inputName(input),
+      onChanged: (String? input) => ref.read(stageEditControllerProvider.notifier).inputName(input),
     );
   }
 }
@@ -91,7 +91,7 @@ class _ViewHpLimitField extends ConsumerWidget {
         initValue: ref.read(stageEditCurrentProvider).hpLimit,
         onChanged: (String? input) {
           final num = (input != null) ? int.tryParse(input) : null;
-          ref.read(stageEditMethodsProvider.notifier).inputHpLimit(num);
+          ref.read(stageEditControllerProvider.notifier).inputHpLimit(num);
         },
       ),
     );
@@ -109,7 +109,7 @@ class _ViewStatusLimitFiled extends ConsumerWidget {
         initValue: ref.read(stageEditCurrentProvider).statusLimit,
         onChanged: (String? input) {
           final num = (input != null) ? int.tryParse(input) : null;
-          ref.read(stageEditMethodsProvider.notifier).inputLimit(num);
+          ref.read(stageEditControllerProvider.notifier).inputLimit(num);
         },
       ),
     );
@@ -129,7 +129,7 @@ class _ViewSaveButton extends ConsumerWidget {
               const progressDialog = AppProgressDialog<void>();
               await progressDialog.show(
                 context,
-                execute: ref.read(stageEditMethodsProvider.notifier).save,
+                execute: ref.read(stageEditControllerProvider.notifier).save,
                 onSuccess: (_) async {
                   Navigator.pop(context, true);
                 },

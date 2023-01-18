@@ -12,12 +12,6 @@ class StageEditController extends _$StageEditController {
     final currentStage = await ref.read(stageRepositoryProvider).find();
     ref.read(_uiStateProvider.notifier).state = _UiState.create(currentStage);
   }
-}
-
-@riverpod
-class StageEditMethods extends _$StageEditMethods {
-  @override
-  void build() {}
 
   void inputName(String? newVal) {
     ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(inputName: newVal ?? ''));
