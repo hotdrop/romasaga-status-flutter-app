@@ -7,14 +7,14 @@ import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/service/rs_service.dart';
 
 // アプリ起動時の初期化処理を行う
-final appInitStreamProvider = FutureProvider<void>((ref) async {
+final appInitFutureProvider = FutureProvider<void>((ref) async {
+  await ref.read(appSettingsProvider.notifier).refresh();
+
   await ref.read(rsServiceProvider).init();
   await ref.read(localDataSourceProvider).init();
 
   await ref.read(characterProvider.notifier).init();
   await ref.read(stageProvider.notifier).onLoad();
-
-  await ref.read(appSettingsProvider.notifier).refresh();
 });
 
 final appSettingsProvider = NotifierProvider<AppSettingsNotifier, AppSettings>(AppSettingsNotifier.new);
@@ -22,8 +22,8 @@ final appSettingsProvider = NotifierProvider<AppSettingsNotifier, AppSettings>(A
 class AppSettingsNotifier extends Notifier<AppSettings> {
   @override
   AppSettings build() {
-    // TODO これよくないのでこのNotifierをやめてappInitStreamProviderでAppSettingsの初期値を取得するようにする
-    return const AppSettings(currentMode: ThemeMode.light, characterListOrderType: CharacterListOrderType.status);
+    // TODO これよくないのでなんかうまい方法考えたい
+    return const AppSettings(currentMode: ThemeMode.dark, characterListOrderType: CharacterListOrderType.status);
   }
 
   Future<void> refresh() async {

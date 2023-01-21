@@ -13,7 +13,7 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDarkMode = ref.watch(appSettingsProvider).isDarkMode;
-    final initFutureProvider = ref.watch(appInitStreamProvider);
+    final initFutureProvider = ref.watch(appInitFutureProvider);
     return MaterialApp(
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
