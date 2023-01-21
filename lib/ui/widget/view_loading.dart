@@ -28,13 +28,15 @@ class ViewLoadingError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(RSImages.loadingIconError),
-          const Text(RSStrings.loadingError, style: TextStyle(color: Colors.red)),
-          Text(errorMessage, style: const TextStyle(color: Colors.red)),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(RSImages.loadingIconError),
+            const Text(RSStrings.loadingError, style: TextStyle(color: Colors.red)),
+            Text(errorMessage, style: const TextStyle(color: Colors.red)),
+          ],
+        ),
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rsapp/common/rs_logger.dart';
-import 'package:rsapp/data/stage_repository.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/models/style.dart';
@@ -13,8 +12,9 @@ part 'character_detail_providers.g.dart';
 class CharacterDetailController extends _$CharacterDetailController {
   @override
   Future<void> build(int id) async {
-    final stage = await ref.read(stageRepositoryProvider).find();
-    ref.read(_uiStateProvider.notifier).state = _UiState.create(id: id, stage: stage);
+    Future<void>.delayed(Duration.zero).then((_) {
+      ref.read(_uiStateProvider.notifier).state = _UiState.create(id: id);
+    });
   }
 }
 
@@ -82,20 +82,18 @@ final _uiStateProvider = StateProvider<_UiState>((ref) => _UiState.empty());
 class _UiState {
   _UiState._(
     this.characterId,
-    this.stage,
     this.selectedStyleRank,
   );
 
-  factory _UiState.create({required int id, required Stage stage}) {
-    return _UiState._(id, stage, null);
+  factory _UiState.create({required int id}) {
+    return _UiState._(id, null);
   }
 
   factory _UiState.empty() {
-    return _UiState._(-1, Stage.empty(), null);
+    return _UiState._(Character.noneId, null);
   }
 
   int characterId;
-  Stage stage;
   String? selectedStyleRank;
 
   _UiState copyWith({
@@ -103,7 +101,6 @@ class _UiState {
   }) {
     return _UiState._(
       characterId,
-      stage,
       selectedStyleRank ?? this.selectedStyleRank,
     );
   }
@@ -117,7 +114,7 @@ final characterDetailCharaProvider = Provider<Character>((ref) {
 
 // ステージ情報
 final characterDetailStageProvider = Provider<Stage>((ref) {
-  return ref.watch(_uiStateProvider.select((v) => v.stage));
+  return ref.watch(stageProvider);
 });
 
 // 現在選択しているスタイル

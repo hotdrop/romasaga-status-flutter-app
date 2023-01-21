@@ -174,7 +174,7 @@ class _UiState {
   }
 
   factory _UiState.empty() {
-    return _UiState(-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, EditMode.each);
+    return _UiState(Character.noneId, 0, 0, 0, 0, 0, 0, 0, 0, 0, EditMode.each);
   }
 
   final int characterId;

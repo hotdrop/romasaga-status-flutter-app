@@ -142,6 +142,8 @@ class Character {
   // スタイル情報は後から追加するので別出ししている。
   final styles = <Style>[];
 
+  static const int noneId = -1;
+
   List<WeaponType> get weaponTypes => weapons.map((e) => e.type).toList();
 
   List<WeaponCategory> get weaponCategories => weapons.map((e) => e.category).toList();
