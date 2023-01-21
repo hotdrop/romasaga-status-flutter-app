@@ -12,6 +12,7 @@ part 'character_detail_providers.g.dart';
 class CharacterDetailController extends _$CharacterDetailController {
   @override
   Future<void> build(int id) async {
+    // ここで_uiStateProviderを同期更新してしまうとWidgetのbuild中に更新することになるので非同期にする・・なんかいい方法ないかなここ
     Future<void>.delayed(Duration.zero).then((_) {
       ref.read(_uiStateProvider.notifier).state = _UiState.create(id: id);
     });
@@ -77,7 +78,7 @@ class CharacterDetailMethods extends _$CharacterDetailMethods {
   }
 }
 
-final _uiStateProvider = StateProvider<_UiState>((ref) => _UiState.empty());
+final _uiStateProvider = StateProvider<_UiState>((ref) => _UiState.create(id: Character.noneId));
 
 class _UiState {
   _UiState._(
@@ -87,10 +88,6 @@ class _UiState {
 
   factory _UiState.create({required int id}) {
     return _UiState._(id, null);
-  }
-
-  factory _UiState.empty() {
-    return _UiState._(Character.noneId, null);
   }
 
   int characterId;
@@ -109,7 +106,7 @@ class _UiState {
 // キャラ情報
 final characterDetailCharaProvider = Provider<Character>((ref) {
   final id = ref.watch(_uiStateProvider.select((value) => value.characterId));
-  return ref.watch(characterProvider.select((c) => c.firstWhere((c) => c.id == id)));
+  return ref.watch(characterProvider.select((c) => c.firstWhereOrNull((c) => c.id == id) ?? Character.empty()));
 });
 
 // ステージ情報

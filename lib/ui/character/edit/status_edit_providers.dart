@@ -164,17 +164,13 @@ class StatusEditMethods extends _$StatusEditMethods {
   }
 }
 
-final _uiStateProvider = StateProvider<_UiState>((ref) => _UiState.empty());
+final _uiStateProvider = StateProvider<_UiState>((ref) => _UiState.create(id: Character.noneId));
 
 class _UiState {
   _UiState(this.characterId, this.hp, this.str, this.vit, this.dex, this.agi, this.inte, this.spi, this.love, this.attr, this.editMode);
 
   factory _UiState.create({required int id}) {
     return _UiState(id, 0, 0, 0, 0, 0, 0, 0, 0, 0, EditMode.each);
-  }
-
-  factory _UiState.empty() {
-    return _UiState(Character.noneId, 0, 0, 0, 0, 0, 0, 0, 0, 0, EditMode.each);
   }
 
   final int characterId;

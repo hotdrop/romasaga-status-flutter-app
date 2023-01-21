@@ -129,6 +129,10 @@ class Character {
     this.myStatus,
   });
 
+  factory Character.empty() {
+    return Character(noneId, '', '', [], []);
+  }
+
   final int id;
   final String name;
   final String production; // 登場作品
