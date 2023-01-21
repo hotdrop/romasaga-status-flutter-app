@@ -3,13 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/app_setting_repository.dart';
 import 'package:rsapp/data/local/local_data_source.dart';
 import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/service/rs_service.dart';
 
 // アプリ起動時の初期化処理を行う
 final appInitStreamProvider = FutureProvider<void>((ref) async {
   await ref.read(rsServiceProvider).init();
   await ref.read(localDataSourceProvider).init();
+
   await ref.read(characterProvider.notifier).init();
+  await ref.read(stageProvider.notifier).onLoad();
 
   await ref.read(appSettingsProvider.notifier).refresh();
 });

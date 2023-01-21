@@ -6,7 +6,6 @@ import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 import 'package:rsapp/ui/widget/text_form_field.dart';
-import 'package:rsapp/ui/widget/view_loading.dart';
 
 class StageEditPage extends ConsumerWidget {
   const StageEditPage._();
@@ -27,11 +26,7 @@ class StageEditPage extends ConsumerWidget {
         appBar: AppBar(
           title: const Text(RSStrings.stageEditPageTitle),
         ),
-        body: ref.watch(stageEditControllerProvider).when(
-              data: (_) => const _ViewBody(),
-              error: (err, _) => ViewLoadingError(errorMessage: '$err'),
-              loading: () => const ViewNowLoading(),
-            ),
+        body: const _ViewBody(),
       ),
     );
   }
