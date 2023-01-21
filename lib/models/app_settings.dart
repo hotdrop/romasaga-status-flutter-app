@@ -22,7 +22,6 @@ final appSettingsProvider = NotifierProvider<AppSettingsNotifier, AppSettings>(A
 class AppSettingsNotifier extends Notifier<AppSettings> {
   @override
   AppSettings build() {
-    // TODO これよくないのでなんかうまい方法考えたい
     return const AppSettings(currentMode: ThemeMode.dark, characterListOrderType: CharacterListOrderType.status);
   }
 
