@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/models/character.dart';
-import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/character/characters_providers.dart';

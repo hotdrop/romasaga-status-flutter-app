@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
@@ -72,7 +73,7 @@ class _RowAccountInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: const Icon(Icons.account_circle, size: _iconSize),
+      leading: const Icon(LineIcons.userCircle, size: _iconSize),
       title: Text(ref.watch(accountUserNameProvider)),
       subtitle: Text(ref.watch(accountEmailProvider)),
     );
@@ -88,7 +89,7 @@ class _RowAppLicense extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: const Icon(Icons.info, size: _iconSize),
+      leading: const Icon(LineIcons.fileSignature, size: _iconSize),
       title: const Text(RSStrings.accountLicenseLabel),
       trailing: const Icon(Icons.arrow_forward_ios),
       onTap: () {
@@ -113,7 +114,7 @@ class _RowThemeSwitch extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isDarkMode = ref.watch(appSettingsProvider).isDarkMode;
     return ListTile(
-      leading: Icon(isDarkMode ? Icons.brightness_7 : Icons.brightness_4, size: _iconSize),
+      leading: Icon(isDarkMode ? LineIcons.moon : LineIcons.sun, size: _iconSize),
       title: const Text(RSStrings.accountChangeThemeLabel),
       trailing: Switch(
         value: isDarkMode,
@@ -134,7 +135,7 @@ class _RowRefreshCharacters extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: const Icon(Icons.people, size: _iconSize),
+      leading: const Icon(LineIcons.syncIcon, size: _iconSize),
       title: const Text(RSStrings.accountCharacterUpdateLabel),
       subtitle: const Text(RSStrings.accountCharacterDetailLabel),
       onTap: () async {
@@ -172,7 +173,7 @@ class _RowEditStage extends ConsumerWidget {
     final currentStage = ref.watch(accountStageProvider);
 
     return ListTile(
-      leading: const Icon(Icons.maps_home_work, size: _iconSize),
+      leading: const Icon(LineIcons.building, size: _iconSize),
       title: const Text(RSStrings.accountStageLabel),
       subtitle: Text('${currentStage.name} (${currentStage.statusLimit})'),
       trailing: const Icon(Icons.arrow_forward_ios, size: _iconSize),

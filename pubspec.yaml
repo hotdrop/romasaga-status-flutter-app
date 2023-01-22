@@ -33,6 +33,7 @@ dependencies:
   modal_bottom_sheet: ^2.0.0
   webview_flutter: ^2.0.10
   cached_video_player: ^2.0.0-dev.1
+  line_icons: ^2.0.1
 
   # local storage
   hive: ^2.0.4

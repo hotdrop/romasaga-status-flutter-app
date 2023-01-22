@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/character/edit/row_status_counter.dart';
 import 'package:rsapp/ui/character/edit/status_edit_providers.dart';
@@ -33,7 +34,7 @@ class StatusEditPage extends ConsumerWidget {
             ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.save),
+          child: const Icon(LineIcons.save, size: 32),
           onPressed: () async {
             final navigator = Navigator.of(context);
             await ref.read(statusEditMethodsProvider.notifier).saveNewStatus();
@@ -304,7 +305,7 @@ class _ViewBottomNavigationBar extends ConsumerWidget {
         children: [
           const SizedBox(width: 16),
           IconButton(
-            icon: const Icon(Icons.compare_arrows),
+            icon: const Icon(LineIcons.alternateExchange),
             iconSize: 28.0,
             onPressed: () {
               ref.read(statusEditMethodsProvider.notifier).changeEditMode();

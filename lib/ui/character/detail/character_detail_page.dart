@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
@@ -428,7 +429,7 @@ class _ViewEditStatusFab extends ConsumerWidget {
     final character = ref.watch(characterDetailCharaProvider);
 
     return FloatingActionButton(
-      child: const Icon(Icons.edit),
+      child: const Icon(LineIcons.pen, size: 32),
       onPressed: () async {
         await StatusEditPage.start(context, character.id);
       },

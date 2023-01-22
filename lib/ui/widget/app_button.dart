@@ -11,7 +11,7 @@ class AppButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: (onTap != null) ? () => onTap!.call() : null,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Text(label),
       ),
     );
