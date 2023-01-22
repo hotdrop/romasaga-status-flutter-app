@@ -4,19 +4,19 @@
 
 # RSApp
 ロマサガRSの所持キャラステータス管理用アプリです。Flutter学習用として作成しました。  
-assetsを管理対象外にすると吹っ飛んだ時に辛すぎたのでもうアイコンくらいなら管理対象にしていいかと思った。
+assetsを管理対象外にすると吹っ飛んだ時に辛すぎたのでもう管理対象にしていいかと思いました。
 
 # 設計について
-私がAndroidアプリ開発に慣れていることもありAACのMVVMをベースに設計しています。  
+レイヤー分けしており`View`と`Controller`、`Model`と`Repository`で大きく分けています。
 データ取得層は`Repository`パターンを採用しています。  
 
-`ViewModel`は、基本以下の3つで構成しています。  
-1. 画面起動時の`Provider`(riverpodアノテーションで生成）
-2. ロジックを集約したProvider
-3. UiStateを保持する`StateProvider`
-
+`Controller`は基本以下の3構成としています。  
 2は画面起動時にキャラIDなどの引数をもらうProviderを生成している場合に作っていています。引数がない場合は1と2はまとめています。
 また、note_pageなどUiStateを作ると煩雑になる場合は1のみ実装しています。   
+
+1. 画面起動時の`Provider`(riverpodアノテーションで生成）
+2. ロジックを集約した`Provider`
+3. UiStateを保持する`StateProvider`
 
 `UiState`を保持する`StateProvider`はそのまま画面の状態を保持します。  
 ただし、キャラ詳細画面やステータス編集画面など前の画面の詳細情報を扱う場合、キャラデータを`UiState`で持ってしまうより直接参照・更新した方がSSOTに沿えるため`UiState`では管理していません。  
