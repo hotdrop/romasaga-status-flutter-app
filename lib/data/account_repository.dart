@@ -1,28 +1,28 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/service/rs_service.dart';
 
-final accountRepositoryProvider = Provider((ref) => _AccountRepository(ref.read));
+final accountRepositoryProvider = Provider((ref) => _AccountRepository(ref));
 
 class _AccountRepository {
-  const _AccountRepository(this._read);
+  const _AccountRepository(this._ref);
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<void> signIn() async {
-    await _read(rsServiceProvider).signInWithGoogle();
+    await _ref.read(rsServiceProvider).signInWithGoogle();
   }
 
   Future<void> signOut() async {
-    await _read(rsServiceProvider).signOut();
+    await _ref.read(rsServiceProvider).signOut();
   }
 
-  bool get isLogIn => _read(rsServiceProvider).isLogIn;
+  bool get isLogIn => _ref.read(rsServiceProvider).isLogIn;
 
   String? getUserName() {
-    return _read(rsServiceProvider).userName;
+    return _ref.read(rsServiceProvider).userName;
   }
 
   String? getEmail() {
-    return _read(rsServiceProvider).email;
+    return _ref.read(rsServiceProvider).email;
   }
 }

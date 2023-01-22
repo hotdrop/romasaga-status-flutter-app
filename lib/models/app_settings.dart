@@ -3,33 +3,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/app_setting_repository.dart';
 import 'package:rsapp/data/local/local_data_source.dart';
 import 'package:rsapp/models/character.dart';
+import 'package:rsapp/models/stage.dart';
 import 'package:rsapp/service/rs_service.dart';
 
-final appSettingsProvider = StateNotifierProvider<_AppSettingsNotifier, AppSettings>((ref) => _AppSettingsNotifier(ref.read));
-final appInitStreamProvider = FutureProvider<void>((ref) {
-  // アプリ起動時の初期化処理を行う
-  return ref.read(appSettingsProvider.notifier).init();
+// アプリ起動時の初期化処理を行う
+final appInitFutureProvider = FutureProvider<void>((ref) async {
+  await ref.read(appSettingsProvider.notifier).refresh();
+
+  await ref.read(rsServiceProvider).init();
+  await ref.read(localDataSourceProvider).init();
+
+  await ref.read(characterProvider.notifier).onLoad();
+  await ref.read(stageProvider.notifier).onLoad();
 });
 
-class _AppSettingsNotifier extends StateNotifier<AppSettings> {
-  _AppSettingsNotifier(this._read) : super(const AppSettings());
+final appSettingsProvider = NotifierProvider<AppSettingsNotifier, AppSettings>(AppSettingsNotifier.new);
 
-  final Reader _read;
-
-  ///
-  /// アプリ起動時に一回だけ呼ぶ
-  ///
-  Future<void> init() async {
-    await _read(rsServiceProvider).init();
-    await _read(localDataSourceProvider).init();
-    await refresh();
+class AppSettingsNotifier extends Notifier<AppSettings> {
+  @override
+  AppSettings build() {
+    return const AppSettings(currentMode: ThemeMode.dark, characterListOrderType: CharacterListOrderType.status);
   }
 
   Future<void> refresh() async {
-    final isDarkMode = await _read(appSettingsRepositoryProvider).isDarkMode();
+    final isDarkMode = await ref.read(appSettingsRepositoryProvider).isDarkMode();
     final mode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
-    final index = await _read(appSettingsRepositoryProvider).getCaracterListOrderIndex();
+    final index = await ref.read(appSettingsRepositoryProvider).getCaracterListOrderIndex();
     final type = AppSettings.toType(index);
 
     state = AppSettings(currentMode: mode, characterListOrderType: type);
@@ -37,15 +37,15 @@ class _AppSettingsNotifier extends StateNotifier<AppSettings> {
 
   Future<void> setDarkMode(bool isDark) async {
     if (isDark) {
-      await _read(appSettingsRepositoryProvider).changeDarkMode();
+      await ref.read(appSettingsRepositoryProvider).changeDarkMode();
     } else {
-      await _read(appSettingsRepositoryProvider).changeLightMode();
+      await ref.read(appSettingsRepositoryProvider).changeLightMode();
     }
     await refresh();
   }
 
   Future<void> setCharacterListOrder(CharacterListOrderType type) async {
-    await _read(appSettingsRepositoryProvider).saveCharacterListOrderIndex(type.index);
+    await ref.read(appSettingsRepositoryProvider).saveCharacterListOrderIndex(type.index);
     state = state.copyWith(characterListOrderType: type);
   }
 }

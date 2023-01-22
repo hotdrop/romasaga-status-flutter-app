@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/res/rs_images.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/account/account_view_model.dart';
+import 'package:rsapp/ui/account/account_providers.dart';
 import 'package:rsapp/ui/stage/stage_edit_page.dart';
 import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:rsapp/ui/widget/app_dialog.dart';
@@ -11,10 +12,10 @@ import 'package:rsapp/ui/widget/app_line.dart';
 import 'package:rsapp/ui/widget/app_progress_dialog.dart';
 import 'package:rsapp/ui/widget/view_loading.dart';
 
+const double _iconSize = 32;
+
 class AccountPage extends ConsumerWidget {
   const AccountPage({super.key});
-
-  static const double _rowIconSize = 32;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,33 +23,33 @@ class AccountPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text(RSStrings.accountPageTitle),
       ),
-      body: ref.watch(accountViewModel).when(
-            data: (_) => _onSuccess(context, ref),
-            error: (err, _) => OnViewLoading(errorMessage: '$err'),
-            loading: () {
-              Future<void>.delayed(Duration.zero).then((_) {
-                ref.read(accountViewModel.notifier).init();
-              });
-              return const OnViewLoading();
-            },
+      body: ref.watch(accountControllerProvider).when(
+            data: (_) => const _ViewBody(),
+            error: (err, _) => ViewLoadingError(errorMessage: '$err'),
+            loading: () => const ViewNowLoading(),
           ),
     );
   }
+}
 
-  Widget _onSuccess(BuildContext context, WidgetRef ref) {
+class _ViewBody extends ConsumerWidget {
+  const _ViewBody();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final loggedIn = ref.watch(accountIsLoginProvider);
 
     return ListView(
-      children: <Widget>[
-        const _RowAccountInfo(iconSize: _rowIconSize),
-        const _RowAppLicense(iconSize: _rowIconSize),
-        const _RowThemeSwitch(iconSize: _rowIconSize),
+      children: [
+        const _RowAccountInfo(),
+        const _RowAppLicense(),
+        const _RowThemeSwitch(),
         const HorizontalLine(),
-        const _RowRefreshCharacters(iconSize: _rowIconSize),
-        const _RowEditStage(iconSize: _rowIconSize),
+        const _RowRefreshCharacters(),
+        const _RowEditStage(),
         if (loggedIn) ...[
-          const _RowBackup(iconSize: _rowIconSize),
-          const _RowRestore(iconSize: _rowIconSize),
+          const _RowBackup(),
+          const _RowRestore(),
           const HorizontalLine(),
           const SizedBox(height: 16),
           const _SignOutButton(),
@@ -67,14 +68,12 @@ class AccountPage extends ConsumerWidget {
 /// アカウント情報
 ///
 class _RowAccountInfo extends ConsumerWidget {
-  const _RowAccountInfo({required this.iconSize});
-
-  final double iconSize;
+  const _RowAccountInfo();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: Icon(Icons.account_circle, size: iconSize),
+      leading: const Icon(LineIcons.userCircle, size: _iconSize),
       title: Text(ref.watch(accountUserNameProvider)),
       subtitle: Text(ref.watch(accountEmailProvider)),
     );
@@ -85,14 +84,12 @@ class _RowAccountInfo extends ConsumerWidget {
 /// ライセンス情報
 ///
 class _RowAppLicense extends ConsumerWidget {
-  const _RowAppLicense({required this.iconSize});
-
-  final double iconSize;
+  const _RowAppLicense();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: Icon(Icons.info, size: iconSize),
+      leading: const Icon(LineIcons.fileSignature, size: _iconSize),
       title: const Text(RSStrings.accountLicenseLabel),
       trailing: const Icon(Icons.arrow_forward_ios),
       onTap: () {
@@ -111,15 +108,13 @@ class _RowAppLicense extends ConsumerWidget {
 /// アプリのテーマを変更するスイッチ
 ///
 class _RowThemeSwitch extends ConsumerWidget {
-  const _RowThemeSwitch({required this.iconSize});
-
-  final double iconSize;
+  const _RowThemeSwitch();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDarkMode = ref.watch(appSettingsProvider).isDarkMode;
     return ListTile(
-      leading: Icon(isDarkMode ? Icons.brightness_7 : Icons.brightness_4, size: iconSize),
+      leading: Icon(isDarkMode ? LineIcons.moon : LineIcons.sun, size: _iconSize),
       title: const Text(RSStrings.accountChangeThemeLabel),
       trailing: Switch(
         value: isDarkMode,
@@ -135,14 +130,12 @@ class _RowThemeSwitch extends ConsumerWidget {
 /// キャラ情報更新
 ///
 class _RowRefreshCharacters extends ConsumerWidget {
-  const _RowRefreshCharacters({required this.iconSize});
-
-  final double iconSize;
+  const _RowRefreshCharacters();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: Icon(Icons.people, size: iconSize),
+      leading: const Icon(LineIcons.syncIcon, size: _iconSize),
       title: const Text(RSStrings.accountCharacterUpdateLabel),
       subtitle: const Text(RSStrings.accountCharacterDetailLabel),
       onTap: () async {
@@ -158,7 +151,7 @@ class _RowRefreshCharacters extends ConsumerWidget {
     const progressDialog = AppProgressDialog<void>();
     await progressDialog.show(
       context,
-      execute: ref.read(accountViewModel.notifier).refreshCharacters,
+      execute: ref.read(accountMethodsProvider.notifier).refreshCharacters,
       onSuccess: (_) async {
         await AppDialog.onlyOk(message: RSStrings.accountCharacterUpdateDialogSuccessMessage).show(context);
       },
@@ -173,24 +166,19 @@ class _RowRefreshCharacters extends ConsumerWidget {
 /// ステージ編集
 ///
 class _RowEditStage extends ConsumerWidget {
-  const _RowEditStage({required this.iconSize});
-
-  final double iconSize;
+  const _RowEditStage();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentStage = ref.watch(accountStageProvider);
 
     return ListTile(
-      leading: Icon(Icons.maps_home_work, size: iconSize),
+      leading: const Icon(LineIcons.building, size: _iconSize),
       title: const Text(RSStrings.accountStageLabel),
       subtitle: Text('${currentStage.name} (${currentStage.statusLimit})'),
-      trailing: Icon(Icons.arrow_forward_ios, size: iconSize),
+      trailing: const Icon(Icons.arrow_forward_ios, size: _iconSize),
       onTap: () async {
-        final isUpdate = await StageEditPage.start(context);
-        if (isUpdate) {
-          await ref.read(accountViewModel.notifier).refreshStage();
-        }
+        await StageEditPage.start(context);
       },
     );
   }
@@ -200,16 +188,14 @@ class _RowEditStage extends ConsumerWidget {
 /// データバックアップ
 ///
 class _RowBackup extends ConsumerWidget {
-  const _RowBackup({required this.iconSize});
-
-  final double iconSize;
+  const _RowBackup();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateLabel = ref.watch(accountBackupDateLabel);
 
     return ListTile(
-      leading: Icon(Icons.backup, size: iconSize),
+      leading: const Icon(Icons.backup, size: _iconSize),
       title: const Text(RSStrings.accountStatusBackupLabel),
       subtitle: Text('${RSStrings.accountStatusBackupDateLabel} $dateLabel'),
       onTap: () async {
@@ -225,7 +211,7 @@ class _RowBackup extends ConsumerWidget {
     const progressDialog = AppProgressDialog<void>();
     await progressDialog.show(
       context,
-      execute: ref.read(accountViewModel.notifier).backup,
+      execute: ref.read(accountMethodsProvider.notifier).backup,
       onSuccess: (_) async => await AppDialog.onlyOk(message: RSStrings.accountStatusBackupDialogSuccessMessage).show(context),
       onError: (errMsg) async => await AppDialog.onlyOk(message: errMsg).show(context),
     );
@@ -236,14 +222,12 @@ class _RowBackup extends ConsumerWidget {
 /// データ復元
 ///
 class _RowRestore extends ConsumerWidget {
-  const _RowRestore({required this.iconSize});
-
-  final double iconSize;
+  const _RowRestore();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: Icon(Icons.settings_backup_restore, size: iconSize),
+      leading: const Icon(Icons.settings_backup_restore, size: _iconSize),
       title: const Text(RSStrings.accountStatusRestoreLabel),
       subtitle: const Text(RSStrings.accountStatusRestoreDetailLabel),
       onTap: () async {
@@ -259,7 +243,7 @@ class _RowRestore extends ConsumerWidget {
     const progressDialog = AppProgressDialog<void>();
     await progressDialog.show(
       context,
-      execute: ref.read(accountViewModel.notifier).restore,
+      execute: ref.read(accountMethodsProvider.notifier).restore,
       onSuccess: (_) async => await AppDialog.onlyOk(message: RSStrings.accountStatusRestoreDialogSuccessMessage).show(context),
       onError: (errMsg) async => await AppDialog.onlyOk(message: errMsg).show(context),
     );
@@ -287,7 +271,7 @@ class _SignInButton extends ConsumerWidget {
     const progressDialog = AppProgressDialog<void>();
     await progressDialog.show(
       context,
-      execute: ref.read(accountViewModel.notifier).signIn,
+      execute: ref.read(accountMethodsProvider.notifier).signIn,
       onSuccess: (_) {/* 成功時は何もしない */},
       onError: (errMsg) async => await AppDialog.onlyOk(message: errMsg).show(context),
     );
@@ -320,7 +304,7 @@ class _SignOutButton extends ConsumerWidget {
     const progressDialog = AppProgressDialog<void>();
     await progressDialog.show(
       context,
-      execute: ref.read(accountViewModel.notifier).signOut,
+      execute: ref.read(accountMethodsProvider.notifier).signOut,
       onSuccess: (_) {/* 成功時は何もしない */},
       onError: (errMsg) async => await AppDialog.onlyOk(message: errMsg).show(context),
     );

@@ -1,30 +1,30 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/local/shared_prefs.dart';
 
-final appSettingsRepositoryProvider = Provider((ref) => _AppSettingRepository(ref.read));
+final appSettingsRepositoryProvider = Provider((ref) => _AppSettingRepository(ref));
 
 class _AppSettingRepository {
-  _AppSettingRepository(this._read);
+  _AppSettingRepository(this._ref);
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<bool> isDarkMode() async {
-    return await _read(sharedPrefsProvider).isDarkMode();
+    return await _ref.read(sharedPrefsProvider).isDarkMode();
   }
 
   Future<void> changeDarkMode() async {
-    await _read(sharedPrefsProvider).saveDarkMode(true);
+    await _ref.read(sharedPrefsProvider).saveDarkMode(true);
   }
 
   Future<void> changeLightMode() async {
-    await _read(sharedPrefsProvider).saveDarkMode(false);
+    await _ref.read(sharedPrefsProvider).saveDarkMode(false);
   }
 
   Future<int> getCaracterListOrderIndex() async {
-    return await _read(sharedPrefsProvider).getCharacterOrder();
+    return await _ref.read(sharedPrefsProvider).getCharacterOrder();
   }
 
   Future<void> saveCharacterListOrderIndex(int index) async {
-    await _read(sharedPrefsProvider).saveCharacterOrder(index);
+    await _ref.read(sharedPrefsProvider).saveCharacterOrder(index);
   }
 }

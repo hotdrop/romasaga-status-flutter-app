@@ -8,19 +8,18 @@ import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:collection/collection.dart';
 
-final characterSNProvider = StateNotifierProvider<_CharacterNotifier, List<Character>>((ref) {
-  return _CharacterNotifier(ref.read);
-});
+// キャラクターデータは全てこのProviderを参照、更新する
+final characterProvider = NotifierProvider<CharacterNotifier, List<Character>>(CharacterNotifier.new);
 
-class _CharacterNotifier extends StateNotifier<List<Character>> {
-  _CharacterNotifier(this._read) : super(<Character>[]);
+class CharacterNotifier extends Notifier<List<Character>> {
+  @override
+  List<Character> build() {
+    return [];
+  }
 
-  final Reader _read;
-
-  Future<void> refresh() async {
-    RSLogger.d('保持しているキャラ情報を更新します。');
-    final characters = await _read(characterRepositoryProvider).findAll();
-    final myStatuses = await _read(myStatusRepositoryProvider).findAll();
+  Future<void> onLoad() async {
+    final characters = await ref.read(characterRepositoryProvider).findAll();
+    final myStatuses = await ref.read(myStatusRepositoryProvider).findAll();
     state = await _merge(characters, myStatuses);
   }
 
@@ -41,6 +40,85 @@ class _CharacterNotifier extends StateNotifier<List<Character>> {
       return characters;
     }
   }
+
+  ///
+  /// 選択したスタイルをデフォルトスタイルに更新する
+  ///
+  Future<void> updateDefaultStyle({required int selectedCharacterId, required Style selectedStyle}) async {
+    await ref.read(characterRepositoryProvider).saveSelectedRank(selectedCharacterId, selectedStyle.rank, selectedStyle.iconFilePath);
+    _replace(
+      newChara: state.where((e) => e.id == selectedCharacterId).first.copyWith(
+            selectedStyleRank: selectedStyle.rank,
+            selectedIconFilePath: selectedStyle.iconFilePath,
+          ),
+    );
+  }
+
+  ///
+  /// 最新のキャラ情報をリモートから取得してリフレッシュする
+  ///
+  Future<void> refresh() async {
+    await ref.read(characterRepositoryProvider).refresh();
+    await onLoad();
+  }
+
+  ///
+  /// サーバーから最新のアイコンパスを取得し画像データを更新する
+  /// 画像はキャッシュしているのでこの処理が必要
+  ///
+  Future<void> refreshIcon({required int id, required Style selectedStyle}) async {
+    final target = state.where((e) => e.id == id).first;
+    final isAlreadySelected = (target.selectedStyleRank == selectedStyle.rank);
+    await ref.read(characterRepositoryProvider).refreshIcon(selectedStyle, isAlreadySelected);
+
+    final newStyles = await ref.read(characterRepositoryProvider).findStyles(target.id);
+    _replace(newChara: target.copyWith(styles: newStyles));
+  }
+
+  ///
+  /// ステータスの更新
+  ///
+  Future<void> updateMyStatus({required int id, required MyStatus newStatus}) async {
+    await ref.read(myStatusRepositoryProvider).save(newStatus);
+    _replace(
+      newChara: state.where((e) => e.id == id).first.copyWith(myStatus: newStatus),
+    );
+  }
+
+  ///
+  /// イベント対象フラグの更新
+  ///
+  Future<void> saveStatusUpEvent({required int id, required bool statusUpEvent}) async {
+    await ref.read(characterRepositoryProvider).saveStatusUpEvent(id, statusUpEvent);
+    _replace(
+      newChara: state.where((e) => e.id == id).first.copyWith(statusUpEvent: statusUpEvent),
+    );
+  }
+
+  ///
+  /// 高難易度フラグの更新
+  ///
+  Future<void> saveHighLevel({required int id, required bool useHighLevel}) async {
+    await ref.read(characterRepositoryProvider).saveHighLevel(id, useHighLevel);
+    _replace(
+      newChara: state.where((e) => e.id == id).first.copyWith(highLevel: useHighLevel),
+    );
+  }
+
+  ///
+  /// お気に入りフラグの更新
+  ///
+  Future<void> saveFavorite({required int id, required bool favorite}) async {
+    await ref.read(characterRepositoryProvider).saveFavorite(id, favorite);
+    _replace(
+      newChara: state.where((e) => e.id == id).first.copyWith(favorite: favorite),
+    );
+  }
+
+  void _replace({required Character newChara}) {
+    final idx = state.indexWhere((chara) => chara.id == newChara.id);
+    state = List.of(state)..[idx] = newChara;
+  }
 }
 
 class Character {
@@ -56,6 +134,10 @@ class Character {
     this.myStatus,
   });
 
+  factory Character.empty() {
+    return Character(noneId, '', '', [], []);
+  }
+
   final int id;
   final String name;
   final String production; // 登場作品
@@ -68,6 +150,8 @@ class Character {
 
   // スタイル情報は後から追加するので別出ししている。
   final styles = <Style>[];
+
+  static const int noneId = -1;
 
   List<WeaponType> get weaponTypes => weapons.map((e) => e.type).toList();
 

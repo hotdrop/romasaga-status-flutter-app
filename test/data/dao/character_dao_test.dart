@@ -9,14 +9,12 @@ import 'package:rsapp/models/style.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/data/local/entity/character_entity.dart';
-import 'package:rsapp/data/local/entity/letter_entity.dart';
 import 'package:rsapp/data/local/entity/my_status_entity.dart';
 import 'package:rsapp/data/local/entity/style_entity.dart';
 
 void main() {
   setUpAll(() {
     Hive.init(Directory.current.path);
-    Hive.registerAdapter(LetterEntityAdapter());
     Hive.registerAdapter(CharacterEntityAdapter());
     Hive.registerAdapter(MyStatusEntityAdapter());
     Hive.registerAdapter(StyleEntityAdapter());

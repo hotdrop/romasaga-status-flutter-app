@@ -1,18 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/data/local/shared_prefs.dart';
 
-final noteRepositoryProvider = Provider((ref) => _NoteRepository(ref.read));
+final noteRepositoryProvider = Provider((ref) => _NoteRepository(ref));
 
 class _NoteRepository {
-  const _NoteRepository(this._read);
+  const _NoteRepository(this._ref);
 
-  final Reader _read;
+  final Ref _ref;
 
   Future<String> find() async {
-    return await _read(sharedPrefsProvider).getNote() ?? '';
+    return await _ref.read(sharedPrefsProvider).getNote() ?? '';
   }
 
   Future<void> save(String note) async {
-    await _read(sharedPrefsProvider).saveNote(note);
+    await _ref.read(sharedPrefsProvider).saveNote(note);
   }
 }

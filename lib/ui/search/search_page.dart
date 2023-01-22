@@ -1,44 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:rsapp/models/character.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/attribute.dart';
 import 'package:rsapp/models/production.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
-import 'package:rsapp/ui/search/search_view_model.dart';
+import 'package:rsapp/ui/search/search_providers.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
-import 'package:rsapp/ui/widget/view_loading.dart';
 
-class SearchPage extends ConsumerWidget {
+class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(searchViewModel).when(
-          data: (_) => const _OnViewSuccess(),
-          error: (err, _) => OnViewLoading(errorMessage: '$err'),
-          loading: () {
-            Future<void>.delayed(Duration.zero).then((_) {
-              ref.read(searchViewModel.notifier).init();
-            });
-            return const OnViewLoading();
-          },
-        );
-  }
+  State<StatefulWidget> createState() => _SearchPageState();
 }
 
-class _OnViewSuccess extends StatefulWidget {
-  const _OnViewSuccess();
-
-  @override
-  State<StatefulWidget> createState() => __OnViewSuccessState();
-}
-
-class __OnViewSuccessState extends State<_OnViewSuccess> {
+class _SearchPageState extends State<SearchPage> {
   bool _visibleFab = true;
 
   @override
@@ -64,7 +45,7 @@ class __OnViewSuccessState extends State<_OnViewSuccess> {
       floatingActionButton: Visibility(
         visible: _visibleFab,
         child: FloatingActionButton(
-          child: const Icon(Icons.filter_list),
+          child: const Icon(Icons.filter_list, size: 32),
           onPressed: () => showMaterialModalBottomSheet(
             context: context,
             backgroundColor: Colors.transparent,
@@ -88,10 +69,10 @@ class _ViewHeaderTitle extends ConsumerWidget {
 
     return TextField(
       decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.search),
+        prefixIcon: Icon(LineIcons.search),
         hintText: RSStrings.searchListQueryHint,
       ),
-      onSubmitted: (v) => ref.read(searchViewModel.notifier).findByKeyword(v),
+      onSubmitted: (v) => ref.read(searchControllerProvider.notifier).findByKeyword(v),
     );
   }
 }
@@ -104,9 +85,9 @@ class _ViewHeaderIconSearchWord extends ConsumerWidget {
     final isKeywordSearch = ref.watch(searchIsKeyword);
 
     return IconButton(
-      icon: isKeywordSearch ? const Icon(Icons.close) : const Icon(Icons.search),
+      icon: isKeywordSearch ? const Icon(Icons.close) : const Icon(LineIcons.search),
       onPressed: () {
-        ref.read(searchViewModel.notifier).changeSearchMode();
+        ref.read(searchControllerProvider.notifier).changeSearchMode();
       },
     );
   }
@@ -129,11 +110,7 @@ class _ViewCharacters extends ConsumerWidget {
       shrinkWrap: true,
       padding: const EdgeInsets.only(bottom: 24),
       itemCount: characters.length,
-      itemBuilder: (_, index) {
-        return RowCharacterItem(characters[index], refreshListener: () async {
-          await ref.read(characterSNProvider.notifier).refresh();
-        });
-      },
+      itemBuilder: (_, index) => RowCharacterItem(characters[index]),
     );
   }
 }
@@ -189,7 +166,7 @@ class _ViewFilterKind extends ConsumerWidget {
       isHighLevelSelected: ref.read(searchFilterUseHighLebel),
       isAroundSelected: ref.read(searchFilterUseAround),
       onTap: (bool fav, bool high, bool around) {
-        ref.read(searchViewModel.notifier).filterCategory(favorite: fav, highLevel: high, around: around);
+        ref.read(searchControllerProvider.notifier).filterCategory(favorite: fav, highLevel: high, around: around);
       },
     );
   }
@@ -208,7 +185,7 @@ class _ViewFilterWeaponType extends ConsumerWidget {
           type,
           selected: ref.watch(searchFilterWeaponType) == type,
           onTap: () {
-            ref.read(searchViewModel.notifier).findByWeaponType(type);
+            ref.read(searchControllerProvider.notifier).findByWeaponType(type);
             Navigator.pop(context);
           },
         );
@@ -225,7 +202,7 @@ class _ViewFilterWeaponClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearWeapon),
       onPressed: () {
-        ref.read(searchViewModel.notifier).clearFilterWeapon();
+        ref.read(searchControllerProvider.notifier).clearFilterWeapon();
         Navigator.pop(context);
       },
     );
@@ -245,7 +222,7 @@ class _ViewFilterAttributes extends ConsumerWidget {
           type: type,
           selected: ref.watch(searchFilterAttributeType) == type,
           onTap: () {
-            ref.read(searchViewModel.notifier).findByAttributeType(type);
+            ref.read(searchControllerProvider.notifier).findByAttributeType(type);
             Navigator.pop(context);
           },
         );
@@ -262,7 +239,7 @@ class _ViewFilterAttributeClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearAttributes),
       onPressed: () {
-        ref.read(searchViewModel.notifier).clearFilterAttribute();
+        ref.read(searchControllerProvider.notifier).clearFilterAttribute();
         Navigator.pop(context);
       },
     );
@@ -282,7 +259,7 @@ class _ViewFilterProduct extends ConsumerWidget {
           type: type,
           selected: ref.watch(searchFilterProductionType) == type,
           onTap: () {
-            ref.read(searchViewModel.notifier).findByProduction(type);
+            ref.read(searchControllerProvider.notifier).findByProduction(type);
             Navigator.pop(context);
           },
         );
@@ -299,7 +276,7 @@ class _ViewFilterProductionClearButton extends ConsumerWidget {
     return OutlinedButton(
       child: const Text(RSStrings.searchFilterClearProduction),
       onPressed: () {
-        ref.read(searchViewModel.notifier).clearFilterProduction();
+        ref.read(searchControllerProvider.notifier).clearFilterProduction();
         Navigator.pop(context);
       },
     );

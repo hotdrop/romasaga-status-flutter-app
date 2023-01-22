@@ -4,26 +4,24 @@
 
 # RSApp
 ロマサガRSの所持キャラステータス管理用アプリです。Flutter学習用として作成しました。  
-アイコンやリソースは著作権があるのでGit管理対象にはしていません。
+assetsを管理対象外にすると吹っ飛んだ時に辛すぎたのでもう管理対象にしていいかと思いました。
 
 # 設計について
-私がAndroidアプリ開発に慣れていることもありAACのMVVMをベースに設計しています。  
+レイヤー分けしており`View`と`Controller`、`Model`と`Repository`で大きく分けています。
 データ取得層は`Repository`パターンを採用しています。  
 
-`ViewModel`は、画面起動時の`StateNotifierProvider`とUiStateを保持する`StateNotifierProvider`の2つで構成しています。  
-(この構成が過剰になる簡素な画面では1つにまとめています。)
+`Controller`は基本以下の3構成としています。  
+2は画面起動時にキャラIDなどの引数をもらうProviderを生成している場合に作っていています。引数がない場合は1と2はまとめています。
+また、note_pageなどUiStateを作ると煩雑になる場合は1のみ実装しています。   
 
-画面起動時の`StateNotifierProvider`は`ViewModel`本体としてビジネスロジックとスコープ内の一部の不変値を持つようにしています。  
-スコープ内の一部の不変値というのは`family`で取得したデータのうち「Providerに切り出す必要はないがUiStateの更新に必要な不変な値（例えばキャラのIDや作品情報）」を指しています。  
+1. 画面起動時の`Provider`(riverpodアノテーションで生成）
+2. ロジックを集約した`Provider`
+3. UiStateを保持する`StateProvider`
 
-これらの値は`ViewModel`で持っていた方が楽だったので持っていますが、ここで持つべきかは疑問に思っています。  
-また、`ViewModel`はViewのライフサイクルと同様にするため`autoDispose`を必ずつけています。  
-
-UiStateを保持する`StateNotifierProvider`はそのまま画面の状態を保持します。  
-この`StateNotifierProvider`は外部に公開せずViewでwatchするProviderは別に定義してUiStateの値をそれぞれ`select`し「UiStateは必ず`ViewModel`を経由して更新する」という設計にしました。
-
-ビジネスロジックについては`UiState`の方の`StateNotifierProvider`で書いた方が自然な場合もあって迷っています。  
-一応集約した方が保守性が上がるかなと思って現在はなるべく`ViewModel`に書くようにしています。  
+`UiState`を保持する`StateProvider`はそのまま画面の状態を保持します。  
+ただし、キャラ詳細画面やステータス編集画面など前の画面の詳細情報を扱う場合、キャラデータを`UiState`で持ってしまうより直接参照・更新した方がSSOTに沿えるため`UiState`では管理していません。  
+また、`UiState`は`private`にしていて`View`から`watch`する`Provider`は別に定義しています。  
+`UiState`の値はそれぞれ`select`で`watch`することで「`UiState`は必ず`ViewModel`を経由して更新する」という設計にしました。
 
 今のところこのような設計で落ち着きました。  
 
@@ -32,7 +30,7 @@ Firebaseで利用しているサービスは次の通りです。
   - Authentication
     - Googleアカウントと連携しています。サインイン状態だと入力したキャラデータのバックアップと復元ができるようになります。
   - Storage
-    - キャラ情報やお便りなど定期で更新されるデータをjsonで持っています。
+    - キャラデータをjsonで持っています。
   - Firestore
     - 自身で入力したステータス情報のバックアップと復元に使います。
   - Crashlytics

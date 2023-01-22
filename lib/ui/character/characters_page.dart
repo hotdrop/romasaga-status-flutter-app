@@ -4,50 +4,42 @@ import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
-import 'package:rsapp/ui/character/characters_view_model.dart';
-import 'package:rsapp/ui/widget/view_loading.dart';
+import 'package:rsapp/ui/character/characters_providers.dart';
+import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class CharactersPage extends ConsumerWidget {
   const CharactersPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(charactersViewModelProvider).when(
-          data: (_) {
-            return DefaultTabController(
-              length: 5,
-              child: Scaffold(
-                appBar: AppBar(
-                  title: const Text(RSStrings.charactersPageTitle),
-                  actions: const <Widget>[
-                    _TitlePopupMenu(),
-                  ],
-                  bottom: TabBar(
-                    isScrollable: true,
-                    tabs: <Tab>[
-                      Tab(text: '${RSStrings.charactersPageTabStatusUp}(${ref.watch(charactersStatusUpStateProvider).length})'),
-                      Tab(text: '${RSStrings.charactersPageTabHighLevel}(${ref.watch(charactersHighLevelStateProvider).length})'),
-                      Tab(text: '${RSStrings.charactersPageTabAround}(${ref.watch(charactersForRoundStateProvider).length})'),
-                      Tab(text: '${RSStrings.charactersPageTabFavorite}(${ref.watch(charactersFavoriteStateProvider).length})'),
-                      Tab(text: '${RSStrings.charactersPageTabNotFavorite}(${ref.watch(charactersNotFavoriteStateProvider).length})'),
-                    ],
-                  ),
-                ),
-                body: TabBarView(
-                  children: <Widget>[
-                    _ViewList(characters: ref.watch(charactersStatusUpStateProvider)),
-                    _ViewList(characters: ref.watch(charactersHighLevelStateProvider)),
-                    _ViewList(characters: ref.watch(charactersForRoundStateProvider)),
-                    _ViewList(characters: ref.watch(charactersFavoriteStateProvider)),
-                    _ViewList(characters: ref.watch(charactersNotFavoriteStateProvider)),
-                  ],
-                ),
-              ),
-            );
-          },
-          error: (err, _) => OnViewLoading(title: RSStrings.charactersPageTitle, errorMessage: '$err'),
-          loading: () => const OnViewLoading(title: RSStrings.charactersPageTitle),
-        );
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(RSStrings.charactersPageTitle),
+          actions: const [_TitlePopupMenu()],
+          bottom: TabBar(
+            isScrollable: true,
+            tabs: <Tab>[
+              Tab(icon: TabIcon.statusUp(count: ref.watch(charactersStatusUpProvider).length)),
+              Tab(icon: TabIcon.highLevel(count: ref.watch(charactersHighLevelProvider).length)),
+              Tab(icon: TabIcon.around(count: ref.watch(charactersForRoundProvider).length)),
+              Tab(icon: TabIcon.favorite(isSelected: true, count: ref.watch(charactersFavoriterovider).length)),
+              Tab(icon: TabIcon.favorite(isSelected: false, count: ref.watch(charactersNotFavoriteProvider).length)),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            _ViewList(characters: ref.watch(charactersStatusUpProvider)),
+            _ViewList(characters: ref.watch(charactersHighLevelProvider)),
+            _ViewList(characters: ref.watch(charactersForRoundProvider)),
+            _ViewList(characters: ref.watch(charactersFavoriterovider)),
+            _ViewList(characters: ref.watch(charactersNotFavoriteProvider)),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -74,7 +66,7 @@ class _TitlePopupMenu extends ConsumerWidget {
       ],
       initialValue: ref.read(appSettingsProvider).characterListOrderType,
       onSelected: (value) async {
-        await ref.read(charactersViewModelProvider.notifier).selectOrder(value);
+        await ref.read(charactersControllerProvider.notifier).selectOrder(value);
       },
     );
   }
@@ -95,13 +87,7 @@ class _ViewList extends ConsumerWidget {
       shrinkWrap: true,
       itemCount: characters.length,
       itemBuilder: (context, index) {
-        return RowCharacterItem(
-          characters[index],
-          refreshListener: () async {
-            // ここ全部更新しないでcharacters[index]だけ更新すればいい
-            await ref.read(charactersViewModelProvider.notifier).refresh();
-          },
-        );
+        return RowCharacterItem(characters[index]);
       },
     );
   }

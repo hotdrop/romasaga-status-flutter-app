@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_strings.dart';
-import 'package:rsapp/ui/information/letter/letter_page.dart';
-import 'package:rsapp/ui/widget/app_button.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class InformationPage extends StatelessWidget {
@@ -16,17 +14,9 @@ class InformationPage extends StatelessWidget {
         title: const Text(RSStrings.infoPageTitle),
       ),
       body: Column(
-        children: [
-          const Expanded(
+        children: const [
+          Flexible(
             child: _OfficialSiteWebView(),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            child: AppIconButton(
-              label: RSStrings.letterPageTitle,
-              icon: Icons.mail_rounded,
-              onTap: () async => await LetterPage.start(context),
-            ),
           ),
         ],
       ),

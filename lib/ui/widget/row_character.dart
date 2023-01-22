@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
-import 'package:rsapp/common/rs_logger.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/ui/character/detail/character_detail_page.dart';
 import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class RowCharacterItem extends StatelessWidget {
-  const RowCharacterItem(this.character, {super.key, required this.refreshListener});
+  const RowCharacterItem(this.character, {super.key});
 
   final Character character;
-  final Function refreshListener;
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +39,7 @@ class RowCharacterItem extends StatelessWidget {
   }
 
   Future<void> _onTap(BuildContext context) async {
-    bool isUpdate = await CharacterDetailPage.start(context, character);
-    RSLogger.d('詳細画面でステータスが更新されたか？ $isUpdate');
-    if (isUpdate) {
-      await refreshListener();
-    }
+    await CharacterDetailPage.start(context, character.id);
   }
 }
 

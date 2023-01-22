@@ -16,7 +16,7 @@ class StatusTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
+      children: [
         const Text(
           RSStrings.detailPageStatusTableLabel,
           style: TextStyle(fontStyle: FontStyle.italic, decoration: TextDecoration.underline),
