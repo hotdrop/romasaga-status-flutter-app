@@ -5,19 +5,22 @@ class RSStrings {
   static const String appTitle = 'ロマサガRSステータス管理';
   static const String nowLoading = 'Now Loading...';
   static const String loadingError = 'エラーが発生してしまいました...';
+  static const String highLevelLabel = '高';
+  static const String aroundLabel = '周';
 
+  // ダイアログ
+  static const String dialogTitleSuccess = '成功';
+  static const String dialogTitleError = 'エラー';
+  static const String dialogOk = 'OK';
+  static const String dialogCancel = 'Cancel';
+
+  // キャラ一覧
+  static const String charactersPageTitle = 'キャラ一覧';
   static const String bottomMenuCharacter = 'キャラ';
   static const String bottomMenuSearch = '検索';
   static const String bottomMenuNote = 'メモ';
   static const String bottomMenuInformation = '情報';
   static const String bottomMenuAccount = 'アカウント';
-
-  static const String charactersPageTitle = 'キャラ一覧';
-  static const String charactersPageTabStatusUp = 'ステUP';
-  static const String charactersPageTabHighLevel = '高難';
-  static const String charactersPageTabAround = '周回用';
-  static const String charactersPageTabFavorite = 'お気入';
-  static const String charactersPageTabNotFavorite = '未育成';
   static const String charactersOrderStatus = 'ステータス';
   static const String charactersOrderHp = 'HP';
   static const String charactersOrderProduction = '作品';
@@ -33,8 +36,7 @@ class RSStrings {
   static const String detailPageRefreshIconDialogMessage = 'アイコン情報をサーバーから再取得します。よろしいですか？';
   static const String detailPageStatusTableLabel = 'ステータス上限表';
 
-  static const String highLevelLabel = '高';
-  static const String aroundLabel = '周';
+  // ステータス編集
   static const String statusEditTitle = 'ステータス編集';
 
   // 検索
@@ -87,12 +89,6 @@ class RSStrings {
   static const String stageEditPageHpLimitLabel = 'HP上限';
   static const String stageEditPageStatusLimitLabel = 'ステ上限';
   static const String stageEditPageSaveLabel = 'この内容で更新する';
-
-  // ダイアログ
-  static const String dialogTitleSuccess = '成功';
-  static const String dialogTitleError = 'エラー';
-  static const String dialogOk = 'OK';
-  static const String dialogCancel = 'Cancel';
 
   // ステータス
   static const String hpName = 'HP';

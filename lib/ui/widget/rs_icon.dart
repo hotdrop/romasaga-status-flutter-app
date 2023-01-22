@@ -330,6 +330,56 @@ class ProductionLogo extends StatelessWidget {
   }
 }
 
+class TabIcon extends StatelessWidget {
+  const TabIcon._({this.iconData, this.word, required this.iconColor, this.iconSize, this.count});
+
+  factory TabIcon.statusUp({Color color = RSColors.statusUpEventSelected, int? count}) {
+    return TabIcon._(iconData: Icons.trending_up, iconColor: color, count: count);
+  }
+
+  factory TabIcon.highLevel({Color color = RSColors.highLevelSelected, int? count}) {
+    return TabIcon._(word: RSStrings.highLevelLabel, iconColor: color, count: count);
+  }
+
+  factory TabIcon.around({Color color = RSColors.aroundSelected, int? count}) {
+    return TabIcon._(word: RSStrings.aroundLabel, iconColor: color, count: count);
+  }
+
+  factory TabIcon.favorite({required bool isSelected, Color color = RSColors.favoriteSelected, double? size, int? count}) {
+    if (isSelected) {
+      return TabIcon._(iconData: Icons.star_rounded, iconColor: color, iconSize: size, count: count);
+    } else {
+      return TabIcon._(iconData: Icons.star_border_rounded, iconColor: color, iconSize: size, count: count);
+    }
+  }
+
+  final IconData? iconData;
+  final String? word;
+  final Color iconColor;
+  final double? iconSize;
+  final int? count; // アイコンの横にカウントを入れたい場合はこれを使う
+
+  @override
+  Widget build(BuildContext context) {
+    if (word != null && count != null) {
+      // countが設定されている場合はTab上に表示するのでfontSizeを標準にする
+      return Text('$word($count)', style: TextStyle(color: iconColor));
+    } else if (word != null) {
+      // countが未設定の場合は少しfontを大きくする
+      return Text(word!, style: TextStyle(color: iconColor, fontSize: 20));
+    } else if (iconData != null && count != null) {
+      return Row(
+        children: [
+          Icon(iconData, color: iconColor, size: iconSize),
+          Text('($count)'),
+        ],
+      );
+    } else {
+      return Icon(iconData, color: iconColor, size: iconSize);
+    }
+  }
+}
+
 ///
 /// 検索画面でのカテゴリーアイコン（お気に入り、高難易度、周回の3つ）
 /// これらはいずれかひとつしか選べないようにしているのでまとめてここで定義する。
@@ -417,10 +467,13 @@ class _FavoriteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? RSColors.favoriteSelected : Theme.of(context).disabledColor;
     return _IconButton(
       onPressed: onPressed,
-      child: Icon(Icons.star_rounded, color: color, size: 20.0),
+      child: TabIcon.favorite(
+        isSelected: isSelected,
+        color: isSelected ? RSColors.favoriteSelected : Theme.of(context).disabledColor,
+        size: 20.0,
+      ),
     );
   }
 }
@@ -433,10 +486,11 @@ class _HighLevelIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? RSColors.highLevelSelected : Theme.of(context).disabledColor;
     return _IconButton(
       onPressed: onPressed,
-      child: Text(RSStrings.highLevelLabel, style: TextStyle(color: color)),
+      child: TabIcon.highLevel(
+        color: isSelected ? RSColors.highLevelSelected : Theme.of(context).disabledColor,
+      ),
     );
   }
 }
@@ -449,10 +503,11 @@ class _AroundIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? RSColors.aroundSelected : Theme.of(context).disabledColor;
     return _IconButton(
       onPressed: onPressed,
-      child: Text(RSStrings.aroundLabel, style: TextStyle(color: color)),
+      child: TabIcon.around(
+        color: isSelected ? RSColors.aroundSelected : Theme.of(context).disabledColor,
+      ),
     );
   }
 }

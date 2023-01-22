@@ -470,8 +470,7 @@ class _ViewStatusUpEventIcon extends ConsumerWidget {
     final isSelected = ref.watch(characterDetailStatusUpEventProvider);
 
     return IconButton(
-      icon: Icon(
-        Icons.trending_up,
+      icon: TabIcon.statusUp(
         color: isSelected ? RSColors.statusUpEventSelected : Theme.of(context).disabledColor,
       ),
       iconSize: 28.0,
@@ -491,12 +490,11 @@ class _ViewHighLevelIcon extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isSelected = ref.watch(characterDetailHighLevelProvider);
 
+    // TODO ここ1度選ぶとどちらかしか選択できなくなるので修正する
     return RawMaterialButton(
       shape: const CircleBorder(),
       constraints: const BoxConstraints(minWidth: 40.0, minHeight: 40.0),
-      child: isSelected
-          ? const Text(RSStrings.highLevelLabel, style: TextStyle(color: RSColors.highLevelSelected, fontSize: 20))
-          : const Text(RSStrings.aroundLabel, style: TextStyle(color: RSColors.aroundSelected, fontSize: 20)),
+      child: isSelected ? TabIcon.highLevel() : TabIcon.around(),
       onPressed: () async {
         await ref.read(characterDetailMethodsProvider.notifier).saveHighLevel(!isSelected);
       },
@@ -516,8 +514,8 @@ class _ViewFavoriteIcon extends ConsumerWidget {
 
     return IconButton(
       icon: isSelected
-          ? const Icon(Icons.star_rounded, color: RSColors.favoriteSelected)
-          : Icon(Icons.star_border_rounded, color: Theme.of(context).disabledColor),
+          ? TabIcon.favorite(isSelected: true, color: RSColors.favoriteSelected)
+          : TabIcon.favorite(isSelected: false, color: Theme.of(context).disabledColor),
       iconSize: 28.0,
       onPressed: () async {
         await ref.read(characterDetailMethodsProvider.notifier).saveFavorite(!isSelected);

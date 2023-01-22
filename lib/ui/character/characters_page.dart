@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rsapp/models/app_settings.dart';
 import 'package:rsapp/models/character.dart';
+import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/widget/row_character.dart';
 import 'package:rsapp/ui/character/characters_providers.dart';
+import 'package:rsapp/ui/widget/rs_icon.dart';
 
 class CharactersPage extends ConsumerWidget {
   const CharactersPage({super.key});
@@ -20,11 +22,11 @@ class CharactersPage extends ConsumerWidget {
           bottom: TabBar(
             isScrollable: true,
             tabs: <Tab>[
-              Tab(text: '${RSStrings.charactersPageTabStatusUp}(${ref.watch(charactersStatusUpProvider).length})'),
-              Tab(text: '${RSStrings.charactersPageTabHighLevel}(${ref.watch(charactersHighLevelProvider).length})'),
-              Tab(text: '${RSStrings.charactersPageTabAround}(${ref.watch(charactersForRoundProvider).length})'),
-              Tab(text: '${RSStrings.charactersPageTabFavorite}(${ref.watch(charactersFavoriterovider).length})'),
-              Tab(text: '${RSStrings.charactersPageTabNotFavorite}(${ref.watch(charactersNotFavoriteProvider).length})'),
+              Tab(icon: TabIcon.statusUp(count: ref.watch(charactersStatusUpProvider).length)),
+              Tab(icon: TabIcon.highLevel(count: ref.watch(charactersHighLevelProvider).length)),
+              Tab(icon: TabIcon.around(count: ref.watch(charactersForRoundProvider).length)),
+              Tab(icon: TabIcon.favorite(isSelected: true, count: ref.watch(charactersFavoriterovider).length)),
+              Tab(icon: TabIcon.favorite(isSelected: false, count: ref.watch(charactersNotFavoriteProvider).length)),
             ],
           ),
         ),
