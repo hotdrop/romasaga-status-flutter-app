@@ -13,7 +13,7 @@ final appInitFutureProvider = FutureProvider<void>((ref) async {
   await ref.read(rsServiceProvider).init();
   await ref.read(localDataSourceProvider).init();
 
-  await ref.read(characterProvider.notifier).init();
+  await ref.read(characterProvider.notifier).onLoad();
   await ref.read(stageProvider.notifier).onLoad();
 });
 

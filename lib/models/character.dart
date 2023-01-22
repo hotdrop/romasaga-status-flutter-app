@@ -17,10 +17,7 @@ class CharacterNotifier extends Notifier<List<Character>> {
     return [];
   }
 
-  ///
-  /// アプリ起動時、最初の1度だけ実行する
-  ///
-  Future<void> init() async {
+  Future<void> onLoad() async {
     final characters = await ref.read(characterRepositoryProvider).findAll();
     final myStatuses = await ref.read(myStatusRepositoryProvider).findAll();
     state = await _merge(characters, myStatuses);
@@ -55,6 +52,14 @@ class CharacterNotifier extends Notifier<List<Character>> {
             selectedIconFilePath: selectedStyle.iconFilePath,
           ),
     );
+  }
+
+  ///
+  /// 最新のキャラ情報をリモートから取得してリフレッシュする
+  ///
+  Future<void> refresh() async {
+    await ref.read(characterRepositoryProvider).refresh();
+    await onLoad();
   }
 
   ///
