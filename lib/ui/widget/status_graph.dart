@@ -47,12 +47,12 @@ class _CenterText extends StatelessWidget {
         Text(
           currentTotal.toString(),
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
         Text(
           RSStrings.detailPageTotalStatusLabel,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ],
     );
@@ -80,7 +80,7 @@ class HpGraph extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 12.0, bottom: 4.0),
-          child: Text(RSStrings.hpName, style: Theme.of(context).textTheme.subtitle1),
+          child: Text(RSStrings.hpName, style: Theme.of(context).textTheme.titleMedium),
         ),
         _ContentLinearPercentIndicator(
           width: MediaQuery.of(context).size.width * 0.8,
@@ -137,7 +137,7 @@ class StatusGraph extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-          child: Text(title, style: Theme.of(context).textTheme.subtitle1),
+          child: Text(title, style: Theme.of(context).textTheme.titleMedium),
         ),
         _ContentLinearPercentIndicator(
           width: MediaQuery.of(context).size.width / 4,

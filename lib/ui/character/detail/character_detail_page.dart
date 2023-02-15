@@ -97,7 +97,7 @@ class _ViewCharacterOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
@@ -134,9 +134,9 @@ class _ViewCharacterInfo extends ConsumerWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(character.production, style: Theme.of(context).textTheme.caption),
+            Text(character.production, style: Theme.of(context).textTheme.bodySmall),
             Text(character.name),
-            Text(title, style: Theme.of(context).textTheme.caption),
+            Text(title, style: Theme.of(context).textTheme.bodySmall),
           ],
         ),
       ],
@@ -265,7 +265,7 @@ class _ViewStatusArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
@@ -330,7 +330,7 @@ class _ViewStage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(RSStrings.detailPageStageLabel, style: Theme.of(context).textTheme.caption),
+                  Text(RSStrings.detailPageStageLabel, style: Theme.of(context).textTheme.bodySmall),
                   Text(stage.name),
                 ],
               ),
@@ -347,7 +347,7 @@ class _ViewStage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(RSStrings.detailPageStatusLimitLabel, style: Theme.of(context).textTheme.caption),
+                  Text(RSStrings.detailPageStatusLimitLabel, style: Theme.of(context).textTheme.bodySmall),
                   Text('+${stage.statusLimit}'),
                 ],
               ),
