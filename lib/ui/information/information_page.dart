@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -31,22 +29,19 @@ class _OfficialSiteWebView extends StatefulWidget {
 }
 
 class _OfficialSiteWebViewState extends State<_OfficialSiteWebView> {
+  late final WebViewController _controller;
+
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
-    }
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.disabled)
+      ..clearCache()
+      ..loadRequest(Uri.parse(RSStrings.infoOfficialUrl));
   }
 
   @override
   Widget build(BuildContext context) {
-    return WebView(
-      initialUrl: RSStrings.infoOfficialUrl,
-      javascriptMode: JavascriptMode.disabled,
-      onWebViewCreated: (controller) {
-        controller.clearCache();
-      },
-    );
+    return WebViewWidget(controller: _controller);
   }
 }
