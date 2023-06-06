@@ -11,8 +11,8 @@ class InformationPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(RSStrings.infoPageTitle),
       ),
-      body: Column(
-        children: const [
+      body: const Column(
+        children: [
           Flexible(
             child: _OfficialSiteWebView(),
           ),

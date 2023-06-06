@@ -96,20 +96,20 @@ class _ViewManualLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(16),
               child: _ViewStatusEditHp(),
             ),
             Wrap(
               runSpacing: 24,
               spacing: 24,
-              children: const [
+              children: [
                 _ViewStatusEditStr(),
                 _ViewStatusEditVit(),
                 _ViewStatusEditDex(),

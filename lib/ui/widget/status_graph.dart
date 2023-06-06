@@ -197,7 +197,7 @@ class _ContentLinearPercentIndicator extends StatelessWidget {
       animation: true,
       animationDuration: 500,
       percent: percent,
-      linearStrokeCap: LinearStrokeCap.roundAll,
+      barRadius: const Radius.circular(16),
       linearGradient: LinearGradient(colors: graphColors),
       backgroundColor: RSColors.statusIndicatorBackground,
     );
