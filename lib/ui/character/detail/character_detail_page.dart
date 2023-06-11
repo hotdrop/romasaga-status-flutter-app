@@ -97,12 +97,12 @@ class _ViewCharacterOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
-      color: Theme.of(context).backgroundColor,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: Theme.of(context).colorScheme.background,
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             _ViewCharacterInfo(),
             SizedBox(height: 8),
             _ViewAttributeIcons(),
@@ -134,9 +134,9 @@ class _ViewCharacterInfo extends ConsumerWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(character.production, style: Theme.of(context).textTheme.caption),
+            Text(character.production, style: Theme.of(context).textTheme.bodySmall),
             Text(character.name),
-            Text(title, style: Theme.of(context).textTheme.caption),
+            Text(title, style: Theme.of(context).textTheme.bodySmall),
           ],
         ),
       ],
@@ -265,25 +265,25 @@ class _ViewStatusArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
-      color: Theme.of(context).backgroundColor,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: Theme.of(context).colorScheme.background,
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
+              children: [
                 _ViewTotalStatusCircleGraph(),
                 SizedBox(width: 16),
                 _ViewStage(),
               ],
             ),
-            const SizedBox(height: 8),
-            const HorizontalLine(),
-            const SizedBox(height: 8),
-            const _ViewHpGraph(),
-            const SizedBox(height: 8),
-            const _ViewEachStatusGraph(),
+            SizedBox(height: 8),
+            HorizontalLine(),
+            SizedBox(height: 8),
+            _ViewHpGraph(),
+            SizedBox(height: 8),
+            _ViewEachStatusGraph(),
           ],
         ),
       ),
@@ -330,7 +330,7 @@ class _ViewStage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(RSStrings.detailPageStageLabel, style: Theme.of(context).textTheme.caption),
+                  Text(RSStrings.detailPageStageLabel, style: Theme.of(context).textTheme.bodySmall),
                   Text(stage.name),
                 ],
               ),
@@ -347,7 +347,7 @@ class _ViewStage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(RSStrings.detailPageStatusLimitLabel, style: Theme.of(context).textTheme.caption),
+                  Text(RSStrings.detailPageStatusLimitLabel, style: Theme.of(context).textTheme.bodySmall),
                   Text('+${stage.statusLimit}'),
                 ],
               ),
@@ -442,12 +442,12 @@ class _ViewBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
+    return const BottomAppBar(
+      shape: CircularNotchedRectangle(),
       notchMargin: 4.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: const [
+        children: [
           Padding(padding: EdgeInsets.only(left: 16.0)),
           _ViewStatusUpEventIcon(),
           Padding(padding: EdgeInsets.only(left: 16.0)),

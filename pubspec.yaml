@@ -3,10 +3,10 @@ description: Romancing Saga RS Status Management application.
 
 publish_to: 'none'
 
-version: 2.4.0+22
+version: 2.5.0+23
 
 environment:
-  sdk: '>=2.17.1 <3.0.0'
+  sdk: '>=2.18.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -15,55 +15,54 @@ dependencies:
     sdk: flutter
 
   # design
-  flutter_riverpod: ^2.0.2
-  riverpod_annotation: ^1.0.4
-  freezed_annotation: ^2.1.0
+  flutter_riverpod: ^2.3.6
+  riverpod_annotation: ^2.1.1
+  freezed_annotation: ^2.2.0
 
   # Firebase
-  google_sign_in: ^5.4.3
-  firebase_core: ^2.4.1
-  firebase_auth: ^4.2.5
-  cloud_firestore: ^4.3.1
-  firebase_storage: ^11.0.10
-  firebase_crashlytics: ^3.0.10
+  google_sign_in: ^6.1.3
+  firebase_core: ^2.13.1
+  firebase_auth: ^4.6.2
+  cloud_firestore: ^4.8.0
+  firebase_storage: ^11.2.2
+  firebase_crashlytics: ^3.3.2
 
   # UI
-  percent_indicator: ^3.4.0
-  progress_dialog: ^1.2.4
-  modal_bottom_sheet: ^2.0.0
-  webview_flutter: ^2.0.10
-  cached_video_player: ^2.0.0-dev.1
+  percent_indicator: ^4.2.3
+  modal_bottom_sheet: ^3.0.0-pre
+  webview_flutter: ^4.2.1
+  cached_video_player: ^2.0.4
   line_icons: ^2.0.1
 
   # local storage
-  hive: ^2.0.4
+  hive: ^2.2.3
   hive_flutter: ^1.1.0
-  shared_preferences: ^2.0.8
+  shared_preferences: ^2.1.1
 
   # network
-  http: ^0.13.4
-  cached_network_image: ^3.1.0
+  http: ^0.13.6
+  cached_network_image: ^3.2.3
 
   # other
   package_info: ^2.0.2
-  logger: ^1.1.0
-  collection: ^1.15.0
+  logger: ^1.3.0
+  collection: ^1.17.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   
-  riverpod_generator: ^1.0.4
-  freezed: ^2.2.0
-  json_serializable: ^6.5.1
-  hive_generator: ^1.1.0
-  build_runner: ^2.0.1
+  riverpod_generator: ^2.2.3
+  freezed: ^2.3.4
+  json_serializable: ^6.7.0
+  hive_generator: ^2.0.0
+  build_runner: ^2.4.4
 
-  path_provider: ^2.0.5
-  mockito: ^5.3.1
+  path_provider: ^2.0.15
+  mockito: ^5.4.1
 
-  flutter_launcher_icons: ^0.9.2
-  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^2.0.1
 
 flutter_icons:
   android: false

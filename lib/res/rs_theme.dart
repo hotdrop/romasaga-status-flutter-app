@@ -15,7 +15,6 @@ class RSTheme {
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: Colors.indigo,
     ),
-    backgroundColor: Colors.white,
   );
 
   static const darkThemeColor = Color.fromARGB(255, 204, 153, 255);

@@ -37,25 +37,25 @@ class _ViewBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            const _ViewNameTextField(),
-            const SizedBox(height: 16),
+            _ViewNameTextField(),
+            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
+              children: [
                 _ViewHpLimitField(),
                 SizedBox(width: 48),
                 _ViewStatusLimitFiled(),
               ],
             ),
-            const SizedBox(height: 8),
-            const Text(RSStrings.stageEditPageOverview),
-            const SizedBox(height: 16),
-            const _ViewSaveButton(),
+            SizedBox(height: 8),
+            Text(RSStrings.stageEditPageOverview),
+            SizedBox(height: 16),
+            _ViewSaveButton(),
           ],
         ),
       ),

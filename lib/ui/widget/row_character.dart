@@ -61,8 +61,8 @@ class _ViewLeadingArea extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(name, style: Theme.of(context).textTheme.subtitle1),
-              Text(production, style: Theme.of(context).textTheme.caption),
+              Text(name, style: Theme.of(context).textTheme.titleMedium),
+              Text(production, style: Theme.of(context).textTheme.bodySmall),
             ],
           ),
         ),

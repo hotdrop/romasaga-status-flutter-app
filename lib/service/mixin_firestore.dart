@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rsapp/models/status.dart';
 
-class RSFirestoreMixin {
+mixin RSFirestoreMixin {
   static const String _rootCollectionName = 'backup';
   static const String _statusCollectionName = 'statuses';
 
