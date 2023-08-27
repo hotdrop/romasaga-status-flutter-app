@@ -451,8 +451,6 @@ class _ViewBottomNavigationBar extends StatelessWidget {
           Padding(padding: EdgeInsets.only(left: 16.0)),
           _ViewStatusUpEventIcon(),
           Padding(padding: EdgeInsets.only(left: 16.0)),
-          _ViewHighLevelIcon(),
-          Padding(padding: EdgeInsets.only(left: 16.0)),
           _ViewFavoriteIcon(),
         ],
       ),
@@ -477,27 +475,6 @@ class _ViewStatusUpEventIcon extends ConsumerWidget {
       iconSize: 28.0,
       onPressed: () async {
         await ref.read(characterDetailMethodsProvider.notifier).saveStatusUpEvent(!isSelected);
-      },
-    );
-  }
-}
-
-///
-/// 高難易度/周回アイコン
-class _ViewHighLevelIcon extends ConsumerWidget {
-  const _ViewHighLevelIcon();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isSelected = ref.watch(characterDetailHighLevelProvider);
-
-    // TODO ここ1度選ぶとどちらかしか選択できなくなるので修正する
-    return RawMaterialButton(
-      shape: const CircleBorder(),
-      constraints: const BoxConstraints(minWidth: 40.0, minHeight: 40.0),
-      child: isSelected ? TabIcon.highLevel() : TabIcon.around(),
-      onPressed: () async {
-        await ref.read(characterDetailMethodsProvider.notifier).saveHighLevel(!isSelected);
       },
     );
   }

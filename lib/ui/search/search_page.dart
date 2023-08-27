@@ -163,10 +163,8 @@ class _ViewFilterKind extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return CategoryIcons(
       isFavSelected: ref.read(searchFilterFavorite),
-      isHighLevelSelected: ref.read(searchFilterUseHighLebel),
-      isAroundSelected: ref.read(searchFilterUseAround),
-      onTap: (bool fav, bool high, bool around) {
-        ref.read(searchControllerProvider.notifier).filterCategory(favorite: fav, highLevel: high, around: around);
+      onTap: (bool fav) {
+        ref.read(searchControllerProvider.notifier).filterCategory(favorite: fav);
       },
     );
   }

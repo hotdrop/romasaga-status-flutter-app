@@ -28,7 +28,6 @@ mixin RSFirestoreMixin {
       'love': myStatus.love,
       'attr': myStatus.attr,
       'favorite': myStatus.favorite,
-      'useHighLevel': myStatus.useHighLevel,
     };
   }
 
@@ -59,7 +58,6 @@ mixin RSFirestoreMixin {
       doc.get('love') as int,
       doc.get('attr') as int,
       doc.get('favorite') as bool,
-      doc.get('useHighLevel') as bool,
     );
   }
 }

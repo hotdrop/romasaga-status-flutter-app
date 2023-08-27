@@ -96,16 +96,6 @@ class CharacterNotifier extends Notifier<List<Character>> {
   }
 
   ///
-  /// 高難易度フラグの更新
-  ///
-  Future<void> saveHighLevel({required int id, required bool useHighLevel}) async {
-    await ref.read(characterRepositoryProvider).saveHighLevel(id, useHighLevel);
-    _replace(
-      newChara: state.where((e) => e.id == id).first.copyWith(highLevel: useHighLevel),
-    );
-  }
-
-  ///
   /// お気に入りフラグの更新
   ///
   Future<void> saveFavorite({required int id, required bool favorite}) async {
@@ -160,7 +150,6 @@ class Character {
   List<String> get allRank => styles.map((style) => style.rank).toList()..sort((s, t) => s.compareTo(t));
 
   bool get favorite => myStatus?.favorite ?? false;
-  bool get useHighLevel => myStatus?.useHighLevel ?? false;
 
   void addStyle(Style style) {
     styles.add(style);
@@ -206,14 +195,10 @@ class Character {
     List<Style>? styles,
     bool? favorite,
     bool? statusUpEvent,
-    bool? highLevel,
   }) {
     final newStatus = myStatus ?? this.myStatus ?? MyStatus.empty(id);
     if (favorite != null) {
       newStatus.favorite = favorite;
-    }
-    if (highLevel != null) {
-      newStatus.useHighLevel = highLevel;
     }
 
     final newCharacter = Character(

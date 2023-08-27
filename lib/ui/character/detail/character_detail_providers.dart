@@ -63,13 +63,6 @@ class CharacterDetailMethods extends _$CharacterDetailMethods {
         );
   }
 
-  Future<void> saveHighLevel(bool useHighLevel) async {
-    await ref.read(characterProvider.notifier).saveHighLevel(
-          id: ref.read(characterDetailCharaProvider).id,
-          useHighLevel: useHighLevel,
-        );
-  }
-
   Future<void> saveFavorite(bool favorite) async {
     await ref.read(characterProvider.notifier).saveFavorite(
           id: ref.read(characterDetailCharaProvider).id,
@@ -124,11 +117,6 @@ final characterDetailSelectStyleProvider = Provider<Style>((ref) {
 // キャラのイベントフラグ
 final characterDetailStatusUpEventProvider = Provider<bool>((ref) {
   return ref.watch(characterDetailCharaProvider.select((v) => v.statusUpEvent));
-});
-
-// キャラの難易度/周回フラグ
-final characterDetailHighLevelProvider = Provider<bool>((ref) {
-  return ref.watch(characterDetailCharaProvider.select((v) => v.useHighLevel));
 });
 
 // キャラのお気に入りフラグ
