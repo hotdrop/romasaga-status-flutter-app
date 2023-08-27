@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/note/note_providers.dart';
 import 'package:rsapp/ui/widget/app_button.dart';
@@ -65,13 +64,13 @@ class _ViewButtonArea extends ConsumerWidget {
         children: [
           AppIconButton(
             label: RSStrings.notePageSaveButton,
-            icon: LineIcons.save,
+            icon: Icons.save,
             onTap: isSave ? ref.read(noteControllerProvider.notifier).save : null,
           ),
           const SizedBox(width: 8),
           AppIconButton(
             label: RSStrings.notePageReturnButton,
-            icon: LineIcons.undo,
+            icon: Icons.undo,
             onTap: isSave ? ref.read(noteControllerProvider.notifier).clear : null,
           ),
         ],

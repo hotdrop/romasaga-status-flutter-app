@@ -31,8 +31,6 @@ dependencies:
   percent_indicator: ^4.2.3
   modal_bottom_sheet: ^3.0.0-pre
   webview_flutter: ^4.2.1
-  cached_video_player: ^2.0.4
-  line_icons: ^2.0.1
 
   # local storage
   hive: ^2.2.3
