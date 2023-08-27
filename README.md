@@ -6,7 +6,7 @@
 ロマサガRSの所持キャラステータス管理用アプリです。Flutter学習用として作成しました。  
 assetsを管理対象外にすると吹っ飛んだ時に辛すぎたのでもう管理対象にしていいかと思いました。
 
-# 設計について
+# 設計
 レイヤー分けしており`View`と`Controller`、`Model`と`Repository`で大きく分けています。
 データ取得層は`Repository`パターンを採用しています。  
 
@@ -25,7 +25,7 @@ assetsを管理対象外にすると吹っ飛んだ時に辛すぎたのでも�
 
 今のところこのような設計で落ち着きました。  
 
-# Firebaseについて
+# Firebase
 Firebaseで利用しているサービスは次の通りです。
   - Authentication
     - Googleアカウントと連携しています。サインイン状態だと入力したキャラデータのバックアップと復元ができるようになります。
@@ -55,9 +55,4 @@ Firebaseで利用しているサービスは次の通りです。
 ```
 
 # 画面イメージ一部
-![01](/images/01_char_list.png)
-![0201](/images/02_char_detail_01.png)
-![0202](/images/02_char_detail_02.png)
-![03](/images/03_search.png)
-![04](/images/04_info.png)
-![05](/images/05_account.png)
+![01](/images/01_char_list.png) ![02](/images/02_char_detail.png) ![03](/images/03_search.png) ![04](/images/04_info.png) ![05](/images/05_account.png)
