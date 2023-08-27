@@ -30,8 +30,6 @@ class RSColors {
 
   static const Color favoriteSelected = Colors.amber;
   static const Color statusUpEventSelected = Colors.cyanAccent;
-  static const Color highLevelSelected = Colors.purpleAccent;
-  static const Color aroundSelected = Colors.deepOrange;
 
   // ステータス編集
   static const Color statusPlus = Colors.blue;

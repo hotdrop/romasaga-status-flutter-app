@@ -13,17 +13,14 @@ class CharactersPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTabController(
-      length: 5,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: const Text(RSStrings.charactersPageTitle),
           actions: const [_TitlePopupMenu()],
           bottom: TabBar(
-            isScrollable: true,
-            tabs: <Tab>[
+            tabs: [
               Tab(icon: TabIcon.statusUp(count: ref.watch(charactersStatusUpProvider).length)),
-              Tab(icon: TabIcon.highLevel(count: ref.watch(charactersHighLevelProvider).length)),
-              Tab(icon: TabIcon.around(count: ref.watch(charactersForRoundProvider).length)),
               Tab(icon: TabIcon.favorite(isSelected: true, count: ref.watch(charactersFavoriterovider).length)),
               Tab(icon: TabIcon.favorite(isSelected: false, count: ref.watch(charactersNotFavoriteProvider).length)),
             ],
@@ -32,8 +29,6 @@ class CharactersPage extends ConsumerWidget {
         body: TabBarView(
           children: [
             _ViewList(characters: ref.watch(charactersStatusUpProvider)),
-            _ViewList(characters: ref.watch(charactersHighLevelProvider)),
-            _ViewList(characters: ref.watch(charactersForRoundProvider)),
             _ViewList(characters: ref.watch(charactersFavoriterovider)),
             _ViewList(characters: ref.watch(charactersNotFavoriteProvider)),
           ],

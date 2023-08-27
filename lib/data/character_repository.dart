@@ -144,10 +144,4 @@ class _CharacterRepository {
     status.favorite = favorite;
     await _ref.read(myStatusDaoProvider).save(status);
   }
-
-  Future<void> saveHighLevel(int id, bool highLevel) async {
-    final status = await _ref.read(myStatusDaoProvider).find(id) ?? MyStatus.empty(id);
-    status.useHighLevel = highLevel;
-    await _ref.read(myStatusDaoProvider).save(status);
-  }
 }

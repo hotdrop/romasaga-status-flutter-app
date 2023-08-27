@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:rsapp/res/rs_colors.dart';
 import 'package:rsapp/res/rs_strings.dart';
@@ -69,7 +68,7 @@ class _ViewHeaderTitle extends ConsumerWidget {
 
     return TextField(
       decoration: const InputDecoration(
-        prefixIcon: Icon(LineIcons.search),
+        prefixIcon: Icon(Icons.search),
         hintText: RSStrings.searchListQueryHint,
       ),
       onSubmitted: (v) => ref.read(searchControllerProvider.notifier).findByKeyword(v),
@@ -85,7 +84,7 @@ class _ViewHeaderIconSearchWord extends ConsumerWidget {
     final isKeywordSearch = ref.watch(searchIsKeyword);
 
     return IconButton(
-      icon: isKeywordSearch ? const Icon(Icons.close) : const Icon(LineIcons.search),
+      icon: isKeywordSearch ? const Icon(Icons.close) : const Icon(Icons.search),
       onPressed: () {
         ref.read(searchControllerProvider.notifier).changeSearchMode();
       },
@@ -163,10 +162,8 @@ class _ViewFilterKind extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return CategoryIcons(
       isFavSelected: ref.read(searchFilterFavorite),
-      isHighLevelSelected: ref.read(searchFilterUseHighLebel),
-      isAroundSelected: ref.read(searchFilterUseAround),
-      onTap: (bool fav, bool high, bool around) {
-        ref.read(searchControllerProvider.notifier).filterCategory(favorite: fav, highLevel: high, around: around);
+      onTap: (bool fav) {
+        ref.read(searchControllerProvider.notifier).filterCategory(favorite: fav);
       },
     );
   }

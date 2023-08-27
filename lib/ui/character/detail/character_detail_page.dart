@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:rsapp/models/character.dart';
 import 'package:rsapp/models/weapon.dart';
 import 'package:rsapp/res/rs_colors.dart';
@@ -429,7 +428,7 @@ class _ViewEditStatusFab extends ConsumerWidget {
     final character = ref.watch(characterDetailCharaProvider);
 
     return FloatingActionButton(
-      child: const Icon(LineIcons.pen, size: 32),
+      child: const Icon(Icons.edit, size: 32),
       onPressed: () async {
         await StatusEditPage.start(context, character.id);
       },
@@ -450,8 +449,6 @@ class _ViewBottomNavigationBar extends StatelessWidget {
         children: [
           Padding(padding: EdgeInsets.only(left: 16.0)),
           _ViewStatusUpEventIcon(),
-          Padding(padding: EdgeInsets.only(left: 16.0)),
-          _ViewHighLevelIcon(),
           Padding(padding: EdgeInsets.only(left: 16.0)),
           _ViewFavoriteIcon(),
         ],
@@ -477,27 +474,6 @@ class _ViewStatusUpEventIcon extends ConsumerWidget {
       iconSize: 28.0,
       onPressed: () async {
         await ref.read(characterDetailMethodsProvider.notifier).saveStatusUpEvent(!isSelected);
-      },
-    );
-  }
-}
-
-///
-/// 高難易度/周回アイコン
-class _ViewHighLevelIcon extends ConsumerWidget {
-  const _ViewHighLevelIcon();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isSelected = ref.watch(characterDetailHighLevelProvider);
-
-    // TODO ここ1度選ぶとどちらかしか選択できなくなるので修正する
-    return RawMaterialButton(
-      shape: const CircleBorder(),
-      constraints: const BoxConstraints(minWidth: 40.0, minHeight: 40.0),
-      child: isSelected ? TabIcon.highLevel() : TabIcon.around(),
-      onPressed: () async {
-        await ref.read(characterDetailMethodsProvider.notifier).saveHighLevel(!isSelected);
       },
     );
   }

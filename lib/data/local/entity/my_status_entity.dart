@@ -16,7 +16,6 @@ class MyStatusEntity extends HiveObject {
     required this.love,
     required this.attr,
     required this.favorite,
-    required this.useHighLevel,
   });
 
   static const String boxName = 'myStatus';
@@ -53,9 +52,6 @@ class MyStatusEntity extends HiveObject {
 
   @HiveField(10)
   final int favorite;
-
-  @HiveField(11)
-  final int? useHighLevel;
 
   static const int on = 1;
   static const int off = 0;

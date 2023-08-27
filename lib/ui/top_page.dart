@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:rsapp/res/rs_strings.dart';
 import 'package:rsapp/ui/account/account_page.dart';
 import 'package:rsapp/ui/character/characters_page.dart';
@@ -68,9 +67,9 @@ class Destination {
 }
 
 const _allDestinations = <Destination>[
-  Destination(RSStrings.bottomMenuCharacter, LineIcons.listUl),
-  Destination(RSStrings.bottomMenuSearch, LineIcons.search),
-  Destination(RSStrings.bottomMenuNote, LineIcons.edit),
-  Destination(RSStrings.bottomMenuInformation, LineIcons.infoCircle),
-  Destination(RSStrings.bottomMenuAccount, LineIcons.addressCard),
+  Destination(RSStrings.bottomMenuCharacter, Icons.list),
+  Destination(RSStrings.bottomMenuSearch, Icons.search),
+  Destination(RSStrings.bottomMenuNote, Icons.edit_document),
+  Destination(RSStrings.bottomMenuInformation, Icons.web),
+  Destination(RSStrings.bottomMenuAccount, Icons.account_box_rounded),
 ];

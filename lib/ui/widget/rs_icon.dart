@@ -331,44 +331,30 @@ class ProductionLogo extends StatelessWidget {
 }
 
 class TabIcon extends StatelessWidget {
-  const TabIcon._({this.iconData, this.word, required this.iconColor, this.iconSize, this.count});
+  const TabIcon._(this.iconData, {required this.iconColor, this.iconSize, this.count});
 
   factory TabIcon.statusUp({Color color = RSColors.statusUpEventSelected, int? count}) {
-    return TabIcon._(iconData: Icons.trending_up, iconColor: color, count: count);
-  }
-
-  factory TabIcon.highLevel({Color color = RSColors.highLevelSelected, int? count}) {
-    return TabIcon._(word: RSStrings.highLevelLabel, iconColor: color, count: count);
-  }
-
-  factory TabIcon.around({Color color = RSColors.aroundSelected, int? count}) {
-    return TabIcon._(word: RSStrings.aroundLabel, iconColor: color, count: count);
+    return TabIcon._(Icons.trending_up, iconColor: color, count: count);
   }
 
   factory TabIcon.favorite({required bool isSelected, Color color = RSColors.favoriteSelected, double? size, int? count}) {
     if (isSelected) {
-      return TabIcon._(iconData: Icons.star_rounded, iconColor: color, iconSize: size, count: count);
+      return TabIcon._(Icons.star_rounded, iconColor: color, iconSize: size, count: count);
     } else {
-      return TabIcon._(iconData: Icons.star_border_rounded, iconColor: color, iconSize: size, count: count);
+      return TabIcon._(Icons.star_border_rounded, iconColor: color, iconSize: size, count: count);
     }
   }
 
-  final IconData? iconData;
-  final String? word;
+  final IconData iconData;
   final Color iconColor;
   final double? iconSize;
   final int? count; // アイコンの横にカウントを入れたい場合はこれを使う
 
   @override
   Widget build(BuildContext context) {
-    if (word != null && count != null) {
-      // countが設定されている場合はTab上に表示するのでfontSizeを標準にする
-      return Text('$word($count)', style: TextStyle(color: iconColor));
-    } else if (word != null) {
-      // countが未設定の場合は少しfontを大きくする
-      return Text(word!, style: TextStyle(color: iconColor, fontSize: 20));
-    } else if (iconData != null && count != null) {
+    if (count != null) {
       return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(iconData, color: iconColor, size: iconSize),
           Text('($count)'),
@@ -381,22 +367,17 @@ class TabIcon extends StatelessWidget {
 }
 
 ///
-/// 検索画面でのカテゴリーアイコン（お気に入り、高難易度、周回の3つ）
-/// これらはいずれかひとつしか選べないようにしているのでまとめてここで定義する。
+/// 検索画面でのカテゴリーアイコン（お気に入りだけ）
 ///
 class CategoryIcons extends StatefulWidget {
   const CategoryIcons({
     super.key,
     required this.isFavSelected,
-    required this.isHighLevelSelected,
-    required this.isAroundSelected,
     required this.onTap,
   });
 
   final bool isFavSelected;
-  final bool isHighLevelSelected;
-  final bool isAroundSelected;
-  final Function(bool, bool, bool) onTap;
+  final Function(bool) onTap;
 
   @override
   State<StatefulWidget> createState() => _CategoryIconsState();
@@ -404,15 +385,11 @@ class CategoryIcons extends StatefulWidget {
 
 class _CategoryIconsState extends State<CategoryIcons> {
   bool _isFavSelected = false;
-  bool _isHighLevelSelected = false;
-  bool _isAroundSelected = false;
 
   @override
   void initState() {
     super.initState();
     _isFavSelected = widget.isFavSelected;
-    _isHighLevelSelected = widget.isHighLevelSelected;
-    _isAroundSelected = widget.isAroundSelected;
   }
 
   @override
@@ -426,32 +403,8 @@ class _CategoryIconsState extends State<CategoryIcons> {
           onPressed: () {
             setState(() {
               _isFavSelected = !_isFavSelected;
-              _isHighLevelSelected = false;
-              _isAroundSelected = false;
             });
-            widget.onTap(_isFavSelected, _isHighLevelSelected, _isAroundSelected);
-          },
-        ),
-        _HighLevelIcon(
-          isSelected: _isHighLevelSelected,
-          onPressed: () {
-            setState(() {
-              _isFavSelected = false;
-              _isHighLevelSelected = !_isHighLevelSelected;
-              _isAroundSelected = false;
-            });
-            widget.onTap(_isFavSelected, _isHighLevelSelected, _isAroundSelected);
-          },
-        ),
-        _AroundIcon(
-          isSelected: _isAroundSelected,
-          onPressed: () {
-            setState(() {
-              _isFavSelected = false;
-              _isHighLevelSelected = false;
-              _isAroundSelected = !_isAroundSelected;
-            });
-            widget.onTap(_isFavSelected, _isHighLevelSelected, _isAroundSelected);
+            widget.onTap(_isFavSelected);
           },
         ),
       ],
@@ -473,40 +426,6 @@ class _FavoriteIcon extends StatelessWidget {
         isSelected: isSelected,
         color: isSelected ? RSColors.favoriteSelected : Theme.of(context).disabledColor,
         size: 20.0,
-      ),
-    );
-  }
-}
-
-class _HighLevelIcon extends StatelessWidget {
-  const _HighLevelIcon({required this.isSelected, required this.onPressed});
-
-  final bool isSelected;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return _IconButton(
-      onPressed: onPressed,
-      child: TabIcon.highLevel(
-        color: isSelected ? RSColors.highLevelSelected : Theme.of(context).disabledColor,
-      ),
-    );
-  }
-}
-
-class _AroundIcon extends StatelessWidget {
-  const _AroundIcon({required this.isSelected, required this.onPressed});
-
-  final bool isSelected;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return _IconButton(
-      onPressed: onPressed,
-      child: TabIcon.around(
-        color: isSelected ? RSColors.aroundSelected : Theme.of(context).disabledColor,
       ),
     );
   }

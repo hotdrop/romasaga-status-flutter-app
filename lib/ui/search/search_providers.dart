@@ -27,8 +27,8 @@ class SearchController extends _$SearchController {
     ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(keyword: word));
   }
 
-  void filterCategory({required bool favorite, required bool highLevel, required bool around}) {
-    ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(isFavorite: favorite, isUseHighLevel: highLevel, isUseAround: around));
+  void filterCategory({required bool favorite}) {
+    ref.read(_uiStateProvider.notifier).update((state) => state.copyWith(isFavorite: favorite));
   }
 
   void findByWeaponType(WeaponType type) {
@@ -96,17 +96,9 @@ class _UiState {
   ///
   /// カテゴリーフィルター
   ///
-  bool filterCategory(bool characterFav, bool characterIsHighLevel) {
+  bool filterCategory(bool characterFav) {
     if (isFavorite) {
       return characterFav;
-    }
-
-    if (isUseHighLevel) {
-      return characterFav && characterIsHighLevel;
-    }
-
-    if (isUseAround) {
-      return characterFav && !characterIsHighLevel;
     }
 
     // どのフィルターもかかっていない場合はフィルターかけない
@@ -177,8 +169,6 @@ class _UiState {
     AttributeType? attributeType,
     ProductionType? productionType,
     bool? isFavorite,
-    bool? isUseHighLevel,
-    bool? isUseAround,
   }) {
     return _UiState(
       isKeywordSearch: isKeywordSearch ?? this.isKeywordSearch,
@@ -187,8 +177,6 @@ class _UiState {
       attributeType: attributeType ?? this.attributeType,
       productionType: productionType ?? this.productionType,
       isFavorite: isFavorite ?? this.isFavorite,
-      isUseHighLevel: isUseHighLevel ?? this.isUseHighLevel,
-      isUseAround: isUseAround ?? this.isUseAround,
     );
   }
 }
@@ -199,7 +187,7 @@ final searchCharacterProvider = Provider<List<Character>>((ref) {
   return ref
       .watch(characterProvider)
       .where((c) => uiState.filterWord(targetName: c.name, targetProduction: c.production))
-      .where((c) => uiState.filterCategory(c.myStatus?.favorite ?? false, c.myStatus?.useHighLevel ?? false))
+      .where((c) => uiState.filterCategory(c.myStatus?.favorite ?? false))
       .where((c) => uiState.filterWeaponType(c.weapons))
       .where((e) => uiState.filterAttributesType(e.attributes))
       .where((e) => uiState.filterProductionType(e.production))

@@ -157,7 +157,6 @@ class StatusEditMethods extends _$StatusEditMethods {
       uiState.love + currentStatus.love,
       uiState.attr + currentStatus.attr,
       currentStatus.favorite,
-      currentStatus.useHighLevel,
     );
 
     await ref.read(characterProvider.notifier).updateMyStatus(id: uiState.characterId, newStatus: newStatus);

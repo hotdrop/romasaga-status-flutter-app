@@ -74,7 +74,6 @@ class _MyStatusDao {
       entity.love,
       entity.attr,
       entity.favorite == MyStatusEntity.on ? true : false,
-      entity.useHighLevel == MyStatusEntity.on ? true : false,
     );
   }
 
@@ -91,7 +90,6 @@ class _MyStatusDao {
       love: myStatus.love,
       attr: myStatus.attr,
       favorite: myStatus.favorite ? MyStatusEntity.on : MyStatusEntity.off,
-      useHighLevel: myStatus.useHighLevel ? MyStatusEntity.on : MyStatusEntity.off,
     );
   }
 }

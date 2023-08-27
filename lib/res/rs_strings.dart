@@ -5,8 +5,6 @@ class RSStrings {
   static const String appTitle = 'ロマサガRSステータス管理';
   static const String nowLoading = 'Now Loading...';
   static const String loadingError = 'エラーが発生してしまいました...';
-  static const String highLevelLabel = '高';
-  static const String aroundLabel = '周';
 
   // ダイアログ
   static const String dialogTitleSuccess = '成功';
