@@ -320,7 +320,6 @@ class _ViewStage extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12.0),
-        // ステージ名
         Row(
           children: [
             const VerticalLine(color: RSColors.stageNameLine),
@@ -337,7 +336,6 @@ class _ViewStage extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 12.0),
-        // ステージのステータス上限
         Row(
           children: [
             const VerticalLine(color: RSColors.stageLimitLine),

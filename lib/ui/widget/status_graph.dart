@@ -20,7 +20,7 @@ class TotalStatusCircleGraph extends StatelessWidget {
     CircularStrokeCap strokeCap = (percent < 1) ? CircularStrokeCap.round : CircularStrokeCap.butt;
 
     return CircularPercentIndicator(
-      radius: 110.0,
+      radius: 70.0,
       lineWidth: 10.0,
       animation: true,
       animationDuration: 500,
